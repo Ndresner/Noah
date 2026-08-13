@@ -81,3 +81,5 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 ## Full narrative reference
 
 See `Findlay_FixedOps_Reports_Reference.md` in this repo for complete methodology notes, caveats, and historical detail on every report above — this file is the condensed/instruction version for quick session loading.
+
+For the Technician Proficiency Workbook specifically, `Technician_Proficiency_Workbook_BUILD_SPEC.md` in this repo is the full, self-contained rebuild spec (data pulls, categorization rules, per-sheet layouts/formulas, conditional formatting, the 34-store Division/name/stall-count tables) — use it instead of re-deriving conventions from a sample file when rebuilding this report for a new period.
