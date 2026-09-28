@@ -26,6 +26,7 @@ OUT=ARGS.out
 def strip_previous(wb):
     if "Qlik Store Data" not in wb.sheetnames: return
     del wb["Qlik Store Data"]
+    if "Advisor Comparison" in wb.sheetnames: del wb["Advisor Comparison"]
     def clear_cols(ws,first_col):
         for row in ws.iter_rows(min_col=first_col):
             for c in row:
@@ -86,9 +87,10 @@ def style_hdr(c):
 def style_dat(c,fmt):
     c.font=copy(dat_src.font); c.border=copy(dat_src.border); c.number_format=fmt
 BLUE=Font(name="Calibri",size=11,color="FF0000FF")
-RED=(PatternFill("solid",fgColor="FFFFC7CE"),Font(color="FF9C0006"))
-YEL=(PatternFill("solid",fgColor="FFFFEB9C"),Font(color="FF9C6500"))
-GRN=(PatternFill("solid",fgColor="FFC6EFCE"),Font(color="FF006100"))
+# CF fills need bgColor too, or Excel shows the font color with no fill
+RED=(PatternFill("solid",fgColor="FFFFC7CE",bgColor="FFFFC7CE"),Font(color="FF9C0006"))
+YEL=(PatternFill("solid",fgColor="FFFFEB9C",bgColor="FFFFEB9C"),Font(color="FF9C6500"))
+GRN=(PatternFill("solid",fgColor="FFC6EFCE",bgColor="FFC6EFCE"),Font(color="FF006100"))
 def cf(ws,rng,first,text,sty):
     ws.conditional_formatting.add(rng,FormulaRule(formula=[f'{first}="{text}"'],fill=sty[0],font=sty[1]))
 
@@ -306,6 +308,7 @@ for sn in store_sheets:
         ws[f"A{rr}"].alignment=Alignment(wrap_text=True,vertical="top"); ws.merge_cells(f"A{rr}:K{rr}"); ws.row_dimensions[rr].height=45
     for col,w in WIDTH.items():
         ws.column_dimensions[col].width=max(ws.column_dimensions[col].width or 0, w)
+    ws.freeze_panes="A5"            # store tabs: freeze rows 1-4 (user preference)
 
 # ---- Master Summary: store-level comp % of dept gross
 ms=wb["Master Summary"]; MTR=[r for r in range(5,ms.max_row+1) if str(ms[f"A{r}"].value or "").startswith("Grand Total")][0]
@@ -344,6 +347,94 @@ for sh_ in ("Master Summary","Store Ranker"):
                                     f"employees hired after {CUTS} (last day worked in the {ARGS.pay_check} pay period)",c.value)
 ms["A2"].value+= " Columns H-M: store pay (Service or Parts roles) as a % of that department's "+PL+" monthly gross from Qlik, vs the group %. Service excludes technicians, foremen and team leaders because their pay is already in cost of labor sales (service gross is net of it)."
 
+# ---- Advisor Comparison tab (after Store Ranker): one row per store with Service Advisors, vs group
+from openpyxl.worksheet.hyperlink import Hyperlink
+ac=wb.create_sheet("Advisor Comparison", index=wb.sheetnames.index("Store Ranker")+1)
+ADV="SERVICE ADVISOR"
+# initial sort: avg monthly advisor pay, high to low (computed from Raw Data values; users can re-sort with the filter)
+_pay={}
+for r in range(2,N+1):
+    if rd[f"D{r}"].value!=ADV: continue
+    h=rd[f"F{r}"].value; h=h.date() if isinstance(h,dt.datetime) else h
+    if not isinstance(h,dt.date) or h>CUT: continue
+    m=max(0,(CUT-max(h,dt.date(CUT.year,1,1))).days+1)/30.4
+    if m>0: _pay.setdefault(rd[f"B{r}"].value,[]).append((rd[f"G{r}"].value or 0)/m)
+ADV_EXCLUDE={"J01"}   # Findlay Customs: left off the Advisor Comparison (user request)
+adv_stores=sorted((k for k in _pay if stores.get(k) not in ADV_EXCLUDE),key=lambda k:-sum(_pay[k])/len(_pay[k]))
+ac["A1"]="Service Advisor Comparison - All Stores"; ac["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
+ac["A1"].alignment=Alignment(horizontal="left",vertical="center"); ac.merge_cells("A1:O1"); ac.row_dimensions[1].height=20
+ac["A2"]=(f"Store-level averages across each store's Service Advisors (pay ~1/1-{CUT.month}/{CUT.day}; gross and ROs = {PL} monthly averages from Qlik). "
+          "vs Group = store / group - 1. Green = better than group for store economics, red = worse, yellow = within the band. "
+          "Pay per RO = avg monthly advisor pay / monthly ROs per advisor (what the store pays an advisor per customer handled). "
+          "Use the filter arrows to re-sort; initial order is avg pay, high to low."
+          +" Findlay Customs is not included.")
+ac["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); ac["A2"].alignment=Alignment(wrap_text=True,vertical="top")
+ac.merge_cells("A2:O2"); ac.row_dimensions[2].height=42
+ac["A3"]="Outlier band (+/-)"; ac["B3"]=f"={BAND}"; ac["B3"].number_format="0%"
+ac["A3"].font=Font(name="Calibri",size=9,bold=True,color="FF555555"); ac["B3"].font=Font(name="Calibri",size=9,color="FF555555")
+AH=[("A","Store","General",30),("B","Advisors","#,##0",10),("C","Avg Monthly Pay per Advisor","$#,##0",14),("D","Pay vs Group","+0.0%;-0.0%;0.0%",11),
+    ("E","Service Gross per Advisor (Monthly)","$#,##0",15),("F","Gross per Advisor vs Group","+0.0%;-0.0%;0.0%",12),
+    ("G","Pay as % of Service Gross","0.0%",12),("H","Pay % of Gross vs Group","+0.0%;-0.0%;0.0%",12),
+    ("I","Gross per RO (CP+W labor + parts)","$#,##0",13),("J","Gross per RO vs Group","+0.0%;-0.0%;0.0%",11),
+    ("K","ROs per Advisor per Day","0.0",11),("L","ROs per Day vs Group","+0.0%;-0.0%;0.0%",11),
+    ("M","Pay per RO","$#,##0",10),("N","Pay per RO vs Group","+0.0%;-0.0%;0.0%",11),("O","Summary","General",62)]
+HR=5; G4=4; A0=6; A1=A0+len(adv_stores)-1
+hsrc=wb[store_sheets[0]]["H5"]
+for col,h,fmt,w in AH:
+    c=ac[f"{col}{HR}"]; c.value=h
+    for a in ("font","fill","border","alignment"): setattr(c,a,copy(getattr(hsrc,a)))
+    ac.column_dimensions[col].width=w
+ac.row_dimensions[HR].height=60
+gi=f"MATCH(\"{ADV}\",{GP}!$A$2:$A${GLR},0)"
+advk=f"{SP}!$B$2:$B${SPN},\"{ADV}\""
+grp={"A":"GROUP BENCHMARK",
+     "B":f"=SUMIFS({SP}!$C$2:$C${SPN},{advk})",
+     "C":f"=INDEX({GP}!$D$2:$D${GLR},{gi})",
+     "E":f"=INDEX({GP}!$I$2:$I${GLR},{gi})",
+     "G":f"=INDEX({GP}!$H$2:$H${GLR},{gi})",
+     "I":f"='Qlik Store Data'!$P${Q1+1}",
+     "K":f"=INDEX({GP}!$J$2:$J${GLR},{gi})/{DAYS}",
+     "M":f"=SUMIFS({SP}!$L$2:$L${SPN},{advk})/SUMIFS({SP}!$J$2:$J${SPN},{advk},{SP}!$G$2:$G${SPN},\">0\")",
+     "O":"Group = all stores (gross-based figures use stores with Qlik data)"}
+for col,h,fmt,w in AH:
+    c=ac[f"{col}{G4}"]; c.value=grp.get(col); c.number_format=fmt if col not in "DFHJLN" else "General"
+    c.font=Font(name="Calibri",size=11,bold=True); c.fill=PatternFill("solid",fgColor="FFC9A04B"); c.border=copy(hsrc.border)
+BL="$B$3"
+for i,sname in enumerate(adv_stores):
+    r=A0+i; lq=sname.replace('"','""'); tab=sname.strip()
+    key=f"{SP}!$A$2:$A${SPN},\"{lq}\",{advk}"
+    qi=f"MATCH(\"{lq}\",{QS},0)"
+    f={"A":sname,
+       "B":f"=SUMIFS({SP}!$C$2:$C${SPN},{key})",
+       "C":f"=IFERROR(SUMIFS({SP}!$D$2:$D${SPN},{key})/B{r},\"N/A\")",
+       "E":f"=IFERROR(IF(SUMIFS({SP}!$G$2:$G${SPN},{key})>0,SUMIFS({SP}!$G$2:$G${SPN},{key})/B{r},\"N/A\"),\"N/A\")",
+       "G":f"=IF(AND(ISNUMBER(C{r}),ISNUMBER(E{r})),C{r}/E{r},\"N/A\")",
+       "I":f"=IFERROR(IF(INDEX('Qlik Store Data'!$P${Q0}:$P${Q1},{qi})>0,INDEX('Qlik Store Data'!$P${Q0}:$P${Q1},{qi}),\"N/A\"),\"N/A\")",
+       "K":f"=IFERROR(IF(SUMIFS({SP}!$J$2:$J${SPN},{key})>0,SUMIFS({SP}!$J$2:$J${SPN},{key})/B{r}/{DAYS},\"N/A\"),\"N/A\")",
+       "M":f"=IF(AND(ISNUMBER(C{r}),ISNUMBER(K{r})),C{r}/(K{r}*{DAYS}),\"N/A\")",
+       "O":(f"=IF(NOT(ISNUMBER(H{r})),\"No Qlik data\","
+            f"\"Pay \"&IF(D{r}>{BL},\"above\",IF(D{r}<-{BL},\"below\",\"in line with\"))&\" group | \""
+            f"&IF(H{r}>{BL},\"high\",IF(H{r}<-{BL},\"low\",\"in line\"))&\" for gross\""
+            f"&IF(ISNUMBER(L{r}),IF(L{r}>{BL},\" | higher volume\",IF(L{r}<-{BL},\" | lower volume\",\"\")),\"\")"
+            f"&IF(ISNUMBER(J{r}),IF(J{r}>{BL},\" | higher ticket\",IF(J{r}<-{BL},\" | lower ticket\",\"\")),\"\")"
+            f"&IF(B{r}<=2,\" | small sample\",\"\"))")}
+    for v,base in zip("DFHJLN","CEGIKM"):
+        f[v]=f"=IF(AND(ISNUMBER({base}{r}),ISNUMBER({base}${G4})),IF({base}${G4}<>0,{base}{r}/{base}${G4}-1,\"N/A\"),\"N/A\")"
+    for col,h,fmt,w in AH:
+        c=ac[f"{col}{r}"]; c.value=f[col]; c.number_format=fmt
+        c.font=Font(name="Calibri",size=11,color="FF1155CC") if col=="A" else Font(name="Calibri",size=11)
+        c.border=copy(hsrc.border)
+    ac[f"A{r}"].hyperlink=Hyperlink(ref=f"A{r}",location=f"'{tab}'!A1")
+def vcf(col,good_high):
+    rng=f"{col}{A0}:{col}{A1}"; x=f"${col}{A0}"
+    hi,lo=(GRN,RED) if good_high else (RED,GRN)
+    ac.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>{BL})"],fill=hi[0],font=hi[1]))
+    ac.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}<-{BL})"],fill=lo[0],font=lo[1]))
+    ac.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>=-{BL},{x}<={BL})"],fill=YEL[0],font=YEL[1]))
+for col,gh in (("D",False),("F",True),("H",False),("J",True),("L",True),("N",False)): vcf(col,gh)
+ac.auto_filter.ref=f"A{HR}:O{A1}"
+ac.freeze_panes=f"B{A0}"
+
 # ---- Center data in every sheet (skip merged titles/notes, long free-text notes, and the back-link)
 from openpyxl.worksheet.cell_range import CellRange
 for ws in wb.worksheets:
@@ -354,6 +445,7 @@ for ws in wb.worksheets:
     for row in ws.iter_rows():
         for c in row:
             if c.value is None or c.coordinate in merged: continue
+            if c.font is not None and (c.font.sz or 11)>=14: continue   # sheet titles stay left-aligned
             if isinstance(c.value,str) and not c.value.startswith("=") and len(c.value)>45: continue
             if isinstance(c.value,str) and c.value.startswith("\u2190"): continue
             al=copy(c.alignment); al.horizontal="center"
