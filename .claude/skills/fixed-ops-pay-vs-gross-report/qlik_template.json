@@ -1,0 +1,9 @@
+{
+ "period_label": "Jan-Jul 2026",
+ "year": "2026",
+ "months": 7,
+ "pull_date": "M/D/YY",
+ "stores": {
+  "HUZ": {"division": "AUDI HENDERSON", "service_gross": 0, "parts_gross": 0, "bodyshop_gross": 0, "cpw_ros": 0, "sold_hours": 0, "cpw_ro_gross": 0}
+ }
+}
