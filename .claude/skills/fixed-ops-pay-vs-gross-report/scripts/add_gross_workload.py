@@ -360,16 +360,31 @@ for r in range(2,N+1):
     m=max(0,(CUT-max(h,dt.date(CUT.year,1,1))).days+1)/30.4
     if m>0: _pay.setdefault(rd[f"B{r}"].value,[]).append((rd[f"G{r}"].value or 0)/m)
 ADV_EXCLUDE={"J01"}   # Findlay Customs: left off the Advisor Comparison (user request)
-adv_stores=sorted((k for k in _pay if stores.get(k) not in ADV_EXCLUDE),key=lambda k:-sum(_pay[k])/len(_pay[k]))
+adv_stores=[k for k in _pay if stores.get(k) not in ADV_EXCLUDE]
+# initial order = Annual Excess Pay, high to low. Mirrors the sheet formulas:
+#   expected pay/advisor = avg(group pay% of gross x gross/advisor, group pay per RO x ROs/advisor)
+_q=lambda k,f: QLIK[stores[k]][f]/MONTHS if stores.get(k) in QLIK else 0
+_wg=[k for k in _pay if _q(k,1)>0]
+_gpct=sum(sum(_pay[k]) for k in _wg)/sum(_q(k,1) for k in _wg)
+_gpro=sum(sum(_pay[k]) for k in _wg)/sum(_q(k,4) for k in _wg)
+def _excess(k):
+    n=len(_pay[k]); pay=sum(_pay[k])/n
+    if _q(k,1)<=0: return float("-inf")
+    exp=(_gpct*_q(k,1)/n+_gpro*_q(k,4)/n)/2
+    return (pay-exp)*n*12
+adv_stores.sort(key=lambda k:-_excess(k))
 ac["A1"]="Service Advisor Comparison - All Stores"; ac["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
-ac["A1"].alignment=Alignment(horizontal="left",vertical="center"); ac.merge_cells("A1:O1"); ac.row_dimensions[1].height=20
+ac["A1"].alignment=Alignment(horizontal="left",vertical="center"); ac.merge_cells("A1:S1"); ac.row_dimensions[1].height=20
 ac["A2"]=(f"Store-level averages across each store's Service Advisors (pay ~1/1-{CUT.month}/{CUT.day}; gross and ROs = {PL} monthly averages from Qlik). "
           "vs Group = store / group - 1. Green = better than group for store economics, red = worse, yellow = within the band. "
           "Pay per RO = avg monthly advisor pay / monthly ROs per advisor (what the store pays an advisor per customer handled). "
-          "Use the filter arrows to re-sort; initial order is avg pay, high to low."
+          "Expected Pay = average of (group pay % of gross x store gross per advisor) and (group pay per RO x store ROs per advisor). "
+          "Annual Excess Pay = (avg pay - expected pay) x advisors x 12; the group row shows the total for stores paying above expected. "
+          "Grade on Pay vs Expected: A <= -15%, B -15% to -5%, C within +/-5%, D +5% to +20%, F > +20%. "
+          "Use the filter arrows to re-sort; initial order is Annual Excess Pay, high to low."
           +" Findlay Customs is not included.")
 ac["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); ac["A2"].alignment=Alignment(wrap_text=True,vertical="top")
-ac.merge_cells("A2:O2"); ac.row_dimensions[2].height=42
+ac.merge_cells("A2:S2"); ac.row_dimensions[2].height=56
 ac["A3"]="Outlier band (+/-)"; ac["B3"]=f"={BAND}"; ac["B3"].number_format="0%"
 ac["A3"].font=Font(name="Calibri",size=9,bold=True,color="FF555555"); ac["B3"].font=Font(name="Calibri",size=9,color="FF555555")
 AH=[("A","Store","General",30),("B","Advisors","#,##0",10),("C","Avg Monthly Pay per Advisor","$#,##0",14),("D","Pay vs Group","+0.0%;-0.0%;0.0%",11),
@@ -377,7 +392,9 @@ AH=[("A","Store","General",30),("B","Advisors","#,##0",10),("C","Avg Monthly Pay
     ("G","Pay as % of Service Gross","0.0%",12),("H","Pay % of Gross vs Group","+0.0%;-0.0%;0.0%",12),
     ("I","Gross per RO (CP+W labor + parts)","$#,##0",13),("J","Gross per RO vs Group","+0.0%;-0.0%;0.0%",11),
     ("K","ROs per Advisor per Day","0.0",11),("L","ROs per Day vs Group","+0.0%;-0.0%;0.0%",11),
-    ("M","Pay per RO","$#,##0",10),("N","Pay per RO vs Group","+0.0%;-0.0%;0.0%",11),("O","Summary","General",62)]
+    ("M","Pay per RO","$#,##0",10),("N","Pay per RO vs Group","+0.0%;-0.0%;0.0%",11),
+    ("O","Expected Monthly Pay per Advisor","$#,##0",14),("P","Pay vs Expected","+0.0%;-0.0%;0.0%",11),
+    ("Q","Annual Excess Pay (All Advisors)","$#,##0;($#,##0);-",15),("R","Grade","General",8),("S","Summary","General",62)]
 HR=5; G4=4; A0=6; A1=A0+len(adv_stores)-1
 hsrc=wb[store_sheets[0]]["H5"]
 for col,h,fmt,w in AH:
@@ -395,9 +412,10 @@ grp={"A":"GROUP AVERAGE",
      "I":f"='Qlik Store Data'!$P${Q1+1}",
      "K":f"=INDEX({GP}!$J$2:$J${GLR},{gi})/{DAYS}",
      "M":f"=SUMIFS({SP}!$L$2:$L${SPN},{advk})/SUMIFS({SP}!$J$2:$J${SPN},{advk},{SP}!$G$2:$G${SPN},\">0\")",
-     "O":"Group = all stores (gross-based figures use stores with Qlik data)"}
+     "Q":f"=SUMIF(Q{A0}:Q{A1},\">0\")",
+     "S":"Group = all stores (gross-based figures use stores with Qlik data); Annual Excess = total of stores above expected"}
 for col,h,fmt,w in AH:
-    c=ac[f"{col}{G4}"]; c.value=grp.get(col); c.number_format=fmt if col not in "DFHJLN" else "General"
+    c=ac[f"{col}{G4}"]; c.value=grp.get(col); c.number_format=fmt if col not in "DFHJLNP" else "General"
     c.font=Font(name="Calibri",size=11,bold=True); c.fill=PatternFill("solid",fgColor="FFC9A04B"); c.border=copy(hsrc.border)
 BL="$B$3"
 for i,sname in enumerate(adv_stores):
@@ -412,7 +430,12 @@ for i,sname in enumerate(adv_stores):
        "I":f"=IFERROR(IF(INDEX('Qlik Store Data'!$P${Q0}:$P${Q1},{qi})>0,INDEX('Qlik Store Data'!$P${Q0}:$P${Q1},{qi}),\"N/A\"),\"N/A\")",
        "K":f"=IFERROR(IF(SUMIFS({SP}!$J$2:$J${SPN},{key})>0,SUMIFS({SP}!$J$2:$J${SPN},{key})/B{r}/{DAYS},\"N/A\"),\"N/A\")",
        "M":f"=IF(AND(ISNUMBER(C{r}),ISNUMBER(K{r})),C{r}/(K{r}*{DAYS}),\"N/A\")",
-       "O":(f"=IF(NOT(ISNUMBER(H{r})),\"No Qlik data\","
+       "O":f"=IF(AND(ISNUMBER(E{r}),ISNUMBER(K{r})),($G${G4}*E{r}+$M${G4}*K{r}*{DAYS})/2,\"N/A\")",
+       "P":f"=IF(AND(ISNUMBER(O{r}),ISNUMBER(C{r})),IF(O{r}<>0,C{r}/O{r}-1,\"N/A\"),\"N/A\")",
+       "Q":f"=IF(AND(ISNUMBER(O{r}),ISNUMBER(C{r})),(C{r}-O{r})*B{r}*12,\"N/A\")",
+       "R":(f"=IF(NOT(ISNUMBER(P{r})),\"N/A\",IF(P{r}<=-0.15,\"A\",IF(P{r}<=-0.05,\"B\",IF(P{r}<0.05,\"C\","
+            f"IF(P{r}<=0.2,\"D\",\"F\")))))"),
+       "S":(f"=IF(NOT(ISNUMBER(H{r})),\"No Qlik data\","
             f"\"Pay \"&IF(D{r}>{BL},\"above\",IF(D{r}<-{BL},\"below\",\"in line with\"))&\" group | \""
             f"&IF(H{r}>{BL},\"high\",IF(H{r}<-{BL},\"low\",\"in line\"))&\" for gross\""
             f"&IF(ISNUMBER(L{r}),IF(L{r}>{BL},\" | higher volume\",IF(L{r}<-{BL},\" | lower volume\",\"\")),\"\")"
@@ -432,7 +455,12 @@ def vcf(col,good_high):
     ac.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}<-{BL})"],fill=lo[0],font=lo[1]))
     ac.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>=-{BL},{x}<={BL})"],fill=YEL[0],font=YEL[1]))
 for col,gh in (("D",False),("F",True),("H",False),("J",True),("L",True),("N",False)): vcf(col,gh)
-ac.auto_filter.ref=f"A{HR}:O{A1}"
+# expected-pay columns: P colored on the grade cut-offs (+/-5%), Q red when paying above expected, R by letter
+for rng,rules in ((f"P{A0}:P{A1}",[(f"AND(ISNUMBER($P{A0}),$P{A0}>0.05)",RED),(f"AND(ISNUMBER($P{A0}),$P{A0}<-0.05)",GRN),(f"AND(ISNUMBER($P{A0}),$P{A0}>=-0.05,$P{A0}<=0.05)",YEL)]),
+                  (f"Q{A0}:Q{A1}",[(f"AND(ISNUMBER($Q{A0}),$Q{A0}>0)",RED),(f"AND(ISNUMBER($Q{A0}),$Q{A0}<0)",GRN)]),
+                  (f"R{A0}:R{A1}",[(f"OR($R{A0}=\"D\",$R{A0}=\"F\")",RED),(f"$R{A0}=\"C\"",YEL),(f"OR($R{A0}=\"A\",$R{A0}=\"B\")",GRN)])):
+    for fml,sty in rules: ac.conditional_formatting.add(rng,FormulaRule(formula=[fml],fill=sty[0],font=sty[1]))
+ac.auto_filter.ref=f"A{HR}:S{A1}"
 ac.freeze_panes=f"B{A0}"
 
 # ---- Center data in every sheet (skip merged titles/notes, long free-text notes, and the back-link)

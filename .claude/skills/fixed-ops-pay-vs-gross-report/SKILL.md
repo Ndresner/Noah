@@ -140,7 +140,7 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - Row 3: the band cell.
   - Row 4: a gold GROUP AVERAGE row.
   - Row 5: headers, with filter arrows.
-  - Rows 6 onward: one row per store that has Service Advisors, initially sorted by average pay (high to low).
+  - Rows 6 onward: one row per store that has Service Advisors, initially sorted by Annual Excess Pay (high to low), computed in Python to match the sheet formulas.
   - Freeze at B6.
 - **Columns**:
   - A Store (links to the store tab)
@@ -151,12 +151,16 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - I Gross per RO, J vs Group
   - K ROs per Advisor per Day, L vs Group
   - M Pay per RO (pay ÷ monthly ROs per advisor), N vs Group
-  - O Summary: text built from the flags, e.g. "Pay above group | in line for gross | lower volume | higher ticket", with "small sample" when a store has 2 or fewer advisors.
+  - O Expected Monthly Pay per Advisor = average of (group pay % of gross × store gross per advisor) and (group pay per RO × store ROs per advisor)
+  - P Pay vs Expected (colored at ±5%)
+  - Q Annual Excess Pay = (avg pay − expected) × advisors × 12. Red when above expected. The group row shows the total for stores above expected. The column nets to about $0 across stores by design (it's measured against the group).
+  - R Grade on P: A ≤ −15%, B −15 to −5%, C within ±5%, D +5 to +20%, F > +20%
+  - S Summary: text built from the flags, e.g. "Pay above group | in line for gross | lower volume | higher ticket", with "small sample" when a store has 2 or fewer advisors.
 - **vs Group** = store ÷ group − 1, colored by the band. Higher is green for F, J and L; higher is red for D, H and N.
 - **Group row**:
   - Pay = the Group Position Summary advisor average.
   - Pay per RO = advisor pay at stores with gross ÷ those stores' ROs.
-- **Reference values (Jan–Jul 2026)**: Audi Henderson pay per RO $131 vs group $56; ROs per day 5.7 vs 7.7.
+- **Reference values (Jan–Jul 2026)**: Audi Henderson pay per RO $131 vs group $56; ROs per day 5.7 vs 7.7; expected pay $13,559; annual excess $263K (grade F). Top of the ranking: Land Rover Henderson $395K. Bottom: Toyota Henderson −$772K. Total above expected: $2.53M.
 
 **Group Position Summary**, columns E–J:
 - E Gross Basis
