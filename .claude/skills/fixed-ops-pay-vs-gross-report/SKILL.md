@@ -180,7 +180,7 @@ Group ratios are weighted by headcount and include only stores with Qlik data. A
 - Yellow `FFEB9C/9C6500` = in line, within the band.
 - Pay % is inverted: higher shows red.
 
-**Layout**: Calibri to match the base. Store tabs freeze **row 1 only** (the user's preference). Color-rule fills set both `fgColor` and `bgColor`; without `bgColor`, Excel shows the font color but no fill. Data is centered on every sheet, except merged titles and notes, text over 45 characters, and the "←" back-links. The workbook opens on Master Summary.
+**Layout**: Calibri to match the base. Store tabs freeze **rows 1-4** (back-link and store name stay visible; the user's preference). Color-rule fills set both `fgColor` and `bgColor`; without `bgColor`, Excel shows the font color but no fill. Data is centered on every sheet, except merged titles and notes, text over 45 characters, and the "←" back-links. The workbook opens on Master Summary.
 
 ## Known limitations (tell the user when relevant)
 

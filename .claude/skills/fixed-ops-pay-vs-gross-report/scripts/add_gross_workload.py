@@ -307,7 +307,7 @@ for sn in store_sheets:
         ws[f"A{rr}"].alignment=Alignment(wrap_text=True,vertical="top"); ws.merge_cells(f"A{rr}:K{rr}"); ws.row_dimensions[rr].height=45
     for col,w in WIDTH.items():
         ws.column_dimensions[col].width=max(ws.column_dimensions[col].width or 0, w)
-    ws.freeze_panes="A2"            # store tabs: freeze row 1 only (user preference)
+    ws.freeze_panes="A5"            # store tabs: freeze rows 1-4 (user preference)
 
 # ---- Master Summary: store-level comp % of dept gross
 ms=wb["Master Summary"]; MTR=[r for r in range(5,ms.max_row+1) if str(ms[f"A{r}"].value or "").startswith("Grand Total")][0]
