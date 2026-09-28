@@ -71,7 +71,8 @@ N = len(rows) + 1  # last Raw Data row
 
 # ---------- styles ----------
 NAVY, GOLD, LINK = "FF1A2744", "FFC9A04B", "FF1155CC"
-thin = Side(style="thin"); BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
+thin = Side(style="thin", color="FFB7B7B7")  # light-gray gridlines, as in the original build
+BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
 HDR_FONT = Font(name="Calibri", size=11, bold=True, color="FFFFFFFF"); HDR_FILL = PatternFill("solid", fgColor=NAVY)
 HDR_AL = Alignment(horizontal="center", vertical="center", wrap_text=True)
 BASE = Font(name="Calibri", size=11); BOLD = Font(name="Calibri", size=11, bold=True)
