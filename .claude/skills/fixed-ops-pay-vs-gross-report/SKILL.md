@@ -135,6 +135,29 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
 - One row per store: Qlik figures in blue, then monthly amounts, tech headcount, and gross per CP+W RO.
 - A Group Total row at the bottom.
 
+**Advisor Comparison tab** (placed right after Store Ranker). There's no position picker; the user chose advisors only.
+- **Layout**:
+  - Row 3: the band cell.
+  - Row 4: a gold GROUP BENCHMARK row.
+  - Row 5: headers, with filter arrows.
+  - Rows 6 onward: one row per store that has Service Advisors, initially sorted by average pay (high to low).
+  - Freeze at B6.
+- **Columns**:
+  - A Store (links to the store tab)
+  - B Advisors
+  - C Avg Monthly Pay per Advisor, D vs Group
+  - E Service Gross per Advisor, F vs Group
+  - G Pay as % of Service Gross, H vs Group
+  - I Gross per RO, J vs Group
+  - K ROs per Advisor per Day, L vs Group
+  - M Pay per RO (pay ÷ monthly ROs per advisor), N vs Group
+  - O Summary: text built from the flags, e.g. "Pay above group | in line for gross | lower volume | higher ticket", with "small sample" when a store has 2 or fewer advisors.
+- **vs Group** = store ÷ group − 1, colored by the band. Higher is green for F, J and L; higher is red for D, H and N.
+- **Group row**:
+  - Pay = the Group Position Summary advisor average.
+  - Pay per RO = advisor pay at stores with gross ÷ those stores' ROs.
+- **Reference values (Jan–Jul 2026)**: Audi Henderson pay per RO $131 vs group $56; ROs per day 5.7 vs 7.7.
+
 **Group Position Summary**, columns E–J:
 - E Gross Basis
 - F Workload Unit
