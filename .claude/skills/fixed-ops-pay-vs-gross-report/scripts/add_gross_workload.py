@@ -86,9 +86,10 @@ def style_hdr(c):
 def style_dat(c,fmt):
     c.font=copy(dat_src.font); c.border=copy(dat_src.border); c.number_format=fmt
 BLUE=Font(name="Calibri",size=11,color="FF0000FF")
-RED=(PatternFill("solid",fgColor="FFFFC7CE"),Font(color="FF9C0006"))
-YEL=(PatternFill("solid",fgColor="FFFFEB9C"),Font(color="FF9C6500"))
-GRN=(PatternFill("solid",fgColor="FFC6EFCE"),Font(color="FF006100"))
+# CF fills need bgColor too, or Excel shows the font color with no fill
+RED=(PatternFill("solid",fgColor="FFFFC7CE",bgColor="FFFFC7CE"),Font(color="FF9C0006"))
+YEL=(PatternFill("solid",fgColor="FFFFEB9C",bgColor="FFFFEB9C"),Font(color="FF9C6500"))
+GRN=(PatternFill("solid",fgColor="FFC6EFCE",bgColor="FFC6EFCE"),Font(color="FF006100"))
 def cf(ws,rng,first,text,sty):
     ws.conditional_formatting.add(rng,FormulaRule(formula=[f'{first}="{text}"'],fill=sty[0],font=sty[1]))
 
@@ -306,6 +307,7 @@ for sn in store_sheets:
         ws[f"A{rr}"].alignment=Alignment(wrap_text=True,vertical="top"); ws.merge_cells(f"A{rr}:K{rr}"); ws.row_dimensions[rr].height=45
     for col,w in WIDTH.items():
         ws.column_dimensions[col].width=max(ws.column_dimensions[col].width or 0, w)
+    ws.freeze_panes="A2"            # store tabs: freeze row 1 only (user preference)
 
 # ---- Master Summary: store-level comp % of dept gross
 ms=wb["Master Summary"]; MTR=[r for r in range(5,ms.max_row+1) if str(ms[f"A{r}"].value or "").startswith("Grand Total")][0]

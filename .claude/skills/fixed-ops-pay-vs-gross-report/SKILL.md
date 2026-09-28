@@ -1,24 +1,26 @@
 ---
 name: fixed-ops-pay-vs-gross-report
-description: Rebuild or refresh Findlay's Parts & Service Employee Pay-vs-Group workbook with the Qlik gross and workload comparison layer (pay as % of department gross, gross per employee, ROs / sold hours per employee, Service Advisor gross per RO and ROs per day, color-coded outlier flags). Use whenever the user asks to update, refresh, re-run or rebuild the "Earnings - Parts and Service Employees" report, the pay vs gross / comp vs gross report, the gross-adjusted pay comparison, or the service advisor pay-vs-price analysis — even if they only attach a new ADP earnings workbook. Do not hand-build it; run the bundled script.
+description: Build, rebuild or refresh Findlay's Parts & Service Employee Pay-vs-Group workbook (from a raw ADP earnings export or last period's file) with the Qlik gross and workload comparison layer (pay as % of department gross, gross per employee, ROs / sold hours per employee, Service Advisor gross per RO and ROs per day, color-coded outlier flags). Use whenever the user asks to update, refresh, re-run or rebuild the "Earnings - Parts and Service Employees" report, the pay vs gross / comp vs gross report, the gross-adjusted pay comparison, or the service advisor pay-vs-price analysis — even if they only attach a new ADP earnings workbook. Do not hand-build it; run the bundled script.
 ---
 
 # Parts & Service Pay vs Gross Report
 
 Answers one question: **is a store paying a role more than the group because the store produces more gross or more work, or only because its prices are higher?** It does this by comparing each store's pay for a position to the group on three measures: department gross per employee, pay as a % of department gross, and workload per employee.
 
+Two scripts, run in order:
+1. `scripts/build_base.py`: raw ADP export → base pay-vs-group workbook. This is the original Aug-2026 build, following the original build spec.
+2. `scripts/add_gross_workload.py`: base workbook → adds the Qlik gross and workload layer.
+
 ## Inputs to collect
 
-1. **Base workbook**: the pay-vs-group workbook with these tabs: Master Summary, Store Ranker, Raw Data, Store & Position Summary, Group Position Summary, and one tab per store. A store tab's A1 is "← Back to Master Summary". It can be either:
-   - the plain base build (only the pay-vs-group tabs), or
-   - last period's finished output. The script strips the old gross layer and rebuilds it.
+1. **ADP export** "Earnings - Parts and Service Employees" (.xlsx). Sheet `1` has one row per employee: Company Code, File Number, Payroll Name, Job Title Description, Gross Pay, Position Status, Hire/Rehire Date. An optional `Sheet1` holds the code → store lookup. Rows with no job title are subtotals and are skipped.
+   - *Or*, if there's no new export, last period's finished workbook. Skip Step 3a and pass that file as `--base`; the script strips the old gross layer and rebuilds it.
 2. **Pay period facts** from the user:
    - the pay check date (e.g. `8/15`), and
    - the **last day worked** in that pay period (e.g. `2026-08-09`). This is the hire cutoff and the end date for months employed.
    - Commission employees on draw are trued up through the prior month-end. Treat that as close enough; the user chose not to split pay types.
 3. **Gross period**: the full closed months before the pay cutoff (e.g. Jan–Jul 2026 = 7 months).
 
-If the user only has a raw ADP "Earnings - Parts and Service Employees" export, the base workbook has to be built first. That base build is **not** in this script. Tell the user, and ask for last period's finished workbook to use as the template.
 
 ## Step 0: Environment
 
@@ -70,8 +72,13 @@ Keys are ADP company codes. Values are period totals, not monthly amounts; the s
 ## Step 3: Build, then recalc (mandatory)
 
 ```bash
-python3 .claude/skills/fixed-ops-pay-vs-gross-report/scripts/add_gross_workload.py \
-  --base "<base or last output>.xlsx" --qlik <scratchpad>/qlik.json \
+S=.claude/skills/fixed-ops-pay-vs-gross-report/scripts
+# 3a. base workbook from the raw ADP export (period end = last day worked)
+python3 $S/build_base.py --adp "<ADP export>.xlsx" --out <scratchpad>/base.xlsx --period-end 2026-08-09
+#     stops with an error if any ADP company code isn't in the store map; add the code to CODE_MAP (or Sheet1) and rerun
+# 3b. gross & workload layer
+python3 $S/add_gross_workload.py \
+  --base <scratchpad>/base.xlsx --qlik <scratchpad>/qlik.json \
   --out "<scratchpad>/Earnings - Parts and Service Employees - Gross Adjusted.xlsx" \
   --cutoff 2026-08-09 --pay-check 8/15 [--band 0.20]
 python3 <xlsx-skill>/scripts/recalc.py "<out>.xlsx" 300     # must report status success, 0 errors
@@ -95,7 +102,28 @@ Never re-save with openpyxl after the recalc; it strips the cached values.
 
 Send the file with SendUserFile. It contains employee names and pay, so **never commit or publish the workbook or the JSON**.
 
-## Format spec (what the script produces)
+## Base build rules (build_base.py, from the original build spec)
+
+- **Store map**: ADP code → store name, kept *exactly* as in ADP. That includes the source typos "Hyundai Sg. George" and "Hyundal Prescott", and the trailing space in `"Lincoln "`. Formulas match on the untrimmed name; tab names are trimmed.
+- **Positions dropped entirely**: EXPRESS SERVICE MANAGER and LEAD SALES PORTER. LEAD SERVICE PORTER is a different title and is kept.
+- Leave employees are kept.
+- **Raw Data** is sorted by Company Code, then Payroll Name.
+  - Months employed = MAX(0, end − MAX(hire, 1/1) + 1) / 30.4.
+  - Included = hired on or before the period end. Anyone hired later stays in Raw Data with N/A.
+- **Averages**:
+  - Group average = simple mean of each employee's average monthly pay.
+  - Variance = store − group; positive means the store pays above the group.
+  - Total variance = variance × headcount.
+- **Positions on each store tab**, and Store & Position Summary rows, are built from *included* employees only. A position whose only employee was hired after the period end is left off (e.g. Kia St George Receptionist in Aug 2026).
+- **Summary tables**: Store & Position Summary and Group Position Summary are Excel tables (TableStyleMedium2) with SUBTOTAL Grand Totals.
+- **Store tabs**: variance color rules on E6:G only. Red means the store pays above average; green means below. The wording is "Above Average" / "Below Average", never "overpaying".
+- **Master Summary / Store Ranker**:
+  - Total Positions = COUNTA of the store tab's position rows.
+  - Color scales: C and D white→red; E green→yellow→red.
+  - Store Ranker is sorted in Python by % of positions above average (descending), ties broken by store name. Rebuilding refreshes the order.
+- **Verified**: rebuilds the original Aug-2026 workbook with 0 style differences. The only value differences are the Store & Position Summary total (the original was saved with a table filter on) and the Lincoln header (the original had a double space).
+
+## Format spec (what add_gross_workload.py produces)
 
 **Raw Data**
 - Months employed = (cutoff − max(hire date, 1/1) + 1) / 30.4.
@@ -152,7 +180,7 @@ Group ratios are weighted by headcount and include only stores with Qlik data. A
 - Yellow `FFEB9C/9C6500` = in line, within the band.
 - Pay % is inverted: higher shows red.
 
-**Layout**: Calibri to match the base. Data is centered on every sheet, except merged titles and notes, text over 45 characters, and the "←" back-links. The workbook opens on Master Summary.
+**Layout**: Calibri to match the base. Store tabs freeze **row 1 only** (the user's preference). Color-rule fills set both `fgColor` and `bgColor`; without `bgColor`, Excel shows the font color but no fill. Data is centered on every sheet, except merged titles and notes, text over 45 characters, and the "←" back-links. The workbook opens on Master Summary.
 
 ## Known limitations (tell the user when relevant)
 
@@ -160,4 +188,4 @@ Group ratios are weighted by headcount and include only stores with Qlik data. A
 - Rehires with pay from earlier in the year can inflate averages. ADP has only a Hire/Rehire date; the original hire date would fix it.
 - The export includes Active and Leave employees only. Terminated employees' pay isn't in the per-position figures.
 - Gross per RO and ROs per day are store-level averages across all advisors, not per advisor. Per-advisor figures need a mapping from ADP names to Closed ROs `ServiceAdvisor.Name` ("LAST,FIRST").
-- Store Ranker's row order is set by the base build and isn't re-sorted.
+- Store Ranker order is set when the base is built. Passing last period's output as --base (skipping build_base.py) keeps the old order; rebuild from the ADP export to refresh it.
