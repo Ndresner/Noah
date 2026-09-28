@@ -135,7 +135,7 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
 - One row per store: Qlik figures in blue, then monthly amounts, tech headcount, and gross per CP+W RO.
 - A Group Total row at the bottom.
 
-**Advisor Comparison tab** (placed right after Store Ranker). There's no position picker; the user chose advisors only.
+**Advisor Comparison tab** (placed right after Store Ranker). There's no position picker; the user chose advisors only. Findlay Customs (J01) is excluded at the user's request. The title in row 1 is merged across A:O and left-aligned; sheet titles (14pt) are skipped by the centering pass.
 - **Layout**:
   - Row 3: the band cell.
   - Row 4: a gold GROUP BENCHMARK row.

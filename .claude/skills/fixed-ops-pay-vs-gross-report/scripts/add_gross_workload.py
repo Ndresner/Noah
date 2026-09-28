@@ -359,12 +359,15 @@ for r in range(2,N+1):
     if not isinstance(h,dt.date) or h>CUT: continue
     m=max(0,(CUT-max(h,dt.date(CUT.year,1,1))).days+1)/30.4
     if m>0: _pay.setdefault(rd[f"B{r}"].value,[]).append((rd[f"G{r}"].value or 0)/m)
-adv_stores=sorted(_pay,key=lambda k:-sum(_pay[k])/len(_pay[k]))
+ADV_EXCLUDE={"J01"}   # Findlay Customs: left off the Advisor Comparison (user request)
+adv_stores=sorted((k for k in _pay if stores.get(k) not in ADV_EXCLUDE),key=lambda k:-sum(_pay[k])/len(_pay[k]))
 ac["A1"]="Service Advisor Comparison - All Stores"; ac["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
+ac["A1"].alignment=Alignment(horizontal="left",vertical="center"); ac.merge_cells("A1:O1"); ac.row_dimensions[1].height=20
 ac["A2"]=(f"Store-level averages across each store's Service Advisors (pay ~1/1-{CUT.month}/{CUT.day}; gross and ROs = {PL} monthly averages from Qlik). "
           "vs Group = store / group - 1. Green = better than group for store economics, red = worse, yellow = within the band. "
           "Pay per RO = avg monthly advisor pay / monthly ROs per advisor (what the store pays an advisor per customer handled). "
-          "Use the filter arrows to re-sort; initial order is avg pay, high to low.")
+          "Use the filter arrows to re-sort; initial order is avg pay, high to low."
+          +" Findlay Customs is not included.")
 ac["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); ac["A2"].alignment=Alignment(wrap_text=True,vertical="top")
 ac.merge_cells("A2:O2"); ac.row_dimensions[2].height=42
 ac["A3"]="Outlier band (+/-)"; ac["B3"]=f"={BAND}"; ac["B3"].number_format="0%"
@@ -442,6 +445,7 @@ for ws in wb.worksheets:
     for row in ws.iter_rows():
         for c in row:
             if c.value is None or c.coordinate in merged: continue
+            if c.font is not None and (c.font.sz or 11)>=14: continue   # sheet titles stay left-aligned
             if isinstance(c.value,str) and not c.value.startswith("=") and len(c.value)>45: continue
             if isinstance(c.value,str) and c.value.startswith("\u2190"): continue
             al=copy(c.alignment); al.horizontal="center"
