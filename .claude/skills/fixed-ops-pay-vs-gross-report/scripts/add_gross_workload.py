@@ -387,7 +387,7 @@ for col,h,fmt,w in AH:
 ac.row_dimensions[HR].height=60
 gi=f"MATCH(\"{ADV}\",{GP}!$A$2:$A${GLR},0)"
 advk=f"{SP}!$B$2:$B${SPN},\"{ADV}\""
-grp={"A":"GROUP BENCHMARK",
+grp={"A":"GROUP AVERAGE",
      "B":f"=SUMIFS({SP}!$C$2:$C${SPN},{advk})",
      "C":f"=INDEX({GP}!$D$2:$D${GLR},{gi})",
      "E":f"=INDEX({GP}!$I$2:$I${GLR},{gi})",

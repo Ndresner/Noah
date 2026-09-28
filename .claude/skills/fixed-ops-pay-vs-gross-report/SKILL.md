@@ -138,7 +138,7 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
 **Advisor Comparison tab** (placed right after Store Ranker). There's no position picker; the user chose advisors only. Findlay Customs (J01) is excluded at the user's request. The title in row 1 is merged across A:O and left-aligned; sheet titles (14pt) are skipped by the centering pass.
 - **Layout**:
   - Row 3: the band cell.
-  - Row 4: a gold GROUP BENCHMARK row.
+  - Row 4: a gold GROUP AVERAGE row.
   - Row 5: headers, with filter arrows.
   - Rows 6 onward: one row per store that has Service Advisors, initially sorted by average pay (high to low).
   - Freeze at B6.
