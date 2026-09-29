@@ -51,10 +51,12 @@ Capacity Status uses same colors but inverted logic: Above Target = yellow (over
 GP% thresholds: ≥80% green, 75–79.99% yellow, <75% red.
 Store sheet category order: Service Tech → Express Tech → STL/Shop Foreman → Body Shop → Detailer/Detail Manager → Tinter → Unmapped, with grey band rows (`D9D9D9`) between groups and gold "GROUP SUBTOTAL" rows.
 Tech Ranker column widths (A–N): 10.71, 22, 14.14, 20, 22, 16.86, 15.57, 16, 13, 13, 16.43, 18.29, 10, 12.
-Capacity methodology (combined pool, no Main/Express split):
-- Stall-Based = Stalls × 12 hrs/day × ELR × 26 days × GP Retention %
-- Tech-Based = Techs × 10 flag hrs/day × ELR × 22 days × GP Retention %
-Capacity cell M5 header text: "Days Worked/ Month" (space before Month is intentional, don't "fix" it).
+Capacity methodology (combined pool, no Main/Express split, **pay period only** -- dates in Capacity B3:C3):
+- Stall-Based = Stalls × 12 hrs/day × ELR × Mon–Sat days in period × GP Retention %
+- Tech-Based = Techs × 10 flag hrs/day × ELR × Mon–Fri days in period × GP Retention %
+- Actual (col P) = store-wide period Labor Gross linked from each store sheet (TOTAL row K + pooled codes E), not a monthly P&L figure.
+Capacity cell M5 header text: "Days Worked/ Period" (space before Period is intentional, don't "fix" it).
+Build it with the repo skill `.claude/skills/findlay-technician-proficiency-report/` (has the pay-period capacity logic).
 
 **Service Customer Gain/Loss Report**
 TTM vs prior TTM. Source: Closed ROs, PayType C+W, totalsale>0, VIN-level. 3 sheets: Summary, Monthly Trend, Pay Type Split.
