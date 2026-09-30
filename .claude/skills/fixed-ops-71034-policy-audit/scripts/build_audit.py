@@ -10,7 +10,7 @@ Inputs
   --month    YYYY-MM (the close-date month audited).
   --out      output .xlsx. Run recalc.py on it afterwards (mandatory).
 
-Config (../config): stores.json (logon <-> ADP Store ID), policy_labor_types.json
+Store crosswalk: <repo>/reference/stores.json (shared). Config (../config): policy_labor_types.json
 (which labor types post to 71034 per store), common_surnames.txt.
 
 Tests, in priority order (each RO lands in exactly one row, the highest-priority hit):
@@ -30,6 +30,16 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 HERE = os.path.dirname(os.path.abspath(__file__))
 CFG = os.path.join(HERE, "..", "config")
 
+def _find_crosswalk():
+    """reference/stores.json at the repo root (shared store crosswalk)."""
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        p = os.path.join(d, "reference", "stores.json")
+        if os.path.exists(p):
+            return p
+        d = os.path.dirname(d)
+    raise SystemExit("STOP: reference/stores.json (shared store crosswalk) not found above " + os.path.abspath(__file__))
+
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 ap.add_argument("--qlik", required=True)
 ap.add_argument("--adp", required=True)
@@ -44,7 +54,8 @@ Y, M = (int(x) for x in A.month.split("-"))
 M_START, M_END = dt.date(Y, M, 1), dt.date(Y, M, calendar.monthrange(Y, M)[1])
 MON_NAME = calendar.month_name[M]
 
-STORES = {k: v for k, v in json.load(open(os.path.join(CFG, "stores.json"))).items() if not k.startswith("_")}
+STORES = {str(r["logon"]): dict(name=r["name"], adp=r["adp_code"], qlik=r["qlik_company"])
+          for r in json.load(open(_find_crosswalk()))["stores"] if r["logon"] is not None}
 PT = json.load(open(A.policy_types))
 PRIMARY = {k: set(v) for k, v in PT["primary"].items()}
 SECONDARY = {} if A.no_secondary else {k: set(v) for k, v in PT.get("secondary", {}).items()}

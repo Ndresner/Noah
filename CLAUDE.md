@@ -14,6 +14,7 @@ Noah, Fixed Operations analytics/reporting at Findlay Automotive Group (34-store
   - Profit & Loss — `bc30d66f-4564-4df0-89a7-368f2c9a931e`
   - Fixed Ops Accounting TB — `e077f027`
   - Productivity — `948ab4f4`
+- Store crosswalk: `reference/stores.json` — one row per ADP company code with Qlik logon, display name, state, Qlik CompanyName, ADP location and ADP payroll name. Shared by all skills; update it (only there) when a store opens, closes or changes code.
 - Some reports use non-Qlik sources: ADP exports, RO Detail exports, Tech Pay Master file, vendor pricing spreadsheets.
 
 ## Qlik MCP rules — always follow

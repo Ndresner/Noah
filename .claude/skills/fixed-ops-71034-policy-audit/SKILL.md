@@ -11,8 +11,9 @@ Two scripts:
 1. `scripts/qlik_pull_expr.py` prints the arguments for the one Qlik call that pulls the whole month.
 2. `scripts/build_audit.py` takes the Qlik result file plus the ADP export and writes the workbook and a QA JSON.
 
+The store crosswalk (Qlik logon ↔ ADP Store ID ↔ display name) is the shared repo file `reference/stores.json`.
+
 Config lives in `config/`. It contains no employee or financial data.
-- `stores.json`: Qlik logon → display name and ADP Store ID. Verified against `Store_ADP_PayrollCompanyCode` on 9/30/2026.
 - `policy_labor_types.json`: which labor types post to 71034 at each store, from the Aug-2026 71034 Labor Type Mapping.
 - `common_surnames.txt`: about 200 frequent US surnames. It decides Low vs. Review on other-store name matches.
 
@@ -61,7 +62,7 @@ Never re-save with openpyxl after recalc; it strips cached values. The script pr
 
 - recalc shows `total_errors: 0`. Summary rows C13, D13 and E13 are all 0 (counts, sale and cost tie to Flagged ROs).
 - Check the QA JSON:
-  - `adp_unmapped_locations` should hold only `J01 CUSTOMS`. Any other code means `stores.json` needs a new store.
+  - `adp_unmapped_locations` should hold only `J01 CUSTOMS`. Any other code means `reference/stores.json` needs a new store.
   - `mapped_stores_without_rows` should be empty. A mapped store with no policy ROs usually means the labor type changed.
   - `unmapped_policy_types` lists labor types in the pull that aren't mapped at that store, e.g. `15:ISP` (Lincoln posts IOA). Tell the user if a new one shows up.
   - `id_hits_name_mismatch` lists customer # = employee ID hits whose names disagree. They are dropped, not flagged. List them for the user if there are any.

@@ -75,7 +75,7 @@ Keys are ADP company codes. Values are period totals, not monthly amounts; the s
 S=.claude/skills/fixed-ops-pay-vs-gross-report/scripts
 # 3a. base workbook from the raw ADP export (period end = last day worked)
 python3 $S/build_base.py --adp "<ADP export>.xlsx" --out <scratchpad>/base.xlsx --period-end 2026-08-09
-#     stops with an error if any ADP company code isn't in the store map; add the code to CODE_MAP (or Sheet1) and rerun
+#     stops with an error if any ADP company code isn't in the store map; add the store to reference/stores.json (adp_payroll_name) or Sheet1 and rerun
 # 3b. gross & workload layer
 python3 $S/add_gross_workload.py \
   --base <scratchpad>/base.xlsx --qlik <scratchpad>/qlik.json \

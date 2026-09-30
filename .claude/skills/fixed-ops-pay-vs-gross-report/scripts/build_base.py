@@ -6,7 +6,7 @@ and one tab per store. All figures are live formulas off Raw Data.
 
 The output is the input (--base) for add_gross_workload.py. Run recalc.py on the final file.
 """
-import argparse, datetime as dt
+import argparse, datetime as dt, json, os
 from collections import defaultdict
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -28,19 +28,19 @@ EXCL = {x.strip().upper() for x in A.exclude.split(",") if x.strip()}
 PE_TXT = f"{PE.month}/{PE.day}/{PE.year % 100:02d}"
 DPE = f"DATE({PE.year},{PE.month},{PE.day})"; DPS = f"DATE({PS.year},{PS.month},{PS.day})"
 
-# ADP company code -> store name, exactly as in the ADP lookup (typos and "Lincoln " trailing space kept).
+# ADP company code -> store name, exactly as in the ADP lookup (typos and "Lincoln " trailing space kept),
+# from the shared crosswalk <repo>/reference/stores.json (adp_payroll_name).
 # Used when the export has no 'Sheet1' lookup tab; a 'Sheet1' tab, if present, overrides/extends it.
-CODE_MAP = {
-    "H4X": "Acura", "HUZ": "Audi Henderson", "D4K": "Audi Reno Tahoe", "HLD": "CJDR Post Falls", "YD6": "Cadillac",
-    "D7A": "Chevrolet Las Vegas", "J01": "Customs", "GMW": "GMC Prescott", "HHU": "Honda Flagstaff",
-    "H4V": "Honda Henderson", "YD9": "Honda North", "A0E": "Honda Spokane", "L64": "Hyundai Sg. George",
-    "I78": "Hyundal Prescott", "M7T": "INEOS Grenadier", "ZC7": "Jaguar Land Rover Las Vegas", "ZFJ": "Kia Las Vegas",
-    "KTJ": "Kia St George", "ZHI": "Land Rover Henderson", "HUH": "Land Rover Reno", "IFA": "Lexus", "YH4": "Lincoln ",
-    "FVQ": "Mazda Henderson", "Z7Q": "Motor Company", "SYT": "Nissan", "H8E": "Subaru Of Las Vegas",
-    "XUW": "Subaru Prescott", "HP3": "Subaru St. George", "DAE": "Toyota Flagstaff", "Z6C": "Toyota Henderson",
-    "XL1": "Toyota Prescott", "Q9I": "Toyota Spokane", "HR7": "Volkswagen Henderson", "Z06": "Volkswagen St. George",
-    "4MZ": "Volvo Cars Las Vegas",
-}
+def _find_crosswalk():
+    """reference/stores.json at the repo root (shared store crosswalk)."""
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        p = os.path.join(d, "reference", "stores.json")
+        if os.path.exists(p):
+            return p
+        d = os.path.dirname(d)
+    raise SystemExit("STOP: reference/stores.json (shared store crosswalk) not found above " + os.path.abspath(__file__))
+CODE_MAP = {r["adp_code"]: r["adp_payroll_name"] for r in json.load(open(_find_crosswalk()))["stores"]}
 
 # ---------- load ----------
 src = openpyxl.load_workbook(A.adp, data_only=True)
