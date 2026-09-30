@@ -122,6 +122,16 @@ Multi-tab workbooks analyzing alignment, balance, brake flush, fuel service, and
 
 Shop supplies credit-only account with stores incorrectly posting debits. Structure: Store Summary tab + 11 per-store detail tabs, sorted by total dollar amount mischarged.
 
+### 7a. Service Policy (GL 71034) Employee & Advisor RO Audit (monthly, from Aug 2026)
+
+Two builds:
+- **71034 Labor Type Mapping.** A one-time GL tie-out done 9/29–9/30/2026. It found which RO labor type(s) post to 71034 at each store: exact dollar ties at split-posting stores, RO coverage at summarized stores.
+- **The monthly audit.** It matches closed ROs on those labor types to the ADP Active/Leave list.
+
+The skill `.claude/skills/fixed-ops-71034-policy-audit/` encodes the audit: the one-call Qlik Concat pull, the test priority 1–7, the common-surname rule, and the layout.
+- The Aug-2026 rebuild reproduced the original hand-built workbook row for row. It adds one hit (a "JR" suffix match), which carries a note.
+- Caveats: current employees only; name matching misses nicknames and maiden names; RO dollars aren't tied to the GL. IXP (12), ISPB (34) and IMGT (46) are unconfirmed secondaries. They're included by default.
+
 ---
 
 ## 8. Used Tire Disposal Cost Analysis
