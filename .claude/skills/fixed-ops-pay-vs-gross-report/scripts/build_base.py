@@ -21,6 +21,8 @@ ap.add_argument("--out", required=True)
 ap.add_argument("--period-start", default=None, help="YYYY-MM-DD, default Jan 1 of period-end year")
 ap.add_argument("--period-end", required=True, help="YYYY-MM-DD; hire cutoff and months-employed end")
 ap.add_argument("--exclude", default="EXPRESS SERVICE MANAGER,LEAD SALES PORTER")
+ap.add_argument("--qlik", default=None, help="optional Qlik JSON; its advisor_internal + advisor_overrides move confirmed "
+                "internal (recon) Service Advisors to INTERNAL SERVICE ADVISOR")
 A = ap.parse_args()
 PE = dt.date.fromisoformat(A.period_end)
 PS = dt.date.fromisoformat(A.period_start) if A.period_start else dt.date(PE.year, 1, 1)
@@ -67,6 +69,18 @@ for r in ws1.iter_rows(min_row=2, values_only=True):
 if unmapped:
     raise SystemExit(f"STOP: unmapped ADP company codes {sorted(unmapped)} - add them to CODE_MAP / Sheet1 before building")
 rows.sort(key=lambda d: (d["code"], d["name"]))
+for d in rows: d["orig_title"] = d["title"]
+moved = []
+if A.qlik:
+    import json, os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from classify import classify, INTERNAL_TITLE
+    QJ = json.load(open(A.qlik))
+    if QJ.get("advisor_internal"):
+        adp = [(d["code"], d["store"], d["name"], d["title"], i) for i, d in enumerate(rows)]
+        for rec in classify(QJ["advisor_internal"]["rows"], adp, int(QJ["months"]), QJ.get("advisor_overrides")):
+            if rec["affects"]:
+                d = rows[rec["adp_rec"][4]]; d["title"] = INTERNAL_TITLE; moved.append(f'{d["store"].strip()}: {d["name"]}')
 N = len(rows) + 1  # last Raw Data row
 
 # ---------- styles ----------
@@ -102,17 +116,19 @@ wb = openpyxl.Workbook(); wb.remove(wb.active)
 # ---------- Raw Data ----------
 rd = wb.create_sheet("Raw Data")
 header(rd, 1, ["Company Code", "Store Name", "Payroll Name", "Job Title Description", "Position Status",
-               "Hire/Rehire Date", "Gross Pay", "Months Employed (This Period)", "Included in Averages", "Average Monthly Pay"], box=False)
+               "Hire/Rehire Date", "Gross Pay", "Months Employed (This Period)", "Included in Averages", "Average Monthly Pay",
+               "Original Job Title (ADP)"], box=False)
 for i, d in enumerate(rows, 2):
     for col, v, fmt in (("A", d["code"], "General"), ("B", d["store"], "General"), ("C", d["name"], "General"),
                         ("D", d["title"], "General"), ("E", d["status"], "General"), ("F", d["hire"], "mm-dd-yy"),
                         ("G", d["gross"], CUR),
                         ("H", f"=MAX(0,({DPE}-MAX(F{i},{DPS})+1))/30.4", "0.00"),
                         ("I", f'=IF(F{i}<={DPE},"Yes","No")', "General"),
-                        ("J", f'=IF(AND(I{i}="Yes",H{i}>0),G{i}/H{i},"N/A")', CUR)):
+                        ("J", f'=IF(AND(I{i}="Yes",H{i}>0),G{i}/H{i},"N/A")', CUR),
+                        ("K", d["orig_title"], "General")):
         put(rd, f"{col}{i}", v, fmt, box=False)
-rd.auto_filter.ref = f"A1:J{N}"; rd.freeze_panes = "A2"
-widths(rd, dict(A=15, B=30, C=36, D=28, E=18, F=19, G=14, H=32, I=23, J=22))
+rd.auto_filter.ref = f"A1:K{N}"; rd.freeze_panes = "A2"
+widths(rd, dict(A=15, B=30, C=36, D=28, E=18, F=19, G=14, H=32, I=23, J=22, K=28))
 
 # ---------- Group Position Summary ----------
 def included(d):
@@ -275,4 +291,4 @@ wb._sheets = [wb[n] for n in order]
 wb.active = 0
 wb.save(A.out)
 print(f"saved {A.out}: {len(rows)} employees (dropped {dropped} excluded-position rows), {len(stores)} stores, "
-      f"{len(titles)} positions, {ST-2} store x position rows. NEXT: add_gross_workload.py, then recalc.py")
+      f"{len(titles)} positions, {ST-2} store x position rows, {len(moved)} moved to INTERNAL SERVICE ADVISOR. NEXT: add_gross_workload.py, then recalc.py")

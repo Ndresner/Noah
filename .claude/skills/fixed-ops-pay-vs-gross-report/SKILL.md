@@ -63,7 +63,16 @@ Customs (J01) has no Qlik division.
 - Internal gross (`RO_Header.totalgrossinternal`).
 - CP+W gross.
 
-Sort by `IntShare` descending and page with `qlik_get_chart_data`; it returns at most 100 rows per call. Keep the rows with share ≥ 30% (about 60 in Jan–Jul 2026). Store them in the Qlik JSON as `"advisor_internal": {"rows": [{"code", "name", "cpw_ros", "int_ros", "int_gross", "cpw_gross"}]}`. The script shows N/A / "No Gross Data" for it.
+Sort by `IntShare` descending and page with `qlik_get_chart_data`; it returns at most 100 rows per call. Keep the rows with share ≥ 30% (about 60 in Jan–Jul 2026). Store them in the Qlik JSON as `"advisor_internal": {"rows": [{"code", "name", "cpw_ros", "int_ros", "int_gross", "cpw_gross"}]}`.
+
+**User decisions** go in the same JSON as `"advisor_overrides": {"<ADP code>|<DMS name>": "Internal" | "Customer"}`. **Carry them forward every period.**
+
+Decisions as of Oct 2026:
+- Internal: HLD|RODDA,SHAWN; H4X|RODRIGUEZ,MICHAEL A; HUH|HALEY,COLTON J; D4K|ZBELLA,MICHAEL CHRISTOPHER.
+- Confirmed name match: ZFJ|WILLIAMS,BOB = Williams, Robert D.
+- Review rows with no override are treated as Customer.
+
+The base build and the gross layer both call `classify.py`, so they use the same classification. Pass `--qlik` to `build_base.py` so the confirmed internal advisors are retitled before the positions are built. The script shows N/A / "No Gross Data" for it.
 
 ## Step 2: Write the Qlik JSON
 
@@ -82,7 +91,7 @@ Keys are ADP company codes. Values are period totals, not monthly amounts; the s
 ```bash
 S=.claude/skills/fixed-ops-pay-vs-gross-report/scripts
 # 3a. base workbook from the raw ADP export (period end = last day worked)
-python3 $S/build_base.py --adp "<ADP export>.xlsx" --out <scratchpad>/base.xlsx --period-end 2026-08-09
+python3 $S/build_base.py --adp "<ADP export>.xlsx" --out <scratchpad>/base.xlsx --period-end 2026-08-09 --qlik <scratchpad>/qlik.json
 #     stops with an error if any ADP company code isn't in the store map; add the code to CODE_MAP (or Sheet1) and rerun
 # 3b. gross & workload layer
 python3 $S/add_gross_workload.py \
@@ -168,9 +177,30 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
 - **Group row**:
   - Pay = the Group Position Summary advisor average.
   - Pay per RO = advisor pay at stores with gross ÷ those stores' ROs.
-- **Reference values (Jan–Jul 2026)**: Audi Henderson pay per RO $131 vs group $56; ROs per day 5.7 vs 7.7; expected pay $13,559; annual excess $263K (grade F). Top of the ranking: Land Rover Henderson $395K. Bottom: Toyota Henderson −$772K. Total above expected: $2.53M.
+- **Reference values (Jan–Jul 2026, after internal advisors split out)**:
+  - Group: 229 customer advisors, $9,332 average pay, CP+W gross per advisor $69,584, ROs per day 8.1, pay per RO $53.
+  - Land Rover Henderson: 3 advisors, $93,106 gross per advisor, 3.7 ROs per day, gross per RO $1,176.
+  - Internal Service Advisors: 18, $8,882 average pay.
+  - Before the split, for comparison: 247 advisors, $9,299, 7.7 ROs per day, $56 per RO.
 
-**Advisor Classification tab** (after Advisor Comparison; built only when the JSON has `advisor_internal`). This is a review list; no other tab uses it yet.
+**Internal Service Advisors** (steps 3–5, live from Oct 2026):
+- `build_base.py --qlik` retitles every ADP SERVICE ADVISOR whose final class is Internal to **INTERNAL SERVICE ADVISOR**. Raw Data column K keeps the original ADP title.
+- That makes it a separate position on every tab, with its own group average.
+- **Gross basis**:
+  - SERVICE ADVISOR = **CP+W**: CP+W labor and parts gross on ROs written by customer advisors (store CP+W gross less internal advisors' CP+W gross).
+  - INTERNAL SERVICE ADVISOR = **Internal**: the internal gross they write.
+- **Workload**:
+  - Service Advisors use CP+W ROs less internal advisors' CP+W ROs.
+  - Internal Service Advisors use **Int ROs** (their internal ROs).
+- **Gross per RO** (store tab and Advisor Comparison) uses customer-advisor CP+W gross ÷ customer-advisor CP+W ROs.
+- **Qlik Store Data columns Q–Y** hold the internal-advisor totals and the customer-advisor amounts per month.
+- **Master Summary** service pay % now counts every role that isn't Parts, Body Shop or a tech. The group stays at 34.45%; the totals don't change.
+
+**Advisor Classification tab** (after Advisor Comparison; built only when the JSON has `advisor_internal`):
+- Override is filled from `advisor_overrides`.
+- Final Classification shows "Customer (review)" for Review rows with no override.
+- "Moved to Internal Service Advisor" is Yes or No.
+- Editing the tab doesn't recalculate anything; record the change in the JSON and rebuild.
 - **Matching**: each DMS advisor is matched to ADP by name within the store. The last name is required; JR/SR/II/III are ignored. Match quality is Exact, First initial, Last name only, Other store, or None. First-initial and last-name-only matches get "confirm name match" in the Reason.
 - **Suggested class**:
   - Internal: 60%+ internal and 25+ internal ROs a month.
