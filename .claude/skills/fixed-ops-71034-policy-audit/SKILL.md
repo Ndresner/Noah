@@ -5,7 +5,7 @@ description: Build or refresh Findlay's monthly Service Policy (GL 71034) Employ
 
 # Service Policy (71034) Employee & Advisor RO Audit
 
-Answers one question: **which policy (GL 71034) ROs this month went to our own employees, and did any advisor write one to themselves?** It also lists the **credit reclass pattern**: parts charged to policy with a policy labor credit offsetting it. Output is a 5-tab workbook: Summary, Flagged ROs, Policy Offsets, Not in 71034 Scope, Method & Limits.
+Answers one question: **which policy (GL 71034) ROs this month went to our own employees, and did any advisor write one to themselves?** It also lists the **credit reclass pattern**: parts charged to policy with a policy labor credit offsetting it. A separate tab screens **cross-type offsets**: policy parts charged with a credit on a different labor type. Output is a 6-tab workbook: Summary, Flagged ROs, Policy Offsets, Cross-Type Offsets, Not in 71034 Scope, Method & Limits.
 
 Two scripts:
 1. `scripts/qlik_pull_expr.py` prints the arguments for the one Qlik call that pulls the whole month.
@@ -45,12 +45,19 @@ Pass the printed JSON to `qlik_create_data_object` exactly as printed.
 - If the result does come back inline (a very small month), split the call into two by `%Logon` and have a subagent save each JSON verbatim, or write it as CSV (see the `build_audit.py` docstring for the columns).
 - Auth failures on the first attempt are normal. Retry once.
 
+**Second call (cross-type offsets):** run `qlik_clear_selections` again, then:
+`python3 $S/qlik_pull_expr.py --month 2026-09 --other-lines`
+- Pass the result to `qlik_create_data_object` the same way.
+- It returns every labor line (any pay type) on ROs that carry a policy labor type, using a `%RO=P(...)` set. Fields: `ro|labortype|paytype|laborsale|laborcost|partssale|partscost`.
+- It's about 320K characters, so it's also saved to a file. Copy it to the scratchpad as `qlik_<mon>_other.json`.
+- If you skip this call, the Cross-Type Offsets tab says "Not run".
+
 The labor type filter covers every mapped type in every store. `build_audit.py` then decides scope for each store. The `n` measure is a row-count check: the script stops if any store's Concat came back truncated.
 
 ## Step 2: Build, then recalc (mandatory)
 
 ```bash
-python3 $S/build_audit.py --qlik <scratchpad>/qlik_<mon>.json \
+python3 $S/build_audit.py --qlik <scratchpad>/qlik_<mon>.json --qlik-other <scratchpad>/qlik_<mon>_other.json \
   --adp "<ADP Employee List>.xlsx" --month 2026-09 \
   --out "<scratchpad>/71034_Employee_Advisor_Policy_Audit_Sep2026.xlsx"   # [--no-secondary]
 python3 <xlsx-skill>/scripts/recalc.py "<out>.xlsx" 240   # must report success, 0 errors
@@ -72,6 +79,8 @@ Never re-save with openpyxl after recalc; it strips cached values. The script pr
   - 4 ROs on the out-of-scope tab (stores 3 and 42).
   - Policy Offsets: 30 ROs, 11 of them net $0. Parts $5,976.99, labor credit −$11,690.81. Toyota Henderson's credit (−$1,651.55) ties to the mapping's ISPT negative labor. 1 is also on Flagged ROs (Chevrolet Las Vegas RO 1096121).
   - Sep 2026: 24 offset ROs (7 net $0), parts $8,836.59, credit −$11,210.09, none on Flagged ROs.
+  - Cross-Type Offsets: Aug 22 ROs (credit −$3,232.78); Sep 47 ROs (credit −$10,829.14). Neither month has any net $0. Each month has 1 that's also on Flagged ROs.
+  - Sep 2026: 17 Honda Henderson ROs (RO 1130841–1130867 batch) each carry $22.56 policy parts plus a ~$99 internal "I" labor credit.
   - This rebuild matched the original hand-built Aug workbook row for row. The one extra row (VW Henderson RO 482937, "RANDS JR,RICHARD") is caught because suffixes are now stripped. It carries a "Suffix differs" note.
 
 ## Step 4: Deliver
@@ -79,6 +88,7 @@ Never re-save with openpyxl after recalc; it strips cached values. The script pr
 Send the workbook. Lead with:
 - Confirmed and Likely ROs, with policy cost.
 - Policy offsets: count, net-$0 count, parts vs. credit, the stores involved, and any that are also employee or advisor ROs.
+- Cross-type offsets: stores with repeat patterns (the same credit labor type across many ROs, batches, similar amounts), split by credit pay type.
 - Advisors who wrote policy ROs to themselves (red rows).
 - The stores with the most flags.
 - Any new QA warnings.
@@ -127,6 +137,15 @@ Send the workbook. Lead with:
 - **Summary:** a 3-line pointer block below the store table.
 - **Limits:** it only sees policy labor-type lines. Offsets posted on other labor types or on MLS (the Chevrolet Las Vegas MLS pattern) aren't caught. It shows the pattern, not intent.
 
+**Cross-type offsets (Cross-Type Offsets tab)**
+- Applies to in-scope ROs with policy parts sale > $0 where a labor type that is **not** the store's policy type, on the same RO, has a net labor sale < $0. Any pay type counts: Internal, Warranty or Customer.
+- Net After Credit = policy total sale + the other-type credit. Pattern labels: "Net $0 — other-type credit offsets policy" (within $1), "Other-type credit exceeds policy charge", or "Partial offset".
+- **Tab layout:**
+  - A store summary at the top. Its last column counts credit labor types per store, e.g. "I (Internal) ×17"; that's where patterns show.
+  - Then the RO detail. It lists the credit labor type(s) with amounts and the credit pay type (filterable), and whether the RO also has a same-type offset. It shows the employee flag and confidence when the RO is on Flagged ROs.
+- **On Flagged ROs:** column W shows the pattern with the credit types and X shows the credit, both in amber.
+- **Weaker evidence than same-type offsets.** Comebacks, goodwill and warranty corrections also post credits. Treat it as a screen. MLS lines are still not covered.
+
 **Dollars.** Policy Sale = labor + parts sale on the policy lines. Policy Cost = labor + parts cost on the same lines. MLS and tax are excluded because they carry no labor type.
 
 ## Layout (matches the original Aug-2026 build)
@@ -137,12 +156,12 @@ Send the workbook. Lead with:
   - Store table from row 15. It lists only stores with flags, in logon order, with Confirmed + Likely ROs, sale and cost, and All Flagged.
   - The workbook opens on Summary.
 - **Flagged ROs:**
-  - Columns A–V, sorted by Sort, then logon, close date, RO. U = Credit Reclass Pattern, V = Labor Credit Offset (amber `FFEB9C/9C6500`).
+  - Columns A–V, sorted by Sort, then logon, close date, RO. U = Credit Reclass Pattern, V = Labor Credit Offset, W = Other-Type Credit Pattern, X = Other-Type Labor Credit (amber `FFEB9C/9C6500`).
   - O = `=M+N`. Gold TOTAL row with COUNTA/SUM.
   - Freeze at G2 and autofilter.
 - **Widths:**
   - Summary: A46 B12 C8 D13 E13 F70.
-  - Flagged ROs: A6 B34 C11 D8 E20 F10 G11 H13 I30 J10 K24 L10 M12 N13 O13 P11 Q24 R26 S12 T30 U34 V13.
+  - Flagged ROs: A6 B34 C11 D8 E20 F10 G11 H13 I30 J10 K24 L10 M12 N13 O13 P11 Q24 R26 S12 T30 U34 V13 W44 X13.
   - Method: A24 B110.
 
 ## Known limitations (tell the user when relevant)
