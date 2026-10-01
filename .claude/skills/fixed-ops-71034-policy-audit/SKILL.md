@@ -5,7 +5,7 @@ description: Build or refresh Findlay's monthly Service Policy (GL 71034) Employ
 
 # Service Policy (71034) Employee & Advisor RO Audit
 
-Answers one question: **which policy (GL 71034) ROs this month went to our own employees, and did any advisor write one to themselves?** Output is a 4-tab workbook: Summary, Flagged ROs, Not in 71034 Scope, Method & Limits.
+Answers one question: **which policy (GL 71034) ROs this month went to our own employees, and did any advisor write one to themselves?** It also lists the **credit reclass pattern**: parts charged to policy with a policy labor credit offsetting it. Output is a 5-tab workbook: Summary, Flagged ROs, Policy Offsets, Not in 71034 Scope, Method & Limits.
 
 Two scripts:
 1. `scripts/qlik_pull_expr.py` prints the arguments for the one Qlik call that pulls the whole month.
@@ -70,12 +70,15 @@ Never re-save with openpyxl after recalc; it strips cached values. The script pr
   - Population 4,595 ROs across 32 stores, ADP 2,813 rows and 35 locations, 30 employee-ID hits.
   - 61 flagged: 6 / 2 / 20 / 15 / 2 / 6 / 10 by flag. Policy sale $4,572.18, policy cost $5,157.84.
   - 4 ROs on the out-of-scope tab (stores 3 and 42).
+  - Policy Offsets: 30 ROs, 11 of them net $0. Parts $5,976.99, labor credit −$11,690.81. Toyota Henderson's credit (−$1,651.55) ties to the mapping's ISPT negative labor. 1 is also on Flagged ROs (Chevrolet Las Vegas RO 1096121).
+  - Sep 2026: 24 offset ROs (7 net $0), parts $8,836.59, credit −$11,210.09, none on Flagged ROs.
   - This rebuild matched the original hand-built Aug workbook row for row. The one extra row (VW Henderson RO 482937, "RANDS JR,RICHARD") is caught because suffixes are now stripped. It carries a "Suffix differs" note.
 
 ## Step 4: Deliver
 
 Send the workbook. Lead with:
 - Confirmed and Likely ROs, with policy cost.
+- Policy offsets: count, net-$0 count, parts vs. credit, the stores involved, and any that are also employee or advisor ROs.
 - Advisors who wrote policy ROs to themselves (red rows).
 - The stores with the most flags.
 - Any new QA warnings.
@@ -110,6 +113,20 @@ Send the workbook. Lead with:
 - Filled automatically for: possible relatives; an advisor number that equals the advisor's CDK ID; multiple other-store ADP matches; suffix mismatches.
 - Add store feedback by hand after delivery if the user asks.
 
+**Credit reclass pattern (Policy Offsets)**
+- Applies to in-scope ROs where policy parts sale > $0 and policy labor sale < $0 on the store's policy labor type(s).
+- Pattern labels:
+  - "Net $0 — labor credit offsets parts": labor + parts within $1.00.
+  - "Labor credit exceeds parts": the RO nets negative.
+  - "Partial offset": some parts are left charged.
+- **Policy Offsets tab:**
+  - A store summary at the top (ROs, net-$0 ROs, parts, labor credit, net, cost, employee-flagged ROs).
+  - Then the RO detail, sorted by store, then pattern, then credit (largest first).
+  - Detail columns O–P show the Flagged ROs flag and confidence when the RO is also an employee or advisor RO.
+- **On Flagged ROs:** column U shows the pattern and V shows the labor credit, both in amber. Policy Cost stays the real labor + parts cost; only the sale columns net to $0.
+- **Summary:** a 3-line pointer block below the store table.
+- **Limits:** it only sees policy labor-type lines. Offsets posted on other labor types or on MLS (the Chevrolet Las Vegas MLS pattern) aren't caught. It shows the pattern, not intent.
+
 **Dollars.** Policy Sale = labor + parts sale on the policy lines. Policy Cost = labor + parts cost on the same lines. MLS and tax are excluded because they carry no labor type.
 
 ## Layout (matches the original Aug-2026 build)
@@ -120,12 +137,12 @@ Send the workbook. Lead with:
   - Store table from row 15. It lists only stores with flags, in logon order, with Confirmed + Likely ROs, sale and cost, and All Flagged.
   - The workbook opens on Summary.
 - **Flagged ROs:**
-  - Columns A–T, sorted by Sort, then logon, close date, RO.
+  - Columns A–V, sorted by Sort, then logon, close date, RO. U = Credit Reclass Pattern, V = Labor Credit Offset (amber `FFEB9C/9C6500`).
   - O = `=M+N`. Gold TOTAL row with COUNTA/SUM.
   - Freeze at G2 and autofilter.
 - **Widths:**
   - Summary: A46 B12 C8 D13 E13 F70.
-  - Flagged ROs: A6 B34 C11 D8 E20 F10 G11 H13 I30 J10 K24 L10 M12 N13 O13 P11 Q24 R26 S12 T30.
+  - Flagged ROs: A6 B34 C11 D8 E20 F10 G11 H13 I30 J10 K24 L10 M12 N13 O13 P11 Q24 R26 S12 T30 U34 V13.
   - Method: A24 B110.
 
 ## Known limitations (tell the user when relevant)

@@ -177,6 +177,16 @@ POP = sum(1 for o in ros.values() if o["scope"] == "in")
 POP_STORES = len({o["logon"] for o in ros.values() if o["scope"] == "in"})
 sec_counts = {lg: sum(1 for o in ros.values() if o["logon"] == lg and set(o["types"]) & t) for lg, t in SECONDARY.items()}
 
+# Credit reclass pattern: policy parts charged while policy labor is credited (net negative) on the same RO.
+OFFSET_TOL = 1.00   # |labor + parts| within this = "Net $0"
+OFFSET_ORDER = {"Net $0 — labor credit offsets parts": 1, "Labor credit exceeds parts": 2, "Partial offset": 3}
+for o in ros.values():
+    o["offset"] = None
+    if o["ps"] > 0.005 and o["ls"] < -0.005:
+        net = o["ls"] + o["ps"]
+        o["offset"] = ("Net $0 — labor credit offsets parts" if abs(net) <= OFFSET_TOL
+                       else "Labor credit exceeds parts" if net < 0 else "Partial offset")
+
 # ---------------- tests ----------------
 FLAGS = {1: ("Advisor = Customer (number)", "Confirmed"),
          2: ("Advisor = Customer (name; RO on regular cust #)", "Confirmed"),
@@ -242,6 +252,7 @@ id_hits = sum(1 for o in flagged if o["sort"] == 3 or (o["sort"] == 1 and o["emp
 
 # ---------------- workbook ----------------
 NAVY, GOLD, RED, GRID = "1A2744", "C9A04B", "F8CBAD", "BFBFBF"
+AMBER, AMBER_FONT = "FFEB9C", "9C6500"   # credit reclass pattern
 USD = '\\$#,##0.00;"($"#,##0.00\\);\\-'
 thin = Side(style="thin", color=GRID); BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
 def F(**k): return Font(name="Arial", size=k.pop("size", 10), **k)
@@ -256,35 +267,40 @@ def widths(ws, d):
 
 out = openpyxl.Workbook()
 S = out.active; S.title = "Summary"
-FR = out.create_sheet("Flagged ROs"); NS = out.create_sheet("Not in 71034 Scope"); ML = out.create_sheet("Method & Limits")
+FR = out.create_sheet("Flagged ROs"); PO = out.create_sheet("Policy Offsets")
+NS = out.create_sheet("Not in 71034 Scope"); ML = out.create_sheet("Method & Limits")
 
 # Flagged ROs
 cols = ["Sort", "Flag", "Confidence", "Logon #", "Store", "RO #", "Close Date", "Customer #", "Customer Name (RO)",
         "Advisor #", "Advisor Name", "Policy Labor Type", "Policy Labor Sale", "Policy Parts Sale", "Policy Total Sale",
-        "Policy Cost", "Matched Employee (ADP)", "Employee Store (ADP)", "CDK Employee ID", "Notes"]
+        "Policy Cost", "Matched Employee (ADP)", "Employee Store (ADP)", "CDK Employee ID", "Notes",
+        "Credit Reclass Pattern", "Labor Credit Offset"]
 header(FR, 1, cols, 35.05)
 for i, o in enumerate(inscope, 2):
     emp = o["emp"]
     vals = [o["sort"], o["flag"], o["conf"], int(o["logon"]), STORES[o["logon"]]["name"], o["ro"], o["closedate"],
             o["custno"], o["custname"], o["advisor_no"], o["advisor_name"], " + ".join(o["types"]),
             round(o["ls"], 2), round(o["ps"], 2), f"=M{i}+N{i}", round(o["cost"], 2),
-            emp["full"] if emp else None, emp["loc"].title() if emp else None, emp["id"] if emp else None, o["note"] or None]
+            emp["full"] if emp else None, emp["loc"].title() if emp else None, emp["id"] if emp else None, o["note"] or None,
+            o["offset"], round(o["ls"], 2) if o["offset"] else None]
     red = o["sort"] in (1, 2)
     for j, v in enumerate(vals, 1):
         c = FR.cell(i, j, v); c.border = BOX
         c.font = F() if j == 15 else F(color="0000FF")
         if red: c.fill = fill(RED)
+        if j in (21, 22) and o["offset"]: c.fill = fill(AMBER); c.font = F(color=AMBER_FONT)
         if j == 7: c.number_format = "m/d/yyyy"
-        if j in (13, 14, 15, 16): c.number_format = USD
+        if j in (13, 14, 15, 16, 22): c.number_format = USD
 T = len(inscope) + 2; L = T - 1
 FR.cell(T, 2, "TOTAL"); FR.cell(T, 6, f"=COUNTA(F2:F{L})")
-for col in "MNOP":
+for col in "MNOPV":
     FR[f"{col}{T}"] = f"=SUM({col}2:{col}{L})"
-for j in range(1, 21):
+FR[f"U{T}"] = f"=COUNTA(U2:U{L})"
+for j in range(1, 23):
     c = FR.cell(T, j); c.fill = fill(GOLD); c.border = BOX; c.font = F(bold=True)
-    if j in (13, 14, 15, 16): c.number_format = USD
-FR.freeze_panes = "G2"; FR.auto_filter.ref = f"A1:T{L}"
-widths(FR, dict(A=6, B=34, C=11, D=8, E=20, F=10, G=11, H=13, I=30, J=10, K=24, L=10, M=12, N=13, O=13, P=11, Q=24, R=26, S=12, T=30))
+    if j in (13, 14, 15, 16, 22): c.number_format = USD
+FR.freeze_panes = "G2"; FR.auto_filter.ref = f"A1:V{L}"
+widths(FR, dict(A=6, B=34, C=11, D=8, E=20, F=10, G=11, H=13, I=30, J=10, K=24, L=10, M=12, N=13, O=13, P=11, Q=24, R=26, S=12, T=30, U=34, V=13))
 
 # Summary
 S["A1"] = f"Service Policy (71034) Audit — Employee & Advisor-Owned ROs, {MON_NAME} {Y}"; S["A1"].font = F(size=14, bold=True, color=NAVY)
@@ -330,6 +346,69 @@ for j in range(1, 7):
 widths(S, dict(A=46, B=12, C=8, D=13, E=13, F=70))
 S.row_dimensions[1].height = 17.35
 
+# Policy Offsets (credit reclass pattern)
+offs = sorted([o for o in ros.values() if o["scope"] == "in" and o["offset"]],
+              key=lambda o: (int(o["logon"]), OFFSET_ORDER[o["offset"]], o["ls"], o["ro"]))
+off_stores = sorted({int(o["logon"]) for o in offs})
+PO["A1"] = f"Policy Offsets — Credit Reclass Pattern, {MON_NAME} {Y}"; PO["A1"].font = F(size=14, bold=True, color=NAVY)
+PO["A2"] = ("Policy ROs where parts were charged to policy while policy labor was credited (negative) on the same RO. "
+            f"Net $0 = labor credit within ${OFFSET_TOL:.2f} of the parts charge. Labor Credit is the net policy labor sale on the policy labor type(s).")
+PO["A2"].font = F(size=9, italic=True)
+SH = 4; D0 = SH + len(off_stores) + 4          # store summary header row; detail header row
+D1, D2 = D0 + 1, D0 + max(len(offs), 1)       # detail data rows
+def rng(col): return f"${col}${D1}:${col}${D2}"
+header(PO, SH, ["Store", "Logon #", "ROs", "Net $0 ROs", "Policy Parts Sale", "Labor Credit", "Net Policy Sale",
+                "Policy Cost", "Employee-Flagged ROs"], 35.05)
+r = SH + 1
+for lg in off_stores:
+    vals = [STORES[str(lg)]["name"], lg, f"=COUNTIFS({rng('A')},B{r})",
+            f"=COUNTIFS({rng('A')},B{r},{rng('N')},\"Net $0*\")",
+            f"=SUMIFS({rng('J')},{rng('A')},B{r})", f"=SUMIFS({rng('K')},{rng('A')},B{r})",
+            f"=E{r}+F{r}", f"=SUMIFS({rng('M')},{rng('A')},B{r})", f"=COUNTIFS({rng('A')},B{r},{rng('O')},\"?*\")"]
+    for j, v in enumerate(vals, 1):
+        c = PO.cell(r, j, v); c.font = F(); c.border = BOX
+        if j in (5, 6, 7, 8): c.number_format = USD
+    r += 1
+PO.cell(r, 1, "TOTAL")
+for col in "CDEFGHI":
+    PO[f"{col}{r}"] = f"=SUM({col}{SH + 1}:{col}{r - 1})" if off_stores else 0
+for j in range(1, 10):
+    c = PO.cell(r, j); c.fill = fill(GOLD); c.font = F(bold=True); c.border = BOX
+    if j in (5, 6, 7, 8): c.number_format = USD
+PO_TOT = r
+header(PO, D0, ["Logon #", "Store", "RO #", "Close Date", "Customer #", "Customer Name (RO)", "Advisor #", "Advisor Name",
+                "Policy Labor Type", "Policy Parts Sale", "Labor Credit", "Net Policy Sale", "Policy Cost",
+                "Pattern", "Employee Flag (Flagged ROs)", "Confidence"], 35.05)
+for i, o in enumerate(offs, D1):
+    vals = [int(o["logon"]), STORES[o["logon"]]["name"], o["ro"], o["closedate"], o["custno"], o["custname"],
+            o["advisor_no"], o["advisor_name"], " + ".join(o["types"]), round(o["ps"], 2), round(o["ls"], 2),
+            f"=J{i}+K{i}", round(o["cost"], 2), o["offset"], o.get("flag") if o in inscope else None,
+            o.get("conf") if o in inscope else None]
+    for j, v in enumerate(vals, 1):
+        c = PO.cell(i, j, v); c.border = BOX
+        c.font = F() if j == 12 else F(color="0000FF")
+        if j == 4: c.number_format = "m/d/yyyy"
+        if j in (10, 11, 12, 13): c.number_format = USD
+        if j == 14 and o["offset"].startswith("Net $0"): c.fill = fill(AMBER); c.font = F(color=AMBER_FONT)
+        if j in (15, 16) and o in inscope: c.fill = fill(RED) if o["sort"] in (1, 2) else fill(AMBER)
+if not offs:
+    PO.cell(D1, 1, "None this month.").font = F(italic=True)
+else:
+    PO.auto_filter.ref = f"A{D0}:P{D2}"
+widths(PO, dict(A=8, B=22, C=10, D=11, E=11, F=28, G=10, H=24, I=11, J=13, K=13, L=13, M=12, N=34, O=40, P=12))
+
+# Summary pointer to the offsets tab
+r = S.max_row + 2
+S.cell(r, 1, "Credit reclass pattern (policy parts charged, policy labor credited)").font = F(bold=True)
+S.cell(r + 1, 1, "ROs with the pattern / of which net $0").font = F()
+S.cell(r + 1, 3, f"='Policy Offsets'!C{PO_TOT}").font = F(); S.cell(r + 1, 4, f"='Policy Offsets'!D{PO_TOT}").font = F()
+S.cell(r + 2, 1, "Policy parts charged / labor credit offsetting it").font = F()
+S.cell(r + 2, 4, f"='Policy Offsets'!E{PO_TOT}"); S.cell(r + 2, 5, f"='Policy Offsets'!F{PO_TOT}")
+S.cell(r + 3, 1, "Of these, ROs also on Flagged ROs (employee / advisor)").font = F()
+S.cell(r + 3, 3, f"='Policy Offsets'!I{PO_TOT}").font = F()
+for a in (S.cell(r + 2, 4), S.cell(r + 2, 5)): a.number_format = USD; a.font = F()
+S.cell(r + 1, 6, "Details on the Policy Offsets tab. On Flagged ROs these rows are marked in columns U–V.").font = F(size=9, italic=True)
+
 # Not in 71034 Scope
 NS["A1"] = f"Hits at stores with no 71034 activity in {MON_NAME} ({'/'.join(sorted(OOS_TYPES))} there does not post to 71034). Listed for awareness only."
 NS["A1"].font = F(size=9, italic=True)
@@ -365,10 +444,14 @@ method = [
                                      "Customer sharing only the advisor's last name = Review (possible relative)."),
     ("Dollar basis", "Policy Sale = labor + parts sale on the policy labor-type lines only. Policy Cost = labor + parts cost on the same lines. Several stores (notably Toyota Henderson ISPT) "
                      "sell policy at $0, so cost is the better exposure measure. MLS/misc and tax are not attributable by labor type and are excluded."),
+    ("Credit reclass pattern", f"Policy ROs where policy parts sale > $0 and policy labor sale < $0 on the store's policy labor type(s): parts charged to policy with a labor credit offsetting it. "
+                               f"Net $0 = labor + parts within ${OFFSET_TOL:.2f}; 'Labor credit exceeds parts' = the RO nets negative; 'Partial offset' = some parts left charged. "
+                               "Listed on Policy Offsets; employee/advisor ROs with the pattern are also marked on Flagged ROs (columns U–V: pattern and the labor credit). "
+                               "Policy Cost is not reduced by the credit. Offsets on other labor types or on MLS lines are not visible here."),
     ("Limitations", "Current employees only — anyone who termed between the 1st of the month and the ADP export date is not caught. Name matching misses nicknames, maiden names and typos. "
                     "\"Same last name\" rows are possible relatives, not proven. Qlik amounts are RO-level and have not been tied to the GL for these specific ROs."
                     + (f" Hits at stores {' and '.join(map(str, oos_stores))} are on labor types that do not post to 71034 there — see \"Not in 71034 Scope\"." if oos_stores else "")),
-    ("Legend", "Red fill = advisor wrote the RO to themselves. Blue font = values pulled from Qlik / ADP. Gold rows = totals."),
+    ("Legend", "Red fill = advisor wrote the RO to themselves. Amber = credit reclass pattern. Blue font = values pulled from Qlik / ADP. Gold rows = totals."),
 ]
 for i, (a, b) in enumerate(method, 1):
     ML.cell(i, 1, a).font = F(bold=True); ML.cell(i, 1).alignment = Alignment(vertical="top")
@@ -384,6 +467,10 @@ by_flag = Counter(o["sort"] for o in inscope)
 qa.update(month=A.month, population=POP, population_stores=POP_STORES, adp_rows=ADP_N, adp_locations=ADP_LOCS,
           adp_unmapped_locations=dict(unmapped_loc), flagged=len(inscope), by_flag={FLAGS[k][0]: by_flag.get(k, 0) for k in FLAGS},
           employee_id_hits=id_hits, out_of_scope=len(oos), secondary_ro_counts=sec_counts,
+          offsets=dict(ros=len(offs), net_zero=sum(1 for o in offs if o["offset"].startswith("Net $0")),
+                       parts=round(sum(o["ps"] for o in offs), 2), labor_credit=round(sum(o["ls"] for o in offs), 2),
+                       on_flagged=sum(1 for o in offs if o in inscope),
+                       by_store=dict(Counter(o["logon"] for o in offs))),
           policy_sale=round(sum(o["ls"] + o["ps"] for o in inscope), 2), policy_cost=round(sum(o["cost"] for o in inscope), 2),
           mapped_stores_without_rows=sorted(set(PRIMARY) - {o["logon"] for o in ros.values()}, key=int),
           unmapped_policy_types={f"{lg}:{lt}": n for (lg, lt), n in sorted(unmapped_types.items(), key=lambda x: (int(x[0][0]), x[0][1]))})
@@ -394,6 +481,8 @@ print(f"Population {POP:,} ROs / {POP_STORES} stores | ADP {ADP_N:,} rows, {ADP_
       f"(sale ${qa['policy_sale']:,.2f}, cost ${qa['policy_cost']:,.2f}) | out of scope {len(oos)}")
 for k in FLAGS:
     print(f"  {k} {FLAGS[k][0]:<50} {by_flag.get(k, 0)}")
+q = qa["offsets"]
+print(f"Policy offsets: {q['ros']} ROs ({q['net_zero']} net $0) | parts ${q['parts']:,.2f} | labor credit ${q['labor_credit']:,.2f} | {q['on_flagged']} also on Flagged ROs")
 if unmapped_loc: print("WARN ADP locations with no Qlik logon (not matchable same-store):", dict(unmapped_loc))
 if qa["unmapped_policy_types"]: print("INFO labor types at mapped stores that are NOT in the mapping (excluded):", qa["unmapped_policy_types"])
 if qa["id_hits_name_mismatch"]: print(f"INFO {len(qa['id_hits_name_mismatch'])} cust#=employee-ID hits dropped (names disagree) — see {qa_path}")
