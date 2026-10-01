@@ -55,7 +55,15 @@ sold_hours   = Sum({<Year={'2026'},Month={"<=7"}>} RO_Header.soldhours)
 cpw_ro_gross = Sum({<Year={'2026'},Month={"<=7"}>} RO_Header.laborgrosscustomerpay+RO_Header.partsgrosscustomerpay+RO_Header.laborgrosswarranty+RO_Header.partsgrosswarranty)
 ```
 
-Customs (J01) has no Qlik division. The script shows N/A / "No Gross Data" for it.
+Customs (J01) has no Qlik division.
+
+**Advisor-level internal pull** (Closed ROs; feeds the Advisor Classification tab). Dimensions: `Divison_ADP_PayrollCompanyCode`, `ServiceAdvisor.Name`. Measures:
+- `IntShare`: internal ROs ÷ (internal + CP+W ROs), multiplied by 0 when internal ROs < 70.
+- CP+W ROs and internal ROs (distinct `%RO` with `RO_Header.totalsaleinternal>0`).
+- Internal gross (`RO_Header.totalgrossinternal`).
+- CP+W gross.
+
+Sort by `IntShare` descending and page with `qlik_get_chart_data`; it returns at most 100 rows per call. Keep the rows with share ≥ 30% (about 60 in Jan–Jul 2026). Store them in the Qlik JSON as `"advisor_internal": {"rows": [{"code", "name", "cpw_ros", "int_ros", "int_gross", "cpw_gross"}]}`. The script shows N/A / "No Gross Data" for it.
 
 ## Step 2: Write the Qlik JSON
 
@@ -161,6 +169,21 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - Pay = the Group Position Summary advisor average.
   - Pay per RO = advisor pay at stores with gross ÷ those stores' ROs.
 - **Reference values (Jan–Jul 2026)**: Audi Henderson pay per RO $131 vs group $56; ROs per day 5.7 vs 7.7; expected pay $13,559; annual excess $263K (grade F). Top of the ranking: Land Rover Henderson $395K. Bottom: Toyota Henderson −$772K. Total above expected: $2.53M.
+
+**Advisor Classification tab** (after Advisor Comparison; built only when the JSON has `advisor_internal`). This is a review list; no other tab uses it yet.
+- **Matching**: each DMS advisor is matched to ADP by name within the store. The last name is required; JR/SR/II/III are ignored. Match quality is Exact, First initial, Last name only, Other store, or None. First-initial and last-name-only matches get "confirm name match" in the Reason.
+- **Suggested class**:
+  - Internal: 60%+ internal and 25+ internal ROs a month.
+  - Review: mixed, or mostly internal but low volume.
+  - No change: no match on this store's payroll, or the payroll record is at another store.
+- **Columns**:
+  - Yellow Override column (Internal / Customer, dropdown).
+  - Final Classification.
+  - Affects Advisor Averages: Yes only when the ADP title is SERVICE ADVISOR and Final = Internal.
+- **Summary block** at the bottom.
+- **Jan–Jul 2026 result**:
+  - 14 ADP Service Advisors suggested Internal ($10.7M internal gross); 9 pending review.
+  - 23 internal writers are managers, directors, porters and similar, so they don't affect advisor averages. For example, Honda Henderson's Acoba ($3.7M internal gross) is titled SERVICE MANAGER.
 
 **Group Position Summary**, columns E–J:
 - E Gross Basis

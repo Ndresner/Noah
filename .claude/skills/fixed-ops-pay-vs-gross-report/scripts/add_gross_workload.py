@@ -27,6 +27,7 @@ def strip_previous(wb):
     if "Qlik Store Data" not in wb.sheetnames: return
     del wb["Qlik Store Data"]
     if "Advisor Comparison" in wb.sheetnames: del wb["Advisor Comparison"]
+    if "Advisor Classification" in wb.sheetnames: del wb["Advisor Classification"]
     def clear_cols(ws,first_col):
         for row in ws.iter_rows(min_col=first_col):
             for c in row:
@@ -462,6 +463,90 @@ for rng,rules in ((f"P{A0}:P{A1}",[(f"AND(ISNUMBER($P{A0}),$P{A0}>0.05)",RED),(f
     for fml,sty in rules: ac.conditional_formatting.add(rng,FormulaRule(formula=[fml],fill=sty[0],font=sty[1]))
 ac.auto_filter.ref=f"A{HR}:S{A1}"
 ac.freeze_panes=f"B{A0}"
+
+# ---- Advisor Classification tab (review list only; does not change any calculation yet)
+# DMS advisors who write mostly internal (recon) ROs, matched to their ADP record, with a suggested class + override.
+from openpyxl.worksheet.datavalidation import DataValidation
+AI=Qj.get("advisor_internal")
+if AI:
+    cl=wb.create_sheet("Advisor Classification", index=wb.sheetnames.index("Advisor Comparison")+1)
+    code2store={v:k for k,v in stores.items()}
+    adp=[(rd[f"A{r}"].value,rd[f"B{r}"].value,rd[f"C{r}"].value,rd[f"D{r}"].value) for r in range(2,N+1) if rd[f"A{r}"].value]
+    def _nm(x): return [t for t in re.sub(r"[^A-Z ]"," ",(x or "").upper()).split() if t not in ("JR","SR","II","III","IV")]
+    def _split(x):
+        last,_,first=(x or "").partition(","); return _nm(last),_nm(first)
+    def match(code,dms):
+        ql,qf=_split(dms)
+        if not ql: return None,"None"
+        pool=[a for a in adp if a[0]==code and _split(a[2])[0][:len(ql)]==ql]
+        for test,label in ((lambda a:qf and _split(a[2])[1][:1]==qf[:1],"Exact"),
+                           (lambda a:qf and _split(a[2])[1][:1] and _split(a[2])[1][0][:1]==qf[0][:1],"First initial")):
+            hit=[a for a in pool if test(a)]
+            if len(hit)==1: return hit[0],label
+        if len(pool)==1: return pool[0],"Last name only"
+        other=[a for a in adp if a[0]!=code and _split(a[2])[0][:len(ql)]==ql and qf and _split(a[2])[1][:1]==qf[:1]]
+        if len(other)==1: return other[0],"Other store"
+        return None,"None"
+    recs=[]
+    for x in AI["rows"]:
+        tot=x["int_ros"]+x["cpw_ros"]; share=x["int_ros"]/tot if tot else 0; per=x["int_ros"]/MONTHS
+        a,q=match(x["code"],x["name"])
+        if a is None or q=="Other store":
+            sug,why="No change","Not on this store's Parts & Service payroll (recon/used-car staff, shared login, or left)" if a is None else f"Payroll record is at {a[1].strip()}"
+        elif share>=0.60 and per>=25:
+            sug,why="Internal",f"{share:.0%} of ROs internal, {per:.0f} internal ROs/mo"
+        elif share>=0.60:
+            sug,why="Review",f"Mostly internal ({share:.0%}) but low volume ({per:.0f}/mo)"
+        else:
+            sug,why="Review",f"Mixed: {share:.0%} internal, {per:.0f} internal ROs/mo"
+        if q in ("First initial","Last name only") and sug!="No change": why+=" - confirm name match"
+        isadv=(a is not None and q!="Other store" and a[3]==ADV)
+        recs.append(dict(x,store=code2store.get(x["code"],x["code"]),adp=(a[2] if a else ""),title=(a[3] if a else ""),q=q,share=share,per=per,sug=sug,why=why,isadv=isadv))
+    recs.sort(key=lambda d:(not d["isadv"],{"Internal":0,"Review":1,"No change":2}[d["sug"]],-d["int_gross"]))
+    cl["A1"]="Advisor Classification - Internal (Recon) RO Writers"; cl["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
+    cl["A1"].alignment=Alignment(horizontal="left"); cl.merge_cells("A1:P1")
+    cl["A2"]=(f"Review list. DMS advisors (Closed ROs, {PL}) with at least 30% of their ROs internal and 70+ internal ROs, matched to ADP by name within the store. "
+              "Suggested: Internal = 60%+ internal and 25+ internal ROs/month; Review = mixed or low volume; No change = not on this store's Parts & Service payroll. "
+              "Enter Internal or Customer in the yellow Override column to change a suggestion. Only rows where 'Affects Advisor Averages' = Yes would move out of the "
+              "Service Advisor figures (ADP title SERVICE ADVISOR). Nothing on other tabs uses this list yet.")
+    cl["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); cl["A2"].alignment=Alignment(wrap_text=True,vertical="top")
+    cl.merge_cells("A2:P2"); cl.row_dimensions[2].height=58
+    CH=[("A","Store","General",26),("B","DMS Advisor Name","General",28),("C","ADP Payroll Name","General",28),("D","ADP Job Title","General",22),
+        ("E","Name Match","General",13),("F","CP+W ROs","#,##0",10),("G","Internal ROs","#,##0",10),("H","Internal % of ROs","0%",10),
+        ("I","Internal ROs / Month","#,##0",10),("J","Internal Gross","$#,##0;($#,##0);-",13),("K","CP+W Gross","$#,##0;($#,##0);-",13),
+        ("L","Suggested","General",12),("M","Reason","General",44),("N","Override (Internal / Customer)","General",14),
+        ("O","Final Classification","General",13),("P","Affects Advisor Averages","General",12)]
+    H0=4; R0=5
+    for col,h,fmt,w in CH:
+        c=cl[f"{col}{H0}"]; c.value=h
+        for a_ in ("font","fill","border","alignment"): setattr(c,a_,copy(getattr(hsrc,a_)))
+        cl.column_dimensions[col].width=w
+    cl.row_dimensions[H0].height=45
+    INFILL=PatternFill("solid",fgColor="FFFFFF00")
+    for i,d in enumerate(recs):
+        r=R0+i
+        vals={"A":d["store"],"B":d["name"],"C":d["adp"],"D":d["title"],"E":d["q"],"F":d["cpw_ros"],"G":d["int_ros"],
+              "H":f"=IF(F{r}+G{r}=0,0,G{r}/(F{r}+G{r}))","I":f"=G{r}/'Qlik Store Data'!$B$4","J":d["int_gross"],"K":d["cpw_gross"],
+              "L":d["sug"],"M":d["why"],"N":None,
+              "O":f"=IF(L{r}=\"No change\",\"No change\",IF(N{r}<>\"\",N{r},L{r}))",
+              "P":f"=IF(AND(D{r}=\"{ADV}\",O{r}=\"Internal\"),\"Yes\",IF(D{r}=\"{ADV}\",IF(O{r}=\"Review\",\"Pending review\",\"No\"),\"No\"))"}
+        for col,h,fmt,w in CH:
+            c=cl[f"{col}{r}"]; c.value=vals[col]; c.number_format=fmt; c.font=Font(name="Calibri",size=11); c.border=copy(hsrc.border)
+            if col in "FGJK": c.font=BLUE
+        cl[f"N{r}"].fill=INFILL
+    R1=R0+len(recs)-1
+    dv=DataValidation(type="list",formula1='"Internal,Customer"',allow_blank=True); cl.add_data_validation(dv); dv.add(f"N{R0}:N{R1}")
+    for rng,txt,sty in ((f"O{R0}:O{R1}","Internal",RED),(f"O{R0}:O{R1}","Review",YEL),(f"P{R0}:P{R1}","Yes",RED),(f"P{R0}:P{R1}","Pending review",YEL)):
+        cf(cl,rng,f"${rng.split(':')[0][0]}{R0}",txt,sty)
+    sr_=R1+2
+    cl[f"A{sr_}"]="Summary"; cl[f"A{sr_}"].font=Font(name="Calibri",size=11,bold=True)
+    for k,(lab,fml) in enumerate((("ADP Service Advisors classed Internal (would move out of advisor averages)",f'=COUNTIF(P{R0}:P{R1},"Yes")'),
+                                   ("ADP Service Advisors pending review",f'=COUNTIF(P{R0}:P{R1},"Pending review")'),
+                                   ("Internal gross written by advisors classed Internal",f'=SUMIF(P{R0}:P{R1},"Yes",J{R0}:J{R1})'),
+                                   ("Internal writers who are not ADP Service Advisors (no change to advisor averages)",f'=COUNTIFS(O{R0}:O{R1},"<>No change",D{R0}:D{R1},"<>{ADV}")'))):
+        cl[f"A{sr_+1+k}"]=lab; cl[f"J{sr_+1+k}"]=fml; cl[f"J{sr_+1+k}"].number_format="$#,##0" if "gross" in lab else "#,##0"
+        cl[f"A{sr_+1+k}"].font=Font(name="Calibri",size=10); cl.merge_cells(f"A{sr_+1+k}:I{sr_+1+k}")
+    cl.auto_filter.ref=f"A{H0}:P{R1}"; cl.freeze_panes=f"C{R0}"
 
 # ---- Center data in every sheet (skip merged titles/notes, long free-text notes, and the back-link)
 from openpyxl.worksheet.cell_range import CellRange
