@@ -15,6 +15,7 @@ Noah, Fixed Operations analytics/reporting at Findlay Automotive Group (34-store
   - Fixed Ops Accounting TB — `e077f027`
   - Productivity — `948ab4f4`
 - Some reports use non-Qlik sources: ADP exports, RO Detail exports, Tech Pay Master file, vendor pricing spreadsheets.
+- ADP: pull with the CLI `tools/adp/adp_cli.py` (skill `.claude/skills/adp-pull/`) — same layout as the manual exports. Credentials are env secrets only; outputs contain pay/PII, scratchpad only, never commit.
 
 ## Qlik MCP rules — always follow
 

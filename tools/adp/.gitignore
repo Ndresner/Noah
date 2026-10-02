@@ -1,0 +1,11 @@
+# ADP pulls contain employee pay and PII - never commit them.
+*.xlsx
+*.csv
+*.json
+!adp_config.example.json
+*.pem
+*.key
+*.crt
+*.p12
+raw/
+__pycache__/

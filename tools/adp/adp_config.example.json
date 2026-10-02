@@ -1,0 +1,21 @@
+{
+  "_note": "Copy to adp_config.json and run `seed-config` with last period's manual ADP exports to fill job_titles. Job titles are matched case-insensitively against the ADP Job Title.",
+  "earnings": {
+    "job_titles": [],
+    "exclude_job_titles": ["EXPRESS SERVICE MANAGER", "LEAD SALES PORTER"],
+    "company_codes": []
+  },
+  "tech_hours": {
+    "job_titles": ["SERVICE TECHNICIAN", "EXPRESS TECHNICIAN", "SHOP FOREMAN", "SERVICE TEAM LEADER",
+                   "BODY SHOP TECH", "BODY SHOP PAINTER", "BODY SHOP HELPER", "DETAILER", "DETAIL MANAGER", "TINTER"],
+    "company_codes": []
+  },
+  "roster": {
+    "job_titles": [],
+    "company_codes": []
+  },
+  "hours": {
+    "regular_codes": ["REG", "REGULAR"],
+    "overtime_codes": ["OT", "OVERTIME", "O/T"]
+  }
+}
