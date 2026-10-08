@@ -80,6 +80,9 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 **Parts & Service Pay vs Gross Report** (Earnings - Parts and Service Employees - Gross Adjusted)
 Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script + Qlik pull spec). ADP pay vs group, plus Qlik gross/workload layer: pay % of dept gross, gross per employee, ROs or sold hrs per employee, Service Advisor gross per RO and ROs/day, ±20% outlier colors. Hire cutoff = last day worked in the pay period. Contains employee pay — never commit the workbook or Qlik JSON.
 
+**Fixed Ops Gross Profit Records** (monthly xlsx + 3-page PDF + recognition email)
+Skill: `.claude/skills/fixed-ops-gross-records-report/` — always use it. Each store's month of Service / Parts / Combined gross ranked against its all-time monthly history (Jan 2021+) from Accting TB, dimension `Store`. Needs last month's workbook (its Data tab is the history). Re-pull current-year months and apply post-close restatements. Never commit outputs.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
