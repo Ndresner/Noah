@@ -593,14 +593,16 @@ def _mexcess(k):
     v=_V[k]; e=(max(0,_icpt+_slope*v["gross"])+max(0,v["pre"])*_gnet+v["staff"]*_gstaff)/3
     return (v["pay"]-e)*12
 mg_stores.sort(key=lambda k:-_mexcess(k))
+PAYOK=set(Qj.get("pay_confirmed",[]))   # "<ADP code>|<Payroll Name>" pay records the user has confirmed
 _int_by_name={(x["code"],x["adp"]):x for x in RECS if x["title"] in MG and x["int_gross"]>=50000}
 def _flags(k):
     out=[]; c=stores[k]
     for nm,t,pay,h in _mpeople.get(k,[]):
         x=_int_by_name.get((c,nm))
         if x: out.append(f"{nm.split(',')[0]} ({t.title()}) writes internal ROs: ${x['int_gross']/1000:,.0f}K")
-        if pay>2*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - over 2x group avg, confirm")
-        if pay<0.5*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - under half group avg, confirm")
+        ok=f"{c}|{nm}" in PAYOK
+        if pay>2*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - over 2x group avg"+(" (pay confirmed)" if ok else ", confirm"))
+        if pay<0.5*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - under half group avg"+(" (pay confirmed)" if ok else ", confirm"))
         if h>=dt.date(CUT.year,1,1): out.append(f"{nm.split(',')[0]} hired/rehired {h:%m/%d/%y}")
     if _V[k]["pre"]<=0: out.append("Service dept unprofitable before mgmt pay")
     return "; ".join(out)
@@ -743,8 +745,9 @@ for i,(st,nm,t,pay,h,rr) in enumerate(_ind):
         f[v]=f"=IF(AND(ISNUMBER({b}{r}),ISNUMBER({_tgref(b,r)})),{b}{r}/{_tgref(b,r)}-1,\"N/A\")"
     fl=[]; x=_int_by_name.get((stores[st],nm))
     if x: fl.append(f"Writes internal ROs: ${x['int_gross']/1000:,.0f}K")
-    if pay>2*_tav[t]: fl.append("Over 2x title avg - confirm pay record")
-    if pay<0.5*_tav[t]: fl.append("Under half title avg - confirm pay record")
+    _ok=f"{stores[st]}|{nm}" in PAYOK
+    if pay>2*_tav[t]: fl.append("Over 2x title avg"+(" (pay confirmed)" if _ok else " - confirm pay record"))
+    if pay<0.5*_tav[t]: fl.append("Under half title avg"+(" (pay confirmed)" if _ok else " - confirm pay record"))
     if h>=dt.date(CUT.year,1,1): fl.append("Hired/rehired this year (partial-period pay)")
     if _V[st]["pre"]<=0: fl.append("Store service dept unprofitable before mgmt pay")
     f["W"]="; ".join(fl)

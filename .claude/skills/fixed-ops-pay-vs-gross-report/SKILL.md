@@ -248,7 +248,8 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - Share of Store Expected = the title's group average pay ÷ the sum of the title averages for that store's managers
   - Expected Pay = the store's expected pay (Service Mgmt Comparison column U) × share. The shares add back exactly to the store's expected pay.
   - Pay vs Expected, Annual Excess, Grade, Store (layer) Grade, Flags
-- **Reference values (Jan–Jul 2026)**: title averages are Director $24,567, Manager $16,221, Drive Manager $12,717. Top of the list is Toyota Henderson's Short (+$318K; confirm the pay record). The bottom is Audi Henderson's McNeely (−$547K).
+- **Confirmed pay records**: listed in the Qlik JSON as `"pay_confirmed": ["<ADP code>|<Payroll Name>"]`. Their flags read "(pay confirmed)" instead of "confirm". **Carry this forward each period.** As of Oct 2026: Z6C|Short, Brian ($74K/month Service Director pay, confirmed correct by the user).
+- **Reference values (Jan–Jul 2026)**: title averages are Director $24,567, Manager $16,221, Drive Manager $12,717. Top of the list is Toyota Henderson's Short (+$318K; pay confirmed correct). The bottom is Audi Henderson's McNeely (−$547K).
 
 **Group Position Summary**, columns E–J:
 - E Gross Basis
