@@ -28,6 +28,7 @@ def strip_previous(wb):
     del wb["Qlik Store Data"]
     if "Advisor Comparison" in wb.sheetnames: del wb["Advisor Comparison"]
     if "Advisor Classification" in wb.sheetnames: del wb["Advisor Classification"]
+    if "Service Mgmt Comparison" in wb.sheetnames: del wb["Service Mgmt Comparison"]
     def clear_cols(ws,first_col):
         for row in ws.iter_rows(min_col=first_col):
             for c in row:
@@ -119,8 +120,10 @@ q["A1"]=f"Qlik Store Data - Gross & Volume, {PL}"; q["A1"].font=Font(name="Calib
 q["A2"]=(f"Source: Qlik Cloud, pulled {PULL}. Gross = P&L app (Profit & Loss), Year {YR}, {LASTMON} YTD, -(Sales + Cost of Sales) by Dept. "
          f"ROs & sold hours = Closed Repair Orders app, Year {YR}, Months 1-{MONTHS}. CP+W ROs = distinct ROs with customer-pay or warranty sale > 0. "
          "CP+W RO Gross = labor + parts gross on customer-pay and warranty lines (Closed ROs app). Stores matched to ADP by payroll company code. Customs (J01) has no Qlik division. "
+         "Service Dept Expense = P&L Dept Service expense accounts (StdAccountType E). Service Staff = Productivity app avg monthly headcount Jan-Jul of service roles (see SKILL.md). "
          "Internal Advisor columns = ROs written by advisors moved to INTERNAL SERVICE ADVISOR (Advisor Classification tab); Customer Advisor = store CP+W less those.")
-q["A2"].font=Font(name="Calibri",size=9,color="FF555555"); q["A2"].alignment=Alignment(wrap_text=True,vertical="top"); q.merge_cells("A2:Y2"); q.row_dimensions[2].height=42
+q["A2"].font=Font(name="Calibri",size=9,color="FF555555"); q["A2"].alignment=Alignment(wrap_text=True,vertical="top"); q.merge_cells("A2:AB2")
+for col,w in (("Z",16),("AA",16),("AB",16)): q.column_dimensions[col].width=w; q.row_dimensions[2].height=42
 q["A4"]="Months of Gross / RO Data"; q["B4"]=MONTHS; q["B4"].font=BLUE
 q["C4"]=f"{PL} (full closed months). Pay covers ~1/1-{CUT.month}/{CUT.day}; monthly averages make the two comparable."
 q["A5"]="Outlier Band (+/- vs Group)"; q["B5"]=ARGS.band; q["B5"].font=BLUE; q["B5"].number_format="0%"
@@ -131,7 +134,8 @@ for c in ("A4","A5","A6"): q[c].font=Font(name="Calibri",size=11,bold=True)
 heads=[h.replace("(Jan-Jul","("+PS) for h in ["Store Name","ADP Code","Qlik Division","Service Gross (Jan-Jul)","Parts Gross (Jan-Jul)","Body Shop Gross (Jan-Jul)","CP+W ROs (Jan-Jul)","Sold Hours (Jan-Jul)",
        "Service Gross / Mo","Parts Gross / Mo","Body Shop Gross / Mo","CP+W ROs / Mo","Sold Hours / Mo","Tech Headcount (Svc/Exp/Foreman/STL)","CP+W RO Gross (Jan-Jul, Labor + Parts)","Gross per CP+W RO",
        "Internal Advisor Internal Gross (Jan-Jul)","Internal Advisor Internal ROs (Jan-Jul)","Internal Advisor CP+W Gross (Jan-Jul)","Internal Advisor CP+W ROs (Jan-Jul)",
-       "Customer Advisor CP+W Gross / Mo","Customer Advisor CP+W ROs / Mo","Customer Advisor Gross per RO","Internal Advisor Internal Gross / Mo","Internal Advisor Internal ROs / Mo"]]
+       "Customer Advisor CP+W Gross / Mo","Customer Advisor CP+W ROs / Mo","Customer Advisor Gross per RO","Internal Advisor Internal Gross / Mo","Internal Advisor Internal ROs / Mo",
+       "Service Dept Expense (Jan-Jul)","Service Staff (Avg Headcount, Productivity)","Service Net / Mo (Gross - Expense)"]]
 for i,h in enumerate(heads,1):
     c=q.cell(7,i,h); style_hdr(c)
 q.row_dimensions[7].height=45
@@ -151,7 +155,12 @@ for i,(s,code) in enumerate(sorted(stores.items(), key=lambda x:x[0].strip())):
     for col,k_ in zip("QRST",("int_g","int_r","cpw_g","cpw_r")): q[f"{col}{r}"]=ia.get(k_,0)
     q[f"U{r}"]=f"=(O{r}-S{r})/$B$4"; q[f"V{r}"]=f"=(G{r}-T{r})/$B$4"; q[f"W{r}"]=f"=IFERROR((O{r}-S{r})/(G{r}-T{r}),0)"
     q[f"X{r}"]=f"=Q{r}/$B$4"; q[f"Y{r}"]=f"=R{r}/$B$4"
+    _sj=Qj["stores"].get(code,{})
+    q[f"Z{r}"]=_sj.get("service_expense",0); q[f"AA{r}"]=_sj.get("service_staff",0); q[f"AB{r}"]=f"=(D{r}-Z{r})/$B$4"
     q[f"N{r}"]="="+"+".join(f"COUNTIFS('Raw Data'!$B$2:$B${N},A{r},'Raw Data'!$D$2:$D${N},\"{t}\",'Raw Data'!$I$2:$I${N},\"Yes\")" for t in TECH_POOL)
+    for col,fmt in [("Z","$#,##0"),("AA","#,##0.0"),("AB","$#,##0;($#,##0)")]:
+        c=q[f"{col}{r}"]; style_dat(c,fmt)
+        if col!="AB": c.font=BLUE
     for col,fmt in zip("ABCDEFGHIJKLMNOPQRSTUVWXY",["General"]*3+["$#,##0"]*3+["#,##0"]*2+["$#,##0"]*3+["#,##0"]*3+["$#,##0"]*2
                          +["$#,##0","#,##0","$#,##0","#,##0","$#,##0","#,##0","$#,##0","$#,##0","#,##0"]):
         c=q[f"{col}{r}"]; f=c.font; style_dat(c,fmt)
@@ -161,7 +170,8 @@ r=Q1+1; q[f"A{r}"]="Group Total"
 for col in "DEFGHIJKLMNOQRSTUVXY":
     q[f"{col}{r}"]=f"=SUM({col}{Q0}:{col}{Q1})"
 q[f"P{r}"]=f"=IFERROR(O{r}/G{r},0)"; q[f"W{r}"]=f"=IFERROR((O{r}-S{r})/(G{r}-T{r}),0)"
-for col in "ABCDEFGHIJKLMNOPQRSTUVWXY":
+for col in ("Z","AA","AB"): q[f"{col}{r}"]=f"=SUM({col}{Q0}:{col}{Q1})"
+for col in list("ABCDEFGHIJKLMNOPQRSTUVWXY")+["Z","AA","AB"]:
     c=q[f"{col}{r}"]; c.font=Font(name="Calibri",size=11,bold=True); c.fill=PatternFill("solid",fgColor="FFC9A04B")
     c.number_format=q[f"{col}{Q1}"].number_format
 for col,w in zip("ABCDEFGHIJKLMNOPQRSTUVWXY",[34,11,24,17,17,17,15,15,15,15,15,13,13,17,19,14,17,15,15,15,16,15,14,16,15]): q.column_dimensions[col].width=w
@@ -551,6 +561,120 @@ if RECS:
         cl[f"A{sr_+1+k}"]=lab; cl[f"J{sr_+1+k}"]=fml; cl[f"J{sr_+1+k}"].number_format="$#,##0" if "gross" in lab else "#,##0"
         cl[f"A{sr_+1+k}"].font=Font(name="Calibri",size=10); cl.merge_cells(f"A{sr_+1+k}:I{sr_+1+k}")
     cl.auto_filter.ref=f"A{H0}:P{R1}"; cl.freeze_panes=f"C{R0}"
+
+# ---- Service Management Comparison tab (Director + Service Manager + Drive Manager, per store)
+MG=["SERVICE DIRECTOR","SERVICE MANAGER","SERVICE DRIVE MANAGER"]; MGA='{"SERVICE DIRECTOR","SERVICE MANAGER","SERVICE DRIVE MANAGER"}'
+_mp={}; _mpeople={}
+for r in range(2,N+1):
+    t=rd[f"D{r}"].value
+    if t not in MG: continue
+    h=rd[f"F{r}"].value; h=h.date() if isinstance(h,dt.datetime) else h
+    if not isinstance(h,dt.date) or h>CUT: continue
+    m=max(0,(CUT-max(h,dt.date(CUT.year,1,1))).days+1)/30.4
+    if m<=0: continue
+    st=rd[f"B{r}"].value; pay=(rd[f"G{r}"].value or 0)/m
+    _mp[st]=_mp.get(st,0)+pay; _mpeople.setdefault(st,[]).append((rd[f"C{r}"].value,t,pay,h))
+_ttl={}
+for st,pp in _mpeople.items():
+    for nm,t,pay,h in pp: _ttl.setdefault(t,[]).append(pay)
+_tavg={t:sum(v)/len(v) for t,v in _ttl.items()}
+mg_stores=[k for k in _mp if stores.get(k) in QLIK and stores.get(k) not in ADV_EXCLUDE]
+def _mv(k):
+    c=stores[k]; sj=Qj["stores"][c]; pay=_mp[k]
+    gross=sj["service_gross"]/MONTHS; pre=(sj["service_gross"]-sj["service_expense"])/MONTHS+pay
+    return dict(pay=pay,gross=gross,pre=pre,staff=sj["service_staff"],ros=sj["cpw_ros"]/MONTHS)
+_V={k:_mv(k) for k in mg_stores}
+_n=len(mg_stores); _mx=sum(v["gross"] for v in _V.values())/_n; _my=sum(v["pay"] for v in _V.values())/_n
+_slope=sum((v["gross"]-_mx)*(v["pay"]-_my) for v in _V.values())/sum((v["gross"]-_mx)**2 for v in _V.values()); _icpt=_my-_slope*_mx
+_gnet=sum(v["pay"] for v in _V.values() if v["pre"]>0)/sum(v["pre"] for v in _V.values() if v["pre"]>0)
+_gstaff=sum(v["pay"] for v in _V.values())/sum(v["staff"] for v in _V.values())
+def _mexcess(k):
+    v=_V[k]; e=(max(0,_icpt+_slope*v["gross"])+max(0,v["pre"])*_gnet+v["staff"]*_gstaff)/3
+    return (v["pay"]-e)*12
+mg_stores.sort(key=lambda k:-_mexcess(k))
+_int_by_name={(x["code"],x["adp"]):x for x in RECS if x["title"] in MG and x["int_gross"]>=50000}
+def _flags(k):
+    out=[]; c=stores[k]
+    for nm,t,pay,h in _mpeople.get(k,[]):
+        x=_int_by_name.get((c,nm))
+        if x: out.append(f"{nm.split(',')[0]} ({t.title()}) writes internal ROs: ${x['int_gross']/1000:,.0f}K")
+        if pay>2*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - over 2x group avg, confirm")
+        if pay<0.5*_tavg[t]: out.append(f"{nm.split(',')[0]} ({t.title()}) ${pay:,.0f}/mo - under half group avg, confirm")
+        if h>=dt.date(CUT.year,1,1): out.append(f"{nm.split(',')[0]} hired/rehired {h:%m/%d/%y}")
+    if _V[k]["pre"]<=0: out.append("Service dept unprofitable before mgmt pay")
+    return "; ".join(out)
+def _struct(k):
+    ab={"SERVICE DIRECTOR":"Dir","SERVICE MANAGER":"Mgr","SERVICE DRIVE MANAGER":"Drive"}
+    cnt={}
+    for nm,t,pay,h in _mpeople.get(k,[]): cnt[t]=cnt.get(t,0)+1
+    return " + ".join((f"{cnt[t]} " if cnt[t]>1 else "")+ab[t] for t in MG if t in cnt)
+sm=wb.create_sheet("Service Mgmt Comparison", index=wb.sheetnames.index("Advisor Classification")+1 if "Advisor Classification" in wb.sheetnames else wb.sheetnames.index("Advisor Comparison")+1)
+sm["A1"]="Service Management Comparison - Director + Service Manager + Drive Manager"; sm["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
+sm["A1"].alignment=Alignment(horizontal="left"); sm.merge_cells("A1:Y1")
+sm["A2"]=(f"One row per store: the whole service management layer (Service Director, Service Manager, Service Drive Manager per ADP), pay ~1/1-{CUT.month}/{CUT.day}; "
+          f"gross, net, staff and ROs are {PL} monthly averages from Qlik. Net Before Mgmt Pay = service dept gross - service dept expense (P&L) + mgmt pay. "
+          "Service Staff = avg service headcount from the Productivity app (advisors, techs, foremen/STL, dispatch, porters, shuttle, BDC, warranty, cashier, rental, express mgr, detail, tint). "
+          "Expected Mgmt Pay = average of three views: Size (pay line fitted across stores vs service gross, row 3), Profit (group pay % of net x store net, $0 if net <= 0) "
+          "and Staff (group pay per staff member x store staff). Annual Excess = (pay - expected) x 12; grades as on Advisor Comparison. Flags are not part of the grade.")
+sm["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); sm["A2"].alignment=Alignment(wrap_text=True,vertical="top")
+sm.merge_cells("A2:Y2"); sm.row_dimensions[2].height=70
+SH=[("A","Store","General",28),("B","Mgmt Headcount","#,##0",9),("C","Structure","General",16),("D","Total Mgmt Pay / Mo","$#,##0",12),
+    ("E","Service Gross / Mo","$#,##0",13),("F","Mgmt Pay % of Gross","0.0%",10),("G","% of Gross vs Group","+0.0%;-0.0%;0.0%",10),
+    ("H","Service Net Before Mgmt Pay / Mo","$#,##0;($#,##0)",14),("I","Mgmt Pay % of Net","0.0%",10),("J","% of Net vs Group","+0.0%;-0.0%;0.0%",10),
+    ("K","Service Staff (Avg)","#,##0",9),("L","Staff per Manager","#,##0.0",9),("M","Mgmt Pay per Staff Member","$#,##0",11),("N","Pay per Staff vs Group","+0.0%;-0.0%;0.0%",10),
+    ("O","CP+W ROs / Mo","#,##0",9),("P","Mgmt Pay per 1,000 ROs","$#,##0",11),("Q","Pay per 1,000 ROs vs Group","+0.0%;-0.0%;0.0%",11),
+    ("R","Expected - Size","$#,##0",11),("S","Expected - Profit","$#,##0",11),("T","Expected - Staff","$#,##0",11),("U","Expected Mgmt Pay / Mo","$#,##0",12),
+    ("V","Pay vs Expected","+0.0%;-0.0%;0.0%",10),("W","Annual Excess Pay","$#,##0;($#,##0);-",13),("X","Grade","General",7),("Y","Flags","General",60)]
+SHR=5; SG=4; S0=6; S1=S0+len(mg_stores)-1
+for col,h,fmt,w in SH:
+    c=sm[f"{col}{SHR}"]; c.value=h
+    for a in ("font","fill","border","alignment"): setattr(c,a,copy(getattr(hsrc,a)))
+    sm.column_dimensions[col].width=w
+sm.row_dimensions[SHR].height=60
+sm["A3"]="Outlier band (+/-)"; sm["B3"]=f"={BAND}"; sm["B3"].number_format="0%"
+sm["D3"]="Size line: intercept"; sm["E3"]=f"=INTERCEPT(D{S0}:D{S1},E{S0}:E{S1})"; sm["E3"].number_format="$#,##0"
+sm["F3"]="slope"; sm["G3"]=f"=SLOPE(D{S0}:D{S1},E{S0}:E{S1})"; sm["G3"].number_format="0.0000"
+for c_ in ("A3","D3","F3"): sm[c_].font=Font(name="Calibri",size=9,bold=True,color="FF555555")
+for c_ in ("B3","E3","G3"): sm[c_].font=Font(name="Calibri",size=9,color="FF555555")
+MBL="$B$3"
+QI=lambda col,qi: f"INDEX('Qlik Store Data'!${col}${Q0}:${col}${Q1},{qi})"
+for i,sname in enumerate(mg_stores):
+    r=S0+i; lq=sname.replace('"','""'); qi=f"MATCH(\"{lq}\",{QS},0)"
+    key=f"{SP}!$A$2:$A${SPN},\"{lq}\",{SP}!$B$2:$B${SPN},{MGA}"
+    f={"A":sname,"B":f"=SUM(SUMIFS({SP}!$C$2:$C${SPN},{key}))","C":_struct(sname),"D":f"=SUM(SUMIFS({SP}!$D$2:$D${SPN},{key}))",
+       "E":f"={QI('I',qi)}","F":f"=IF(E{r}>0,D{r}/E{r},\"N/A\")",
+       "H":f"={QI('AB',qi)}+D{r}","I":f"=IF(H{r}>0,D{r}/H{r},\"N/A\")",
+       "K":f"={QI('AA',qi)}","L":f"=IF(B{r}>0,K{r}/B{r},\"N/A\")","M":f"=IF(K{r}>0,D{r}/K{r},\"N/A\")",
+       "O":f"={QI('L',qi)}","P":f"=IF(O{r}>0,D{r}/O{r}*1000,\"N/A\")",
+       "R":f"=MAX(0,$E$3+$G$3*E{r})","S":f"=MAX(0,H{r})*$I${SG}","T":f"=K{r}*$M${SG}","U":f"=AVERAGE(R{r}:T{r})",
+       "V":f"=IF(U{r}>0,D{r}/U{r}-1,\"N/A\")","W":f"=(D{r}-U{r})*12",
+       "X":f"=IF(NOT(ISNUMBER(V{r})),\"N/A\",IF(V{r}<=-0.15,\"A\",IF(V{r}<=-0.05,\"B\",IF(V{r}<0.05,\"C\",IF(V{r}<=0.2,\"D\",\"F\")))))",
+       "Y":_flags(sname)}
+    for v,b in zip("GJNQ","FIMP"):
+        f[v]=f"=IF(AND(ISNUMBER({b}{r}),ISNUMBER({b}${SG})),IF({b}${SG}<>0,{b}{r}/{b}${SG}-1,\"N/A\"),\"N/A\")"
+    for col,h,fmt,w in SH:
+        c=sm[f"{col}{r}"]; c.value=f[col]; c.number_format=fmt; c.border=copy(hsrc.border)
+        c.font=Font(name="Calibri",size=11,color="FF1155CC") if col=="A" else Font(name="Calibri",size=11)
+    sm[f"Y{r}"].alignment=Alignment(wrap_text=True,vertical="center")
+    sm[f"A{r}"].hyperlink=Hyperlink(ref=f"A{r}",location=f"'{sname.strip()}'!A1")
+grp={"A":"GROUP AVERAGE","B":f"=SUM(B{S0}:B{S1})","D":f"=SUM(D{S0}:D{S1})","E":f"=SUM(E{S0}:E{S1})","F":f"=D{SG}/E{SG}",
+     "H":f"=SUM(H{S0}:H{S1})","I":f"=SUMIF(H{S0}:H{S1},\">0\",D{S0}:D{S1})/SUMIF(H{S0}:H{S1},\">0\")","K":f"=SUM(K{S0}:K{S1})",
+     "L":f"=K{SG}/B{SG}","M":f"=D{SG}/K{SG}","O":f"=SUM(O{S0}:O{S1})","P":f"=D{SG}/O{SG}*1000","W":f"=SUMIF(W{S0}:W{S1},\">0\")",
+     "Y":"Group totals / ratios across the stores listed; Annual Excess = total of stores above expected"}
+for col,h,fmt,w in SH:
+    c=sm[f"{col}{SG}"]; c.value=grp.get(col); c.number_format=fmt if col not in "GJNQV" else "General"
+    c.font=Font(name="Calibri",size=11,bold=True); c.fill=PatternFill("solid",fgColor="FFC9A04B"); c.border=copy(hsrc.border)
+for col in "GJNQ":   # all four: higher = store pays more for what it has -> red
+    rng=f"{col}{S0}:{col}{S1}"; x=f"${col}{S0}"
+    sm.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>{MBL})"],fill=RED[0],font=RED[1]))
+    sm.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}<-{MBL})"],fill=GRN[0],font=GRN[1]))
+    sm.conditional_formatting.add(rng,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>=-{MBL},{x}<={MBL})"],fill=YEL[0],font=YEL[1]))
+for rng,rules in ((f"V{S0}:V{S1}",[(f"AND(ISNUMBER($V{S0}),$V{S0}>0.05)",RED),(f"AND(ISNUMBER($V{S0}),$V{S0}<-0.05)",GRN),(f"AND(ISNUMBER($V{S0}),$V{S0}>=-0.05,$V{S0}<=0.05)",YEL)]),
+                  (f"W{S0}:W{S1}",[(f"AND(ISNUMBER($W{S0}),$W{S0}>0)",RED),(f"AND(ISNUMBER($W{S0}),$W{S0}<0)",GRN)]),
+                  (f"X{S0}:X{S1}",[(f"OR($X{S0}=\"D\",$X{S0}=\"F\")",RED),(f"$X{S0}=\"C\"",YEL),(f"OR($X{S0}=\"A\",$X{S0}=\"B\")",GRN)]),
+                  (f"H{S0}:H{S1}",[(f"AND(ISNUMBER($H{S0}),$H{S0}<=0)",RED)])):
+    for fml,sty in rules: sm.conditional_formatting.add(rng,FormulaRule(formula=[fml],fill=sty[0],font=sty[1]))
+sm.auto_filter.ref=f"A{SHR}:Y{S1}"; sm.freeze_panes=f"B{S0}"
 
 # ---- Center data in every sheet (skip merged titles/notes, long free-text notes, and the back-link)
 from openpyxl.worksheet.cell_range import CellRange

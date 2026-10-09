@@ -215,6 +215,30 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - 14 ADP Service Advisors suggested Internal ($10.7M internal gross); 9 pending review.
   - 23 internal writers are managers, directors, porters and similar, so they don't affect advisor averages. For example, Honda Henderson's Acoba ($3.7M internal gross) is titled SERVICE MANAGER.
 
+**Service Mgmt Comparison tab** (after Advisor Classification). The management layer is Service Director + Service Manager + Service Drive Manager, by the user's choice; BDC, rental and express managers and shop foremen are excluded.
+- **Layout**: one row per store with ADP pay for those titles (Findlay Customs excluded). Row 3 holds the band and the size line (INTERCEPT/SLOPE of mgmt pay vs service gross across the listed stores). Row 4 is GROUP AVERAGE.
+- **Columns**:
+  - Mgmt headcount and structure label
+  - Total mgmt pay per month
+  - Service gross per month; pay % of gross
+  - **Service Net Before Mgmt Pay** = (P&L service gross − service expense) per month + mgmt pay; pay % of net
+  - **Service Staff**: Productivity app average headcount; staff per manager; pay per staff member
+  - CP+W ROs per month; pay per 1,000 ROs
+  - Expected pay from three views: Size = MAX(0, intercept + slope × gross); Profit = MAX(0, net) × group pay % of net; Staff = staff × group pay per staff member
+  - Expected = average of the three views; Pay vs Expected; Annual Excess; Grade (same cut-offs as advisors); Flags
+- **vs Group colors**: higher is red on all four ratios.
+- **Flags** (they don't affect the grade): manager writes internal ROs (≥ $50K internal gross, from the Advisor Classification pull); individual pay over 2× or under 0.5× the group average for the title; hired or rehired this year; service department unprofitable before mgmt pay.
+- **Sorting**: initial sort by Annual Excess, computed in Python to match the formulas. Annual Excess doesn't net to $0 here, because expected pay blends three views.
+- **Data**:
+  - Qlik JSON per store: `service_expense` (no sign flip; expenses are positive) = `Sum({<Year={'2026'},Dept={'Service'},StdAccountType={'E'}>} Jul_YTD_Amt)`.
+  - `service_staff` = Productivity app `948ab4f4-bf9d-47d5-b5ba-6565499db705`: `Sum({<Year={'2026'},Month={'Jan',…,'Jul'},JobGroup={'Fixed Employee'},JobTitle={<service roles>}>} Headcount)/7`. Use `JobGroup={'Fixed Employee'}` because manager titles are mapped to two job groups and would double count. Service roles: SERVICE ADVISOR, SERVICE TECHNICIAN, EXPRESS TECHNICIAN, SHOP FOREMAN, SERVICE TEAM LEADER, SERVICE DISPATCH, SERVICE PORTER, LEAD SERVICE PORTER, SHUTTLE DRIVER, SERVICE BDC, SERVICE BDC MANAGER, SERVICE WARRANTY CLERK, CASHIER, RENTAL CAR MANGER, RENTAL CAR REPRESENTATIVE, EXPRESS SERVICE MANAGER, DETAILER, TINTER.
+  - Qlik Store Data columns Z–AB hold these.
+- **Jan–Jul 2026 reference values**:
+  - Group: 65 managers; $1.15M/month mgmt pay; 8.2% of gross; 25.6% of net before mgmt pay; 18 staff per manager; $968 per staff member.
+  - Grades: 14 F, 4 D, 7 C, 3 B, 6 A.
+  - Top of the ranking: Subaru Prescott, +$233K a year.
+  - Confirm before using: Toyota Henderson Director at $74K/month; Mazda Henderson Director at $2.5K/month.
+
 **Group Position Summary**, columns E–J:
 - E Gross Basis
 - F Workload Unit
