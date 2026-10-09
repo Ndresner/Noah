@@ -239,6 +239,17 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
   - Top of the ranking: Subaru Prescott, +$233K a year.
   - Confirm before using: Toyota Henderson Director at $74K/month; Mazda Henderson Director at $2.5K/month.
 
+**Service Mgr Detail tab** (after Service Mgmt Comparison): one row per Director, Service Manager and Drive Manager.
+- **Layout**: gold GROUP AVG rows per title at the top, followed by the header and the people, initially sorted by individual Annual Excess.
+- **Columns**:
+  - Store, name, title, hire/rehire date
+  - Avg monthly pay (`'Raw Data'!J`) vs the title's group average
+  - Pay % of store service gross, pay per store staff member, pay per 1,000 ROs; each vs the **same-title** group ratio (sum of pay ÷ sum of the store metric across that title's people)
+  - Share of Store Expected = the title's group average pay ÷ the sum of the title averages for that store's managers
+  - Expected Pay = the store's expected pay (Service Mgmt Comparison column U) × share. The shares add back exactly to the store's expected pay.
+  - Pay vs Expected, Annual Excess, Grade, Store (layer) Grade, Flags
+- **Reference values (Jan–Jul 2026)**: title averages are Director $24,567, Manager $16,221, Drive Manager $12,717. Top of the list is Toyota Henderson's Short (+$318K; confirm the pay record). The bottom is Audi Henderson's McNeely (−$547K).
+
 **Group Position Summary**, columns E–J:
 - E Gross Basis
 - F Workload Unit

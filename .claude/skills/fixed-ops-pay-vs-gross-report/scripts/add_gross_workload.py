@@ -29,6 +29,7 @@ def strip_previous(wb):
     if "Advisor Comparison" in wb.sheetnames: del wb["Advisor Comparison"]
     if "Advisor Classification" in wb.sheetnames: del wb["Advisor Classification"]
     if "Service Mgmt Comparison" in wb.sheetnames: del wb["Service Mgmt Comparison"]
+    if "Service Mgr Detail" in wb.sheetnames: del wb["Service Mgr Detail"]
     def clear_cols(ws,first_col):
         for row in ws.iter_rows(min_col=first_col):
             for c in row:
@@ -564,7 +565,7 @@ if RECS:
 
 # ---- Service Management Comparison tab (Director + Service Manager + Drive Manager, per store)
 MG=["SERVICE DIRECTOR","SERVICE MANAGER","SERVICE DRIVE MANAGER"]; MGA='{"SERVICE DIRECTOR","SERVICE MANAGER","SERVICE DRIVE MANAGER"}'
-_mp={}; _mpeople={}
+_mp={}; _mpeople={}; _mrows=[]
 for r in range(2,N+1):
     t=rd[f"D{r}"].value
     if t not in MG: continue
@@ -573,7 +574,7 @@ for r in range(2,N+1):
     m=max(0,(CUT-max(h,dt.date(CUT.year,1,1))).days+1)/30.4
     if m<=0: continue
     st=rd[f"B{r}"].value; pay=(rd[f"G{r}"].value or 0)/m
-    _mp[st]=_mp.get(st,0)+pay; _mpeople.setdefault(st,[]).append((rd[f"C{r}"].value,t,pay,h))
+    _mp[st]=_mp.get(st,0)+pay; _mpeople.setdefault(st,[]).append((rd[f"C{r}"].value,t,pay,h)); _mrows.append((st,rd[f"C{r}"].value,t,pay,h,r))
 _ttl={}
 for st,pp in _mpeople.items():
     for nm,t,pay,h in pp: _ttl.setdefault(t,[]).append(pay)
@@ -675,6 +676,93 @@ for rng,rules in ((f"V{S0}:V{S1}",[(f"AND(ISNUMBER($V{S0}),$V{S0}>0.05)",RED),(f
                   (f"H{S0}:H{S1}",[(f"AND(ISNUMBER($H{S0}),$H{S0}<=0)",RED)])):
     for fml,sty in rules: sm.conditional_formatting.add(rng,FormulaRule(formula=[fml],fill=sty[0],font=sty[1]))
 sm.auto_filter.ref=f"A{SHR}:Y{S1}"; sm.freeze_panes=f"B{S0}"
+
+# ---- Service Mgr Detail tab: one row per manager, vs same-title peers, with an allocated share of the store's expected pay
+_srow={k:S0+i for i,k in enumerate(mg_stores)}
+_ind=[x for x in _mrows if x[0] in _srow]
+_ttl2={}
+for st,nm,t,pay,h,r in _ind: _ttl2.setdefault(t,[]).append(pay)
+_tav={t:sum(v)/len(v) for t,v in _ttl2.items()}
+def _iexcess(x):
+    st,nm,t,pay,h,r=x; v=_V[st]
+    e_store=(max(0,_icpt+_slope*v["gross"])+max(0,v["pre"])*_gnet+v["staff"]*_gstaff)/3
+    w=sum(_tav[t2] for (s2,_,t2,_,_,_) in _ind if s2==st)
+    return (pay-e_store*_tav[t]/w)*12
+_ikey={x:-_iexcess(x) for x in _ind}   # precompute: the list is empty while it is being sorted
+_ind.sort(key=lambda x:_ikey[x])
+md=wb.create_sheet("Service Mgr Detail", index=wb.sheetnames.index("Service Mgmt Comparison")+1)
+md["A1"]="Service Manager Detail - Individual Managers"; md["A1"].font=Font(name="Calibri",size=14,bold=True,color="FF1A2744")
+md["A1"].alignment=Alignment(horizontal="left"); md.merge_cells("A1:W1")
+md["A2"]=("One row per Service Director / Service Manager / Service Drive Manager. Each person is compared with peers of the SAME title (group rows below the header): "
+          "avg pay, pay as % of their store's service gross, pay per service staff member and pay per 1,000 CP+W ROs. "
+          "Expected Pay = the store's expected management pay (Service Mgmt Comparison) split across its managers in proportion to the group average pay for each title. "
+          "Annual Excess = (pay - expected) x 12; grades as elsewhere. Store Grade = the whole layer's grade. Pay = avg monthly pay ~1/1-"
+          f"{CUT.month}/{CUT.day} (partial for people hired this year).")
+md["A2"].font=Font(name="Calibri",size=9,italic=True,color="FF555555"); md["A2"].alignment=Alignment(wrap_text=True,vertical="top")
+md.merge_cells("A2:W2"); md.row_dimensions[2].height=56
+MH=[("A","Store","General",26),("B","Name","General",26),("C","Title","General",20),("D","Hire / Rehire","mm/dd/yy",10),
+    ("E","Avg Monthly Pay","$#,##0",11),("F","Title Group Avg Pay","$#,##0",11),("G","Pay vs Title Avg","+0.0%;-0.0%;0.0%",10),
+    ("H","Store Service Gross / Mo","$#,##0",13),("I","Pay % of Store Gross","0.00%",10),("J","% of Gross vs Title Group","+0.0%;-0.0%;0.0%",11),
+    ("K","Store Service Staff","#,##0",9),("L","Pay per Staff Member","$#,##0",10),("M","Per Staff vs Title Group","+0.0%;-0.0%;0.0%",11),
+    ("N","Store CP+W ROs / Mo","#,##0",10),("O","Pay per 1,000 ROs","$#,##0",10),("P","Per 1,000 ROs vs Title Group","+0.0%;-0.0%;0.0%",11),
+    ("Q","Share of Store Expected","0%",9),("R","Expected Pay / Mo","$#,##0",11),("S","Pay vs Expected","+0.0%;-0.0%;0.0%",10),
+    ("T","Annual Excess Pay","$#,##0;($#,##0);-",12),("U","Grade","General",7),("V","Store (Layer) Grade","General",9),("W","Flags","General",55)]
+TG=[t for t in MG if t in _tav]; G0=4; DH=G0+len(TG); D0=DH+1; D1=D0+len(_ind)-1
+for col,h,fmt,w in MH:
+    c=md[f"{col}{DH}"]; c.value=h
+    for a in ("font","fill","border","alignment"): setattr(c,a,copy(getattr(hsrc,a)))
+    md.column_dimensions[col].width=w
+md.row_dimensions[DH].height=60
+md["A3"]="Outlier band (+/-)"; md["B3"]=f"={BAND}"; md["B3"].number_format="0%"
+md["A3"].font=Font(name="Calibri",size=9,bold=True,color="FF555555"); md["B3"].font=Font(name="Calibri",size=9,color="FF555555")
+SMN="'Service Mgmt Comparison'"
+rng=lambda col: f"${col}${D0}:${col}${D1}"
+tgrow={}
+for j,t in enumerate(TG):
+    r=G0+j; tgrow[t]=r
+    vals={"A":f"GROUP AVG - {t.title()}","B":f"=COUNTIF({rng('C')},\"{t}\")&\" people\"","C":t,
+          "E":f"=AVERAGEIF({rng('C')},\"{t}\",{rng('E')})",
+          "I":f"=SUMIF({rng('C')},\"{t}\",{rng('E')})/SUMIF({rng('C')},\"{t}\",{rng('H')})",
+          "L":f"=SUMIF({rng('C')},\"{t}\",{rng('E')})/SUMIF({rng('C')},\"{t}\",{rng('K')})",
+          "O":f"=SUMIF({rng('C')},\"{t}\",{rng('E')})/SUMIF({rng('C')},\"{t}\",{rng('N')})*1000",
+          "T":f"=SUMIFS({rng('T')},{rng('C')},\"{t}\",{rng('T')},\">0\")"}
+    for col,h,fmt,w in MH:
+        c=md[f"{col}{r}"]; c.value=vals.get(col); c.number_format=fmt if col not in "GJMPS" else "General"
+        c.font=Font(name="Calibri",size=11,bold=True); c.fill=PatternFill("solid",fgColor="FFC9A04B"); c.border=copy(hsrc.border)
+_tgref=lambda col,r: f"INDEX(${col}${G0}:${col}${DH-1},MATCH(C{r},$C${G0}:$C${DH-1},0))"
+for i,(st,nm,t,pay,h,rr) in enumerate(_ind):
+    r=D0+i; lq=st.replace('"','""'); qi=f"MATCH(\"{lq}\",{QS},0)"; srr=_srow[st]
+    f={"A":st,"B":nm,"C":t,"D":h,"E":f"='Raw Data'!J{rr}","F":f"={_tgref('E',r)}","G":f"=IF(F{r}>0,E{r}/F{r}-1,\"N/A\")",
+       "H":f"={SMN}!E{srr}","I":f"=IF(H{r}>0,E{r}/H{r},\"N/A\")","K":f"={SMN}!K{srr}","L":f"=IF(K{r}>0,E{r}/K{r},\"N/A\")",
+       "N":f"={SMN}!O{srr}","O":f"=IF(N{r}>0,E{r}/N{r}*1000,\"N/A\")",
+       "Q":f"=F{r}/SUMIF({rng('A')},A{r},{rng('F')})","R":f"={SMN}!U{srr}*Q{r}","S":f"=IF(R{r}>0,E{r}/R{r}-1,\"N/A\")",
+       "T":f"=(E{r}-R{r})*12",
+       "U":f"=IF(NOT(ISNUMBER(S{r})),\"N/A\",IF(S{r}<=-0.15,\"A\",IF(S{r}<=-0.05,\"B\",IF(S{r}<0.05,\"C\",IF(S{r}<=0.2,\"D\",\"F\")))))",
+       "V":f"={SMN}!X{srr}"}
+    for v,b in zip("JMP","ILO"):
+        f[v]=f"=IF(AND(ISNUMBER({b}{r}),ISNUMBER({_tgref(b,r)})),{b}{r}/{_tgref(b,r)}-1,\"N/A\")"
+    fl=[]; x=_int_by_name.get((stores[st],nm))
+    if x: fl.append(f"Writes internal ROs: ${x['int_gross']/1000:,.0f}K")
+    if pay>2*_tav[t]: fl.append("Over 2x title avg - confirm pay record")
+    if pay<0.5*_tav[t]: fl.append("Under half title avg - confirm pay record")
+    if h>=dt.date(CUT.year,1,1): fl.append("Hired/rehired this year (partial-period pay)")
+    if _V[st]["pre"]<=0: fl.append("Store service dept unprofitable before mgmt pay")
+    f["W"]="; ".join(fl)
+    for col,hh,fmt,w in MH:
+        c=md[f"{col}{r}"]; c.value=f[col]; c.number_format=fmt; c.border=copy(hsrc.border)
+        c.font=Font(name="Calibri",size=11,color="FF1155CC") if col=="A" else Font(name="Calibri",size=11)
+    md[f"W{r}"].alignment=Alignment(wrap_text=True,vertical="center")
+    md[f"A{r}"].hyperlink=Hyperlink(ref=f"A{r}",location=f"'{st.strip()}'!A1")
+for col in "GJMP":
+    rg=f"{col}{D0}:{col}{D1}"; x=f"${col}{D0}"
+    md.conditional_formatting.add(rg,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>$B$3)"],fill=RED[0],font=RED[1]))
+    md.conditional_formatting.add(rg,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}<-$B$3)"],fill=GRN[0],font=GRN[1]))
+    md.conditional_formatting.add(rg,FormulaRule(formula=[f"AND(ISNUMBER({x}),{x}>=-$B$3,{x}<=$B$3)"],fill=YEL[0],font=YEL[1]))
+for rg,rules in ((f"S{D0}:S{D1}",[(f"AND(ISNUMBER($S{D0}),$S{D0}>0.05)",RED),(f"AND(ISNUMBER($S{D0}),$S{D0}<-0.05)",GRN),(f"AND(ISNUMBER($S{D0}),$S{D0}>=-0.05,$S{D0}<=0.05)",YEL)]),
+                 (f"T{D0}:T{D1}",[(f"AND(ISNUMBER($T{D0}),$T{D0}>0)",RED),(f"AND(ISNUMBER($T{D0}),$T{D0}<0)",GRN)]),
+                 (f"U{D0}:V{D1}",[(f"OR(U{D0}=\"D\",U{D0}=\"F\")",RED),(f"U{D0}=\"C\"",YEL),(f"OR(U{D0}=\"A\",U{D0}=\"B\")",GRN)])):
+    for fml,sty in rules: md.conditional_formatting.add(rg,FormulaRule(formula=[fml],fill=sty[0],font=sty[1]))
+md.auto_filter.ref=f"A{DH}:W{D1}"; md.freeze_panes=f"C{D0}"
 
 # ---- Center data in every sheet (skip merged titles/notes, long free-text notes, and the back-link)
 from openpyxl.worksheet.cell_range import CellRange
