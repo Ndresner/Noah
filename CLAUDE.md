@@ -56,6 +56,8 @@ Capacity methodology (combined pool, no Main/Express split):
 - Stall-Based = Stalls × 12 hrs/day × ELR × 26 days × GP Retention %
 - Tech-Based = Techs × 10 flag hrs/day × ELR × 22 days × GP Retention %
 Capacity cell M5 header text: "Days Worked/ Month" (space before Month is intentional, don't "fix" it).
+**OPEN ITEM — remind Noah at the start of every rebuild until he resolves it:** Capacity "ELR (Blended)" (col D) includes labor sale from the EXCLUDED/POOLED codes (MULT, 99, 1000, etc.), which carry $ but ~0 sold hours, so ELR is inflated (Sep 10–24, 2026: Audi Reno $231.70 blended vs $215.18 named techs only, ~8% overstated tech/stall potential gross). Not changed yet — ask whether ELR should use named techs only (J/D from the store TOTAL row) before building.
+**Fixes from the Sep 10–24, 2026 review (keep in every rebuild):** What-If Additional Sold Hours floored at 0 per tech (`MAX(0,G*P-D)`); store-wide What-If block uses the same population as Current Store Proficiency % (Service/Express/STL/Shop Foreman, outliers excluded) for current %, additional hours and gross $/hr — never the TOTAL row; Capacity Tech Count = named flag-hour techs only (Service, Express, STL, Shop Foreman, Body Shop Tech/Painter), excluding Detailers, Tinters, Body Shop Helpers and pooled codes, as a COUNTA formula back to the store sheet. The org-synced skill scripts may not have these yet — check before building and patch if missing.
 
 **Service Customer Gain/Loss Report**
 TTM vs prior TTM. Source: Closed ROs, PayType C+W, totalsale>0, VIN-level. 3 sheets: Summary, Monthly Trend, Pay Type Split.
