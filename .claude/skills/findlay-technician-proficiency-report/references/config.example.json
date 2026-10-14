@@ -1,0 +1,9 @@
+{
+  "roster_path": "Tech_Employee_List__000____Tech_Efficiency_Report_Data_08_25_26_-_09_09_26.xlsx",
+  "qlik_data_path": "tech_data.json",
+  "template_path": "Findlay_Technician_Proficiency_Aug10-Aug24_2026.xlsx",
+  "output_path": "Findlay_Technician_Proficiency_Aug25-Sep9_2026.xlsx",
+  "new_period_label": "Aug 25 to Sep 9, 2026",
+  "qlik_date_start": "8/25/2026",
+  "qlik_date_end": "9/9/2026"
+}
