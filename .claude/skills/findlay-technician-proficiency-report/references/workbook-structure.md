@@ -10,7 +10,7 @@
 6-39. The 34 store sheets, alphabetical by sheet name, tab color navy `1A2744`
 
 Active sheet on open: Proficiency. Freeze panes: `A5` on Proficiency/Proficiency
-Ranker/Tech Ranker, `A6` on Capacity/Capacity Ranker, `A5` on every store sheet.
+Ranker/Tech Ranker, `A6` on Capacity/Capacity Ranker, `C5` on every store sheet (rows 1-4 and columns A:B frozen).
 
 ## Colors
 
@@ -18,7 +18,7 @@ Ranker/Tech Ranker, `A6` on Capacity/Capacity Ranker, `A5` on every store sheet.
 - Status green: font `006100`, fill `C6EFCE`
 - Status yellow: font `9C6500`, fill `FFEB9C`
 - Status red: font `9C0006`, fill `FFC7CE`
-- What-if target-entered flag: fill `FFFF00` (yellow), no font change
+- What-if target-entered flag: Tech No + Name (A:B) turn fill `FFFF00` (yellow) + bold when that row's Target Proficiency (P) has a value
 - Capacity sheet borders: thin, color `CCCCCC` (light gray)
 - Font throughout: Arial
 

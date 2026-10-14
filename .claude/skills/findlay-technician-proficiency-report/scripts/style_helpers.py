@@ -161,9 +161,11 @@ def add_posneg_cf(ws, col_letter, row_start, row_end, black_font=False):
 
 
 def add_whatif_flag_cf(ws, row_start, row_end):
-    rng = f"B{row_start}:B{row_end}"
+    # Tech No + Name light up yellow once a Target Proficiency % is typed in P, so the
+    # technician being targeted is obvious (Excel can't react to a click without VBA).
+    rng = f"A{row_start}:B{row_end}"
     ws.conditional_formatting.add(
-        rng, FormulaRule(formula=[f'$P{row_start}<>""'], fill=fill(YELLOW_FILL)))
+        rng, FormulaRule(formula=[f'$P{row_start}<>""'], fill=fill(YELLOW_FILL), font=Font(bold=True)))
 
 
 def add_category_block_cf(ws, row_start, row_end):

@@ -209,7 +209,9 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
     for col, w in widths.items():
         ws.column_dimensions[col].width = w
 
-    ws.freeze_panes = "A5"
+    # Freeze header rows AND Tech No/Name (A:B) so the name stays beside the What-If
+    # Target cell (column P) when scrolling right -- see lessons-learned #10.
+    ws.freeze_panes = "C5"
 
     # store-wide totals across ALL techs (named + unmapped) for Capacity tab
     all_rows = [row for cat_rows in store_data["named"].values() for row in cat_rows] + unmapped

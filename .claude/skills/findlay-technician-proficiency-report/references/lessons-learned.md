@@ -120,3 +120,13 @@ Sep 10-24, 2026 workbook ("Capacity Fixed"), and the scripts now match that vers
 Column E was 10 wide, which fits "RO Count" in the main table but clips the bold "Labor
 Gross" header in the EXCLUDED / POOLED CODES block, which reuses columns A:E. E is now 14
 and D is 13 (header length + 3 padding, the CLAUDE.md width rule). Keep them there.
+
+## 10. Showing which technician a What-If target belongs to
+
+The user asked for the technician's name to highlight when they click a yellow Target
+Proficiency cell (column P). A click can't trigger anything in a plain .xlsx -- that needs a
+VBA SelectionChange macro (.xlsm, "Enable Content", no Excel Online/mobile), and
+`CELL("row")` tricks only refresh on recalc, not on click. The no-macro solution used
+instead: store sheets freeze panes at `C5` so Tech No + Name stay on screen next to column P
+while scrolling right, and the conditional format highlights Tech No + Name (A:B, yellow
+fill + bold) as soon as a target is typed in P. Don't switch the workbook to .xlsm.
