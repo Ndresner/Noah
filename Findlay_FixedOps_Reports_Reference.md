@@ -47,11 +47,13 @@ This document consolidates the methodology, structure, and key parameters for al
 
 **Tech Ranker fixed column widths:** A=10.71, B=22, C=14.14, D=20, E=22, F=16.86, G=15.57, H=16, I=13, J=13, K=16.43, L=18.29, M=10, N=12.
 
-**Capacity methodology (combined pool, no Main/Express split):**
-- Stall-Based Potential Gross = Total Stalls × 12 hrs/day × ELR × 26 days/month × GP Retention %
-- Tech-Based Potential Gross = Tech Count × 10 flag hrs/day × ELR × 22 days/month × GP Retention %
+**Capacity methodology (combined pool, no Main/Express split; pay-period based since Sep 10–24, 2026 — period dates in Capacity B3:C3):**
+- Stall-Based Potential Gross = Total Stalls × 12 hrs/day × ELR × Days Open/Period (Mon–Sat, `NETWORKDAYS.INTL(B3,C3,11)`) × GP Retention %
+- Tech-Based Potential Gross = Tech Count × 10 flag hrs/day × ELR × Days Worked/Period (Mon–Fri, `NETWORKDAYS.INTL(B3,C3,1)`) × GP Retention %
+- Actual Period Labor Gross = live link to each store sheet (TOTAL/AVERAGE Labor Gross + pooled-codes Labor Gross); replaces the old carried-forward Actual Monthly Gross. Only Total Stalls carries forward.
 - Corrected lift counts: Hyundai Prescott=16, Audi Henderson=32, Kia LV=27, Kia St George=14, Toyota Henderson=93, VW St George=8.
-- Capacity M5 header: "Days Worked/ Month" (space before "Month" is deliberate).
+- Capacity M5 header: "Days Worked/ Period" (space before "Period" is deliberate).
+- Store sheets: columns D/E are 13/14 wide so the pooled-codes "Labor Sale"/"Labor Gross" headers fit.
 
 **Column-width audit rule:** skip merged multi-column rows; add +3 padding; enforce min-width floors for short-text columns like Status (16).
 
