@@ -217,8 +217,10 @@ def main():
     set_cell(ws, 2, 1,
              "Rebuilt using the Findlay Capacity Calculator methodology (STALL Capacity Calculator + Forecasting "
              "Tool - TECH Count + Dashboard). No Main/Express split applied per user direction -- stalls and "
-             "technicians are each treated as one combined pool per store. Tech Count (column J) combines every "
-             "technician category on the store sheet -- not just the categories ranked in Tech Ranker. Assumptions "
+             "technicians are each treated as one combined pool per store. Tech Count (column J) counts every named "
+             "technician on the store sheet, all categories (not just those ranked in Tech Ranker); pooled RO codes "
+             "(MULT, 999, etc.) are not counted as technicians, but their labor gross is included in Actual Period "
+             "Labor Gross. Assumptions "
              "used for all stores: 12 hrs/day open and a combined 10 flag hrs/day/tech goal. Capacity covers the "
              "pay period only (B3:C3): Days Open = Mon-Sat days in the period (stall calc), Days Worked = Mon-Fri "
              "days in the period (tech calc). ELR and GP Retention % are each store's own blended actuals for the "

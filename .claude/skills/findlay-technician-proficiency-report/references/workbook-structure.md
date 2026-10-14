@@ -140,5 +140,7 @@ Only Total Stalls (plus Hours Open/Day and Desired Flag Hrs/Day) carries forward
 prior workbook; ELR, GP Retention %, Tech Count and everything derived is recomputed.
 Capacity Ranker columns I-K are headed Actual Period Labor Gross / Tech-Based Potential
 Gross/Period / Stall-Based Potential Gross/Period, ranked by Tech Capacity Utilization %.
-Tech Count combines every technician category at the store, including unmapped/pooled
-codes -- broader than Tech Ranker's population.
+Tech Count = named technicians on the store sheet, every category (broader than Tech
+Ranker's population). Unmapped/pooled codes (MULT, 999, ...) are NOT counted -- they aren't
+people -- but their sold hours, sale and gross still feed ELR, GP Retention % and Actual
+Period Labor Gross (lessons-learned #11).

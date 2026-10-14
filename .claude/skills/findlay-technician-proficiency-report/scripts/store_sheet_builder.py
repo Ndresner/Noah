@@ -213,10 +213,13 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
     # Target cell (column P) when scrolling right -- see lessons-learned #10.
     ws.freeze_panes = "C5"
 
-    # store-wide totals across ALL techs (named + unmapped) for Capacity tab
-    all_rows = [row for cat_rows in store_data["named"].values() for row in cat_rows] + unmapped
+    # store-wide totals for the Capacity tab: production (sold hours, sale, gross) covers ALL
+    # techs (named + unmapped/pooled codes); tech_count is named technicians only, since pooled
+    # codes like MULT/999 aren't people (lessons-learned #11)
+    named_rows = [row for cat_rows in store_data["named"].values() for row in cat_rows]
+    all_rows = named_rows + unmapped
     store_wide = {
-        "tech_count": len(all_rows),
+        "tech_count": len(named_rows),
         "sold_hours": sum(x["sold_hours"] for x in all_rows),
         "labor_sale": sum(x["labor_sale"] for x in all_rows),
         "labor_gross": sum(x["labor_gross"] for x in all_rows),

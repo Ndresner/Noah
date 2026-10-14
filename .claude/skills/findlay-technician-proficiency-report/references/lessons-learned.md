@@ -130,3 +130,12 @@ VBA SelectionChange macro (.xlsm, "Enable Content", no Excel Online/mobile), and
 instead: store sheets freeze panes at `C5` so Tech No + Name stay on screen next to column P
 while scrolling right, and the conditional format highlights Tech No + Name (A:B, yellow
 fill + bold) as soon as a target is typed in P. Don't switch the workbook to .xlsm.
+
+## 11. Capacity Tech Count = named technicians only
+
+Tech Count used to be `len(named + unmapped)`, so every pooled RO code (MULT, 999, 9999,
+77777, ...) added a phantom "technician" to the tech-based capacity -- inflating potential
+gross and understating Tech Utilization, and prompting GMs to ask why their headcount looked
+high. It now counts named roster technicians only (all categories). Pooled codes' production
+stays in ELR, GP Retention % and Actual Period Labor Gross, because that work really was
+produced in the shop.
