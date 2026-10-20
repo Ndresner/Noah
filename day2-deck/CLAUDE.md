@@ -55,6 +55,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `improved-deck.mjs` | Most Improved - Review (v1, superseded) | `imp/imp.json` |
 | `moving-deck.mjs` | **Most Improved v2 - Review (10)** | `imp/imp.json`, `imp/mom.json` |
 | `whos-moving.mjs` | Who's Moving Now - Review (10, top 10 per measure) | `imp/mom.json` |
+| `gross-trend-review.mjs` | **Gross Trend - Review (11)**: Jan–Sep 2026 vs 2025 two-line options | `gross/monthly.json` (Qlik P&L, pulled Oct 20, reconciles to verified totals), `prod/trend.json` |
 
 **Can't be rebuilt from this package.** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks were built in earlier sessions. Their scripts are here (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`, `master.mjs`), but their data JSON (`ntgp.json`, `ntgs.json`, `abs.json`, `m5.json`, `door.json`, `elr_q3.json`, `wi.json`, `wm.json`, `all.json`, `doorinfo.json`) and the `*-mod.mjs` files `master.mjs` imports did not survive.
 - **For now:** treat those `.pptx` files and the **master deck** as built artifacts. Edit them by swapping slides (see `swap_prod.py`).
@@ -172,6 +173,12 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 
 ## Open decisions (Noah / Tray)
 - **What to cut.** Priority is dialogue.
+- **Trend slides (Oct 20):** replace the trailing-12 line with Jan–Sep 2026 vs 2025, two lines. All options are saved in `decks/Gross Trend - Review.pptx`; nothing is in the test deck yet. Pick one:
+  - **A** (slides 1–6): two-line chart with "What it says" bullets, table slide kept.
+  - **B** (slides 7–9): chart merged with the YOY card, table slide dropped (3 fewer slides). Claude's recommendation.
+  - **B + Q4** (slide 10): B with the 2025 line through December. In or out?
+  - **Headcount** (slide 11): same two-line treatment for Fixed Ops Headcount. Keep or leave the trailing-12 version?
+  - Once chosen: swap into the Gross and Productivity sections the way `swap_prod.py` does.
 - **Door rate design:** pick one of the five options in the appendix.
 - **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
 - **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
