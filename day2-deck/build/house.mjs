@@ -291,6 +291,78 @@ export function trend(pptx, deck, o) {
   return s;
 }
 
+/* ---------- TREND YOY - this year vs last year, one line each ----------
+   ADDED 2026-10-20 (Noah): replaces the trailing-12 line with the reporting period,
+   Jan-Sep 2026 over Jan-Sep 2025. Last year grey, this year blue (identity, not
+   judgment). o.months = labels, o.a = last year, o.b = this year (o.a may run longer
+   than o.b to show what is still ahead). o.card = true puts the YOY card on top and
+   drops the bullets panel - the merged slide. Values in $M unless o.scale/o.axisFormat. */
+export function trendYoy(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  const SC = o.scale ?? 1e6;
+  const r2 = v => v == null ? null : +(v / SC).toFixed(2);
+  const all = [...o.a, ...o.b].map(v => v / SC);
+  const lo = o.min ?? Math.floor(Math.min(...all) - 0.5), hi = o.max ?? Math.ceil(Math.max(...all) + 0.5);
+  const yA = o.labels?.[0] ?? "2025", yB = o.labels?.[1] ?? "2026";
+  const data = [
+    { name: yA, labels: o.months, values: o.a.map(r2) },
+    { name: yB, labels: o.months, values: o.months.map((_, i) => r2(o.b[i])) },
+  ];
+
+  let cy = 1.32;
+  if (o.card) {
+    const n = o.b.length, a = o.a.slice(0, n).reduce((t, x) => t + x, 0), b = o.b.reduce((t, x) => t + x, 0), v = b - a;
+    const up = dirOf(o.metric) === "up" ? v >= 0 : v < 0;
+    const FV = o.fmt?.v ?? M, FD = o.fmt?.d ?? money, FP = o.fmt?.p ?? pct;
+    panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 1.3, label: null });
+    s.addText(words(o.cardLabel, "card label").toUpperCase(), {
+      x: 0.75, y: 1.42, w: 11.8, h: 0.3, fontFace: F, fontSize: sz(14, "card label"),
+      color: C.ink600, charSpacing: 1.0, isTextBox: true, margin: 0,
+    });
+    [[yA, FV(a), C.ink], [yB, FV(b), C.ink], ["VARIANCE", FD(v), up ? C.goodInk : C.badInk], ["VAR %", FP(v, a), up ? C.goodInk : C.badInk]]
+      .forEach(([l, val, col], i) => {
+        const x = 0.75 + i * 3.05;
+        s.addText(l, { x, y: 1.74, w: 2.9, h: 0.26, fontFace: F, fontSize: sz(14, "card sublabel"), color: C.ink600, charSpacing: 0.9, isTextBox: true, margin: 0 });
+        s.addText(val, { x, y: 1.98, w: 2.95, h: 0.56, fontFace: F, fontSize: sz(28, "card value"), bold: true, color: col, isTextBox: true, margin: 0 });
+      });
+    cy = 2.76;
+  }
+  const W = o.card ? 12.33 : 8.3, H = 6.37 - cy;
+  panel(pptx, s, { x: 0.5, y: cy, w: W, h: H, label: o.panelLabel });
+
+  s.addChart(pptx.ChartType.line, data, {
+    x: 0.68, y: cy + 0.62, w: W - 0.36, h: H - 0.72,
+    chartColors: [C.ink300, C.blue], lineSize: 3, lineSmooth: false,
+    lineDataSymbol: "circle", lineDataSymbolSize: 8, displayBlanksAs: "gap",
+    showLegend: true, legendPos: "t", legendFontFace: "+mn-lt", legendFontSize: sz(14, "legend"), legendColor: C.ink,
+    showValue: false, showTitle: false,
+    catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(14, "cat axis"), catAxisLabelColor: C.ink,
+    valAxisLabelFontFace: "+mn-lt", valAxisLabelFontSize: sz(14, "val axis"), valAxisLabelColor: C.ink600,
+    valAxisLabelFormatCode: o.axisFormat ?? '$0"M"',
+    valAxisMinVal: lo, valAxisMaxVal: hi, valAxisMajorUnit: o.majorUnit ?? 1,
+    valGridLine: { color: C.rule, size: 0.75 }, catGridLine: { style: "none" },
+    catAxisLineShow: true, valAxisLineShow: false,
+  });
+
+  if (!o.card) {
+    panel(pptx, s, { x: 9.0, y: 1.32, w: 3.83, h: 5.05, label: "What it says" });
+    let by = 2.02;
+    o.bullets.forEach((b, i) => {
+      s.addShape(pptx.ShapeType.ellipse, { x: 9.25, y: by + 0.1, w: 0.11, h: 0.11, fill: { color: i === 0 ? C.blue : C.ink } });
+      s.addText(words(b, "bullet"), {
+        x: 9.52, y: by - 0.04, w: 3.1, h: 1.15, fontFace: F, fontSize: sz(15, "bullet"),
+        color: i === 0 ? C.blue : C.ink, bold: i === 0, isTextBox: true, margin: 0, valign: "top",
+      });
+      by += 1.24;
+    });
+  }
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
 /* ---------- YOY - group card over a month table ---------- */
 export function yoy(pptx, deck, o) {
   const s = deck.addSlide();
