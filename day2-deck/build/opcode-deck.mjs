@@ -1,0 +1,74 @@
+import PptxGenJS from "pptxgenjs";
+import fs from "fs";
+import * as H from "./house.mjs";
+
+const pptx = new PptxGenJS();
+pptx.layout = "LAYOUT_WIDE";
+pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
+
+/* ---- Qlik Closed Repair Orders app c3efc739 (Fixed space), pulled 2026-10-14.
+   Pay type C, closed ROs Jan-Sep by close month. Same-store: INEOS excluded.
+   GMC Prescott body shop labor types excluded. 33 store rows reconcile to the
+   group on numerator and denominator, both years. ---- */
+const A = JSON.parse(fs.readFileSync("./all.json", "utf8"));
+const MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP"];
+const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep by close month. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor excluded.";
+const SEG = "Opcode Benchmarks";
+const sum = a => a.reduce((t, x) => t + x, 0);
+const p1  = v => (v * 100).toFixed(1) + "%";
+const fmt = {
+  v: v => (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%",   // truncated, same as the ranker
+  d: v => (v >= 0 ? "+" : "\u2212") + Math.abs(v * 100).toFixed(1) + " pts",
+  p: (d, a) => (d >= 0 ? "+" : "\u2212") + Math.abs(d / a * 100).toFixed(1) + "%",
+};
+const pt = v => (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%";   // truncated, matches the benchmark rankers
+const NUM = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+
+H.section(pptx, pptx, {
+  kicker: "Fixed Ops", title: SEG,
+  chips: ["Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel service 7.5%"],
+});
+
+function pair(key, title, metric, measure, bench, noun, nouns) {
+  const M = A[key], d25 = A.den25, d26 = A.den26;
+  const y25 = sum(M.m25) / sum(d25), y26 = sum(M.m26) / sum(d26);
+  const up = MON.filter((m, i) => M.m26[i] / d26[i] > M.m25[i] / d25[i]).length;
+  const gap = Math.round(bench * sum(d26) - sum(M.m26));
+  const B = p1(bench).replace(".0%", "%");
+
+  H.yoy(pptx, pptx, {
+    eyebrow: SEG, title, metric,
+    cardLabel: "Group \u00b7 January\u2013September \u00b7 same-store, 33 stores",
+    months: MON.map((m, i) => [m, M.m25[i] / d25[i], M.m26[i] / d26[i]]),
+    ytd: [y25, y26], fmt,
+    takeaway: `Up ${(Math.abs(y26 - y25) * 100).toFixed(1)} pts to ${fmt.v(y26)}, ahead of 2025 in ${up === 9 ? "all nine" : NUM[up] + " of nine"} months, `
+            + (y26 >= bench ? `and above the ${B} benchmark.` : `but ${((bench - y26) * 100).toFixed(1)} pts under the ${B} benchmark \u2014 ${gap.toLocaleString()} ${nouns} short.`),
+    source: `${SRC} ${measure} = ${noun} ROs \u00f7 customer-pay ROs on the op-code report basis. YTD from YTD totals, not the mean of months.`,
+  });
+
+  const rows = M.S.map(([n, a, b, c, d]) => [n, c / d, a / b]);
+  const at = rows.filter(r => r[1] >= bench).length;
+  const lead = [...rows].sort((p, q) => q[1] - p[1])[0];
+  const zero = rows.filter(r => r[1] < 0.005).map(r => r[0]);
+  const jump = rows.filter(r => r[2] < 0.005 && r[1] >= 0.02).map(r => r[0]);
+  let dq = "";
+  if (zero.length) dq += ` CHECK OP-CODE MAPPING - under 0.5%: ${zero.join(", ")}.`;
+  if (jump.length) dq += ` Near zero in 2025, so year-over-year gain may be mapping: ${jump.join(", ")}.`;
+
+  H.levelRanker(pptx, pptx, {
+    eyebrow: SEG, title, metric,
+    rows: rows.map(r => [r[0], r[1]]),
+    group: y26, bench, fmt: pt,   // truncated so just-under-benchmark never reads as the benchmark
+        takeaway: `${at} of 33 stores at or above ${B}, led by ${lead[0]} at ${pt(lead[1])}. GROUP sits at ${pt(y26)}.`,
+    source: `${SRC} Jan-Sep 2026 YTD; green at or above the ${B} benchmark, red below.${dq}\n`
+          + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${p1(r[1])} (2025 ${p1(r[2])})`).join("\n"),
+  });
+}
+
+pair("align", "Alignment %",     "alignment %",    "ALIGNMENT %",    0.15,  "alignment", "alignments");
+pair("bal",   "Balance %",       "balance %",      "BALANCE %",      0.15,  "balance", "balances");
+pair("bf",    "Brake Fluid %",   "brake flush %",  "BRAKE FLUSH %",  0.10,  "brake fluid service", "brake fluid services");   // title per Noah, Oct 15 2026
+pair("fuel",  "Fuel Service %",  "fuel service %", "FUEL SERVICE %", 0.075, "fuel service", "fuel services");
+
+await pptx.writeFile({ fileName: "Opcode Benchmarks - House Style.pptx" });
+console.log("built");

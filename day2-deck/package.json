@@ -1,0 +1,7 @@
+{
+  "name": "findlay-day2-fixed-ops-deck",
+  "private": true,
+  "type": "module",
+  "description": "Findlay Automotive Group - Oct 29 2026 GM & Service Manager meeting, Day 2 (fixed ops) deck build",
+  "dependencies": { "pptxgenjs": "4.0.1" }
+}

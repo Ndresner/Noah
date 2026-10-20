@@ -1,0 +1,186 @@
+# Findlay Day 2 Fixed Ops Deck: project brief for Claude Code
+
+Read this first. It holds what the code can't tell you: the meeting, the data rules, the house style, the decisions already made, and what's still open.
+
+## The meeting
+- **Event:** Findlay Automotive Group GM & Service Manager meeting. Day 1 is Oct 28, 2026. **Day 2, the fixed ops day, is Oct 29, 2026, 8am–4pm.**
+- **Audience:** GMs, service managers and fixed ops managers. There are no parts-only managers; some managers run parts and service together. This is the first meeting dedicated to fixed ops for the GMs.
+- **Owner:** Noah (Fixed Ops analytics, ndresner@findlayauto.com). He reviews with **Tray**, who presents and makes the style rulings.
+- **Direction (Oct 20):** shorten the slide count significantly. The priority is **dialogue in the room, not data volume**: the room doesn't know the numbers as deeply as we do. Keep every slide in the test deck for now, so Noah and Tray can choose what to cut. Don't change the format.
+
+## Folder map
+| Path | What it is |
+|---|---|
+| `build/house.mjs` | **The engine.** Colour tokens, font floor, metric registry and one renderer per slide type: `section`, `cover`, `yoy`, `ranker`, `segmentRanker`, `levelRanker`, `trend`, `statTiles`, `amountRanker`, `dumbbell`, `talkingPoints`, `explainer`, … The look lives here. |
+| `build/blocks.mjs` | A metric block: YOY card, then level or segment view, then change ranker. `load()` reads `{m25, m26, S}` JSON. |
+| `build/*-deck.mjs` | One script per deck (see the build table below). Each writes a `.pptx` into `build/`. |
+| `build/merge_test.py` | Assembles **`decks/Fixed Ops - Day 2 Example Test Deck.pptx`** (159 slides) from the deck files in `decks/`. The flow order is defined here. It also copies native chart parts (sparklines) across. |
+| `build/swap_prod.py` | Replaces master slides 74–88 (Productivity) with the rebuilt Productivity deck. |
+| `build/prof/` | Technician proficiency data and calculation (`compute.py` plus the helpers from the `findlay-technician-proficiency-report` skill). |
+| `build/imp/` | Most Improved and Who's Moving Now data (`compute.py`, `momentum.py`, raw Qlik pulls). |
+| `build/hc/` | ADP vs Qlik headcount investigation and `build_prod.py` (productivity on ADP headcount). |
+| `build/prod/` | Productivity data built by `hc/build_prod.py`. |
+| `inputs/` | The ADP Employee Count workbook Noah provided, plus the saved Qlik pulls `build_prod.py` reads. |
+| `decks/` | Every current `.pptx`, plus the CSV of people missing from Qlik. |
+| `docs/` | The house style guide and source notes from the claude.ai project. |
+| `reference/` | Text of the prior decks used for the talking points: Nov 2024 Roundtable, Jan 2026 and May 2026 GM meetings. |
+
+## Not in git (employee-level data)
+`.gitignore` keeps these out of the repo: `build/prof/roster.xlsx`, `role_adj.json`, `tech_data.json`, `tech_gross.json`, `sold.json`, `sold_raw.json`, `bad.json`, `build/hc/diff.json`, the ADP Employee Count workbook and the Qlik headcount-names pull in `inputs/`, and the ADP-not-Qlik CSV in `decks/`. Ask Noah to re-upload them, or re-pull them from ADP and Qlik, before rerunning `prof/compute.py` or `hc/build_prod.py`. Store- and group-level JSON is committed, so every deck script still builds without them.
+
+## Setup
+```
+npm install            # pptxgenjs 4.0.1
+pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, openpyxl
+```
+- **Inter must be installed** on any machine that builds, opens or presents the decks.
+- For thumbnails and checks: LibreOffice (`soffice --headless --convert-to pdf`) and `pdftoppm`.
+
+**Run everything from `build/`.** Node scripts write their `.pptx` into `build/`. Copy them to `../decks/` before running `merge_test.py`, which reads only `decks/`.
+
+## Build table
+| Script | Output in `decks/` | Data |
+|---|---|---|
+| `prod-deck.mjs` | Fixed Ops Productivity - House Style.pptx (15) | `prod/*.json` (run `python3 hc/build_prod.py` first) |
+| `fge-deck.mjs` / `fge-gap-deck.mjs` | Fixed Gross per Employee 5 Pct / Gap - Review | `prod/fge26.txt` |
+| `prof-deck.mjs` | Technician Proficiency - House Style (8) | `prof/prof.json`, `prof/opp.json` (from `prof/compute.py`) |
+| `best-options.mjs` | Best Techs - Design Options (3) | prof data |
+| `tp-deck.mjs` | Talking Points - Day 2 (14) | typed from verified figures (see below) |
+| `explain-deck.mjs` | Metric Explainers - Review (12) | typed group figures |
+| `minute-deck.mjs` | Tech Minute - Review (2) | prof data |
+| `hpro-deck.mjs` | Hours per RO Value - Review (1) | `prof/hpro.json` |
+| `opmiss-deck.mjs` | Op Code Missed Opportunity - Review (6) | `prof/op_raw.txt` |
+| `hrs-ro-deck.mjs` | CP Hours & RO a Day - Review (3) | `prof/cphrs.json` |
+| `money-deck.mjs` | Where the Money Is - Review (1) | figures from the decks above |
+| `improved-deck.mjs` | Most Improved - Review (v1, superseded) | `imp/imp.json` |
+| `moving-deck.mjs` | **Most Improved v2 - Review (10)** | `imp/imp.json`, `imp/mom.json` |
+| `whos-moving.mjs` | Who's Moving Now - Review (10, top 10 per measure) | `imp/mom.json` |
+
+**Can't be rebuilt from this package.** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks were built in earlier sessions. Their scripts are here (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`, `master.mjs`), but their data JSON (`ntgp.json`, `ntgs.json`, `abs.json`, `m5.json`, `door.json`, `elr_q3.json`, `wi.json`, `wm.json`, `all.json`, `doorinfo.json`) and the `*-mod.mjs` files `master.mjs` imports did not survive.
+- **For now:** treat those `.pptx` files and the **master deck** as built artifacts. Edit them by swapping slides (see `swap_prod.py`).
+- **To regenerate them:** re-pull the data from Qlik (rules below) and write the JSON in the shape the scripts read.
+
+## Data sources (Qlik Cloud MCP)
+| App | ID |
+|---|---|
+| Closed Repair Orders | `c3efc739-b063-47dd-a4d3-d1c4cac07ad0` |
+| Productivity (Accounting) | `948ab4f4-bf9d-47d5-b5ba-6565499db705` |
+| Profit & Loss | `bc30d66f-4564-4df0-89a7-368f2c9a931e` |
+
+- **Clear selections first** on every app.
+- **Big pulls:** `Concat(Aggr(...), '|')` gets one row per store. If a result comes back inline instead of saved to a file, add a padding measure such as `Repeat('x',3000)` to force a file save, then parse the file. Never retype numbers by hand.
+
+### Basis rules: apply to every slide
+1. **Same-store, 33 stores.** INEOS is excluded (it opened in 2026).
+2. **GMC Prescott body shop is excluded everywhere.**
+   - Labor types: `CPB, CPP, WB, INTB, IUTB, IUCB, ISPB, IBP, ISBS, IBSHP`.
+   - In P&L terms: subtract `Gross Profit - Body Shop`. For headcount: drop the `BODY SHOP*` titles. For RO counts: remove body-only ROs.
+   - Set pattern (Closed RO app):
+```
+{<BASE, Division-={'INEOS','GMC PRESCOTT'}> + <BASE, Division={'GMC PRESCOTT'}, RO_Detail.labortype-={'CPB','CPP','WB','INTB','IUTB','IUCB','ISPB','IBP','ISBS','IBSHP'}>}
+```
+3. **CP RO count = all customer-pay ROs.** That includes the ~0.9% with $0 labor; Noah wants it to match what stores see. Never write "with labor charged". `RO_Detail.hasLabor = 1` on every line, so it doesn't filter anything.
+4. **Period: Jan–Sep by close date.** 2026 vs 2025. YTD ratios are YTD numerator ÷ YTD denominator, never the mean of months.
+5. **Field quirks.**
+   - Closed RO app: `Month={"<=9"}` works.
+   - Productivity app: Month is text, so use `Month={"Sep"}`. `Month={9}` silently returns 0.
+   - Single quotes for exact values, double quotes for searches and ranges.
+6. **Reconcile before shipping.** Store rows must sum to the group on every input, both years. These group figures are verified:
+
+| Measure | 2025 | 2026 |
+|---|---|---|
+| CP ROs | 279,300 | 279,756 |
+| CP hours | 504,018.97 | 523,141.86 |
+| CP ELR | $158.86 | $162.42 |
+| Fixed gross (Jan–Sep) | $181,331,157 | $188,799,724 |
+| CP & W ROs | 379,921 | 371,180 |
+
+Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel 5.8%.
+
+### Productivity headcount: ADP, not Qlik (decided Oct 20)
+- **The problem:** the Qlik Productivity app's headcount history undercounts 2025 by about 170 real people a month. Sep-25: 1,451 matched, 226 in ADP only. Of those, 169 are Qlik lag, 34 are ADP transfer back-dating and 18 are Findlay Customs. By Sep-26 the sources agree.
+- **The fix:** headcount now comes from the **ADP Employee Master extract** in `inputs/`. Gross and RO counts still come from Qlik.
+- **Rules (`hc/build_prod.py`):**
+  - Month-end snapshot: hire ≤ snapshot and (no termination or termination ≥ snapshot).
+  - Qlik's Fixed Employee title list (managers included).
+  - Technicians = service tech, express tech, shop foreman and team leader. Managers = parts manager, service manager, service director, service drive manager, assistant parts manager and express service manager.
+  - A person open at two stores is moved **sequentially**: they stay at the old store until that record closes, then start at the new one the next day.
+- **Caveat:** ADP job titles are as of the extract date.
+- `decks/Headcount - In ADP but not Qlik, Sep 2025.csv` is for whoever fixes the Qlik load.
+- Full write-up: `docs/productivity-headcount-source.md`.
+
+### Technician proficiency (`prof/compute.py`)
+- **Formula:** proficiency = Qlik sold hours ÷ ADP regular + OT hours. No PTO or holiday.
+- **Scope:** matched on tech number (Position ID characters 3 onward), all pay types, Dec 25 2025 – Oct 9 2026. Label it **Jan–Sep**.
+- **Who counts:**
+  - Service and express techs only above 10%; team leaders only above 20%; shop foremen only above 30%.
+- **Role-change rule:** paid hours over 125% of full time get scaled. It applies only to techs under 85% and can't lift anyone above 85%.
+- **Exclusions:**
+  - 45 keying-error lines removed (20+ hrs at under $25/hr).
+  - Pooled codes (MULT, 999, 77777, 222 …) are credited to no one. Chevy GMC Bullhead's code 222 stays out.
+- **Valuing the gap:** gap hours are valued at each store's own counted-tech labor gross, parts gross and labor cost per sold hour.
+- **Results:** group 94.7%; 20 of 33 stores at 85% or better; 262 of 583 techs under 85%; gap $1,646,932 gross a month.
+- **Wording:** flat-rate techs aren't paid for unflagged hours, so never say the hours are "already paid for".
+
+### Other fixed facts
+- **Days open:** every service department is open 6 days a week, never Sunday, and closed 6 holidays (New Year's, Memorial Day, Independence Day, Labor Day, Thanksgiving, Christmas). **307 days a year** in 2026. Never infer days open from RO close dates.
+- **Luxury segment:** Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson. Acura is non-luxury. GMC Prescott is the only body shop.
+- **Opcode benchmarks:** alignment 15%, balance 15%, brake fluid 10%, fuel 7.5%. Closing % = ROs with the service ÷ CP ROs on the op-code report basis (`RO_Header.flagExcludeOpCodeReport = 0`).
+- **ELR % of door rate target:** 70%.
+
+## House style: enforced in `house.mjs`, keep it that way
+- **Font:** Inter, 16:9 (LAYOUT_WIDE). The build stops below the **14pt floor**; store names may go to 13pt.
+- **Naming:** always "stores", never "rooftops"; `words()` stops the build on the old term. Store names in caps, matching the rankers.
+- **Colour:**
+  - **Green is good, red is bad, always.** Below group, segment average or benchmark is red, with no exceptions.
+  - **Blue** is for neutral facts and opportunity sizes.
+  - Headcount change is neutral.
+- **Titles and eyebrows:**
+  - Eyebrow = the segment name.
+  - The title is the metric's source line name.
+  - Both slides of a data pair share the title.
+  - No period in the title.
+- **Takeaways:**
+  - **Derived from the data, never typed:** counts, names and direction ("grew"/"fell") are computed.
+  - One to two lines.
+  - Every chart slide has one.
+- **Number formats:** percentages **truncated**, not rounded, on the improvement slides.
+- **Speaker notes:** source and footnotes go in the notes, not on the slide (Tray, Oct 2026).
+- **Opportunity slides:** frame them as small, achievable increments (0.1 hr per RO, one more RO a day, a few %), not out-of-reach targets.
+- **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
+- Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
+
+## Current test deck (159 slides; order in `merge_test.py`)
+1. Cover, then "Why We Are Here".
+2. **Gross**, with "Service Is Sales 2.0".
+3. **Profitability**, with the Absorption and Net to Gross explainers.
+4. **CP Engine**, in this order:
+   - talking points: What Can You Control?, The Front Door
+   - RO count, with One More CP RO a Day and CP Hours YOY
+   - hours per RO, then the 0.1 hr value slide
+   - Pricing Strategy, ELR and door rate
+   - labor and parts $ per RO
+   - Goldilocks Margin, labor GP% and parts GP%
+   - Who's Moving Now after each measure, with CP gross at the end
+5. **Labor Mix**, with Express Service and Tracking & Accountability.
+6. **Opcodes**: Road to the Sale, the closing % explainer, the four benchmarks each followed by its Who's Moving Now slide, then Missed Opportunity: per-service, by store, then the $4.9M total.
+7. **Warranty & Internal**, with Warranty Compliance.
+8. **Productivity** (rebuilt on ADP headcount): People and Pay Plans talking points, the fixed gross per employee slides plus both review versions, ROs per advisor, employee and manager, then headcount.
+9. **Technician Proficiency** (no section break): Technicians & Stalls, two explainers, 7 proficiency slides, then Tech Minute.
+10. **Close**: Better Than Last Year, Who's Moving Now (top and bottom 5), Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
+11. **Appendix**: the door rate options and the Best Techs options A–C.
+
+## Open decisions (Noah / Tray)
+- **What to cut.** Priority is dialogue.
+- **Door rate design:** pick one of the five options in the appendix.
+- **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
+- **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
+- **Smaller rulings:** Acura's segment; whether the GMC body shop counts in absorption; provisional directions in the metric registry.
+- **Logistics:** venue and logo; Inter installed on the presenting PC.
+- **Possible slides:** MPI, retention, discounting and capacity. Parked dollar slides: ELR to 70%, $1 of ELR, absorption, net to gross, parts margin.
+- **Fix the Qlik headcount load** at the source (CSV in `decks/`).
+
+## How Noah works
+- **Respect his format.** Lead with the answer. Build review files first (`* - Review.pptx`) and add to the test deck only when he says so.
+- **Verify before sending:** render to images and look. Reconcile totals. Never fabricate a number.
+- **When a fact is uncertain** (data quirks, store anomalies), flag it and ask. Example: he confirmed Mazda's August opcode jump is a real change.

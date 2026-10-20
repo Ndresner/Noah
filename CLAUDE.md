@@ -82,6 +82,9 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 **Parts & Service Pay vs Gross Report** (Earnings - Parts and Service Employees - Gross Adjusted)
 Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script + Qlik pull spec). ADP pay vs group, plus Qlik gross/workload layer: pay % of dept gross, gross per employee, ROs or sold hrs per employee, Service Advisor gross per RO and ROs/day, ±20% outlier colors. Hire cutoff = last day worked in the pay period. Contains employee pay — never commit the workbook or Qlik JSON.
 
+**Day 2 Fixed Ops Deck (Oct 29, 2026 GM & Service Manager meeting)**
+Project lives in `day2-deck/`. Read `day2-deck/CLAUDE.md` first: it holds the meeting context, basis rules, house style and open decisions.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
