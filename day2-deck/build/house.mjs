@@ -436,6 +436,64 @@ export function recordBoard(pptx, deck, o) {
   return s;
 }
 
+/* ---------- STACKED COUNT RANKER - a count split into parts, every store on one page ----------
+   ADDED 2026-10-21 (records review). o.rows = [[name, [n1, n2, n3]]], o.parts = column heads,
+   o.colors = one per part (default three greens: records are good news). Bar = the stacked
+   total; a count column per part, then the total. o.notes = speaker notes. */
+export function stackedCountRanker(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  const COLS = o.colors ?? [C.goodInk, C.good, "8ED3B0"];
+  const tot = r => r[1].reduce((t, x) => t + x, 0);
+  const rows = [...o.rows].sort((a, b) => tot(b) - tot(a) || b[1][2] - a[1][2]);
+  const NP = o.parts.length, CW = 0.55, TW = 0.6, NAMEW = 2.12;
+  const COLX = [0.72, 6.79], BARW = 5.9 - NAMEW - CW * NP - TW - 0.2;
+  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = 6.26, rowH = (BOT - TOP) / perCol;
+  const maxV = Math.max(...rows.map(tot));
+  [0, 1].forEach(c => {
+    // colour key above the store names and bars; the count columns carry short heads
+    let lx = COLX[c];
+    (o.legend ?? o.parts).forEach((p, i) => {
+      s.addShape(pptx.ShapeType.rect, { x: lx, y: 1.55, w: 0.14, h: 0.14, fill: { color: COLS[i] } });
+      const w = 0.22 + p.length * 0.105;
+      s.addText(p, { x: lx + 0.2, y: 1.44, w, h: 0.36, fontFace: F, fontSize: sz(14, "legend"),
+        color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+      lx += 0.2 + w + 0.12;
+    });
+    let hx = COLX[c] + NAMEW + 0.08 + BARW + 0.08;
+    [...o.parts, o.totalLabel ?? "ALL"].forEach((p, i) => {
+      const w = i < NP ? CW : TW;
+      s.addText(p, { x: hx, y: 1.44, w, h: 0.36, fontFace: F, fontSize: sz(14, "column header"), bold: true,
+        color: i < NP ? C.ink600 : C.ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      hx += w;
+    });
+  });
+  rows.forEach((r, i) => {
+    const c = i < perCol ? 0 : 1, k = i - c * perCol, x0 = COLX[c], y = TOP + k * rowH, bh = rowH * 0.55;
+    s.addText(words(r[0], "store"), { x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    let bx = x0 + NAMEW + 0.08;
+    r[1].forEach((v, p) => {
+      if (!v) return;
+      const w = v / maxV * BARW;
+      s.addShape(pptx.ShapeType.rect, { x: bx, y: y + (rowH - bh) / 2, w, h: bh, fill: { color: COLS[p] }, line: { color: C.white, width: 0.75 } });
+      bx += w;
+    });
+    let vx = x0 + NAMEW + 0.08 + BARW + 0.08;
+    r[1].forEach(v => {
+      s.addText(v ? String(v) : "–", { x: vx, y, w: CW, h: rowH, fontFace: F, fontSize: 13, color: v ? C.ink : C.ink300,
+        align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      vx += CW;
+    });
+    s.addText(String(tot(r)), { x: vx, y, w: TW, h: rowH, fontFace: F, fontSize: 13, bold: true, color: C.ink,
+      align: "right", valign: "middle", isTextBox: true, margin: 0 });
+  });
+  takeaway(pptx, s, o.takeaway, o.tone ?? "g");
+  if (o.notes) s.addNotes(words(o.notes, "notes") + (o.source ? `\n\nSource: ${words(o.source, "speaker notes")}` : ""));
+  else foot(pptx, s, o.source, o.page);
+  return s;
+}
+
 /* ---------- YOY - group card over a month table ---------- */
 export function yoy(pptx, deck, o) {
   const s = deck.addSlide();

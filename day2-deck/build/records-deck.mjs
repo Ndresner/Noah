@@ -74,4 +74,22 @@ spotlight("by $", (a, b) => b.add - a.add, s => "+" + M(s.add),
     source: `${SRC} Count of times a store set a new all-time monthly high in service, parts or combined gross, Jan-Sep 2026. Each new high counts, so a record beaten twice counts twice.` });
 }
 
+// ---- 6. Same ranker, split by category (Noah, Oct 21): service, parts and combined counts
+{
+  const K = ["svc", "pts", "tot"], WORD = { svc: "service", pts: "parts", tot: "combined" };
+  const rows = Object.entries(R.broken).map(([n, b]) => [n, K.map(c => b[c].length)]).filter(r => r[1].some(x => x > 0));
+  const sum = k => rows.reduce((t, r) => t + r[1][k], 0);
+  const all = sum(0) + sum(1) + sum(2);
+  const times = n => n === 1 ? "once" : n === 2 ? "twice" : `${n} times`;
+  const notes = rows.map(([n]) => n).sort().map(n => {
+    const b = R.broken[n];
+    return `${n}: ` + K.filter(c => b[c].length).map(c => `${WORD[c]} record reset ${times(b[c].length)} (${b[c].map(h => h.m.slice(0, 3)).join(", ")})`).join("; ") + ".";
+  }).join("\n");
+  H.stackedCountRanker(pptx, pptx, { eyebrow: `${SEG} · Option: Ranker by Category`, title: "Monthly Gross Records Set in 2026",
+    parts: ["SVC", "PTS", "TOT"], legend: ["Service", "Parts", "Combined"], totalLabel: "ALL", rows,
+    takeaway: `${rows.length} of 33 stores set ${all} new monthly records in 2026: ${sum(0)} in service, ${sum(1)} in parts and ${sum(2)} in combined gross.`,
+    notes: `Month each record was set, by store:\n${notes}`,
+    source: `${SRC} Count of times a store set a new all-time monthly high, Jan-Sep 2026. SVC = service gross, PTS = parts gross, TOT = service + parts combined. Each new high counts, so a record beaten twice counts twice.` });
+}
+
 await pptx.writeFile({ fileName: "Store Records - Review.pptx" }); console.log("records review built");
