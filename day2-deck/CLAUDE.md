@@ -5,16 +5,19 @@ Read this first. It holds what the code can't tell you: the meeting, the data ru
 ## The meeting
 - **Event:** Findlay Automotive Group GM & Service Manager meeting. Day 1 is Oct 28, 2026. **Day 2, the fixed ops day, is Oct 29, 2026, 8am–4pm.**
 - **Audience:** GMs, service managers and fixed ops managers. There are no parts-only managers; some managers run parts and service together. This is the first meeting dedicated to fixed ops for the GMs.
-- **Owner:** Noah (Fixed Ops analytics, ndresner@findlayauto.com). He reviews with **Tray**, who presents and makes the style rulings.
-- **Direction (Oct 20):** shorten the slide count significantly. The priority is **dialogue in the room, not data volume**: the room doesn't know the numbers as deeply as we do. Keep every slide in the test deck for now, so Noah and Tray can choose what to cut. Don't change the format.
+- **Owner:** Noah (Fixed Ops analytics, ndresner@findlayauto.com). He reviews with **Tommy** (also written Tray or T-Rail; call him Tommy), who presents and makes the style rulings.
+- **Direction (Oct 20):** shorten the slide count significantly. The priority is **dialogue in the room, not data volume**: the room doesn't know the numbers as deeply as we do. Keep every slide in the test deck for now, so Noah and Tommy can choose what to cut. Don't change the format.
 
 ## Folder map
 | Path | What it is |
 |---|---|
-| `build/house.mjs` | **The engine.** Colour tokens, font floor, metric registry and one renderer per slide type: `section`, `cover`, `yoy`, `ranker`, `segmentRanker`, `levelRanker`, `trend`, `statTiles`, `amountRanker`, `dumbbell`, `talkingPoints`, `explainer`, … The look lives here. |
-| `build/blocks.mjs` | A metric block: YOY card, then level or segment view, then change ranker. `load()` reads `{m25, m26, S}` JSON. |
+| `build/house.mjs` | **The engine.** Day 1's engine (Tommy's vault `house.mjs`) with the Day 2 renderers merged in: `cover`, `agenda`, `section` (with tracker), `groupYoy`, `levelRanker`, `ranker`, `totalRanker`, `segmentRanker`, `statTiles`, `amountRanker`, `dumbbell`, `talkingPoints`, `explainer`, `recordBoard`, `gapRanker`, … The look lives here. The pre-merge engine is `build/v1/house.v1.mjs`. |
+| `build/blocks.mjs` | A metric block in the Day 1 sequence: group picture (`groupYoy`: card over the monthly chart), level ranker (or segment / total ranker), change ranker. `load()` reads `{m25, m26, S}` JSON. |
 | `build/*-deck.mjs` | One script per deck (see the build table below). Each writes a `.pptx` into `build/`. |
-| `build/merge_test.py` | Assembles **`decks/Fixed Ops - Day 2 Example Test Deck.pptx`** (159 slides) from the deck files in `decks/`. The flow order is defined here. It also copies native chart parts (sparklines) across. |
+| `build/opening-deck.mjs` | Cover, agenda, the eight section transitions and the appendix divider. **The section list lives here once**; agenda, kickers and tracker derive from it. |
+| `build/merge_v2.py` | Assembles the **v2 test deck** `decks/Fixed Ops - Day 2 Example Test Deck.pptx` (164 slides) from the rebuilt decks. The flow order is defined here. |
+| `build/merge_test.py` | The v1 assembler (159 slides). Kept for reference; the v1 output is archived. |
+| `decks/v1 - house style/` | **The v1 archive:** all 28 v1 decks byte-for-byte, including the 159-slide v1 test deck (snapshot commit `205030e`). Don't edit. |
 | `build/swap_prod.py` | Replaces master slides 74–88 (Productivity) with the rebuilt Productivity deck. |
 | `build/prof/` | Technician proficiency data and calculation (`compute.py` plus the helpers from the `findlay-technician-proficiency-report` skill). |
 | `build/imp/` | Most Improved and Who's Moving Now data (`compute.py`, `momentum.py`, raw Qlik pulls). |
@@ -60,9 +63,12 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `internal-gp-deck.mjs` | **Internal Gross Profit - Review (6)**: internal labor and parts GP%, YOY card, level ranker, change ranker | `internal/internal.json` (Qlik Closed RO, internal pay type, pulled Oct 21) |
 | `cp-vs-internal-deck.mjs` | **CP vs Internal GP - Review (4)**: CP vs internal labor and parts GP% with the gap, option A (gap bars) and B (dumbbell) | `internal/cp_vs_internal.json` (Qlik Closed RO, Jan–Sep 2026) |
 
-**Can't be rebuilt from this package.** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks were built in earlier sessions. Their scripts are here (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`, `master.mjs`), but their data JSON (`ntgp.json`, `ntgs.json`, `abs.json`, `m5.json`, `door.json`, `elr_q3.json`, `wi.json`, `wm.json`, `all.json`, `doorinfo.json`) and the `*-mod.mjs` files `master.mjs` imports did not survive.
-- **For now:** treat those `.pptx` files and the **master deck** as built artifacts. Edit them by swapping slides (see `swap_prod.py`).
-- **To regenerate them:** re-pull the data from Qlik (rules below) and write the JSON in the shape the scripts read.
+**Rebuilt Oct 21 (v2).** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks now build from re-pulled Qlik data (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`):
+- Closed RO (set identifier `1`; every pull reconciles store rows to the group): `m5.json` (CP), `wi.json` (warranty/internal), `elr_q3.json` (Jul–Sep ELR), `all.json` (opcodes). Parser: `pulls/to_block.py`.
+- P&L: `abs.json` (absorption), `ntgs.json` / `ntgp.json` (service / parts net to gross).
+- Recovered from the v1 speaker notes because the raw input was lost: `door.json`, `doorinfo.json` (door rates, grid/no-grid), `wm_shares.json` (work-type shares).
+
+**v2 build:** run each `*-deck.mjs`, then `node opening-deck.mjs`, then `python3 merge_v2.py`.
 
 ## Data sources (Qlik Cloud MCP)
 | App | ID |
@@ -140,7 +146,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 
 ## House style: enforced in `house.mjs`, keep it that way
 - **Font:** Inter, 16:9 (LAYOUT_WIDE). The build stops below the **14pt floor**; store names may go to 13pt.
-- **Naming:** always "stores", never "rooftops"; `words()` stops the build on the old term. Store names in caps, matching the rankers.
+- **Naming:** always "stores", never "rooftops"; `words()` stops the build on the old term. Store names in caps on the rankers, Title Case in takeaway prose (`proseNames()` converts them).
 - **Colour:**
   - **Green is good, red is bad, always.** Below group, segment average or benchmark is red, with no exceptions.
   - **Blue** is for neutral facts and opportunity sizes.
@@ -155,32 +161,27 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - One to two lines.
   - Every chart slide has one.
 - **Number formats:** percentages **truncated**, not rounded, on the improvement slides.
-- **Speaker notes:** source and footnotes go in the notes, not on the slide (Tray, Oct 2026).
+- **Speaker notes:** source and footnotes go in the notes, not on the slide (Tommy, Oct 2026).
 - **Opportunity slides:** frame them as small, achievable increments (0.1 hr per RO, one more RO a day, a few %), not out-of-reach targets.
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck (159 slides; order in `merge_test.py`)
-1. Cover, then "Why We Are Here".
-2. **Gross**, with "Service Is Sales 2.0".
-3. **Profitability**, with the Absorption and Net to Gross explainers.
-4. **CP Engine**, in this order:
-   - talking points: What Can You Control?, The Front Door
-   - RO count, with One More CP RO a Day and CP Hours YOY
-   - hours per RO, then the 0.1 hr value slide
-   - Pricing Strategy, ELR and door rate
-   - labor and parts $ per RO
-   - Goldilocks Margin, labor GP% and parts GP%
-   - Who's Moving Now after each measure, with CP gross at the end
-5. **Labor Mix**, with Express Service and Tracking & Accountability.
-6. **Opcodes**: Road to the Sale, the closing % explainer, the four benchmarks each followed by its Who's Moving Now slide, then Missed Opportunity: per-service, by store, then the $4.9M total.
-7. **Warranty & Internal**, with Warranty Compliance.
-8. **Productivity** (rebuilt on ADP headcount): People and Pay Plans talking points, the fixed gross per employee slides plus both review versions, ROs per advisor, employee and manager, then headcount.
-9. **Technician Proficiency** (no section break): Technicians & Stalls, two explainers, 7 proficiency slides, then Tech Minute.
-10. **Close**: Better Than Last Year, Who's Moving Now (top and bottom 5), Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
-11. **Appendix**: the door rate options and the Best Techs options A–C.
+## Current test deck: v2, 164 slides (order in `merge_v2.py`)
+Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
+1. Cover, Agenda, Why We Are Here.
+2. **01 Gross**, with Service Is Sales 2.0.
+3. **02 Profitability**, with the Absorption and Net to Gross explainers.
+4. **03 The CP Engine**: talking points, ROs (store total ranker added), hours sold (total ranker added), hours per RO, Pricing Strategy, ELR, door rate, $ per RO, Goldilocks Margin, GP%, Who's Moving Now after each measure.
+5. **04 Labor Mix**, with Express Service and Tracking & Accountability.
+6. **05 Opcode Benchmarks**: Road to the Sale, explainer, four benchmarks each with Who's Moving Now, then Missed Opportunity.
+7. **06 Warranty & Internal**: Warranty Compliance, warranty ROs (total ranker added), warranty ELR, internal ELR.
+8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
+9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
+10. **Appendix · Design Options**: door rate options A–E, Best Techs options A–C.
 
-## Open decisions (Noah / Tray)
+Not in the test deck yet (review files only): Store Records, Internal GP%, CP vs Internal GP%, Gross Trend options.
+
+## Open decisions (Noah / Tommy)
 - **What to cut.** Priority is dialogue.
 - **Trend slides (Oct 20):** replace the trailing-12 line with Jan–Sep 2026 vs 2025, two lines. All options are saved in `decks/Gross Trend - Review.pptx`; nothing is in the test deck yet. Pick one:
   - **A** (slides 1–6): two-line chart with "What it says" bullets, table slide kept.
