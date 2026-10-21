@@ -154,7 +154,7 @@ export const METRICS = {
   // Share of customer-pay ROs carrying the service; more is better.
   "alignment %":          { dir: "up",   fmt: "pct"   },
   "balance %":            { dir: "up",   fmt: "pct"   },
-  "brake flush %":        { dir: "up",   fmt: "pct"   },
+  "brake fluid %":        { dir: "up",   fmt: "pct"   },
   "fuel service %":       { dir: "up",   fmt: "pct"   },
   // 2026-10-15 (Noah, CP Engine + Productivity rebuild) - PROVISIONAL until Tray confirms.
   "cp labor per ro":      { dir: "up",   fmt: "money" },

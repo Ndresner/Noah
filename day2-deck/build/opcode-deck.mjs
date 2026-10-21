@@ -69,7 +69,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
 
 pair("align", "Alignment %",     "alignment %",    "ALIGNMENT %",    0.15,  "alignment", "alignments");
 pair("bal",   "Balance %",       "balance %",      "BALANCE %",      0.15,  "balance", "balances");
-pair("bf",    "Brake Fluid %",   "brake flush %",  "BRAKE FLUSH %",  0.10,  "brake fluid service", "brake fluid services");   // title per Noah, Oct 15 2026
+pair("bf",    "Brake Fluid %",   "brake fluid %",  "BRAKE FLUID %",  0.10,  "brake fluid service", "brake fluid services");   // title per Noah, Oct 15 2026
 pair("fuel",  "Fuel Service %",  "fuel service %", "FUEL SERVICE %", 0.075, "fuel service", "fuel services");
 
 await pptx.writeFile({ fileName: "Opcode Benchmarks - House Style.pptx" });
