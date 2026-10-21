@@ -87,6 +87,9 @@ export const METRICS = {
   "warranty ro count":    { dir: "up",   fmt: "int"   },   // largely OEM/recall-driven - Tray may prefer neutral
   "warranty elr":         { dir: "up",   fmt: "money" },
   "internal elr":         { dir: "up",   fmt: "money" },   // more service gross, but a cost to used cars - confirm
+  // 2026-10-21 (Noah): internal GP% coloured against the group like every other level ranker - above group green, below red.
+  "internal labor gp %":  { dir: "up",   fmt: "pct"   },
+  "internal parts gp %":  { dir: "up",   fmt: "pct"   },
   "fixed ops absorption %": { dir: "up", fmt: "pct"   },   // P&L line 257 = line 254 / line 258
   "service net to gross %": { dir: "up", fmt: "pct"   },
   "parts net to gross %":   { dir: "up", fmt: "pct"   },
