@@ -202,5 +202,6 @@ Not in the test deck at all: the door rate options deck (`Door Rate - Options (J
 
 ## How Noah works
 - **Respect his format.** Lead with the answer. Build review files first (`* - Review.pptx`) and add to the test deck only when he says so.
+- **Send the .pptx only** after an update; no PDF unless he asks (Oct 21). Still render internally to check.
 - **Verify before sending:** render to images and look. Reconcile totals. Never fabricate a number.
 - **When a fact is uncertain** (data quirks, store anomalies), flag it and ask. Example: he confirmed Mazda's August opcode jump is a real change.
