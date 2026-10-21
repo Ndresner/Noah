@@ -497,6 +497,73 @@ export function stackedCountRanker(pptx, deck, o) {
   return s;
 }
 
+/* ---------- GAP RANKER - two rates per store and the gap between them ----------
+   ADDED 2026-10-21 (Noah: internal vs customer-pay GP%). o.rows = [[name, a, b]], gap = b - a.
+   o.group = [a, b]. Green when a store's gap is at or above the group gap, red below - the
+   group is the differentiator, as on every level ranker. o.mode "bar" draws the gap as a
+   bar around zero; "dumbbell" draws both rates on one scale (a navy, b green/red).
+   Columns: name, plot, a, b, gap. Sorted by gap, best first. */
+export function gapRanker(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  const gap = r => r[2] - r[1], gG = o.group[1] - o.group[0];
+  const rows = [...o.rows].sort((p, q) => gap(q) - gap(p));
+  const FV = o.fmt, FG = o.fmtGap;
+  // group strip
+  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.44, w: 11.89, h: 0.42, fill: { color: C.blueTint } });
+  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.44, w: 0.06, h: 0.42, fill: { color: C.navy } });
+  s.addText([
+    { text: "GROUP", options: { bold: true, color: C.navy } },
+    { text: `      ${o.aLabel} ${FV(o.group[0])}      ${o.bLabel} ${FV(o.group[1])}      GAP `, options: { color: C.ink } },
+    { text: FG(gG), options: { bold: true, color: C.navy } },
+    { text: "      " + (o.note ?? "green = gap at or better than the group"), options: { color: C.ink600 } },
+  ], { x: 0.92, y: 1.44, w: 11.6, h: 0.42, fontFace: F, fontSize: sz(15, "group strip"), valign: "middle", isTextBox: true, margin: 0 });
+
+  const COLX = [0.72, 6.79], NAMEW = 2.2, PLOTW = 1.18, VW = 0.62, GW = 0.94;
+  const per = Math.ceil(rows.length / 2), TOP = 2.3, BOT = 6.3, rowH = (BOT - TOP) / per;
+  const gaps = rows.map(gap), gmax = Math.max(...gaps.map(Math.abs), Math.abs(gG));
+  const lo = o.min ?? Math.min(...rows.flatMap(r => [r[1], r[2]])), hi = o.max ?? Math.max(...rows.flatMap(r => [r[1], r[2]]));
+  [0, 1].forEach(c => {
+    const x0 = COLX[c], px = x0 + NAMEW + 0.05;
+    const heads = [[o.plotLabel ?? "", px, PLOTW, "center"], [o.aShort, px + PLOTW + 0.05, VW, "right"],
+                   [o.bShort, px + PLOTW + 0.05 + VW, VW, "right"], ["GAP", px + PLOTW + 0.05 + 2 * VW, GW, "right"]];
+    heads.forEach(([t, x, w, al]) => s.addText(t, { x, y: 1.94, w, h: 0.3, fontFace: F, fontSize: sz(14, "column header"), bold: true,
+      color: C.ink600, align: al, valign: "middle", isTextBox: true, margin: 0 }));
+    const n = c === 0 ? per : rows.length - per;
+    if (o.mode === "bar") {   // zero line, then the group gap as a dashed reference
+      const zx = px + PLOTW / 2;
+      s.addShape(pptx.ShapeType.rect, { x: zx - 0.006, y: TOP, w: 0.012, h: n * rowH, fill: { color: C.ink300 } });
+      const gx = zx + gG / gmax * PLOTW / 2;
+      s.addShape(pptx.ShapeType.line, { x: gx, y: TOP, w: 0, h: n * rowH, line: { color: C.navy, width: 1, dashType: "dash" } });
+    }
+  });
+  rows.forEach((r, i) => {
+    const c = i < per ? 0 : 1, k = i - c * per, x0 = COLX[c], y = TOP + k * rowH, cy = y + rowH / 2, px = x0 + NAMEW + 0.05;
+    const g = gap(r), ok = g >= gG - 1e-9;
+    if (k % 2) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.08, y, w: 5.9, h: rowH, fill: { color: C.zebra } });
+    s.addText(words(r[0], "store"), { x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    if (o.mode === "bar") {
+      const zx = px + PLOTW / 2, w = Math.abs(g) / gmax * PLOTW / 2, bh = rowH * 0.55;
+      s.addShape(pptx.ShapeType.rect, { x: g >= 0 ? zx : zx - w, y: cy - bh / 2, w: Math.max(w, 0.01), h: bh, fill: { color: ok ? C.good : C.bad } });
+    } else {
+      const X = v => px + (Math.min(Math.max(v, lo), hi) - lo) / (hi - lo) * PLOTW, d = 0.15;
+      const xa = X(r[1]), xb = X(r[2]);
+      s.addShape(pptx.ShapeType.rect, { x: Math.min(xa, xb), y: cy - 0.015, w: Math.max(Math.abs(xb - xa), 0.01), h: 0.03, fill: { color: C.rule } });
+      s.addShape(pptx.ShapeType.ellipse, { x: xa - d / 2, y: cy - d / 2, w: d, h: d, fill: { color: C.navy } });
+      s.addShape(pptx.ShapeType.ellipse, { x: xb - d / 2, y: cy - d / 2, w: d, h: d, fill: { color: ok ? C.good : C.bad } });
+    }
+    const vx = px + PLOTW + 0.05;
+    s.addText(FV(r[1]), { x: vx, y, w: VW, h: rowH, fontFace: F, fontSize: 13, color: C.navy, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(FV(r[2]), { x: vx + VW, y, w: VW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(FG(g), { x: vx + 2 * VW, y, w: GW, h: rowH, fontFace: F, fontSize: 13, bold: true, color: ok ? C.goodInk : C.badInk,
+      align: "right", valign: "middle", isTextBox: true, margin: 0 });
+  });
+  takeaway(pptx, s, o.takeaway, o.tone ?? "n");
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
 /* ---------- YOY - group card over a month table ---------- */
 export function yoy(pptx, deck, o) {
   const s = deck.addSlide();
