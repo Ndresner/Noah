@@ -35,8 +35,8 @@ SECTIONS.forEach((sec, i) => H.section(pptx, pptx, {
   kicker: `Section ${String(i + 1).padStart(2, "0")}`, title: sec.name ?? sec.short, chips: sec.chips,
   sections: TRACKER, current: i, logo: LOGO,
 }));
-// the appendix is not a meeting section: no number, no tracker
-H.section(pptx, pptx, { kicker: "Appendix", title: "Design Options", chips: ["Door rate", "Your best techs prove it"], logo: LOGO })
-  .addNotes("Appendix for review with Tommy. Alternate designs still to choose between: Door Rate / ELR % of Door Rate options, and Your Best Techs Prove It options A-C. Delete whichever we don't pick.");
+// not a meeting section (no number, no tracker): alternate designs and slides still to be decided on. Not presented.
+H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Door rate: options A–E", "Your best techs prove it: options A–C"], logo: LOGO })
+  .addNotes("For review with Tommy, not for the room. Alternate versions of slides already in the deck, and slides not yet decided on. Door Rate / CP ELR % of Door Rate options A-E, and Your Best Techs Prove It options A-C. Pick one of each (or none), then delete this section before the meeting.");
 
 await pptx.writeFile({ fileName: "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);

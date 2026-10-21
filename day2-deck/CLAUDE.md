@@ -14,7 +14,7 @@ Read this first. It holds what the code can't tell you: the meeting, the data ru
 | `build/house.mjs` | **The engine.** Day 1's engine (Tommy's vault `house.mjs`) with the Day 2 renderers merged in: `cover`, `agenda`, `section` (with tracker), `groupYoy`, `levelRanker`, `ranker`, `totalRanker`, `segmentRanker`, `statTiles`, `amountRanker`, `dumbbell`, `talkingPoints`, `explainer`, `recordBoard`, `gapRanker`, … The look lives here. The pre-merge engine is `build/v1/house.v1.mjs`. |
 | `build/blocks.mjs` | A metric block in the Day 1 sequence: group picture (`groupYoy`: card over the monthly chart), level ranker (or segment / total ranker), change ranker. `load()` reads `{m25, m26, S}` JSON. |
 | `build/*-deck.mjs` | One script per deck (see the build table below). Each writes a `.pptx` into `build/`. |
-| `build/opening-deck.mjs` | Cover, agenda, the eight section transitions and the appendix divider. **The section list lives here once**; agenda, kickers and tracker derive from it. |
+| `build/opening-deck.mjs` | Cover, agenda, the eight section transitions and the Open Decisions divider. **The section list lives here once**; agenda, kickers and tracker derive from it. |
 | `build/merge_v2.py` | Assembles the **v2 test deck** `decks/Fixed Ops - Day 2 Example Test Deck.pptx` (164 slides) from the rebuilt decks. The flow order is defined here. |
 | `build/merge_test.py` | The v1 assembler (159 slides). Kept for reference; the v1 output is archived. |
 | `decks/v1 - house style/` | **The v1 archive:** all 28 v1 decks byte-for-byte, including the 159-slide v1 test deck (snapshot commit `205030e`). Don't edit. |
@@ -177,7 +177,7 @@ Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "Gen
 7. **06 Warranty & Internal**: Warranty Compliance, warranty ROs (total ranker added), warranty ELR, internal ELR.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
-10. **Appendix · Design Options**: door rate options A–E, Best Techs options A–C.
+10. **Open Decisions** (was the appendix; not presented, for review with Tommy): alternate versions of slides already in the deck and slides not yet decided on. Door rate options A–E, Best Techs options A–C, each eyebrow reads `OPEN DECISIONS · <TOPIC> · OPTION <X>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
 
 Not in the test deck yet (review files only): Store Records, Internal GP%, CP vs Internal GP%, Gross Trend options.
 
@@ -192,7 +192,7 @@ Not in the test deck yet (review files only): Store Records, Internal GP%, CP vs
 - **Store records (Oct 21):** all options saved in `decks/Store Records - Review.pptx`; nothing in the test deck yet. Pick which to keep: (1) A Record Year, group bars 2021–2026; (2) Record Board, all 25 stores with a Jan–Sep record; (3) Spotlight by %; (4) Spotlight by $; (5) ranker of monthly records set in 2026; (6) the same ranker split into service, parts and combined counts, with the month of each record in the speaker notes. Claude's recommendation: 1 near the opening, 2, and one spotlight in the Close ahead of "What Changed?".
 - **Internal GP% (Oct 21):** six slides in `decks/Internal Gross Profit - Review.pptx`, coloured green at or above the group, red below (Noah). Not in the test deck yet; they belong in Warranty & Internal after Internal ELR.
 - **CP vs Internal GP% (Oct 21):** Noah: internal GP% should closely mirror customer pay (internal detail and similar processes explain some gaps). `decks/CP vs Internal GP - Review.pptx` shows CP, internal and the gap by store; green = gap at or better than the group gap. Pick option A (gap bars) or B (dumbbell); it sits beside the internal GP% slides as a talking point. **Open (Noah, Oct 21):** colour by gap vs group (current) or by distance from zero (internal far above CP also red). Decide before finalizing.
-- **Door rate design:** pick one of the five options in the appendix.
+- **Door rate design:** pick one of the five options in Open Decisions (A–E). The CP Engine section also still carries the door rate slides (52–57); trim those to the pick.
 - **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
 - **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
 - **Smaller rulings:** Acura's segment; whether the GMC body shop counts in absorption; provisional directions in the metric registry.

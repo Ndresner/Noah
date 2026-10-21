@@ -118,8 +118,18 @@ order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
-# Appendix: door rate options A-E, then Best Techs A-C
-order += O(11) + X("CP", 14, 15, 16, 11, 12) + X("BT", 1, 2, 3)
+# Open Decisions (was "Appendix"): alternate designs and slides not yet in or out. Door rate options A-E, then Best Techs A-C
+order += O(11)
+OPEN = [("DOOR RATE", X("CP", 14, 15, 16, 11, 12)), ("BEST TECHS", X("BT", 1, 2, 3))]
+for topic, slides in OPEN:
+    for k, sl in enumerate(slides):
+        # the eyebrow is the first text box; keep its run formatting, swap the words
+        eb = next(sh for sh in sl.shapes if sh.has_text_frame and sh.text_frame.text.strip())
+        runs = [r for para in eb.text_frame.paragraphs for r in para.runs]
+        runs[0].text = f"OPEN DECISIONS · {topic} · OPTION {'ABCDE'[k]}"
+        for r in runs[1:]:
+            r.text = ""
+        order.append(sl)
 
 sldIdLst = prs.slides._sldIdLst
 ids = {s.slide_id: el for s, el in zip(prs.slides, list(sldIdLst))}
