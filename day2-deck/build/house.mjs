@@ -1,15 +1,36 @@
 /* ===================================================================
    FINDLAY MEETING DECK - HOUSE STYLE
-   Locked October 2026 with Tray. Decisions this file encodes:
+   Locked October 2026 with Tommy. Decisions this file encodes:
 
      font        Inter          (must be installed on any machine that opens the deck)
      field       grey EDEDED, content on white panels
-     titles      the SOURCE LINE NAME and nothing else; the finding goes in the takeaway
+     titles      the SOURCE LINE NAME and nothing else; the finding goes in the takeaway.
+                 Department blocks (New Vehicle, Used Vehicle, F&I): the title is
+                 the department and the ranker strip names the measure - "New
+                 Vehicle" / "UNITS" (Tommy, Oct 18 2026)
      colour      green good, red bad, always. blue is identity, never judgment
-     stores      ALL CAPS, all 34 on one page, GROUP as its own strip
-     naming      always "stores", never "rooftops" - enforced (Noah, Oct 14 2026)
+     stores      ALL CAPS, all 34 on one page, GROUP as its own strip.
+                 say "stores", never "rooftops"
      floor       nothing carrying meaning below 14pt - enforced, not remembered
-     numbers     takeaways and counts DERIVED from the series, never typed
+     numbers     counts and totals DERIVED from the series, never typed
+
+     takeaway    OPTIONAL on every slide type. A band renders only when you pass
+                 an explicit string. There is no "auto" - a derived sentence that
+                 nobody read was worse than no sentence at all. With no band the
+                 body panels grow into the space, so the frame still reads as
+                 finished rather than cut short.
+
+     tracker     transition slides only, NEVER the cover. Ten sections over two
+                 rows. "Sections", not "segments".
+
+   DAY 2 (fixed ops, Oct 29 2026) - Noah, Oct 21 2026: Day 2 is rebuilt on
+   this Day 1 engine so both days read as one meeting. Added on top, nothing
+   of Day 1's look changed: the Day 2 renderers (segmentRanker, mixBars,
+   splitRanker, statTiles, amountRanker, dumbbell, talkingPoints, explainer,
+   trendYoy, yearBars, recordBoard, stackedCountRanker, gapRanker), the fixed
+   ops metric registry, "neutral" metrics (blue, no judgment), benchmark and
+   extra columns on levelRanker, rate options on yoy/trend, and the words()
+   guard that stops the build on "rooftop". The v1 engine is build/v1/house.v1.mjs.
 
    Built for a projector in a large room, so density loses to legibility
    every time the two conflict.
@@ -35,8 +56,8 @@ export const C = {
 };
 
 /* ---------- naming: "stores", never "rooftops" ----------
-   Added 2026-10-14 (Noah). Every piece of slide text passes through words(),
-   which stops the build rather than ship the old term. */
+   Added 2026-10-14 (Noah). Slide text passes through words(), which stops
+   the build rather than ship the old term. */
 export function words(text, where) {
   if (typeof text === "string" && /rooftop/i.test(text)) {
     throw new Error(`"rooftop" found in ${where || "slide text"} - say "store": ${text}`);
@@ -48,7 +69,7 @@ export function words(text, where) {
 export const FLOOR = 14;
 const EXEMPT = {
   13: "ranker store names - every store on one page, signed off Oct 2026",
-  12: "source line - reference material, not read from the back of the room",
+  12: "ranker rows once rank numbers joined them - Tommy traded size for the\n       numbering, Oct 2026. Also the source line, which is reference\n       material and not read from the back of the room",
 };
 export function sz(size, why) {
   if (size < FLOOR && !EXEMPT[size]) {
@@ -57,17 +78,78 @@ export function sz(size, why) {
   return size;
 }
 
+/* ---------- body geometry -------------------------------------------
+   One pair of numbers decides how tall every content panel is. A slide
+   with a band stops short of it; a slide without one runs on down to a
+   bottom margin that matches the sides.
+   --------------------------------------------------------------------- */
+export const BODY = { top: 1.32, botFull: 6.95 };
+
+/* ---------- the takeaway band (Tommy, Oct 18 2026) --------------------
+   The band's TOP edge is fixed, so a chart is the same height however long
+   the line is - "I don't want any of the charts to be shrunk to
+   accommodate the takeaway."
+
+   One row is the rule. The font steps down from 16pt to the 14pt floor to
+   hold one row. Only if it still will not fit does the band take a second
+   row, and that row grows DOWN into the grey bottom margin, not up into
+   the chart. Three rows is refused: shorten the line.
+
+   Widths are estimated from character count (Inter bold averages about
+   0.54 em). Deliberately on the generous side - an estimate that is too
+   tight lets PowerPoint wrap a "one-row" band out of its box.
+   --------------------------------------------------------------------- */
+const BAND = { top: 6.70, w: 11.95, em: 0.54, pad: 0.14 };
+export function bandFit(t) {
+  if (!t) return null;
+  for (let lines = 1; lines <= 2; lines++) {
+    for (let fs = 16; fs >= FLOOR; fs -= 0.5) {
+      if (Math.ceil(t.length * BAND.em * fs / 72 / BAND.w) <= lines) return { fs, lines };
+    }
+  }
+  throw new Error(`takeaway will not fit two rows at the ${FLOOR}pt floor - shorten it: "${t}"`);
+}
+export function bandH(t) {
+  const f = bandFit(t);
+  return f ? f.lines * f.fs * 1.2 / 72 + BAND.pad : 0;
+}
+export const bodyBot = t => (t ? BAND.top - 0.15 : BODY.botFull);
+export const bodyH   = t => bodyBot(t) - BODY.top;
+
 /* ---------- the metric registry ---------- */
 export const METRICS = {
   "service gross":        { dir: "up",   fmt: "money" },
   "parts gross":          { dir: "up",   fmt: "money" },
   "fixed ops gross":      { dir: "up",   fmt: "money" },
+  "net profit":           { dir: "up",   fmt: "money" },
   "elr":                  { dir: "up",   fmt: "money" },
   "hpro":                 { dir: "up",   fmt: "dec"   },
   "ro count":             { dir: "up",   fmt: "int"   },
   "service absorption":   { dir: "up",   fmt: "pct"   },
   "mpi video %":          { dir: "up",   fmt: "pct"   },
   "cp share":             { dir: "up",   fmt: "pct"   },   // customer-pay share of service gross
+  // Oct 18 2026 - variable ops. Units, gross and PVR up-good per the house
+  // rule ("income, gross, PVR, units - up is good"); no new judgment made.
+  "new units":            { dir: "up",   fmt: "int"   },
+  "new gross":            { dir: "up",   fmt: "money" },
+  "new pvr":              { dir: "up",   fmt: "money" },
+  "used units":           { dir: "up",   fmt: "int"   },
+  "used gross":           { dir: "up",   fmt: "money" },
+  "used pvr":             { dir: "up",   fmt: "money" },
+  "fi gross":             { dir: "up",   fmt: "money" },
+  "fi pvr":               { dir: "up",   fmt: "money" },
+  // chargebacks are a cost: up is bad (house rule - "chargebacks ... up is bad")
+  "chargebacks pvr":      { dir: "down", fmt: "money" },
+  // Oct 18 2026 - wholesale & writedowns, inside Used Vehicle. Lower is
+  // better for both - CONFIRMED by Tommy, Oct 18 2026.
+  // Oct 18 2026 - net profit ratios (January's bonus KPIs). Profit per unit
+  // and per dollar - up is good under the house rule; no new judgment.
+  "net per unit":         { dir: "up",   fmt: "money" },
+  "net to gross":         { dir: "up",   fmt: "pct"   },
+  "net to sale":          { dir: "up",   fmt: "pct"   },
+  "wholesale %":          { dir: "down", fmt: "pct"   },
+  "writedowns pvr":       { dir: "down", fmt: "money" },
+  // ---- Day 2, fixed ops (Noah / Tommy, Oct 14-21 2026). "neutral" = blue, no green/red judgment.
   // 2026-10-14 (Noah, opcode test build) - PROVISIONAL until Tray confirms.
   // Share of customer-pay ROs carrying the service; more is better.
   "alignment %":          { dir: "up",   fmt: "pct"   },
@@ -106,22 +188,66 @@ export const METRICS = {
 };
 export function dirOf(key) {
   const m = METRICS[key];
-  if (!m) throw new Error(`metric "${key}" is not in the registry - ask Tray, then add it with a dated comment`);
+  if (!m) throw new Error(`metric "${key}" is not in the registry - ask Tommy, then add it with a dated comment`);
   return m.dir;
 }
 
 /* ---------- formatters ---------- */
 export const M     = v => "$" + (v / 1e6).toFixed(2) + "M";
-export const money = v => v === null ? "\u2014"
-  : (v < 0 ? "\u2212" : "+") + "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
+/* Millions, with the minus where a reader expects it - never "$-13.42M".
+   Msigned marks only negatives; Mdelta always carries a sign, because a
+   change column is read for direction first and magnitude second. */
+export const Msigned = v => (v < 0 ? "−" : "") + "$" + Math.abs(v / 1e6).toFixed(2) + "M";
+export const Mdelta  = v => (v < 0 ? "−" : "+") + "$" + Math.abs(v / 1e6).toFixed(2) + "M";
+// a change of nothing carries no sign - "+0" reads as a gain
+const sign = v => Math.abs(v) < 0.5 ? "" : (v < 0 ? "−" : "+");
+
+/* Mixed scale (Tommy, Oct 2026): millions read as $3.64M, anything under a
+   million reads in full dollars - $319,857, not $0.32M. Rounding a store to
+   two decimals of a million hides the difference between $319,857 and
+   $324,000, and under a million that difference is the whole conversation.
+   Mixed always signs the negative; Dmixed always signs both ways. */
+const mixed = v => Math.abs(v) >= 1e6
+  ? "$" + Math.abs(v / 1e6).toFixed(2) + "M"
+  : "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
+export const Mmixed = v => (v < 0 ? "−" : "") + mixed(v);
+export const Dmixed = v => sign(v) + mixed(v);
+/* counts - units, ROs - never with a dollar sign */
+export const Int  = v => (v < 0 ? "−" : "") + Math.round(Math.abs(v)).toLocaleString("en-US");
+export const Dint = v => sign(v) + Math.round(Math.abs(v)).toLocaleString("en-US");
+/* shares, passed in as percent (30.9, not 0.309). A change in a share is in
+   points - "−0.8 pts" - because "−0.8%" reads as a relative change. Its own
+   zero test: sign() rounds to whole units and would drop the sign on 0.3. */
+export const Pct  = v => (v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "%";
+export const Dpts = v => (Math.abs(v) < 0.05 ? "" : v < 0 ? "−" : "+") + Math.abs(v).toFixed(1) + " pts";
+
+/* Store names run ALL CAPS in ranker rows and chart data, and Title Case in
+   prose - a takeaway is a sentence, and a sentence that SHOUTS A STORE NAME
+   reads as an accusation (Tommy, Oct 2026). These stay upper: they are
+   initialisms, not words. */
+const KEEP_CAPS = new Set(["LR", "VW", "GMC", "CDJR", "LV", "INEOS", "BMW", "CJDR"]);
+export const storeName = s => String(s).split(/\s+/)
+  .map(w => KEEP_CAPS.has(w) ? w : w.charAt(0) + w.slice(1).toLowerCase())
+  .join(" ");
+/* Day 2: a takeaway is prose, so any store name written in ranker caps is
+   turned to Title Case on the way in - "Audi Reno is lowest", never "AUDI RENO". */
+export const STORES = ["TOYOTA HENDERSON","HONDA HENDERSON","CHEVY LV","AUDI HENDERSON","CADILLAC","SUBARU LV",
+  "HONDA NORTH","LR LV","KIA LV","TOYOTA SPOKANE","TOYOTA PRESCOTT","VW HENDERSON","NISSAN","TOYOTA FLAGSTAFF",
+  "CHEVY GMC BULLHEAD","AUDI RENO","LEXUS","HONDA SPOKANE","VOLVO","CDJR POST FALLS","SUBARU ST GEORGE",
+  "LR HENDERSON","MAZDA","LINCOLN","ACURA","SUBARU PRESCOTT","HYUNDAI ST GEORGE","LR RENO","KIA ST GEORGE",
+  "GMC PRESCOTT","HONDA FLAGSTAFF","HYUNDAI PRESCOTT","VW ST GEORGE","INEOS"];
+const STORE_RE = new RegExp("\\b(" + [...STORES].sort((a, b) => b.length - a.length).join("|") + ")\\b", "g");
+export const proseNames = t => String(t).replace(STORE_RE, m => storeName(m));
+export const money = v => v === null ? "—"
+  : (v < 0 ? "−" : "+") + "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 export const dollars = v => "$" + Math.round(v).toLocaleString("en-US");
-export const pct   = (a, b) => (a / b >= 0 ? "+" : "\u2212") + Math.abs(a / b * 100).toFixed(1) + "%";
+export const pct   = (a, b) => (a / b >= 0 ? "+" : "−") + Math.abs(a / b * 100).toFixed(1) + "%";
 
 /* ---------- page furniture ---------- */
 export function page(pptx, s, { eyebrow, title }) {
+  words(eyebrow, "eyebrow"); words(title, "title");
   s.background = { color: C.field };
   s.addShape(pptx.ShapeType.rect, { x: 0.5, y: 0.44, w: 0.055, h: 0.21, fill: { color: C.blue } });
-  words(eyebrow, "eyebrow"); words(title, "title");
   s.addText(eyebrow.toUpperCase(), {
     x: 0.68, y: 0.37, w: 9, h: 0.3, fontFace: F, fontSize: sz(14, "eyebrow"), bold: true,
     color: C.ink600, charSpacing: 1.1, isTextBox: true, margin: 0,
@@ -132,7 +258,7 @@ export function page(pptx, s, { eyebrow, title }) {
   });
 }
 
-/* Source and page number are deliberately NOT drawn (Tray, Oct 2026) - they ate
+/* Source and page number are deliberately NOT drawn (Tommy, Oct 2026) - they ate
    space and the room does not read them. Provenance is kept in the speaker
    notes so it still travels with the deck and can be answered from the podium. */
 export function foot(pptx, s, source, n) {
@@ -150,119 +276,408 @@ export function panel(pptx, s, { x, y, w, h, label }) {
   }
 }
 
-export function takeaway(pptx, s, text, tone = "n", y = 6.52) {
+/* The strip across the top of every store ranker: the measure in bold, the
+   period or comparison beside it, the group figure on the right. Named for
+   the measure - "NET PROFIT", "NEW FRONT PVR" - not "GROUP" (Tommy, Oct 18
+   2026): the strip IS the group, so the word added nothing and the measure
+   was missing. */
+export function measureStrip(pptx, s, measure, label, value, valueColor) {
+  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 11.89, h: 0.46, fill: { color: C.blueTint } });
+  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 0.065, h: 0.46, fill: { color: C.navy } });
+  // Day 2: longer measure names ("CP & W ROS PER FIXED EMPLOYEE") push the label right
+  // rather than run under it - Inter bold caps ~0.62em at 15pt
+  const mtxt = (measure ?? "GROUP").toUpperCase(), mw = Math.max(2.6, mtxt.length * 0.62 * 15 / 72 + 0.15);
+  s.addText(mtxt, {
+    x: 0.94, y: 1.46, w: mw, h: 0.46, fontFace: F, fontSize: sz(15, "strip measure"), bold: true,
+    color: C.navy, valign: "middle", isTextBox: true, margin: 0,
+  });
+  // a period or a comparison, never a store count. **part** renders bold -
+  // "YEAR-OVER-YEAR CHANGE" is always bold on a change ranker (Tommy, Oct 18 2026)
+  // Day 2: a label too long for what is left of the strip drops its period
+  // prefix ("2026 VS 2025 YTD · ") and keeps the bold comparison
+  const room = 8.8 - (0.94 + mw + 0.06), fits = t => t.replace(/\*\*/g, "").length * 0.6 * 14 / 72 <= room;
+  if (!fits(String(label)) && String(label).includes("·")) label = String(label).split("·").slice(1).join("·").trim();
+  const runs = String(label).split("**")
+    .map((t, i) => ({ text: t, options: i % 2 ? { bold: true, color: C.navy } : {} }))
+    .filter(r => r.text);
+  s.addText(runs, {
+    x: 0.94 + mw + 0.06, y: 1.46, w: 8.8 - (0.94 + mw + 0.06), h: 0.46, fontFace: F, fontSize: sz(14, "strip label"),
+    color: C.ink600, charSpacing: 0.9, valign: "middle", isTextBox: true, margin: 0,
+  });
+  s.addText(value, {
+    x: 8.9, y: 1.46, w: 3.6, h: 0.46, fontFace: F, fontSize: sz(20, "strip value"), bold: true,
+    color: valueColor, align: "right", valign: "middle", isTextBox: true, margin: 0,
+  });
+}
+
+/* A band only when there is something worth saying. No text, no band.
+   The band names where the opportunity is, with the figure attached -
+   never flattery, never a scolding (Tommy, Oct 2026). */
+export function takeaway(pptx, s, text, tone = "n") {
+  if (!text) return;
   words(text, "takeaway");
+  text = proseNames(text);
   const bg = tone === "g" ? C.goodBg : tone === "b" ? C.badBg : C.blueTint;
   const fg = tone === "g" ? C.goodInk : tone === "b" ? C.badInk : C.navy;
-  s.addShape(pptx.ShapeType.rect, { x: 0.5, y, w: 12.33, h: 0.6, fill: { color: bg } });
+  const { fs } = bandFit(text);
+  const h = bandH(text), y = BAND.top;   // top pinned; a second row grows down
+  s.addShape(pptx.ShapeType.rect, { x: 0.5, y, w: 12.33, h, fill: { color: bg } });
   s.addText(text, {
-    x: 0.72, y: y + 0.02, w: 11.95, h: 0.56, fontFace: F, fontSize: sz(16, "takeaway"), bold: true,
+    x: 0.72, y: y + 0.02, w: BAND.w, h: h - 0.04, fontFace: F, fontSize: sz(fs, "takeaway"), bold: true,
     color: fg, isTextBox: true, margin: 0, valign: "middle",
   });
 }
 
-/* ---------- THE DAY TRACKER -------------------------------------------
-   Shared by the cover and every section break. Completed segments read
-   light blue, the current one is lit and bold, the rest sit grey. In a
-   two-day meeting this is the thing that tells 70 people where they are
-   and how much is left.
+/* ---------- THE SECTION TRACKER ---------------------------------------
+   Transition slides only. Completed sections read light blue, the current
+   one is lit and bold, the rest sit grey. In a ten-section day this is the
+   thing that tells the room where they are and how much is left.
 
-   Labels auto-size from 17pt down to the 14pt floor. If the names still
-   do not fit, the build stops rather than shrink past the floor or clip -
-   that is a signal to shorten a segment name, not to squeeze the type.
+   Ten sections do not fit one readable row, so it wraps at five. Labels
+   auto-size from 17pt down to the 14pt floor. If the names still do not
+   fit, the build stops rather than shrink past the floor or clip - that is
+   a signal to shorten a section name, not to squeeze the type.
    --------------------------------------------------------------------- */
-function dayTracker(pptx, s, segments, current, y = 5.75) {
-  const TRACK_X = 0.75, TRACK_W = 11.8;
-  const segW = TRACK_W / segments.length;
+const PER_ROW = 5;
+export function sectionTracker(pptx, s, sections, current, y = 5.45) {
+  const TRACK_X = 0.75, TRACK_W = 11.8, ROW_H = 0.78;
+  const segW = TRACK_W / PER_ROW;
   const slot = segW - 0.22;
 
-  let fsLabel = 17;
-  const longest = Math.max(...segments.map(n => n.length));
-  while (fsLabel > FLOOR && (longest * 0.52 * fsLabel) / 72 > slot) fsLabel -= 0.5;
-  if ((longest * 0.52 * fsLabel) / 72 > slot) {
-    const n = segments.find(x => x.length === longest);
-    throw new Error(`segment name "${n}" will not fit the day tracker at the ${FLOOR}pt floor - shorten it or use fewer segments`);
+  let fs = 17;
+  const longest = Math.max(...sections.map(n => n.length));
+  while (fs > FLOOR && (longest * 0.52 * fs) / 72 > slot) fs -= 0.5;
+  if ((longest * 0.52 * fs) / 72 > slot) {
+    const n = sections.find(x => x.length === longest);
+    throw new Error(`section name "${n}" will not fit the tracker at the ${FLOOR}pt floor - shorten it`);
   }
 
-  segments.forEach((name, i) => {
-    const x = TRACK_X + i * segW;
+  sections.forEach((name, i) => {
+    const row = Math.floor(i / PER_ROW), col = i % PER_ROW;
+    const x = TRACK_X + col * segW, yy = y + row * ROW_H;
     const on = i === current, done = current != null && i < current;
     s.addShape(pptx.ShapeType.rect, {
-      x, y, w: slot, h: on ? 0.1 : 0.05,
+      x, y: yy, w: slot, h: on ? 0.1 : 0.05,
       fill: { color: on ? C.blue : (done ? C.blueLt : C.rule) },
     });
     s.addText(name, {
-      x, y: y + 0.2, w: slot, h: 0.4, fontFace: F, fontSize: sz(fsLabel, "tracker label"),
+      x, y: yy + 0.2, w: slot, h: 0.4, fontFace: F, fontSize: sz(fs, "tracker label"),
       bold: on, color: on ? C.ink : C.ink600, isTextBox: true, margin: 0,
     });
   });
 }
 
-/* ---------- SECTION BREAK - light, with the day tracker ---------- */
-export function section(pptx, deck, { kicker, title, chips, segments, current, logo }) {
-  // ADDED 2026-10-15: when a master deck is assembled, globalThis.__TRACK = {segments, current} lights the day tracker
-  if (!segments && globalThis.__TRACK) ({ segments, current } = globalThis.__TRACK);
-  [kicker, title, ...(chips || [])].forEach(t => words(t, "section slide"));
+/* ---------- SECTION TRANSITION - light, with the tracker ---------- */
+export function section(pptx, deck, o) {
   const s = deck.addSlide();
+  const sections = o.sections ?? o.segments;
   s.background = { color: C.white };
-  if (logo) s.addImage({ data: logo, x: 0.75, y: 0.62, w: 2.0, h: 0.608 });
-  s.addText(kicker.toUpperCase(), {
-    x: 0.78, y: 2.6, w: 10, h: 0.4, fontFace: F, fontSize: sz(20, "section kicker"), bold: true,
+  if (o.logo) s.addImage({ data: o.logo, x: 0.75, y: 0.62, w: 2.0, h: 0.608 });
+  s.addText(o.kicker.toUpperCase(), {
+    x: 0.78, y: 2.32, w: 10, h: 0.4, fontFace: F, fontSize: sz(20, "section kicker"), bold: true,
     color: C.blue, charSpacing: 2.6, isTextBox: true, margin: 0,
   });
-  /* ADDED 2026-10-16: a long title (e.g. "Technician Proficiency") wrapped to two lines at 82pt and ran into
-     the kicker and chips. Step down until it fits one line (Inter bold ~0.6em per character); stop at 48pt. */
-  let tfs = 82;
-  while (tfs > 48 && title.length * 0.6 * tfs / 72 > 11.6) tfs -= 2;
-  if (title.length * 0.6 * tfs / 72 > 11.6) throw new Error(`section title "${title}" will not fit one line at 48pt - shorten it`);
-  s.addText(title, {
-    x: 0.73, y: 3.0, w: 11.8, h: 1.35, fontFace: F, fontSize: sz(tfs, "section title"), bold: true, valign: "middle", wrap: false,
+  [o.kicker, o.title, ...(o.chips || [])].forEach(t => words(t, "section slide"));
+  // Day 2 (Oct 16): a long title steps down until it holds one line, never below 48pt
+  let tfs = 76;
+  while (tfs > 48 && o.title.length * 0.6 * tfs / 72 > 11.6) tfs -= 2;
+  if (o.title.length * 0.6 * tfs / 72 > 11.6) throw new Error(`section title "${o.title}" will not fit one line at 48pt - shorten it`);
+  s.addText(o.title, {
+    x: 0.73, y: 2.72, w: 11.8, h: 1.3, fontFace: F, fontSize: sz(tfs, "section title"), bold: true, valign: "middle", wrap: false,
     color: C.ink, isTextBox: true, margin: 0,
   });
-  if (chips?.length) s.addText(chips.join("   \u00b7   "), {
-    x: 0.76, y: 4.42, w: 11.8, h: 0.45, fontFace: F, fontSize: sz(22, "section chips"),
+  if (o.chips?.length) s.addText(o.chips.join("   ·   "), {
+    x: 0.76, y: 4.12, w: 11.8, h: 0.45, fontFace: F, fontSize: sz(22, "section chips"),
     color: C.ink600, isTextBox: true, margin: 0,
   });
-  if (segments?.length) dayTracker(pptx, s, segments, current);
+  if (sections?.length) sectionTracker(pptx, s, sections, o.current);
   return s;
 }
 
-/* ---------- COVER - same light field, tracker with nothing lit yet ---------- */
-export function cover(pptx, deck, { title, subtitle, meta, segments, logo }) {
+/* ---------- COVER - no tracker (Tommy, Oct 2026) ---------- */
+export function cover(pptx, deck, { title, subtitle, meta, logo }) {
   const s = deck.addSlide();
   s.background = { color: C.white };
   if (logo) s.addImage({ data: logo, x: 0.75, y: 0.62, w: 2.4, h: 0.73 });
   s.addText(title, {
-    x: 0.73, y: 2.35, w: 11.8, h: 1.9, fontFace: F, fontSize: sz(62, "cover title"), bold: true,
+    x: 0.73, y: 2.6, w: 11.8, h: 1.9, fontFace: F, fontSize: sz(62, "cover title"), bold: true,
     color: C.ink, isTextBox: true, margin: 0,
   });
+  s.addShape(pptx.ShapeType.rect, { x: 0.78, y: 4.62, w: 1.5, h: 0.055, fill: { color: C.blue } });
   s.addText(subtitle, {
-    x: 0.76, y: 4.28, w: 11.8, h: 0.5, fontFace: F, fontSize: sz(26, "cover subtitle"),
+    x: 0.76, y: 4.88, w: 11.8, h: 0.5, fontFace: F, fontSize: sz(26, "cover subtitle"),
     color: C.blue, isTextBox: true, margin: 0,
   });
-  if (meta?.length) s.addText(meta.join("   \u00b7   "), {
-    x: 0.76, y: 4.82, w: 11.8, h: 0.45, fontFace: F, fontSize: sz(20, "cover meta"),
+  if (meta?.length) s.addText(meta.join("   ·   "), {
+    x: 0.76, y: 5.42, w: 11.8, h: 0.45, fontFace: F, fontSize: sz(20, "cover meta"),
     color: C.ink600, isTextBox: true, margin: 0,
   });
-  if (segments?.length) dayTracker(pptx, s, segments, null);
   return s;
 }
 
-/* ---------- TREND - trailing 12, terminus label, no per-point labels ---------- */
+/* ---------- AGENDA - the sections as numbered cards -------------------
+   Numbers are the position in the section list, never typed, so the
+   agenda cannot drift out of step with the tracker.
+   --------------------------------------------------------------------- */
+export function agenda(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow ?? "Day 1", title: o.title ?? "Agenda" });
+
+  const items = o.items;
+  const rows = Math.ceil(items.length / 2);
+  const BOT = bodyBot(o.takeaway);
+  const COLX = [0.5, 6.72], CW = 6.11;
+  const rowH = (BOT - BODY.top) / rows;
+
+  items.forEach((it, i) => {
+    const col = i < rows ? 0 : 1, k = i - col * rows;
+    const x = COLX[col], y = BODY.top + k * rowH;
+    s.addShape(pptx.ShapeType.rect, { x, y, w: CW, h: rowH - 0.1, fill: { color: C.panel } });
+    s.addShape(pptx.ShapeType.rect, { x, y, w: 0.055, h: rowH - 0.1, fill: { color: C.blue } });
+    s.addText(String(i + 1).padStart(2, "0"), {
+      x: x + 0.26, y, w: 0.7, h: rowH - 0.1, fontFace: F, fontSize: sz(20, "agenda number"), bold: true,
+      color: C.blueLt, valign: "middle", isTextBox: true, margin: 0,
+    });
+    s.addText(it.name, {
+      x: x + 1.0, y, w: it.detail ? 2.5 : CW - 1.3, h: rowH - 0.1,
+      fontFace: F, fontSize: sz(17, "agenda name"), bold: true,
+      color: C.ink, valign: "middle", isTextBox: true, margin: 0,
+    });
+    if (it.detail) s.addText(it.detail, {
+      x: x + 3.55, y, w: CW - 3.8, h: rowH - 0.1, fontFace: F, fontSize: sz(14, "agenda detail"),
+      color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+  });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source);
+  return s;
+}
+
+/* ---------- STATEMENT - one thing, said plainly ---------- */
+export function statement(pptx, deck, o) {
+  const s = deck.addSlide();
+  s.background = { color: C.white };
+  // block sits high so a seven-line statement still clears the attribution -
+  // at the old y the last line landed on "Tommy Rayl"
+  s.addShape(pptx.ShapeType.rect, { x: 0.75, y: 1.1, w: 0.065, h: 0.9, fill: { color: C.blue } });
+  if (o.kicker) s.addText(o.kicker.toUpperCase(), {
+    x: 1.08, y: 1.1, w: 10, h: 0.4, fontFace: F, fontSize: sz(20, "statement kicker"), bold: true,
+    color: C.blue, charSpacing: 2.6, isTextBox: true, margin: 0,
+  });
+  // **phrase** marks the one line that carries the slide - drawn in Findlay
+  // blue. One per statement, the way Tommy bolds one thing per email.
+  const runs = o.text.split("**")
+    .map((t, i) => ({ text: t, options: i % 2 ? { color: C.blue } : {} }))
+    .filter(r => r.text);
+
+  // Fit the font to the space, not the words to the font (Tommy, Oct 18
+  // 2026): "it's a really big projector ... a couple more sentences in there,
+  // and the font is smaller." Simulates word wrap at each size and takes the
+  // largest that fits, never below the floor.
+  const W = 11.4, H = o.attr ? 4.35 : 5.05;
+  const plain = o.text.replace(/\*\*/g, "");
+  const linesAt = fs => {
+    const per = W / (0.54 * fs / 72);
+    let lines = 1, cur = 0;
+    for (const w of plain.split(/\s+/)) {
+      const add = w.length + (cur ? 1 : 0);
+      if (cur + add > per) { lines++; cur = w.length; } else cur += add;
+    }
+    return lines;
+  };
+  let fs = o.size ?? 34;
+  while (fs > FLOOR && linesAt(fs) * fs * 1.22 * 1.2 / 72 > H) fs--;
+  if (linesAt(fs) * fs * 1.22 * 1.2 / 72 > H) throw new Error(`statement will not fit at the ${FLOOR}pt floor - cut it`);
+
+  s.addText(runs, {
+    x: 1.05, y: 1.85, w: W, h: H, fontFace: F, fontSize: sz(fs, "statement"), bold: true,
+    color: C.ink, isTextBox: true, margin: 0, lineSpacingMultiple: 1.22, valign: "top",
+  });
+  if (o.attr) s.addText(o.attr, {
+    x: 1.08, y: 6.45, w: 11.4, h: 0.4, fontFace: F, fontSize: sz(18, "statement attribution"),
+    color: C.ink600, isTextBox: true, margin: 0,
+  });
+  // The talk track lives in the speaker notes: the slide says one thing,
+  // the notes carry what Tommy says around it.
+  const notes = [o.notes, o.source && `Source: ${o.source}`].filter(Boolean).join("\n\n");
+  if (notes) s.addNotes(notes);
+  return s;
+}
+
+/* ---------- GRID - a lot of short items, meant to be read at a glance ----
+   The values slide. Chips, not bullets: the room is scanning for the three
+   it wants, not reading a list top to bottom.
+   --------------------------------------------------------------------- */
+export function grid(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  let top = BODY.top;
+  if (o.sub) {
+    s.addText(o.sub, {
+      x: 0.5, y: 1.26, w: 12.33, h: 0.34, fontFace: F, fontSize: sz(16, "grid sub"),
+      color: C.ink600, isTextBox: true, margin: 0,
+    });
+    top = 1.72;
+  }
+
+  const cols = o.cols ?? 5;
+  const rows = Math.ceil(o.items.length / cols);
+  const GAP = 0.12, FULL = 12.33;
+  const cw = (FULL - GAP * (cols - 1)) / cols;
+  const rh = (bodyBot(o.takeaway) - top) / rows;
+
+  o.items.forEach((t, i) => {
+    const r = Math.floor(i / cols), c = i % cols;
+    const x = 0.5 + c * (cw + GAP), y = top + r * rh;
+    s.addShape(pptx.ShapeType.rect, { x, y, w: cw, h: rh - GAP, fill: { color: C.panel } });
+    s.addText(t, {
+      x: x + 0.14, y, w: cw - 0.28, h: rh - GAP, fontFace: F, fontSize: sz(15, "grid item"),
+      color: C.ink, align: "center", valign: "middle", isTextBox: true, margin: 0,
+    });
+  });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source);
+  return s;
+}
+
+/* ---------- PHRASE CLOUD - statements, scattered and sized by weight ----
+   For the values workshop (Tommy, Oct 18 2026): "less of a grid and tile and
+   more of an artistic word cloud ... phrases or statements that we could
+   then distill. Single words are not the answer."
+
+   Three tiers: 1 is largest and lands in the middle, 3 is the supporting
+   behaviour around the edge. Placement is a deterministic elliptical
+   spiral out from the centre - biggest first, so the heaviest statements
+   hold the middle - and nothing overlaps. Everything stays horizontal:
+   rotated phrases are unreadable from the back of a ballroom. A phrase that
+   will not fit steps down a point at a time to the 14pt floor; past that
+   the build stops rather than overlap or clip.
+
+   Blue and ink only - this slide judges nothing, so no green or red.
+   --------------------------------------------------------------------- */
+export function phraseCloud(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  let top = BODY.top;
+  if (o.sub) {
+    s.addText(o.sub, {
+      x: 0.5, y: 1.26, w: 12.33, h: 0.34, fontFace: F, fontSize: sz(16, "cloud sub"),
+      color: C.ink600, isTextBox: true, margin: 0,
+    });
+    top = 1.72;
+  }
+  const bot = bodyBot(o.takeaway);
+  panel(pptx, s, { x: 0.5, y: top, w: 12.33, h: bot - top, label: null });
+
+  const X0 = 0.72, X1 = 12.61, Y0 = top + 0.16, Y1 = bot - 0.16;
+  const cx = (X0 + X1) / 2, cy = (Y0 + Y1) / 2, ASPECT = (X1 - X0) / (Y1 - Y0);
+  const TIER = {
+    1: { fs: o.sizes?.[0] ?? 22, bold: true,  colors: [C.navy, C.blue] },
+    2: { fs: o.sizes?.[1] ?? 17, bold: true,  colors: [C.blue, C.navy] },
+    3: { fs: o.sizes?.[2] ?? 14, bold: false, colors: [C.ink600, C.ink] },
+  };
+  const MAXW = o.maxLine ?? 4.4, PAD = 0.10;
+  // Inter measured ~0.49 em bold on the rendered bands; 0.53 leaves a margin
+  // without wasting the room the first, more generous estimate did
+  const width = (t, fs, bold) => t.length * (bold ? 0.53 : 0.50) * fs / 72;
+  const shape = (t, fs, bold) => {
+    let lines = [t];
+    if (width(t, fs, bold) > MAXW) {          // break at the space nearest the middle
+      const sp = [...t.matchAll(/ /g)].map(m => m.index);
+      const at = sp.reduce((b, i) => Math.abs(i - t.length / 2) < Math.abs(b - t.length / 2) ? i : b, sp[0]);
+      lines = [t.slice(0, at), t.slice(at + 1)];
+    }
+    return {
+      lines,
+      w: Math.max(...lines.map(l => width(l, fs, bold))) + 0.1,
+      h: lines.length * fs * 1.18 / 72 + 0.04,
+    };
+  };
+  // Every candidate centre on a fine grid. A spiral was tried first; it got
+  // coarse toward the edges and missed gaps a phrase would have fitted.
+  const STEP = 0.06, grid = [];
+  for (let y = Y0; y <= Y1; y += STEP) for (let x = X0; x <= X1; x += STEP) grid.push({ x, y });
+
+  // Each phrase gets a home and settles in the free spot nearest it. With
+  // one shared centre the big statements stacked into a column down the
+  // middle and the slide read as three lists. Tier 1 sits like the five on a
+  // die; tiers 2 and 3 sit on rings around it, so the cloud reaches the
+  // corners.
+  const RX = (X1 - X0) / 2, RY = (Y1 - Y0) / 2;
+  const DIE = [[0, 0], [-0.62, -0.55], [0.62, -0.55], [-0.6, 0.58], [0.62, 0.58]];
+  const order = [...o.items].sort((a, b) => a.tier - b.tier || b.t.length - a.t.length);
+  const ring = order.filter(it => it.tier > 1).length;
+  let r = 0;
+  order.forEach((it, i) => {
+    if (it.tier === 1 && i < DIE.length) {
+      it.home = { x: cx + DIE[i][0] * RX, y: cy + DIE[i][1] * RY };
+    } else {
+      const a = (r / ring) * 2 * Math.PI + 0.35, k = it.tier === 2 ? 0.48 : 0.86;
+      it.home = { x: cx + Math.cos(a) * RX * k, y: cy + Math.sin(a) * RY * k };
+      r++;
+    }
+    it.cand = grid.map(g => ({ ...g, d: ((g.x - it.home.x) / ASPECT) ** 2 + (g.y - it.home.y) ** 2 }))
+                  .sort((p, q) => p.d - q.d);
+    // a short statement earns a little more size - it is the one that lands
+    it.boost = it.t.length <= 20 ? 1.2 : 1;
+  });
+
+  // Try the whole cloud at the largest scale first and shrink it as one,
+  // so the tiers keep their proportions and the panel is filled rather than
+  // the last few phrases being squeezed. Tier 3 never drops below the floor.
+  const attempt = scale => {
+    const placed = [];
+    const free = b => b.x >= X0 && b.x + b.w <= X1 && b.y >= Y0 && b.y + b.h <= Y1 &&
+      placed.every(p => b.x + b.w + PAD <= p.x || p.x + p.w + PAD <= b.x ||
+                        b.y + b.h + PAD <= p.y || p.y + p.h + PAD <= b.y);
+    for (const it of order) {
+      const T = TIER[it.tier], fs = Math.max(FLOOR, Math.round(T.fs * scale * it.boost));
+      const L = shape(it.t, fs, T.bold);
+      const c = it.cand.find(c => free({ x: c.x - L.w / 2, y: c.y - L.h / 2, w: L.w, h: L.h }));
+      if (!c) return null;
+      placed.push({ x: c.x - L.w / 2, y: c.y - L.h / 2, w: L.w, h: L.h, L, fs, it });
+    }
+    return placed;
+  };
+  let layout = null;
+  for (let sc = 1.5; sc >= 1.0 && !layout; sc -= 0.05) layout = attempt(sc);
+  if (!layout) throw new Error(`the cloud will not fit at the ${FLOOR}pt floor - cut a phrase or shorten one`);
+
+  const used = { 1: 0, 2: 0, 3: 0 };
+  layout.forEach(b => {
+    const T = TIER[b.it.tier];
+    s.addText(b.L.lines.join("\n"), {
+      x: b.x, y: b.y, w: b.w, h: b.h, fontFace: F, fontSize: sz(b.fs, "cloud phrase"), bold: T.bold,
+      color: T.colors[used[b.it.tier]++ % T.colors.length],
+      align: "center", valign: "middle", isTextBox: true, margin: 0, wrap: false,
+    });
+  });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source);
+  return s;
+}
+
+/* ---------- TREND - trailing 12, no per-point labels beyond the fit ---------- */
 export function trend(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 8.3, h: 5.05, label: o.panelLabel });
+  const H = bodyH(o.takeaway);
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 8.3, h: H, label: o.panelLabel });
 
-  // ADDED 2026-10-15: o.scale (default 1e6), o.axisFormat, o.majorUnit for non-dollar series
+  // Day 2 (Oct 15): o.scale (default 1e6), o.axisFormat, o.majorUnit, o.pad for non-dollar series
   const SC = o.scale ?? 1e6;
   const vals = o.series.map(r => +(r[1] / SC).toFixed(2));
   const lo = o.min ?? Math.floor(Math.min(...vals) - 1);
   const hi = o.max ?? Math.ceil(Math.max(...vals) + 1);
-  const pad = (hi - lo) * (o.pad ?? 0.12);   // headroom so point labels clear the line (ADDED: o.pad)
+  const pad = (hi - lo) * (o.pad ?? 0.12);   // headroom so point labels clear the line
 
   s.addChart(pptx.ChartType.line, [{ name: o.panelLabel, labels: o.series.map(r => r[0]), values: vals }], {
-    x: 0.68, y: 1.98, w: 7.5, h: 4.22,
+    x: 0.68, y: 1.98, w: 7.5, h: H - 0.83,
     chartColors: [C.blue], lineSize: 3, lineSmooth: false,
     lineDataSymbol: "circle", lineDataSymbolSize: 8,
     lineDataSymbolLineColor: C.blue, lineDataSymbolLineSize: 1,
@@ -278,21 +693,792 @@ export function trend(pptx, deck, o) {
     catAxisLineShow: true, valAxisLineShow: false,
   });
 
-  panel(pptx, s, { x: 9.0, y: 1.32, w: 3.83, h: 5.05, label: "What it says" });
+  panel(pptx, s, { x: 9.0, y: BODY.top, w: 3.83, h: H, label: "What it says" });
   let by = 2.02;
+  const gap = Math.min(1.24, (bodyBot(o.takeaway) - 2.1) / o.bullets.length);
   o.bullets.forEach((b, i) => {
     s.addShape(pptx.ShapeType.ellipse, { x: 9.25, y: by + 0.1, w: 0.11, h: 0.11, fill: { color: i === 0 ? C.blue : C.ink } });
     s.addText(b, {
-      x: 9.52, y: by - 0.04, w: 3.1, h: 1.15, fontFace: F, fontSize: sz(15, "bullet"),
+      x: 9.52, y: by - 0.04, w: 3.1, h: gap - 0.09, fontFace: F, fontSize: sz(15, "bullet"),
       color: i === 0 ? C.blue : C.ink, bold: i === 0, isTextBox: true, margin: 0, valign: "top",
     });
-    by += 1.24;
+    by += gap;
   });
 
   takeaway(pptx, s, o.takeaway, o.tone);
   foot(pptx, s, o.source, o.page);
   return s;
 }
+
+/* ---------- YOY - group card over a month table ---------- */
+export function yoy(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  // Day 2 (Oct 14): o.fmt = { v, d, p } for rate and count metrics; o.ytd = [a, b]
+  // overrides the YTD figures - required for any ratio, where YTD is not the sum of months
+  const FV = o.fmt?.v ?? M, FD = o.fmt?.d ?? money, FP = o.fmt?.p ?? pct;
+  const a = o.ytd ? o.ytd[0] : o.months.reduce((t, r) => t + r[1], 0);
+  const b = o.ytd ? o.ytd[1] : o.months.reduce((t, r) => t + r[2], 0);
+  const v = b - a;
+  if (!o.ytd && o.expect != null && Math.abs(v - o.expect) > 1) {
+    throw new Error(`${o.title}: months sum to ${Math.round(v)}, expected ${o.expect}`);
+  }
+  const neu = dirOf(o.metric) === "neutral";   // Day 2: neutral metrics carry no judgment
+  const up = dirOf(o.metric) === "up" ? v >= 0 : v < 0;
+  const tone = neu ? "n" : (up ? "g" : "b");
+
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: 1.66, label: null });
+  const cells = [
+    ["2025", FV(a), C.ink], ["2026", FV(b), C.ink],
+    ["VARIANCE", FD(v), neu ? C.navy : (up ? C.goodInk : C.badInk)],
+    ["VAR %", FP(v, a), neu ? C.navy : (up ? C.goodInk : C.badInk)],
+  ];
+  s.addText(o.cardLabel.toUpperCase(), {
+    x: 0.75, y: 1.44, w: 11.8, h: 0.3, fontFace: F, fontSize: sz(14, "card label"),
+    color: C.ink600, charSpacing: 1.0, isTextBox: true, margin: 0,
+  });
+  cells.forEach(([l, val, col], i) => {
+    const x = 0.75 + i * 3.05;
+    s.addText(l, { x, y: 1.78, w: 2.9, h: 0.26, fontFace: F, fontSize: sz(14, "card sublabel"), color: C.ink600, charSpacing: 0.9, isTextBox: true, margin: 0 });
+    s.addText(val, { x, y: 2.04, w: 2.95, h: 0.66, fontFace: F, fontSize: sz(30, "card value"), bold: true, color: col, isTextBox: true, margin: 0 });
+  });
+
+  const hdr = ["MONTH", "2025", "2026", "VARIANCE", "VAR %"].map(h => ({
+    text: h, options: { fontFace: F, fontSize: sz(14, "table header"), bold: true, color: C.white,
+                        fill: { color: C.blueLt }, align: h === "MONTH" ? "left" : "right", valign: "middle" },
+  }));
+  const body = o.months.map(([m, x, y], i) => {
+    const d = y - x, good = dirOf(o.metric) === "up" ? d >= 0 : d < 0;
+    const col = good ? C.goodInk : C.badInk, bg = i % 2 ? C.zebra : C.white;
+    const cell = (t, opts = {}) => ({ text: t, options: { fontFace: F, fontSize: sz(14, "table body"), color: C.ink, fill: { color: bg }, valign: "middle", ...opts } });
+    return [cell(m), cell(FV(x), { align: "right" }), cell(FV(y), { align: "right" }),
+            cell(FD(d), { align: "right", color: col, bold: true }),
+            cell(FP(d, x), { align: "right", color: col, bold: true })];
+  });
+  const rowH = Math.max(0.3, (bodyBot(o.takeaway) - 3.08) / (o.months.length + 1));
+  s.addTable([hdr, ...body], {
+    x: 0.5, y: 3.08, w: 12.33, colW: [3.41, 2.23, 2.23, 2.23, 2.23],
+    rowH, valign: "middle", border: { type: "solid", pt: 0.5, color: C.rule },
+  });
+
+  takeaway(pptx, s, o.takeaway, tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- GROUP YOY - the whole organisation, before any store -------
+   Opens every KPI (Tommy, Oct 18 2026): the year-to-date card - prior,
+   current, variance, var % - over a monthly chart that spans the 24-month
+   window, last year January to December against this year to date, month
+   beside month. The room sees what the group did before it is cut into 34
+   store stories.
+
+   Bars start at zero, because a bar that does not is lying about size.
+   Last year is grey and this year is Findlay blue: that is identity, not
+   judgment, so it does not break the green-good / red-bad rule. Months not
+   yet closed are left empty, never zero - a zero bar would read as a month
+   that earned nothing.
+   --------------------------------------------------------------------- */
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* How a metric's numbers read on the chart and the card.
+     M     dollar totals, charted in millions ($3.2M)
+     count units, ROs - charted in thousands (3.3K) so a pair of labels fits
+           over a month without running together
+     usd   per-unit dollars (PVR) - charted as whole dollars
+     pct   shares, passed as percent - charted to one decimal, changes in pts */
+const UNIT = {
+  M:     { to: x => +(x / 1e6).toFixed(2), label: "0.0",               axis: '$0"M"',     fmt: Mmixed, dfmt: Dmixed },
+  count: { to: x => x,                     label: '#,##0.0,"K"',       axis: '#,##0',     fmt: Int,    dfmt: Dint   },
+  usd:   { to: x => Math.round(x),         label: '"$"#,##0',          axis: '"$"#,##0',  fmt: Mmixed, dfmt: Dmixed },
+  pct:   { to: x => +x.toFixed(1),         label: '0.0"%"',            axis: '0"%"',      fmt: Pct,    dfmt: Dpts   },
+};
+const niceStep = span => {
+  const raw = span / 5, p = 10 ** Math.floor(Math.log10(raw));
+  return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+};
+
+export function groupYoy(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  // A total's year to date is the sum of its months. A RATE's is not - a
+  // year-to-date PVR is year-to-date gross over year-to-date units, never
+  // the sum or average of twelve monthly PVRs - so a rate passes its
+  // year-to-date figures in as ytdPrior / ytdCurrent.
+  const n = o.current.length;   // months closed this year
+  const a = o.ytdPrior   ?? o.prior.slice(0, n).reduce((t, v) => t + v, 0);
+  const b = o.ytdCurrent ?? o.current.reduce((t, v) => t + v, 0);
+  if (o.expectPrior != null && Math.abs(a - o.expectPrior) > 1) {
+    throw new Error(`${o.title}: prior months sum to ${Math.round(a)}, expected ${o.expectPrior}`);
+  }
+  if (o.expectCurrent != null && Math.abs(b - o.expectCurrent) > 1) {
+    throw new Error(`${o.title}: current months sum to ${Math.round(b)}, expected ${o.expectCurrent}`);
+  }
+  const v = b - a;
+  const neu = dirOf(o.metric) === "neutral";   // Day 2: neutral metrics carry no judgment
+  const up = dirOf(o.metric) === "up" ? v >= 0 : v < 0;
+  const U = UNIT[o.unit ?? "M"];
+  const fmt = o.fmt ?? U.fmt, dfmt = o.dfmt ?? U.dfmt;
+
+  // the card - no header line above the four figures (Tommy, Oct 18 2026):
+  // "2025 YTD" and "2026 YTD" already say what the period is, and "GROUP ·
+  // JANUARY-SEPTEMBER YTD" on top of them said it twice
+  const CARD_H = 1.10;
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: CARD_H, label: null });
+  [
+    [o.priorName + " YTD",   fmt(a),    C.ink],
+    [o.currentName + " YTD", fmt(b),    C.ink],
+    ["VARIANCE",             dfmt(v),   neu ? C.navy : (up ? C.goodInk : C.badInk)],
+    ["VAR %",                pct(v, a), neu ? C.navy : (up ? C.goodInk : C.badInk)],
+  ].forEach(([l, val, col], i) => {
+    const x = 0.75 + i * 3.05;
+    s.addText(l, { x, y: BODY.top + 0.14, w: 2.9, h: 0.26, fontFace: F, fontSize: sz(14, "card sublabel"), color: C.ink600, charSpacing: 0.9, isTextBox: true, margin: 0 });
+    s.addText(val, { x, y: BODY.top + 0.38, w: 2.95, h: 0.6, fontFace: F, fontSize: sz(30, "card value"), bold: true, color: col, isTextBox: true, margin: 0 });
+  });
+
+  // the chart
+  const cy = BODY.top + CARD_H + 0.12, ch = bodyBot(o.takeaway) - cy;
+  panel(pptx, s, { x: 0.5, y: cy, w: 12.33, h: ch, label: o.chartLabel });
+  // Day 2: when neither year runs past a month (a Jan-Sep prior year), the axis stops there
+  const NM   = Math.max(o.prior.length, o.current.length);
+  const pad  = arr => [...arr, ...Array(NM - arr.length).fill(null)];
+  const all  = [...o.prior, ...o.current].map(U.to);
+  // Totals are bars - each month is an amount. A rate is a line: bars would
+  // imply the months add up, and they do not.
+  const line = (o.chart ?? "bar") === "line";
+  const dMin = Math.min(...all), dMax = Math.max(...all);
+  let step, lo, hi;
+  if (!line) {
+    // Bars always start at zero - a bar that does not is lying about size.
+    const top0 = Math.max(0, dMax) * 1.15, bot0 = Math.min(0, dMin);
+    step = o.majorUnit ?? niceStep(top0 - bot0);
+    hi = Math.ceil(top0 / step) * step;
+    lo = Math.floor(bot0 / step) * step;
+  } else {
+    // A line encodes position, not length, so it does NOT need a zero
+    // baseline - and forcing one crushed F&I's two years ($2,060 vs $2,195)
+    // into a single band where every label collided. The axis fits the
+    // data, with room above and below for a row of labels each side. If
+    // that room dips under zero for data that never does, the negative tick
+    // is blanked by the number format.
+    const span = Math.max(dMax - dMin, Math.abs(dMax) * 0.05, 1);
+    step = o.majorUnit ?? niceStep(span * 1.7);
+    lo = Math.floor((dMin - span * 0.35) / step) * step;
+    hi = Math.ceil((dMax + span * 0.35) / step) * step;
+  }
+  const baseFmt = o.axisFormat ?? U.axis;
+  const axisFmt = baseFmt + (lo < 0 && dMin >= 0 ? (baseFmt.includes("$") ? ';;"$"0' : ";;0") : "");
+  const common = {
+    showValue: true,
+    dataLabelFontFace: "+mn-lt", dataLabelFontSize: sz(14, "data label"), dataLabelColor: C.ink,
+    dataLabelFormatCode: o.labelFormat ?? U.label,
+    showTitle: false,
+    catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(14, "cat axis"), catAxisLabelColor: C.ink,
+    valAxisLabelFontFace: "+mn-lt", valAxisLabelFontSize: sz(14, "val axis"), valAxisLabelColor: C.ink600,
+    valAxisLabelFormatCode: axisFmt,
+    valAxisMinVal: lo, valAxisMaxVal: hi, valAxisMajorUnit: step,
+    valGridLine: { color: C.rule, size: 0.75 }, catGridLine: { style: "none" },
+    catAxisLineShow: true, valAxisLineShow: false,
+    // the month axis sits at the bottom of the plot whatever the floor is
+    // (pptxgenjs writes this option onto the category axis's <c:crosses>)
+    valAxisCrossesAt: "min", catAxisLabelPos: "low",
+  };
+  const prior   = { name: o.priorName,   labels: MONTHS.slice(0, NM), values: pad(o.prior.map(U.to)) };
+  const current = { name: o.currentName, labels: MONTHS.slice(0, NM), values: pad(o.current.map(U.to)) };
+
+  if (!line) {
+    s.addChart(pptx.ChartType.bar, [prior, current], {
+      ...common, x: 0.68, y: cy + 0.62, w: 11.97, h: ch - 0.72,
+      // Each label is wider than its bar, so the gap inside a month's pair
+      // and the gap between months must be EQUAL - that gives every label
+      // half a month of room either side. Unequal gaps ran labels together
+      // either inside the pair ("14.112.6") or across months ("2.7K2.8K").
+      barDir: "col", barGrouping: "clustered", barGapWidthPct: 35, barOverlapPct: -35,
+      chartColors: [C.ink300, C.blue], dataLabelPosition: "outEnd",
+      showLegend: true, legendPos: "t", legendFontFace: "+mn-lt", legendFontSize: sz(14, "legend"), legendColor: C.ink,
+    });
+  } else {
+    // Two lines on one chart can only take ONE label position, so where the
+    // lines run close (February) the labels landed on each other. Instead,
+    // two charts on identical geometry and axes: last year labelled above
+    // its line, this year below. The masked chart's axis text is drawn in
+    // the panel colour, not hidden, so both plot areas lay out to the same
+    // pixel - and it goes UNDERNEATH, because white text laid over the real
+    // axis text washed it out. The legend is drawn by hand because neither
+    // chart carries one.
+    const g = { x: 0.68, y: cy + 0.98, w: 11.97, h: ch - 1.08 };
+    const ln = { lineSize: 3, lineSmooth: false, lineDataSymbol: "circle", lineDataSymbolSize: 8, showLegend: false };
+    const clear = { plotArea: { fill: { color: C.panel, transparency: 100 } },
+                    chartArea: { fill: { color: C.panel, transparency: 100 } } };
+    // Whichever line runs HIGHER over the months both years have carries its
+    // labels above; the lower one carries them below. A fixed "last year
+    // above" rule held for new and used PVR, where this year runs lower, and
+    // put every label on the wrong line in F&I, where this year runs higher.
+    //
+    // That rule still collided where the lines CROSS (wholesale Jan-Apr,
+    // writedowns in May, Oct 18 2026), so the side is now chosen month by
+    // month: in each month the higher point is labelled above, the lower
+    // below. One series can only take one label position, so the labels are
+    // their own invisible series - no line, no marker - one per side, laid
+    // over the two drawn lines. A month only one year has keeps the
+    // whole-year rule.
+    const meanOf = a => a.reduce((t, v) => t + v, 0) / a.length;
+    const curHigh = meanOf(current.values.slice(0, n)) >= meanOf(prior.values.slice(0, n));
+    const curTop = current.values.map((c, i) => {
+      const p = prior.values[i];
+      return c != null && p != null ? c >= p : curHigh;
+    });
+    const only = (ser, keep) => ({ ...ser, values: ser.values.map((v, i) => keep(i) ? v : null) });
+    const labelSets = [
+      [only(current, i =>  curTop[i]), C.blue,   "t"],
+      [only(current, i => !curTop[i]), C.blue,   "b"],
+      [only(prior,   i => !curTop[i]), C.ink300, "t"],
+      [only(prior,   i =>  curTop[i]), C.ink300, "b"],
+    ].filter(([ser]) => ser.values.some(v => v != null));
+    const masked = { catAxisLabelColor: C.panel, valAxisLabelColor: C.panel, catAxisLineShow: false,
+                     valGridLine: { style: "none" } };
+    s.addChart(pptx.ChartType.line, [current], {
+      ...common, ...ln, ...g, ...masked, showValue: false, chartColors: [C.blue],
+    });
+    labelSets.forEach(([ser, col, pos]) => {
+      s.addChart(pptx.ChartType.line, [ser], {
+        ...common, ...ln, ...g, ...masked, ...clear,
+        lineSize: 0, lineDataSymbol: "none", chartColors: [col], dataLabelPosition: pos,
+      });
+    });
+    // the real axes go on last, so no masked axis text sits over them
+    s.addChart(pptx.ChartType.line, [prior], {
+      ...common, ...ln, ...g, ...clear, showValue: false, chartColors: [C.ink300],
+    });
+    const ly = cy + 0.66, lx = 6.665 - 1.25;
+    [[o.priorName, C.ink300], [o.currentName, C.blue]].forEach(([t, col], i) => {
+      const x = lx + i * 1.35;
+      s.addShape(pptx.ShapeType.rect, { x, y: ly + 0.135, w: 0.34, h: 0.05, fill: { color: col } });
+      s.addShape(pptx.ShapeType.ellipse, { x: x + 0.11, y: ly + 0.1, w: 0.12, h: 0.12, fill: { color: col } });
+      s.addText(t, { x: x + 0.42, y: ly, w: 0.85, h: 0.32, fontFace: F, fontSize: sz(14, "legend"), color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    });
+  }
+
+  takeaway(pptx, s, o.takeaway, o.tone ?? (neu ? "n" : (up ? "g" : "b")));
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- RANKER - every store on one page ---------- */
+export function ranker(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  // a store with no prior-year base cannot have a variance: dash, last, and
+  // out of the group total, the bar scale and every count
+  // Day 2 (Oct 15): o.deltas = [[name, change]] for rates, with the group's own change in
+  // o.groupD (alias of groupDelta) and its format in o.fmtD (alias of dfmt). A "neutral"
+  // metric sorts largest first and draws every bar blue - no green/red judgment.
+  const dir    = dirOf(o.metric), neutral = dir === "neutral";
+  const noBase = o.deltas ? [] : o.rows.filter(r => r[1] === 0).map(r => r[0]);
+  const based  = o.deltas ? o.deltas.map(([n, d]) => ({ n, d }))
+                          : o.rows.filter(r => r[1] !== 0).map(([n, x, y]) => ({ n, d: y - x }));
+  const good   = dir === "up" || neutral;
+  if (o.groupD != null && o.groupDelta == null) o.groupDelta = o.groupD;
+  if (o.fmtD && !o.dfmt) o.dfmt = o.fmtD;
+  based.sort((p, q) => good ? q.d - p.d : p.d - q.d);
+  const all    = [...based, ...noBase.map(n => ({ n, d: null, noBase: true }))];
+  // For a total the group change is the sum of the store changes. For a
+  // RATE it is not - group PVR moves with the mix of who sold the cars - so
+  // a rate passes its own group change in as groupDelta.
+  const summed = based.reduce((t, r) => t + r.d, 0);
+  if (o.groupDelta == null && o.expect != null && Math.abs(summed - o.expect) > 1) {
+    throw new Error(`${o.title}: store rows sum to ${Math.round(summed)}, expected ${o.expect}`);
+  }
+  const groupD = o.groupDelta ?? summed;
+
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
+
+  // the group figure as its own strip - its bar is the sum, so it never joins the scale
+  const gFav = good ? groupD >= 0 : groupD < 0;
+  measureStrip(pptx, s, o.measure ?? o.title, o.groupLabel ?? "**YEAR-OVER-YEAR CHANGE**",
+               (o.dfmt ?? Dmixed)(groupD), neutral ? C.navy : (gFav ? C.goodInk : C.badInk));
+
+  const N = all.length, perCol = Math.ceil(N / 2);
+  const TOP = 2.02, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
+  const maxAbs = Math.max(...based.map(r => Math.abs(r.d)));
+  const dfmt = o.dfmt ?? Dmixed;
+  const COLX = [0.72, 6.79];
+  const FS = 12;   // traded down from 13 to carry the rank numbers
+  const RANKW = 0.34, NAMEW = 2.10, BARW = 1.70, VALW = 1.35;
+
+  all.forEach((r, i) => {
+    const col = i < perCol ? 0 : 1, k = i - col * perCol;
+    const x0 = COLX[col], y = TOP + k * rowH;
+    const isUp = r.d >= 0, favourable = good ? isUp : !isUp;
+
+    // A store with no prior year has no variance, so it has no rank either.
+    s.addText(r.noBase ? "—" : String(i + 1), {
+      x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
+      color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+    s.addText(r.n, {
+      x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS,
+      color: r.noBase ? C.ink600 : C.ink, valign: "middle", isTextBox: true, margin: 0,
+    });
+    const bx = x0 + RANKW + 0.05 + NAMEW + 0.08, mid = bx + BARW / 2;
+    if (!r.noBase) {
+      const w = Math.abs(r.d) / maxAbs * (BARW / 2), bh = rowH * 0.46;
+      s.addShape(pptx.ShapeType.rect, {
+        x: isUp ? mid : mid - w, y: y + (rowH - bh) / 2, w: Math.max(w, 0.014), h: bh,
+        fill: { color: neutral ? C.blue : (favourable ? C.good : C.bad) },
+      });
+    }
+    s.addText(r.noBase ? "—" : dfmt(r.d), {
+      x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
+      // grey only when the PRINTED change carries no sign - a dollar test
+      // (|d| < 0.5) greyed "−0.3 pts" and coloured "−0.5 pts" beside it
+      color: r.noBase ? C.ink300 : !/^[+−]/.test(dfmt(r.d)) ? C.ink600 : neutral ? C.ink : (favourable ? C.goodInk : C.badInk),
+      align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+  });
+  [0, 1].forEach(c => {
+    const mid = COLX[c] + RANKW + 0.05 + NAMEW + 0.08 + BARW / 2;
+    s.addShape(pptx.ShapeType.rect, { x: mid - 0.006, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.ink300 } });
+  });
+  s.addShape(pptx.ShapeType.rect, { x: 6.655, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.rule } });
+
+  // The band takes the tone of what it SAYS when the spec sets one: a line
+  // naming a decline on a slide where the group is up must not read green.
+  takeaway(pptx, s, o.takeaway, o.tone ?? (neutral ? "n" : (groupD >= 0 === good ? "g" : "b")));
+  foot(pptx, s, o.source + (noBase.length ? `  ${noBase.join(", ")} — no prior-year base, excluded from the group.` : ""), o.page);
+  return s;
+}
+
+/* ---------- TOTAL RANKER ----------------------------------------------
+   Every store ranked best to worst on a dollar TOTAL - net profit, gross.
+   One question: who is on top. Year-over-year movement is its own slide,
+   the variance ranker, which follows this one.
+
+   Tried and rejected (Tommy, Oct 18 2026): a change chip on every row of
+   this slide, to show standing and direction at once. "Too busy" - it gave
+   him nothing clean to talk to for either question. He presents to the
+   slide, so one idea per slide, and slide count is not a cost. Do not put
+   the chip back.
+
+   GROUP rides in its own strip, not in the ranking: a group TOTAL dwarfs
+   every store and would flatten the bar scale. (Compare levelRanker, where
+   a group AVERAGE does belong inside the list.)
+   --------------------------------------------------------------------- */
+export function totalRanker(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  const good = dirOf(o.metric) === "up";
+  const fmt  = o.fmt ?? Mmixed;
+  const rows = o.rows.map(([n, b]) => ({ n, b }));
+  rows.sort((p, q) => good ? q.b - p.b : p.b - q.b);
+
+  const gB = rows.reduce((t, r) => t + r.b, 0);
+  if (o.expect != null && Math.abs(gB - o.expect) > 1) {
+    throw new Error(`${o.title}: store rows sum to ${Math.round(gB)}, expected ${o.expect}`);
+  }
+
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
+
+  measureStrip(pptx, s, o.measure ?? o.title, o.groupLabel ?? "YEAR TO DATE", fmt(gB), C.navy);
+
+  const perCol = Math.ceil(rows.length / 2);
+  const TOP = 2.02, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
+  const maxAbs = Math.max(...rows.map(r => Math.abs(r.b)));
+  const COLX = [0.72, 6.79];
+  // 12pt, not 13: Tommy traded the size for rank numbers (Oct 2026). NAMEW
+  // still holds "CHEVY GMC BULLHEAD" on one line - it wrapped at 2.05/13pt
+  // and collided with the row beneath it. The width the change chip used
+  // went back to the bar.
+  const FS = 12;
+  const RANKW = 0.34, NAMEW = 2.10, BARW = 2.00, VALW = 1.20;
+
+  rows.forEach((r, i) => {
+    const col = i < perCol ? 0 : 1, k = i - col * perCol;
+    const x0 = COLX[col], y = TOP + k * rowH;
+    const fav = good ? r.b >= 0 : r.b < 0;   // green above the line, red below it
+
+    s.addText(String(i + 1), {
+      x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
+      color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+
+    let x = x0 + RANKW + 0.05;
+    s.addText(r.n, {
+      x, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS,
+      color: C.ink, valign: "middle", isTextBox: true, margin: 0,
+    });
+
+    // Magnitude bar, green above zero and red below it - never blue, which
+    // is identity in this deck and never judgment.
+    x += NAMEW + 0.05;
+    const bh = rowH * 0.46, w = Math.abs(r.b) / maxAbs * BARW;
+    s.addShape(pptx.ShapeType.rect, {
+      x, y: y + (rowH - bh) / 2, w: Math.max(w, 0.02), h: bh,
+      fill: { color: fav ? C.good : C.bad },
+    });
+
+    x += BARW + 0.05;
+    s.addText(fmt(r.b), {
+      x, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
+      color: fav ? C.ink : C.badInk, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+  });
+
+  // the rule between the two stacks, so the eye does not read across them
+  s.addShape(pptx.ShapeType.rect, { x: 6.655, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.rule } });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- MATRIX - four boxes, names in them -------------------------
+   The improvement slide. A scatter would be the obvious choice and the
+   wrong one: net profit is so skewed that one store sits at $19.8M and
+   thirty cluster under $5M, so the dots bunch into the left quarter and
+   the labels collide. Naming the stores in four boxes reads instantly from
+   the back of a room and says the same thing.
+   --------------------------------------------------------------------- */
+export function matrix(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  const BOT = bodyBot(o.takeaway);
+  const GAP = 0.13, W = (12.33 - GAP) / 2, H = (BOT - BODY.top - GAP) / 2;
+
+  o.boxes.forEach((b, i) => {
+    const x = 0.5 + (i % 2) * (W + GAP), y = BODY.top + Math.floor(i / 2) * (H + GAP);
+    s.addShape(pptx.ShapeType.rect, { x, y, w: W, h: H, fill: { color: C.panel } });
+    s.addShape(pptx.ShapeType.rect, { x, y, w: W, h: 0.055, fill: { color: b.tone === "g" ? C.good : b.tone === "b" ? C.bad : C.blueLt } });
+
+    s.addText(b.title, {
+      x: x + 0.25, y: y + 0.18, w: W - 1.2, h: 0.36, fontFace: F, fontSize: sz(17, "matrix title"), bold: true,
+      color: b.tone === "g" ? C.goodInk : b.tone === "b" ? C.badInk : C.navy, isTextBox: true, margin: 0,
+    });
+    s.addText(String(b.names.length), {
+      x: x + W - 0.95, y: y + 0.14, w: 0.7, h: 0.4, fontFace: F, fontSize: sz(20, "matrix count"), bold: true,
+      color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+    if (b.sub) s.addText(b.sub, {
+      x: x + 0.25, y: y + 0.54, w: W - 0.5, h: 0.3, fontFace: F, fontSize: sz(14, "matrix sub"),
+      color: C.ink600, isTextBox: true, margin: 0,
+    });
+
+    const top = y + (b.sub ? 0.92 : 0.66);
+    const cols = b.names.length > 7 ? 2 : 1;
+    const per  = Math.ceil(b.names.length / cols);
+    const cw   = (W - 0.5) / cols;
+    const lh   = Math.min(0.28, (y + H - 0.16 - top) / per);
+    const fs   = lh < 0.21 ? 12 : 13;   // a full box drops a point rather than clip
+    b.names.forEach((n, j) => {
+      const c = Math.floor(j / per), k = j - c * per;
+      s.addText(n, {
+        x: x + 0.25 + c * cw, y: top + k * lh, w: cw - 0.1, h: lh,
+        fontFace: F, fontSize: fs, color: C.ink, valign: "middle", isTextBox: true, margin: 0,
+      });
+    });
+  });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- MATH CHAIN ---------- */
+export function chain(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  const sum = o.steps.reduce((t, st) => t + st.v, 0);
+  if (Math.abs(sum - o.total) > 2) throw new Error(`${o.title}: chain sums to ${Math.round(sum)}, total says ${o.total}`);
+  const H = bodyH(o.takeaway), BOT = bodyBot(o.takeaway);
+
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 6.0, h: H, label: o.panelLabel });
+  let cy = 1.86;
+  o.steps.forEach((st, i) => {
+    if (i > 0) {
+      s.addShape(pptx.ShapeType.ellipse, { x: 1.08, y: cy, w: 0.32, h: 0.32, fill: { color: C.blue } });
+      s.addText(st.v >= 0 ? "+" : "−", { x: 1.08, y: cy, w: 0.32, h: 0.32, fontFace: F, fontSize: sz(18, "operator"), bold: true, color: C.white, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+      cy += 0.34;
+    }
+    s.addShape(pptx.ShapeType.rect, { x: 0.78, y: cy, w: 5.44, h: 0.68, fill: { color: i === 0 ? C.zebra : C.goodBg } });
+    s.addText(i === 0 ? M(st.v) : money(st.v), { x: 0.98, y: cy + 0.03, w: 3.0, h: 0.5, fontFace: F, fontSize: sz(26, "chain value"), bold: true, color: i === 0 ? C.ink : C.goodInk, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(st.l, { x: 4.0, y: cy + 0.03, w: 2.05, h: 0.64, fontFace: F, fontSize: sz(14, "chain label"), color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    cy += 0.76;
+  });
+  s.addShape(pptx.ShapeType.ellipse, { x: 1.08, y: cy, w: 0.32, h: 0.32, fill: { color: C.navy } });
+  s.addText("=", { x: 1.08, y: cy, w: 0.32, h: 0.32, fontFace: F, fontSize: sz(18, "operator"), bold: true, color: C.white, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+  cy += 0.34;
+  s.addShape(pptx.ShapeType.rect, { x: 0.78, y: cy, w: 5.44, h: 0.78, fill: { color: C.blueTint } });
+  if (cy + 0.78 > BOT) throw new Error("math chain overflows its panel - too many steps for one slide");
+  s.addText(M(o.total), { x: 0.98, y: cy + 0.03, w: 3.0, h: 0.56, fontFace: F, fontSize: sz(30, "chain total"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
+  s.addText(o.totalLabel, { x: 4.0, y: cy + 0.03, w: 2.05, h: 0.72, fontFace: F, fontSize: sz(14, "chain label"), color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+
+  // movers rail
+  panel(pptx, s, { x: 6.7, y: BODY.top, w: 6.13, h: H, label: o.moversLabel });
+  const maxM = Math.max(...o.movers.map(m => Math.abs(m[1])));
+  const mGap = Math.min(0.47, (BOT - 2.06) / o.movers.length);
+  let my = 2.0;
+  o.movers.forEach(([n, d]) => {
+    const up = d > 0;
+    s.addText(n, { x: 6.95, y: my, w: 2.35, h: mGap - 0.05, fontFace: F, fontSize: sz(14, "mover name"), color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    const bx = 9.4, bw = 1.6, w = Math.abs(d) / maxM * bw;
+    s.addShape(pptx.ShapeType.rect, { x: up ? bx : bx - w, y: my + (mGap - 0.05) / 2 - 0.1, w: Math.max(w, 0.02), h: 0.2, fill: { color: up ? C.good : C.bad } });
+    s.addText(money(d), { x: 11.1, y: my, w: 1.5, h: mGap - 0.05, fontFace: F, fontSize: sz(14, "mover value"), bold: true, color: up ? C.goodInk : C.badInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    my += mGap;
+  });
+  s.addShape(pptx.ShapeType.rect, { x: 9.394, y: 2.0, w: 0.012, h: my - 2.06, fill: { color: C.ink300 } });
+
+  takeaway(pptx, s, o.takeaway, o.tone ?? "g");
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- LEVEL RANKER ----------------------------------------------
+   For averages, rates and percentages - anything where the question is
+   "who is above the group and who is below", not "who moved the most".
+
+   The group figure sits in the strip at the top, like every other ranker,
+   and a navy line runs through both columns at the group's value so above
+   and below reads at a glance. (It used to sit inside the list as a row at
+   its own rank; Tommy, Oct 18 2026, could not find it there - "why is there
+   no group number" - so it moved to the strip.) Stores read green above the
+   group line and red below it, direction-aware from the registry.
+   --------------------------------------------------------------------- */
+export function levelRanker(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  const dir = dirOf(o.metric), neutral = dir === "neutral", up = dir !== "down";
+  const rows = o.rows.map(([n, v]) => ({ n, v }));
+  rows.sort((a, b) => up ? b.v - a.v : a.v - b.v);
+  const G = o.group;
+  /* Day 2 (Oct 14): o.bench scores stores against a published benchmark instead of
+     the group - the navy line moves to the benchmark and the strip names it.
+     o.floor starts the bars above zero so close rates are readable (Oct 15).
+     o.extra = [{ label, w, vals: {NAME: text} }] plain-ink reference columns after
+     the value, with o.valLabel heading the value column (Oct 15). */
+  const REF = o.bench ?? G;
+  const all = rows;
+  const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
+
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
+  const lab = (o.groupLabel ?? "YEAR TO DATE") + (o.bench != null ? `   ·   **BENCHMARK ${o.fmt(o.bench)}**` : "");
+  measureStrip(pptx, s, o.measure ?? o.title, lab, o.fmt(G), C.navy);
+
+  const N = all.length, perCol = Math.ceil(N / 2);
+  const HEAD = EX.length ? 0.3 : 0;
+  const TOP = 2.02 + HEAD, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
+  // The scale runs from the lowest value to the highest, through zero, so a
+  // negative store draws left of a zero line instead of vanishing into a sliver.
+  const lo = o.floor ?? Math.min(0, ...all.map(r => r.v)), hi = Math.max(0, REF * 1.02, ...all.map(r => r.v));
+  const span = hi - lo || 1;
+  const COLX = [0.72, 6.79];
+  const FS = 12;   // traded down from 13 to carry the rank numbers
+  const RANKW = 0.34, NAMEW = 2.10, VALW = EX.length ? 0.74 : 1.25;
+  const BARW = EX.length ? 5.62 - RANKW - NAMEW - VALW - EXW - 0.19 : 1.85;
+  const X = (bx, v) => bx + (Math.max(v, lo) - lo) / span * BARW;
+
+  all.forEach((r, i) => {
+    const col = i < perCol ? 0 : 1, k = i - col * perCol;
+    const x0 = COLX[col], y = TOP + k * rowH;
+    const better = up ? r.v >= REF : r.v <= REF;
+    const fill = neutral ? C.blue : (better ? C.good : C.bad);
+    const txt  = neutral ? C.ink : (better ? C.goodInk : C.badInk);
+
+    s.addText(String(i + 1), {
+      x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
+      color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+    s.addText(r.n, {
+      x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS,
+      color: C.ink, valign: "middle", isTextBox: true, margin: 0,
+    });
+    const bx = x0 + RANKW + 0.05 + NAMEW + 0.08;
+    const zx = X(bx, Math.max(0, lo)), vx = X(bx, r.v), bh = rowH * 0.5;
+    s.addShape(pptx.ShapeType.rect, {
+      x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill },
+    });
+    s.addText(o.fmt(r.v), {
+      x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
+      color: txt, align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+    let ex = bx + BARW + 0.06 + VALW;
+    EX.forEach(e => {
+      s.addText(e.vals[r.n] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: FS,
+        color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      ex += e.w;
+    });
+  });
+  if (EX.length) [0, 1].forEach(c => {
+    let ex = COLX[c] + RANKW + 0.05 + NAMEW + 0.08 + BARW + 0.06;
+    [{ label: o.valLabel ?? "", w: VALW }, ...EX].forEach(e => {
+      s.addText(e.label, { x: ex, y: 2.0, w: e.w, h: 0.28, fontFace: F, fontSize: sz(14, "column header"), bold: true,
+        color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      ex += e.w;
+    });
+  });
+
+  // the group (or benchmark) line, drawn through both columns so above/below is visible
+  [0, 1].forEach(c => {
+    const bx = COLX[c] + RANKW + 0.05 + NAMEW + 0.08;
+    if (lo < 0) {   // a faint zero line, so above and below zero reads at a glance
+      const zx = X(bx, 0);
+      s.addShape(pptx.ShapeType.rect, { x: zx - 0.005, y: TOP, w: 0.01, h: BOT - TOP, fill: { color: C.ink300 } });
+    }
+    const gx = X(bx, REF);
+    s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } });
+  });
+  s.addShape(pptx.ShapeType.rect, { x: 6.655, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.rule } });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- P&L TABLE - the GM statement's own lines ------------------
+   The spine of the business overview (Oct 19 2026): the same tables, in the
+   same order, with the same rows that January and May ran as Qlik
+   screenshots - redrawn natively so they read like the rest of the deck.
+   A native PowerPoint table, so Tommy can still click a cell and edit it.
+
+   Values arrive STATEMENT-SIGNED, the way a GM reads his own statement:
+   income positive, expense negative. That makes "up is good" true of every
+   dollar line - less expense is a smaller negative - so a row only says
+   otherwise when it is a share where higher is worse (wholesale %), or
+   "none" where Tommy has not ruled. There is no default: a row with no
+   direction stops the build, same as an unregistered metric.
+
+   Prior year left, this year right - the order the group card reads in.
+   A share's change is in points and carries no Var % (a percent of a
+   percent reads as nonsense from the back of a room).
+
+   rows    [{ head: "VARIABLE OPERATIONS SUMMARY" }
+            | { line, a, b, kind: "M"|"usd"|"count"|"pct", dir: "up"|"down"|"none", strong }]
+   checks  [{ label, sum: [line, ...], equals: line }] - the statement's own
+           arithmetic, re-run at build so a mistyped row cannot ship
+   --------------------------------------------------------------------- */
+const PL_KIND = {
+  M:     { fmt: Mmixed, dfmt: Dmixed },
+  usd:   { fmt: Mmixed, dfmt: Dmixed },
+  count: { fmt: Int,    dfmt: Dint   },
+  pct:   { fmt: Pct,    dfmt: Dpts   },
+};
+export function plTable(pptx, deck, o) {
+  const lines = o.rows.filter(r => !r.head);
+  const byLine = Object.fromEntries(lines.map(r => [r.line, r]));
+  lines.forEach(r => {
+    if (!PL_KIND[r.kind]) throw new Error(`${o.title}: "${r.line}" has no kind (M, usd, count, pct)`);
+    if (!["up", "down", "none"].includes(r.dir)) {
+      throw new Error(`${o.title}: "${r.line}" has no direction - ask Tommy before colouring it`);
+    }
+    if (!Number.isFinite(r.a) || !Number.isFinite(r.b)) throw new Error(`${o.title}: "${r.line}" is missing a value`);
+  });
+  (o.checks ?? []).forEach(c => {
+    [["a", "2025"], ["b", "2026"]].forEach(([k, yr]) => {
+      const parts = c.sum.map(l => {
+        if (!byLine[l] && !o.extra?.[l]) throw new Error(`${o.title}: check "${c.label}" names "${l}", not a row`);
+        return (byLine[l] ?? o.extra[l])[k];
+      });
+      const got = parts.reduce((t, v) => t + v, 0);
+      const want = (byLine[c.equals] ?? o.extra?.[c.equals])?.[k];
+      if (want == null) throw new Error(`${o.title}: check "${c.label}" names "${c.equals}", not a row`);
+      if (Math.abs(got - want) > (c.tol ?? 1)) {
+        throw new Error(`${o.title}: ${c.label} ${yr} - parts sum to ${got.toFixed(2)}, statement says ${want}`);
+      }
+    });
+  });
+
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+
+  // Every row holds ONE line of type - a statement line that wraps grows
+  // its row, and the table runs out of its frame and under the band (it
+  // did, Oct 19 2026: the totals vanished on F&I, Wholesale and Expenses).
+  // So the type is the smallest of three fits: the row height, the longest
+  // line name in its column, and the widest figure in a number column.
+  // Width is estimated from character count, on the generous side: Inter
+  // letters run ~0.54 em (0.57 bold), but its figures are wider - ~0.62 em,
+  // 0.66 bold - and a first estimate that treated them like letters let
+  // "−$14.10M" wrap to two rows. Below the 14pt floor the build stops -
+  // shorten a label or split the table; never let it wrap.
+  const COLW = [5.73, 1.65, 1.65, 1.65, 1.65], PADW = 0.3;
+  const n = o.rows.length + 1;
+  const avail = bodyBot(o.takeaway) - BODY.top;
+  const rowH = Math.min(o.maxRowH ?? 0.85, avail / n);
+
+  const cells = o.rows.map(r => {
+    if (r.head) return null;
+    const K = PL_KIND[r.kind];
+    const d = r.b - r.a;
+    const judged = r.dir !== "none" && Math.abs(d) > (r.kind === "pct" ? 0.005 : 0.5);
+    const good = r.dir === "up" ? d >= 0 : d <= 0;
+    const vp = r.kind === "pct" || !r.a ? "—"
+      : (Math.abs(d / r.a) < 0.0005 ? "" : d < 0 ? "−" : "+") + Math.abs(d / Math.abs(r.a) * 100).toFixed(1) + "%";
+    return { r, judged, vcol: !judged ? C.ink600 : good ? C.goodInk : C.badInk,
+             t: [r.line, K.fmt(r.a), K.fmt(r.b), K.dfmt(d), vp] };
+  });
+  const em = (col, bold) => col === 0 ? (bold ? 0.57 : 0.54) : (bold ? 0.66 : 0.62);
+  const fitW = (txt, col, bold) => (COLW[col] - PADW) * 72 / (Math.max(txt.length, 1) * em(col, bold));
+  let fit = Math.min(22, rowH * 72 / 1.7);
+  cells.forEach(c => {
+    if (!c) return;
+    c.t.forEach((txt, i) => { fit = Math.min(fit, fitW(txt, i, i === 0 ? c.r.strong : (c.r.strong || (i > 2 && c.judged)))); });
+  });
+  const fs = Math.floor(fit * 2) / 2;
+  if (fs < FLOOR) {
+    const worst = cells.filter(Boolean).map(c => c.r.line).sort((p, q) => q.length - p.length)[0];
+    throw new Error(`${o.title}: will not hold one row per line at the ${FLOOR}pt floor - `
+                  + `too many rows for the frame, or a label too long ("${worst}"). Split the table.`);
+  }
+  const hfs = Math.min(fs, 16);
+
+  const cols = o.cols ?? ["2025 YTD", "2026 YTD", "VARIANCE", "VAR %"];
+  const base = { fontFace: F, valign: "middle" };
+  const hdr = ["P&L LINE", ...cols].map((t, i) => ({
+    text: t, options: { ...base, fontSize: sz(hfs, "table header"), bold: true, color: C.white,
+                        fill: { color: C.navy }, align: i ? "right" : "left", charSpacing: 0.6 },
+  }));
+  o.rows.filter(r => r.head).forEach(r => {
+    if (fitW(r.head, 0, true) * 2.2 < hfs) throw new Error(`${o.title}: group heading "${r.head}" is too long for one row`);
+  });
+
+  let z = 0;
+  const body = o.rows.map((r, k) => {
+    if (r.head) {
+      z = 0;
+      return [{ text: r.head, options: { ...base, colspan: 5, fontSize: sz(hfs, "table group"), bold: true,
+                                         color: C.navy, fill: { color: C.blueTint }, charSpacing: 0.8 } }];
+    }
+    const { judged, vcol, t } = cells[k];
+    const bg = z++ % 2 ? C.zebra : C.white;
+    const cell = (txt, opts = {}) => ({ text: txt, options: {
+      ...base, fontSize: sz(fs, "table body"), color: C.ink, bold: !!r.strong, fill: { color: bg }, align: "right", ...opts } });
+    return [
+      cell(t[0], { align: "left" }),
+      cell(t[1]), cell(t[2]),
+      cell(t[3], { color: vcol, bold: judged || !!r.strong }),
+      cell(t[4], { color: vcol, bold: judged || !!r.strong }),
+    ];
+  });
+
+  s.addTable([hdr, ...body], {
+    x: 0.5, y: BODY.top, w: 12.33, colW: COLW,
+    rowH, valign: "middle", border: { type: "solid", pt: 0.5, color: C.rule },
+  });
+
+  takeaway(pptx, s, o.takeaway, o.tone);
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ======================================================================
+   DAY 2 RENDERERS - built Oct 14-21 2026 for the fixed ops day, refitted
+   to the Day 1 body geometry (BODY / bodyBot / the band at 6.70).
+   ====================================================================== */
 
 /* ---------- TREND YOY - this year vs last year, one line each ----------
    ADDED 2026-10-20 (Noah): replaces the trailing-12 line with the reporting period,
@@ -331,7 +1517,7 @@ export function trendYoy(pptx, deck, o) {
       });
     cy = 2.76;
   }
-  const W = o.card ? 12.33 : 8.3, H = 6.37 - cy;
+  const W = o.card ? 12.33 : 8.3, H = bodyBot(o.takeaway) - cy;
   panel(pptx, s, { x: 0.5, y: cy, w: W, h: H, label: o.panelLabel });
 
   s.addChart(pptx.ChartType.line, data, {
@@ -349,7 +1535,7 @@ export function trendYoy(pptx, deck, o) {
   });
 
   if (!o.card) {
-    panel(pptx, s, { x: 9.0, y: 1.32, w: 3.83, h: 5.05, label: "What it says" });
+    panel(pptx, s, { x: 9.0, y: BODY.top, w: 3.83, h: bodyH(o.takeaway), label: "What it says" });
     let by = 2.02;
     o.bullets.forEach((b, i) => {
       s.addShape(pptx.ShapeType.ellipse, { x: 9.25, y: by + 0.1, w: 0.11, h: 0.11, fill: { color: i === 0 ? C.blue : C.ink } });
@@ -372,14 +1558,14 @@ export function trendYoy(pptx, deck, o) {
 export function yearBars(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 8.3, h: 5.05, label: o.panelLabel });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 8.3, h: bodyH(o.takeaway), label: o.panelLabel });
   const n = o.years.length, v = o.years.map(r => +(r[1] / 1e6).toFixed(2));
   const labels = o.years.map(r => r[0]);
   s.addChart(pptx.ChartType.bar, [
     { name: "Earlier", labels, values: v.map((x, i) => i < n - 1 ? x : 0) },
     { name: "Latest",  labels, values: v.map((x, i) => i === n - 1 ? x : 0) },
   ], {
-    x: 0.68, y: 1.98, w: 7.95, h: 4.25, barDir: "col", barGrouping: "stacked", barGapWidthPct: 25,
+    x: 0.68, y: 1.98, w: 7.95, h: bodyH(o.takeaway) - 0.8, barDir: "col", barGrouping: "stacked", barGapWidthPct: 25,
     chartColors: [C.ink300, C.blue], showLegend: false, showTitle: false,
     showValue: true, dataLabelPosition: "inEnd", dataLabelColor: C.white,
     dataLabelFontFace: "+mn-lt", dataLabelFontSize: sz(14, "bar label"), dataLabelFontBold: true,
@@ -387,7 +1573,7 @@ export function yearBars(pptx, deck, o) {
     catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(16, "cat axis"), catAxisLabelColor: C.ink,
     valAxisHidden: true, valAxisMinVal: 0, valGridLine: { style: "none" }, catGridLine: { style: "none" },
   });
-  panel(pptx, s, { x: 9.0, y: 1.32, w: 3.83, h: 5.05, label: "What it says" });
+  panel(pptx, s, { x: 9.0, y: BODY.top, w: 3.83, h: bodyH(o.takeaway), label: "What it says" });
   let by = 2.02;
   o.bullets.forEach((b, i) => {
     s.addShape(pptx.ShapeType.ellipse, { x: 9.25, y: by + 0.1, w: 0.11, h: 0.11, fill: { color: i === 0 ? C.blue : C.ink } });
@@ -407,10 +1593,10 @@ export function yearBars(pptx, deck, o) {
 export function recordBoard(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const per = Math.ceil(o.rows.length / 2);
   if (per > 13) throw new Error(`recordBoard: ${o.rows.length} rows will not fit`);
-  const COLX = [0.72, 6.79], NAMEW = 2.17, MW = 0.64, VALW = 0.92, GAINW = 0.86, TOP = 1.86, BOT = 6.26, rowH = (BOT - TOP) / per;
+  const COLX = [0.72, 6.79], NAMEW = 2.17, MW = 0.64, VALW = 0.92, GAINW = 0.86, TOP = 1.86, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / per;
   const heads = [...o.markLabels, o.valLabel, o.gainLabel];
   [0, 1].forEach(c => {
     let hx = COLX[c] + NAMEW;
@@ -446,13 +1632,13 @@ export function recordBoard(pptx, deck, o) {
 export function stackedCountRanker(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const COLS = o.colors ?? [C.goodInk, C.good, "8ED3B0"];
   const tot = r => r[1].reduce((t, x) => t + x, 0);
   const rows = [...o.rows].sort((a, b) => tot(b) - tot(a) || b[1][2] - a[1][2]);
   const NP = o.parts.length, CW = 0.55, TW = 0.6, NAMEW = 2.12;
   const COLX = [0.72, 6.79], BARW = 5.9 - NAMEW - CW * NP - TW - 0.2;
-  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = 6.26, rowH = (BOT - TOP) / perCol;
+  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   const maxV = Math.max(...rows.map(tot));
   [0, 1].forEach(c => {
     // colour key above the store names and bars; the count columns carry short heads
@@ -506,7 +1692,7 @@ export function stackedCountRanker(pptx, deck, o) {
 export function gapRanker(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const gap = r => r[2] - r[1], gG = o.group[1] - o.group[0];
   const rows = [...o.rows].sort((p, q) => gap(q) - gap(p));
   const FV = o.fmt, FG = o.fmtGap;
@@ -521,7 +1707,7 @@ export function gapRanker(pptx, deck, o) {
   ], { x: 0.92, y: 1.44, w: 11.6, h: 0.42, fontFace: F, fontSize: sz(15, "group strip"), valign: "middle", isTextBox: true, margin: 0 });
 
   const COLX = [0.72, 6.79], NAMEW = 2.2, PLOTW = 1.18, VW = 0.62, GW = 0.94;
-  const per = Math.ceil(rows.length / 2), TOP = 2.3, BOT = 6.3, rowH = (BOT - TOP) / per;
+  const per = Math.ceil(rows.length / 2), TOP = 2.3, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / per;
   const gaps = rows.map(gap), gmax = Math.max(...gaps.map(Math.abs), Math.abs(gG));
   const lo = o.min ?? Math.min(...rows.flatMap(r => [r[1], r[2]])), hi = o.max ?? Math.max(...rows.flatMap(r => [r[1], r[2]]));
   [0, 1].forEach(c => {
@@ -564,295 +1750,6 @@ export function gapRanker(pptx, deck, o) {
   return s;
 }
 
-/* ---------- YOY - group card over a month table ---------- */
-export function yoy(pptx, deck, o) {
-  const s = deck.addSlide();
-  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-
-  /* ADDED 2026-10-14: o.fmt = { v, d, p } formats value / variance / variance %
-     for rate and count metrics (default stays $M). o.ytd = [a, b] overrides the
-     YTD figures - required for any ratio, where YTD is not the sum of months. */
-  const FV = o.fmt?.v ?? M, FD = o.fmt?.d ?? money, FP = o.fmt?.p ?? pct;
-  const a = o.ytd ? o.ytd[0] : o.months.reduce((t, r) => t + r[1], 0);
-  const b = o.ytd ? o.ytd[1] : o.months.reduce((t, r) => t + r[2], 0);
-  const v = b - a;
-  if (!o.ytd && o.expect != null && Math.abs(v - o.expect) > 1) {
-    throw new Error(`${o.title}: months sum to ${Math.round(v)}, expected ${o.expect}`);
-  }
-  const up = dirOf(o.metric) === "up" ? v >= 0 : v < 0;
-  const tone = up ? "g" : "b";
-
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 1.66, label: null });
-  const cells = [
-    ["2025", FV(a), C.ink], ["2026", FV(b), C.ink],
-    ["VARIANCE", FD(v), up ? C.goodInk : C.badInk],
-    ["VAR %", FP(v, a), up ? C.goodInk : C.badInk],
-  ];
-  words(o.cardLabel, "card label");
-  s.addText(o.cardLabel.toUpperCase(), {
-    x: 0.75, y: 1.44, w: 11.8, h: 0.3, fontFace: F, fontSize: sz(14, "card label"),
-    color: C.ink600, charSpacing: 1.0, isTextBox: true, margin: 0,
-  });
-  cells.forEach(([l, val, col], i) => {
-    const x = 0.75 + i * 3.05;
-    s.addText(l, { x, y: 1.78, w: 2.9, h: 0.26, fontFace: F, fontSize: sz(14, "card sublabel"), color: C.ink600, charSpacing: 0.9, isTextBox: true, margin: 0 });
-    s.addText(val, { x, y: 2.04, w: 2.95, h: 0.66, fontFace: F, fontSize: sz(30, "card value"), bold: true, color: col, isTextBox: true, margin: 0 });
-  });
-
-  const hdr = ["MONTH", "2025", "2026", "VARIANCE", "VAR %"].map(h => ({
-    text: h, options: { fontFace: F, fontSize: sz(14, "table header"), bold: true, color: C.white,
-                        fill: { color: C.blueLt }, align: h === "MONTH" ? "left" : "right", valign: "middle" },
-  }));
-  const body = o.months.map(([m, x, y], i) => {
-    const d = y - x, good = dirOf(o.metric) === "up" ? d >= 0 : d < 0;
-    const col = good ? C.goodInk : C.badInk, bg = i % 2 ? C.zebra : C.white;
-    const cell = (t, opts = {}) => ({ text: t, options: { fontFace: F, fontSize: sz(14, "table body"), color: C.ink, fill: { color: bg }, valign: "middle", ...opts } });
-    return [cell(m), cell(FV(x), { align: "right" }), cell(FV(y), { align: "right" }),
-            cell(FD(d), { align: "right", color: col, bold: true }),
-            cell(FP(d, x), { align: "right", color: col, bold: true })];
-  });
-  s.addTable([hdr, ...body], {
-    x: 0.5, y: 3.08, w: 12.33, colW: [3.41, 2.23, 2.23, 2.23, 2.23],
-    rowH: 0.3, valign: "middle", border: { type: "solid", pt: 0.5, color: C.rule },
-  });
-
-  takeaway(pptx, s, o.takeaway, tone);
-  foot(pptx, s, o.source, o.page);
-  return s;
-}
-
-/* ---------- RANKER - every store on one page ---------- */
-export function ranker(pptx, deck, o) {
-  const s = deck.addSlide();
-  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-
-  // a store with no prior-year base cannot have a variance: dash, last, and
-  // out of the group total, the bar scale and every count
-  /* ADDED 2026-10-15: o.deltas = [[name, change]] for rate metrics, where the
-     group change is the group's own rate change (o.groupD), not a sum of stores.
-     o.fmtD formats the change (default money). A "neutral" metric sorts largest
-     first and draws every bar in blue - no green/red judgment. */
-  const FDm    = o.fmtD ?? money;
-  const dir    = dirOf(o.metric), neutral = dir === "neutral";
-  const noBase = o.deltas ? [] : o.rows.filter(r => r[1] === 0).map(r => r[0]);
-  const based  = o.deltas ? o.deltas.map(([n, d]) => ({ n, d }))
-                          : o.rows.filter(r => r[1] !== 0).map(([n, x, y]) => ({ n, d: y - x }));
-  const good   = dir === "up" || neutral;
-  based.sort((p, q) => good ? q.d - p.d : p.d - q.d);
-  const all    = [...based, ...noBase.map(n => ({ n, d: null, noBase: true }))];
-  const groupD = o.groupD ?? based.reduce((t, r) => t + r.d, 0);
-  if (o.groupD == null && o.expect != null && Math.abs(groupD - o.expect) > 1) {
-    throw new Error(`${o.title}: store rows sum to ${Math.round(groupD)}, expected ${o.expect}`);
-  }
-
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
-
-  // GROUP as its own strip - its bar is the sum, so it never joins the scale
-  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 11.89, h: 0.46, fill: { color: C.blueTint } });
-  s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 0.065, h: 0.46, fill: { color: C.navy } });
-  s.addText("GROUP", { x: 0.94, y: 1.46, w: 2.2, h: 0.46, fontFace: F, fontSize: sz(15, "group strip"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
-  words(o.groupLabel, "group label");
-  s.addText(o.groupLabel ?? "GROUP TOTAL", {
-    x: 3.1, y: 1.46, w: 4.6, h: 0.46, fontFace: F, fontSize: sz(14, "group strip sub"),
-    color: C.ink600, charSpacing: 0.9, valign: "middle", isTextBox: true, margin: 0,
-  });
-  s.addText(FDm(groupD), { x: 8.9, y: 1.46, w: 3.6, h: 0.46, fontFace: F, fontSize: sz(20, "group strip value"), bold: true, color: C.navy, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-
-  const N = all.length, perCol = Math.ceil(N / 2);
-  const TOP = 2.02, BOT = 6.3, rowH = (BOT - TOP) / perCol;
-  const maxAbs = Math.max(...based.map(r => Math.abs(r.d)));
-  const COLX = [0.72, 6.79], NAMEW = 2.45, BARW = 1.8, VALW = 1.39;   // 5.82 per column + 0.25 gutter
-
-  all.forEach((r, i) => {
-    const col = i < perCol ? 0 : 1, k = i - col * perCol;
-    const x0 = COLX[col], y = TOP + k * rowH;
-    const isUp = r.d >= 0, favourable = good ? isUp : !isUp;
-    s.addText(r.n, {
-      x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13,   // exempt: 34 on one page
-      color: r.noBase ? C.ink600 : C.ink, valign: "middle", isTextBox: true, margin: 0,
-    });
-    const bx = x0 + NAMEW + 0.1, mid = bx + BARW / 2;
-    if (!r.noBase) {
-      const w = Math.abs(r.d) / maxAbs * (BARW / 2), bh = rowH * 0.46;
-      s.addShape(pptx.ShapeType.rect, {
-        x: isUp ? mid : mid - w, y: y + (rowH - bh) / 2, w: Math.max(w, 0.014), h: bh,
-        fill: { color: neutral ? C.blue : (favourable ? C.good : C.bad) },
-      });
-    }
-    s.addText(r.noBase ? money(null) : FDm(r.d), {
-      x: bx + BARW + 0.08, y, w: VALW, h: rowH, fontFace: F, fontSize: 13,
-      color: r.noBase ? C.ink300 : (neutral ? C.ink : (favourable ? C.goodInk : C.badInk)),
-      align: "right", valign: "middle", isTextBox: true, margin: 0,
-    });
-  });
-  [0, 1].forEach(c => {
-    const mid = COLX[c] + NAMEW + 0.1 + BARW / 2;
-    s.addShape(pptx.ShapeType.rect, { x: mid - 0.006, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.ink300 } });
-  });
-
-  // takeaway derived, never typed
-  const best = based[0], worst = based[based.length - 1];
-  const downN = based.filter(r => good ? r.d < 0 : r.d > 0).length;
-  const t = o.takeaway ?? `${best.n} leads at ${money(best.d)}. ${downN} stores declined, worst ${worst.n} at ${money(worst.d)}.`;
-  takeaway(pptx, s, t, o.tone ?? (neutral ? "n" : (groupD >= 0 === good ? "g" : "b")));
-  foot(pptx, s, o.source + (noBase.length ? `  ${noBase.join(", ")} \u2014 no prior-year base, excluded from the group.` : ""), o.page);
-  return s;
-}
-
-/* ---------- MATH CHAIN ---------- */
-export function chain(pptx, deck, o) {
-  const s = deck.addSlide();
-  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  const sum = o.steps.reduce((t, st) => t + st.v, 0);
-  if (Math.abs(sum - o.total) > 2) throw new Error(`${o.title}: chain sums to ${Math.round(sum)}, total says ${o.total}`);
-
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 6.0, h: 5.08, label: o.panelLabel });
-  let cy = 1.86;
-  o.steps.forEach((st, i) => {
-    if (i > 0) {
-      s.addShape(pptx.ShapeType.ellipse, { x: 1.08, y: cy, w: 0.32, h: 0.32, fill: { color: C.blue } });
-      s.addText(st.v >= 0 ? "+" : "\u2212", { x: 1.08, y: cy, w: 0.32, h: 0.32, fontFace: F, fontSize: sz(18, "operator"), bold: true, color: C.white, align: "center", valign: "middle", isTextBox: true, margin: 0 });
-      cy += 0.34;
-    }
-    s.addShape(pptx.ShapeType.rect, { x: 0.78, y: cy, w: 5.44, h: 0.68, fill: { color: i === 0 ? C.zebra : C.goodBg } });
-    s.addText(i === 0 ? M(st.v) : money(st.v), { x: 0.98, y: cy + 0.03, w: 3.0, h: 0.5, fontFace: F, fontSize: sz(26, "chain value"), bold: true, color: i === 0 ? C.ink : C.goodInk, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(st.l, { x: 4.0, y: cy + 0.03, w: 2.05, h: 0.64, fontFace: F, fontSize: sz(14, "chain label"), color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-    cy += 0.76;
-  });
-  s.addShape(pptx.ShapeType.ellipse, { x: 1.08, y: cy, w: 0.32, h: 0.32, fill: { color: C.navy } });
-  s.addText("=", { x: 1.08, y: cy, w: 0.32, h: 0.32, fontFace: F, fontSize: sz(18, "operator"), bold: true, color: C.white, align: "center", valign: "middle", isTextBox: true, margin: 0 });
-  cy += 0.34;
-  s.addShape(pptx.ShapeType.rect, { x: 0.78, y: cy, w: 5.44, h: 0.78, fill: { color: C.blueTint } });
-  if (cy + 0.78 > 6.4) throw new Error("math chain overflows its panel - too many steps for one slide");
-  s.addText(M(o.total), { x: 0.98, y: cy + 0.03, w: 3.0, h: 0.56, fontFace: F, fontSize: sz(30, "chain total"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
-  s.addText(o.totalLabel, { x: 4.0, y: cy + 0.03, w: 2.05, h: 0.72, fontFace: F, fontSize: sz(14, "chain label"), color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-
-  // movers rail
-  panel(pptx, s, { x: 6.7, y: 1.32, w: 6.13, h: 5.08, label: o.moversLabel });
-  const maxM = Math.max(...o.movers.map(m => Math.abs(m[1])));
-  let my = 2.0;
-  o.movers.forEach(([n, d]) => {
-    const up = d > 0;
-    s.addText(n, { x: 6.95, y: my, w: 2.35, h: 0.42, fontFace: F, fontSize: sz(14, "mover name"), color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
-    const bx = 9.4, bw = 1.6, w = Math.abs(d) / maxM * bw;
-    s.addShape(pptx.ShapeType.rect, { x: up ? bx : bx - w, y: my + 0.11, w: Math.max(w, 0.02), h: 0.2, fill: { color: up ? C.good : C.bad } });
-    s.addText(money(d), { x: 11.1, y: my, w: 1.5, h: 0.42, fontFace: F, fontSize: sz(14, "mover value"), bold: true, color: up ? C.goodInk : C.badInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-    my += 0.47;
-  });
-  s.addShape(pptx.ShapeType.rect, { x: 9.394, y: 2.0, w: 0.012, h: my - 2.06, fill: { color: C.ink300 } });
-
-  takeaway(pptx, s, o.takeaway, "g");
-  foot(pptx, s, o.source, o.page);
-  return s;
-}
-
-
-/* ---------- LEVEL RANKER ----------------------------------------------
-   For averages, rates and percentages - anything where the question is
-   "who is above the group and who is below", not "who moved the most".
-
-   GROUP sits INSIDE the ranking as a navy bar at its own rank. That works
-   here precisely because a group AVERAGE lands among the stores; a group
-   TOTAL would dwarf them, which is why the variance ranker keeps GROUP in
-   its own strip instead. Stores read green above the group line and red
-   below it, direction-aware from the registry.
-   --------------------------------------------------------------------- */
-export function levelRanker(pptx, deck, o) {
-  const s = deck.addSlide();
-  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-
-  const up = dirOf(o.metric) === "up";
-  const rows = o.rows.map(([n, v]) => ({ n, v }));
-  rows.sort((a, b) => up ? b.v - a.v : a.v - b.v);
-  const G = o.group;
-  /* ADDED 2026-10-14: o.bench scores stores against a published benchmark
-     instead of the group; GROUP still sits at its own rank, and the line is
-     drawn at the benchmark and labelled. */
-  const REF = o.bench ?? G;
-  const all = [...rows];
-  let gi = all.findIndex(r => up ? r.v < G : r.v > G);
-  if (gi < 0) gi = all.length;
-  all.splice(gi, 0, { n: "GROUP", v: G, isGroup: true });
-
-  const above = rows.filter(r => up ? r.v >= REF : r.v <= REF).length;
-
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
-
-  const N = all.length, perCol = Math.ceil(N / 2);
-  const TOP = o.bench != null ? 1.86 : 1.52, BOT = 6.24, rowH = (BOT - TOP) / perCol;
-  const maxV = Math.max(...all.map(r => r.v), REF * 1.05);
-  /* ADDED 2026-10-15: o.extra = [{ label, w, vals: {NAME: text, GROUP: text} }] adds plain-ink
-     reference columns after the value (e.g. the ELR and door rate behind a %). Bars shrink to make room;
-     column headers sit on the benchmark line's row. */
-  const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
-  const COLX = [0.72, 6.79];
-  const NAMEW = EX.length ? 2.12 : 2.45, VALW = EX.length ? 0.74 : 1.19;
-  const BARW = EX.length ? 5.64 - NAMEW - VALW - EXW - 0.14 : 2.0;
-
-  all.forEach((r, i) => {
-    const col = i < perCol ? 0 : 1, k = i - col * perCol;
-    const x0 = COLX[col], y = TOP + k * rowH;
-    const better = up ? r.v >= REF : r.v <= REF;
-    // ADDED 2026-10-15: o.neutralBelow draws below-reference stores light blue, not red. NOT USED in any deck: Tray's rule (red below) applies everywhere (Noah, Oct 15 2026)
-    const fill = r.isGroup ? C.navy : (better ? C.good : (o.neutralBelow ? C.blueLt : C.bad));
-    const txt  = r.isGroup ? C.navy : (better ? C.goodInk : (o.neutralBelow ? C.ink : C.badInk));
-
-    if (r.isGroup) {
-      s.addShape(pptx.ShapeType.rect, {
-        x: x0 - 0.08, y: y - 0.005, w: NAMEW + BARW + VALW + EXW + 0.28, h: rowH - 0.01,
-        fill: { color: C.blueTint },
-      });
-    }
-    s.addText(r.n, {
-      x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13,
-      color: r.isGroup ? C.navy : C.ink, bold: !!r.isGroup,
-      valign: "middle", isTextBox: true, margin: 0,
-    });
-    const bx = x0 + NAMEW + 0.08;
-    // ADDED 2026-10-15: o.floor starts the bars above zero so close rates are readable
-    const FL = o.floor ?? 0;
-    const w = (r.v - FL) / (maxV - FL) * BARW, bh = rowH * 0.5;
-    s.addShape(pptx.ShapeType.rect, {
-      x: bx, y: y + (rowH - bh) / 2, w: Math.max(w, 0.02), h: bh, fill: { color: fill },
-    });
-    s.addText(o.fmt(r.v), {
-      x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: 13,
-      color: txt, bold: !!r.isGroup, align: "right", valign: "middle", isTextBox: true, margin: 0,
-    });
-    let ex = bx + BARW + 0.06 + VALW;
-    EX.forEach(e => {
-      s.addText(e.vals[r.n] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: 13,
-        color: r.isGroup ? C.navy : C.ink600, bold: !!r.isGroup, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-      ex += e.w;
-    });
-  });
-  if (EX.length) [0, 1].forEach(c => {
-    let ex = COLX[c] + NAMEW + 0.08 + BARW + 0.06;
-    [{ label: o.valLabel ?? "", w: VALW }, ...EX].forEach(e => {
-      s.addText(e.label, { x: ex, y: 1.44, w: e.w, h: 0.32, fontFace: F, fontSize: sz(14, "column header"), bold: true,
-        color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-      ex += e.w;
-    });
-  });
-
-  // the group line (or benchmark line), drawn through both columns so above/below is visible
-  [0, 1].forEach(c => {
-    const bx = COLX[c] + NAMEW + 0.08;
-    const gx = bx + (REF - (o.floor ?? 0)) / (maxV - (o.floor ?? 0)) * BARW;
-    s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } });
-    if (o.bench != null) s.addText(EX.length ? `${o.fmt(REF)} LINE` : `BENCHMARK ${o.fmt(REF)}`, {
-      x: EX.length ? gx - 0.6 : gx - 1.5, y: 1.44, w: EX.length ? 1.2 : 3.0, fit: "none", wrap: !EX.length, h: 0.32, fontFace: F, fontSize: sz(14, "benchmark label"), bold: true,
-      color: C.navy, align: "center", charSpacing: EX.length ? 0 : 0.9, isTextBox: true, margin: 0,
-    });
-  });
-
-  const t = o.takeaway ?? `${all[0].n} leads at ${o.fmt(all[0].v)}. ${above} stores sit above the group at ${o.fmt(G)}; ${rows.length - above} below.`;
-  takeaway(pptx, s, t, o.tone ?? "n");
-  foot(pptx, s, o.source, o.page);
-  return s;
-}
-
-
 /* ---------- SEGMENT RANKER ---------------------------------------------
    ADDED 2026-10-15. For metrics where luxury stores sit on a different
    scale from everyone else (a luxury average well above the rest), each
@@ -866,9 +1763,9 @@ export function segmentRanker(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
   const up = dirOf(o.metric) === "up";
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
 
-  const TOP = 1.92, BOT = 6.28;
+  const TOP = 1.92, BOT = bodyBot(o.takeaway) - 0.07;
   const [L, N] = o.segments;
   const rank = sg => {
     const r = sg.rows.map(([n, v]) => ({ n, v })).sort((a, b) => up ? b.v - a.v : a.v - b.v);
@@ -938,7 +1835,7 @@ export function segmentRanker(pptx, deck, o) {
 export function mixBars(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const rows = [...o.rows].sort((a, b) => b[1][0] - a[1][0]);
   rows.forEach(r => { const t = r[1].reduce((x, y) => x + y, 0); if (Math.abs(t - 1) > 0.001) throw new Error(`${o.title}: ${r[0]} shares sum to ${t}`); });
 
@@ -967,7 +1864,7 @@ export function mixBars(pptx, deck, o) {
   s.addText("GROUP", { x: 7.4, y: 1.42, w: 1.0, h: 0.42, fontFace: F, fontSize: sz(15, "group strip"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
   bar(8.45, 1.47, 4.06, 0.32, o.group, true);
 
-  const perCol = Math.ceil(rows.length / 2), TOP = 2.0, BOT = 6.28, rowH = (BOT - TOP) / perCol;
+  const perCol = Math.ceil(rows.length / 2), TOP = 2.0, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   const COLX = [0.72, 6.79], NAMEW = 2.3, BARW = 3.45;
   rows.forEach((r, i) => {
     const c = i < perCol ? 0 : 1, k = i - c * perCol, x0 = COLX[c], y = TOP + k * rowH;
@@ -991,7 +1888,7 @@ export function splitRanker(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
   const dir = dirOf(o.metric), up = dir === "up" || dir === "neutral";   // neutral lists largest first
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
   const COLX = [0.72, 6.79], NAMEW = 2.1, VALW = 0.82, BARW = 5.7 - NAMEW - VALW - EXW - 0.14;
   const sides = o.sides.map(sd => {
@@ -1000,7 +1897,7 @@ export function splitRanker(pptx, deck, o) {
       r.splice(gi, 0, { n: sd.avgLabel ?? "AVERAGE", v: sd.avg, isGroup: true }); }
     return r;
   });
-  const perCol = Math.max(...sides.map(r => r.length)), TOP = 1.92, BOT = 6.28, rowH = (BOT - TOP) / perCol;
+  const perCol = Math.max(...sides.map(r => r.length)), TOP = 1.92, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   const FL = o.floor ?? 0, maxV = Math.max(...sides.flat().map(r => r.v), (o.bench ?? 0) * 1.05);
   sides.forEach((rows, c) => {
     const x0 = COLX[c], bx = x0 + NAMEW + 0.08;
@@ -1031,7 +1928,7 @@ export function splitRanker(pptx, deck, o) {
       s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: rows.length * rowH, fill: { color: C.navy } });
     }
   });
-  s.addShape(pptx.ShapeType.rect, { x: 6.6, y: 1.5, w: 0.012, h: 4.78, fill: { color: C.rule } });
+  s.addShape(pptx.ShapeType.rect, { x: 6.6, y: 1.5, w: 0.012, h: BOT - 1.5, fill: { color: C.rule } });
   takeaway(pptx, s, o.takeaway, o.tone ?? "n");
   foot(pptx, s, o.source, o.page);
   return s;
@@ -1046,7 +1943,7 @@ export function splitRanker(pptx, deck, o) {
 export function statTiles(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const n = o.tiles.length, gap = 0.22, X0 = 0.78, W = (11.77 - gap * (n - 1)) / n;
   o.tiles.forEach((t, i) => {
     const x = X0 + i * (W + gap), ink = t.tone === "b" ? C.badInk : t.tone === "g" ? C.goodInk : C.navy;
@@ -1076,11 +1973,11 @@ export function statTiles(pptx, deck, o) {
 export function amountRanker(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const rows = [...o.rows].sort((a, b) => b[1] - a[1]);
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
   const COLX = [0.72, 6.79], NAMEW = 2.12, VALW = o.valW ?? 0.86, BARW = 5.7 - NAMEW - VALW - EXW - 0.14;   // o.valW ADDED 2026-10-19 for 7-digit dollars
-  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = 6.26, rowH = (BOT - TOP) / perCol, maxV = rows[0][1];
+  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol, maxV = rows[0][1];
   [0, 1].forEach(c => {
     let hx = COLX[c] + NAMEW + 0.08 + BARW + 0.06;
     [{ label: o.valLabel ?? "", w: VALW }, ...EX].forEach(e => {
@@ -1113,10 +2010,10 @@ export function amountRanker(pptx, deck, o) {
 export function dumbbell(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const rows = [...o.rows].sort((p, q) => q[1] - p[1]);
   const COLX = [0.72, 6.79], NAMEW = 2.12, VALW = 1.45, PLOTW = 5.7 - NAMEW - VALW - 0.3;
-  const perCol = Math.ceil(rows.length / 2), TOP = 1.9, BOT = 6.26, rowH = (BOT - TOP) / perCol;
+  const perCol = Math.ceil(rows.length / 2), TOP = 1.9, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   const lo = o.min, hi = o.max, X = (bx, v) => bx + (Math.min(Math.max(v, lo), hi) - lo) / (hi - lo) * PLOTW;
   // legend
   [[C.bad, o.aLabel + " (green at or above " + o.fmt(o.bench) + ")"], [C.navy, o.bLabel]].forEach(([col, lab], i) => {
@@ -1155,8 +2052,9 @@ export function dumbbell(pptx, deck, o) {
 export function talkingPoints(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
-  panel(pptx, s, { x: 0.5, y: 1.32, w: 7.0, h: 5.08, label: null });
-  panel(pptx, s, { x: 7.68, y: 1.32, w: 5.15, h: 5.08, label: null });
+  const TPB = bodyBot("The ask: " + o.ask), TPH = TPB - BODY.top;
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 7.0, h: TPH, label: null });
+  panel(pptx, s, { x: 7.68, y: BODY.top, w: 5.15, h: TPH, label: null });
   const head = (x, w, t) => s.addText(words(t, "tp head").toUpperCase(), { x, y: 1.5, w, h: 0.34, fontFace: F, fontSize: sz(14, "tp head"),
     bold: true, color: C.navy, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
   head(0.78, 6.5, "What we said · " + o.saidFrom);
@@ -1165,8 +2063,8 @@ export function talkingPoints(pptx, deck, o) {
   s.addShape(pptx.ShapeType.rect, { x: 7.95, y: 1.9, w: 4.62, h: 0.012, fill: { color: C.rule } });
   const fs = o.said.length > 6 ? 16 : 18;
   s.addText(o.said.map(t => ({ text: words(t, "tp bullet"), options: { bullet: { indent: 18 }, breakLine: true, paraSpaceAfter: 8 } })), {
-    x: 0.78, y: 2.05, w: 6.45, h: 4.2, fontFace: F, fontSize: sz(fs, "tp bullet"), color: C.ink, valign: "top", isTextBox: true, margin: 0 });
-  const n = o.now.length, rowH = 4.25 / n;
+    x: 0.78, y: 2.05, w: 6.45, h: TPB - 2.2, fontFace: F, fontSize: sz(fs, "tp bullet"), color: C.ink, valign: "top", isTextBox: true, margin: 0 });
+  const n = o.now.length, rowH = (TPB - 2.15) / n;
   o.now.forEach((d, i) => {
     const y = 2.05 + i * rowH, ink = d.tone === "g" ? C.goodInk : d.tone === "b" ? C.badInk : C.navy;
     s.addShape(pptx.ShapeType.rect, { x: 7.95, y: y + 0.05, w: 0.06, h: rowH - 0.25, fill: { color: d.tone === "g" ? C.good : d.tone === "b" ? C.bad : C.blue } });
@@ -1211,7 +2109,7 @@ export function explainer(pptx, deck, o) {
     });
     Y += 0.62;
   }
-  const H2 = 6.4 - Y;
+  const H2 = bodyBot(o.ours) - Y;
   panel(pptx, s, { x: 0.5, y: Y, w: 4.75, h: H2, label: null });
   panel(pptx, s, { x: 5.4, y: Y, w: 7.43, h: H2, label: null });
   const head = (x, w, t) => s.addText(t, { x, y: Y + 0.14, w, h: 0.32, fontFace: F, fontSize: sz(14, "explainer head"), bold: true, color: C.navy, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
