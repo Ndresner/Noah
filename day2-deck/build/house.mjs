@@ -363,6 +363,79 @@ export function trendYoy(pptx, deck, o) {
   return s;
 }
 
+/* ---------- YEAR BARS - one bar per year, the latest lit ----------
+   ADDED 2026-10-21 (records review). o.years = [[label, value]]; the last bar is blue,
+   earlier years grey. Bullets panel on the right, as in trend(). Values in $M. */
+export function yearBars(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  panel(pptx, s, { x: 0.5, y: 1.32, w: 8.3, h: 5.05, label: o.panelLabel });
+  const n = o.years.length, v = o.years.map(r => +(r[1] / 1e6).toFixed(2));
+  const labels = o.years.map(r => r[0]);
+  s.addChart(pptx.ChartType.bar, [
+    { name: "Earlier", labels, values: v.map((x, i) => i < n - 1 ? x : 0) },
+    { name: "Latest",  labels, values: v.map((x, i) => i === n - 1 ? x : 0) },
+  ], {
+    x: 0.68, y: 1.98, w: 7.95, h: 4.25, barDir: "col", barGrouping: "stacked", barGapWidthPct: 25,
+    chartColors: [C.ink300, C.blue], showLegend: false, showTitle: false,
+    showValue: true, dataLabelPosition: "inEnd", dataLabelColor: C.white,
+    dataLabelFontFace: "+mn-lt", dataLabelFontSize: sz(14, "bar label"), dataLabelFontBold: true,
+    dataLabelFormatCode: '$0.0"M";;',
+    catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(16, "cat axis"), catAxisLabelColor: C.ink,
+    valAxisHidden: true, valAxisMinVal: 0, valGridLine: { style: "none" }, catGridLine: { style: "none" },
+  });
+  panel(pptx, s, { x: 9.0, y: 1.32, w: 3.83, h: 5.05, label: "What it says" });
+  let by = 2.02;
+  o.bullets.forEach((b, i) => {
+    s.addShape(pptx.ShapeType.ellipse, { x: 9.25, y: by + 0.1, w: 0.11, h: 0.11, fill: { color: i === 0 ? C.blue : C.ink } });
+    s.addText(words(b, "bullet"), { x: 9.52, y: by - 0.04, w: 3.1, h: 1.15, fontFace: F, fontSize: sz(15, "bullet"),
+      color: i === 0 ? C.blue : C.ink, bold: i === 0, isTextBox: true, margin: 0, valign: "top" });
+    by += 1.24;
+  });
+  takeaway(pptx, s, o.takeaway, o.tone ?? "g");
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
+/* ---------- RECORD BOARD - every record-setting store, two columns ----------
+   ADDED 2026-10-21 (records review). o.rows = [{ name, marks: [bool], val, gain }],
+   o.markLabels = column heads for the marks. A record is a filled green dot; a miss
+   is a pale outline. Up to 26 stores (13 a column). */
+export function recordBoard(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
+  const per = Math.ceil(o.rows.length / 2);
+  if (per > 13) throw new Error(`recordBoard: ${o.rows.length} rows will not fit`);
+  const COLX = [0.72, 6.79], NAMEW = 2.17, MW = 0.64, VALW = 0.92, GAINW = 0.86, TOP = 1.86, BOT = 6.26, rowH = (BOT - TOP) / per;
+  const heads = [...o.markLabels, o.valLabel, o.gainLabel];
+  [0, 1].forEach(c => {
+    let hx = COLX[c] + NAMEW;
+    heads.forEach((h, i) => {
+      const w = i < o.markLabels.length ? MW : i === o.markLabels.length ? VALW : GAINW;
+      s.addText(h, { x: hx, y: 1.44, w, h: 0.36, fontFace: F, fontSize: sz(14, "column header"), bold: true,
+        color: C.ink600, align: i < o.markLabels.length ? "center" : "right", valign: "middle", isTextBox: true, margin: 0 });
+      hx += w;
+    });
+  });
+  o.rows.forEach((r, i) => {
+    const c = i < per ? 0 : 1, k = i - c * per, x0 = COLX[c], y = TOP + k * rowH;
+    if (k % 2) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.08, y, w: 6.0, h: rowH, fill: { color: C.zebra } });
+    s.addText(words(r.name, "store"), { x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    r.marks.forEach((on, m) => {
+      const d = 0.17, cx = x0 + NAMEW + m * MW + MW / 2;
+      s.addShape(pptx.ShapeType.ellipse, { x: cx - d / 2, y: y + (rowH - d) / 2, w: d, h: d,
+        fill: { color: on ? C.good : C.white }, line: { color: on ? C.good : C.ink300, width: 1 } });
+    });
+    const vx = x0 + NAMEW + o.markLabels.length * MW;
+    s.addText(r.val ?? "", { x: vx, y, w: VALW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(r.gain ?? "", { x: vx + VALW, y, w: GAINW, h: rowH, fontFace: F, fontSize: 13, bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+  });
+  takeaway(pptx, s, o.takeaway, o.tone ?? "g");
+  foot(pptx, s, o.source, o.page);
+  return s;
+}
+
 /* ---------- YOY - group card over a month table ---------- */
 export function yoy(pptx, deck, o) {
   const s = deck.addSlide();

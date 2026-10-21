@@ -56,6 +56,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `moving-deck.mjs` | **Most Improved v2 - Review (10)** | `imp/imp.json`, `imp/mom.json` |
 | `whos-moving.mjs` | Who's Moving Now - Review (10, top 10 per measure) | `imp/mom.json` |
 | `gross-trend-review.mjs` | **Gross Trend - Review (11)**: Jan–Sep 2026 vs 2025 two-line options | `gross/monthly.json` (Qlik P&L, pulled Oct 20, reconciles to verified totals), `prod/trend.json` |
+| `records-deck.mjs` | **Store Records - Review (5)**: Record Year, Record Board, two Spotlights, records ranker | `records/records.json` from `records/compute.py` (reads `inputs/September_2026_Fixed_Ops_Gross_Records.xlsx`) |
 
 **Can't be rebuilt from this package.** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks were built in earlier sessions. Their scripts are here (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`, `master.mjs`), but their data JSON (`ntgp.json`, `ntgs.json`, `abs.json`, `m5.json`, `door.json`, `elr_q3.json`, `wi.json`, `wm.json`, `all.json`, `doorinfo.json`) and the `*-mod.mjs` files `master.mjs` imports did not survive.
 - **For now:** treat those `.pptx` files and the **master deck** as built artifacts. Edit them by swapping slides (see `swap_prod.py`).
@@ -123,6 +124,12 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Results:** group 94.7%; 20 of 33 stores at 85% or better; 262 of 583 techs under 85%; gap $1,646,932 gross a month.
 - **Wording:** flat-rate techs aren't paid for unflagged hours, so never say the hours are "already paid for".
 
+### Store records (`records/compute.py`, decided Oct 21)
+- **Source: Qlik Fixed Ops Accounting TB** (`e077f027`), Family FIXED GROSS, Class SERVICE / PARTS, history Jan 2021 – Sep 2026, from Noah's monthly records workbook (pulled Oct 8; September was closed, so no re-pull).
+- TB matches the P&L to the dollar for every store **except GMC PRESCOTT service** (TB higher by $153,746 Jan–Sep 2026, $286,430 Jan–Sep 2025; likely body shop). GMC PRESCOTT's combined record holds on both bases. TB group Jan–Sep 2026 = $188.95M vs P&L $188.80M.
+- **Stores with shorter histories count the same as everyone else** (Noah). Months before a store opened are ignored.
+- Record = Jan–Sep 2026 above every prior full Jan–Sep for that store; monthly records = each new all-time monthly high in 2026.
+
 ### Other fixed facts
 - **Days open:** every service department is open 6 days a week, never Sunday, and closed 6 holidays (New Year's, Memorial Day, Independence Day, Labor Day, Thanksgiving, Christmas). **307 days a year** in 2026. Never infer days open from RO close dates.
 - **Luxury segment:** Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson. Acura is non-luxury. GMC Prescott is the only body shop.
@@ -179,6 +186,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - **B + Q4** (slide 10): B with the 2025 line through December. In or out?
   - **Headcount** (slide 11): same two-line treatment for Fixed Ops Headcount. Keep or leave the trailing-12 version?
   - Once chosen: swap into the Gross and Productivity sections the way `swap_prod.py` does.
+- **Store records (Oct 21):** all options saved in `decks/Store Records - Review.pptx`; nothing in the test deck yet. Pick which to keep: (1) A Record Year, group bars 2021–2026; (2) Record Board, all 25 stores with a Jan–Sep record; (3) Spotlight by %; (4) Spotlight by $; (5) ranker of monthly records set in 2026. Claude's recommendation: 1 near the opening, 2, and one spotlight in the Close ahead of "What Changed?".
 - **Door rate design:** pick one of the five options in the appendix.
 - **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
 - **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
