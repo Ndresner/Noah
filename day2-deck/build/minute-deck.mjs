@@ -1,6 +1,6 @@
 /* "What a Tech Minute Is Worth" (2026-10-19, for review). Per store: value of a minute = the store's counted
    technicians' labor gross + parts gross per sold hour / 60 (same rates as the proficiency opportunity slides).
-   Tech-days a month = counted techs' paid hours / 8 / 9.49 months. Assumes each minute saved becomes a minute of
+   Tech-days a month = counted techs' worked hours / 8 / 9.49 months. Assumes each minute saved becomes a minute of
    flagged work. Same population and rules as the proficiency slides (583 counted technicians, INEOS excluded). */
 import PptxGenJS from "pptxgenjs";
 import fs from "fs";
@@ -13,7 +13,7 @@ const techs = S.reduce((t, s) => t + s.techs, 0), MOV = S.reduce((t, s) => t + s
 const rate = O.S.reduce((t, o) => t + (o.lgh + o.pgh) * o.sold, 0) / O.S.reduce((t, o) => t + o.sold, 0);
 const usd = v => "$" + Math.round(v).toLocaleString("en-US"), usd2 = v => "$" + v.toFixed(2);
 const SEG = "Technician Proficiency", TITLE = "What a Tech Minute Is Worth";
-const SRC = "Value of a minute = each store's counted technicians' labor gross + parts gross per sold hour, divided by 60 (Qlik - Closed Repair Orders, all pay types, same rates as the proficiency opportunity slides). Tech-days = counted techs' paid hours (ADP) / 8 per day. Assumes each minute saved becomes a minute of flagged work. 583 counted technicians, same-store, INEOS excluded. Month = Dec 25, 2025 - Oct 9, 2026 / 9.49; year = month x 12.";
+const SRC = "Value of a minute = each store's counted technicians' labor gross + parts gross per sold hour, divided by 60 (Qlik - Closed Repair Orders, all pay types, same rates as the proficiency opportunity slides). Tech-days = counted techs' worked hours (ADP) / 8 per day. Assumes each minute saved becomes a minute of flagged work. 583 counted technicians, same-store, INEOS excluded. Month = Dec 25, 2025 - Oct 9, 2026 / 9.49; year = month x 12.";
 
 // slide 1 - the group
 {

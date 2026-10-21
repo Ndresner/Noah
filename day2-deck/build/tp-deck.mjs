@@ -153,11 +153,11 @@ T({ eyebrow: "Technician Proficiency", title: "Technicians & Stalls", saidFrom: 
          "5/6 of staff on schedule at all times, Saturdays included",
          "90%+ MPI completion; track and report technician efficiency",
          "Use scoreboarding and Teams to show techs where they stand"],
-  now: [{ big: "94.7%", label: "Group technician proficiency (sold hours / paid hours). 20 of 33 stores at or above 85%.", tone: "g" },
+  now: [{ big: "94.7%", label: "Group technician proficiency (sold hours / worked hours). 20 of 33 stores at or above 85%.", tone: "g" },
         { big: "262 of 583", label: "Counted technicians under 85%. Every store has at least one.", tone: "b" },
         { big: "$1.65M a month", label: "Gross missed if each of them reached 85%: no extra hours, techs or bays.", tone: "b" }],
   ask: "show every tech their own proficiency every week. The best techs in each store already prove 85% is possible.",
-  notes: "PLACE: Technician Proficiency section, after the section break and before the store proficiency ranker.\nSaid: Roundtable slide 22 (Technicians & Stalls); Jan GM slide 52 / May GM slide 16 (MPI Completion and Tech Efficiency).\nNow: proficiency slides (ADP paid hours + Qlik sold hours, Dec 25-Oct 9, with the foreman 30%, tech 10%, role-change and keying-error rules)." });
+  notes: "PLACE: Technician Proficiency section, after the section break and before the store proficiency ranker.\nSaid: Roundtable slide 22 (Technicians & Stalls); Jan GM slide 52 / May GM slide 16 (MPI Completion and Tech Efficiency).\nNow: proficiency slides (ADP worked hours + Qlik sold hours, Dec 25-Oct 9, with the foreman 30%, tech 10%, role-change and keying-error rules)." });
 
 T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
   said: ["What did you learn today?",

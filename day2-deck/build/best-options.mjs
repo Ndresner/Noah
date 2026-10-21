@@ -9,7 +9,7 @@ const BEN = 0.85, pc = v => Math.floor(v * 100) + "%";
 const U = O.S.filter(o => o.prof < BEN).sort((a, b) => a.prof - b.prof);
 const proven = U.filter(o => o.top >= BEN);
 const SEG = "Fixed Ops Productivity", TITLE = "Your Best Techs Prove It";
-const SRC = "Stores under 85% only. Store = sold / paid hours for counted technicians. Best techs = the store's most proficient quarter of counted technicians (at least one), their sold / paid hours combined. Same population and rules as the proficiency slides.";
+const SRC = "Stores under 85% only. Store = sold / worked hours for counted technicians. Best techs = the store's most proficient quarter of counted technicians (at least one), their sold / worked hours combined. Same population and rules as the proficiency slides.";
 const TAKE = `At ${proven.length} of the ${U.length} stores under 85%, the best quarter of techs already beat 85%. Same bays, same dispatch, same car count.`;
 const note = s => s.addNotes("Source: " + SRC + "\n" + U.map(o => `${o.n}: store ${pc(o.prof)}, best ${o.topn} of ${o.techs} techs ${pc(o.top)}`).join("\n"));
 const label = (s, t, o) => s.addText(H.words(t, "label"), { fontFace: F, margin: 0, isTextBox: true, ...o });

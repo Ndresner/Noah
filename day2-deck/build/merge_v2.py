@@ -132,11 +132,12 @@ L = lambda *a: list(a)
 OPEN = [
     ("GROSS TREND", X("GT", *R(1, 10)), L(*["OPTION A"] * 6, *["OPTION B"] * 3, "OPTION B + Q4")),
     ("STORE RECORDS", X("SR", *R(1, 6)), L("A RECORD YEAR", "RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
-    ("DOOR RATE", X("CP", 14, 15, 16, 11, 12), L(*[f"OPTION {c}" for c in "ABCDE"])),
+    # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
+    ("DOOR RATE", X("CP", 14, 15), L("OPTION A", "OPTION B")),
     ("INTERNAL GP %", X("IGP", *R(1, 6)), L(*[None] * 6)),
     ("CP VS INTERNAL GP %", X("CVI", 1, 2, 3, 4), L("OPTION A", "OPTION A", "OPTION B", "OPTION B")),
     ("HEADCOUNT TREND", X("GT", 11), L(None)),
-    ("BEST TECHS", X("BT", 1, 2, 3), L(*[f"OPTION {c}" for c in "ABC"])),
+    ("BEST TECHS", X("BT", 3), L("OPTION C")),
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
     ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),
 ]

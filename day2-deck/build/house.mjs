@@ -183,7 +183,7 @@ export const METRICS = {
   "cp hours sold":          { dir: "up", fmt: "int" },
   // 2026-10-19: gross from one more CP RO a day - an opportunity amount, shown as a size, not a score
   "one more ro a day":      { dir: "neutral", fmt: "money" },
-  // 2026-10-16 (Noah, proficiency slide test) - PROVISIONAL until Tray confirms. Sold hours / paid hours (ADP reg + OT); workbook targets 85% on, 100% above.
+  // 2026-10-16 (Noah, proficiency slide test) - PROVISIONAL until Tray confirms. Sold hours / worked hours (ADP reg + OT); workbook targets 85% on, 100% above.
   "tech proficiency %":     { dir: "up", fmt: "pct" },   // a posted price, not a score     // May benchmark: CP ELR at least 70% of door rate   // CP labor whose op code description says nothing usable - a description-quality measure   // customer-pay share of labor sale; higher = less dependence on OEM/internal - confirm
 };
 export function dirOf(key) {

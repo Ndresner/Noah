@@ -43,7 +43,7 @@ function tops(view, n = 3) {
   return Object.entries(c).sort((a, b) => b[1].length - a[1].length);
 }
 
-/* ---- grids: six measures, top 5 each ---- */
+/* ---- grids: six measures, top 3 and bottom 3 each (was 5 and 5; cut Oct 21, Noah: too crowded to read) ---- */
 function grid(view, { title, sub, groupLabel, src }) {
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title });
@@ -51,13 +51,13 @@ function grid(view, { title, sub, groupLabel, src }) {
   s.addText(sub, { x: 0.78, y: 1.4, w: 11.77, h: 0.28, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
   // leaderboard: measures across; top 5 then bottom 5 down (bottom 5 ADDED 2026-10-20, Noah). Each cell = store, change.
   // Before -> after values moved to the speaker notes to make room for ten rows.
-  const X0 = 1.0, CW = 11.68 / 6, HY = 1.70, rh = 0.39, TOPS = 2.30, BOTS = 4.38, N = VIEW[view][ORDER[0]].rows.length;
-  [[TOPS, C.good, C.goodInk, j => j + 1], [BOTS, C.bad, C.badInk, j => N - 4 + j]].forEach(([y0, bar, ink, rank]) => {
-    s.addShape(pptx.ShapeType.rect, { x: 0.68, y: y0, w: 0.05, h: rh * 5, fill: { color: bar } });
-    for (let j = 0; j < 5; j++) {
+  const K = 3, X0 = 1.0, CW = 11.68 / 6, HY = 1.85, rh = 0.58, TOPS = 2.55, BOTS = 4.46, N = VIEW[view][ORDER[0]].rows.length;
+  [[TOPS, C.good, C.goodInk, j => j + 1], [BOTS, C.bad, C.badInk, j => N - K + 1 + j]].forEach(([y0, bar, ink, rank]) => {
+    s.addShape(pptx.ShapeType.rect, { x: 0.68, y: y0, w: 0.05, h: rh * K, fill: { color: bar } });
+    for (let j = 0; j < K; j++) {
       const y = y0 + j * rh;
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: 0.75, y, w: 11.9, h: rh, fill: { color: C.zebra } });
-      s.addText(String(rank(j)), { x: 0.74, y, w: 0.3, h: rh, fontFace: F, fontSize: 14, bold: true, color: ink, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+      s.addText(String(rank(j)), { x: 0.74, y, w: 0.3, h: rh, fontFace: F, fontSize: 16, bold: true, color: ink, align: "center", valign: "middle", isTextBox: true, margin: 0 });
     }
   });
   const notes = [];
@@ -69,22 +69,22 @@ function grid(view, { title, sub, groupLabel, src }) {
     s.addText(`${groupLabel} ${chg(k, M.group[2])}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
       color: C.ink600, isTextBox: true, margin: 0 });
     const cell = (r, y, top) => {
-      s.addText(r.n, { x: x + 0.06, y: y + 0.01, w: CW - 0.06, h: 0.19, fontFace: F, fontSize: 13, bold: true, color: C.ink, isTextBox: true, margin: 0, fit: "shrink" });
-      s.addText(chg(k, r.chg), { x: x + 0.08, y: y + 0.19, w: CW - 0.12, h: 0.19, fontFace: F, fontSize: 14, bold: true,
+      s.addText(r.n, { x: x + 0.08, y: y + 0.05, w: CW - 0.1, h: 0.24, fontFace: F, fontSize: 13, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0, fit: "shrink" });
+      s.addText(chg(k, r.chg), { x: x + 0.08, y: y + 0.29, w: CW - 0.12, h: 0.25, fontFace: F, fontSize: 16, bold: true, valign: "middle",
         color: /^[0.]+/.test(chg(k, r.chg)) ? C.ink600 : r.chg > 0 ? C.goodInk : C.badInk, isTextBox: true, margin: 0 });
     };
-    const top = M.rows.slice(0, 5), bot = M.rows.slice(-5);
+    const top = M.rows.slice(0, K), bot = M.rows.slice(-K);
     top.forEach((r, j) => cell(r, TOPS + j * rh, true));
     bot.forEach((r, j) => cell(r, BOTS + j * rh, false));
     notes.push(`${M.label}: top ${top.map(r => `${r.n} ${val(k, r.v0)} \u2192 ${val(k, r.v1)}`).join("; ")}. Bottom ${bot.map(r => `${r.n} ${val(k, r.v0)} \u2192 ${val(k, r.v1)}`).join("; ")}.`);
   });
   s.addNotes("\n\nBefore \u2192 after, by measure:\n" + notes.join("\n"));
-  const rep = tops(view, 5), hi = rep[0][1].length;
+  const rep = tops(view, K), hi = rep[0][1].length;
   const lead = rep.filter(e => e[1].length === hi).map(e => e[0]), next = rep.filter(e => e[1].length === hi - 1).map(e => e[0]);
-  const bc = {}; ORDER.forEach(k => VIEW[view][k].rows.slice(-5).forEach(r => (bc[r.n] ??= []).push(k)));
+  const bc = {}; ORDER.forEach(k => VIEW[view][k].rows.slice(-K).forEach(r => (bc[r.n] ??= []).push(k)));
   const brep = Object.entries(bc).sort((p, q) => q[1].length - p[1].length), bh = brep[0][1].length;
   const blead = brep.filter(e => e[1].length === bh).map(e => e[0]);
-  H.takeaway(pptx, s, `Top: ${lead.join(", ")} (${hi} of 6).\nBottom: ${blead.join(", ")} (${bh} of 6).`, "n");
+  H.takeaway(pptx, s, `Most top-three finishes: ${list(lead)} (${hi} of 6). Most bottom-three: ${list(blead)} (${bh} of 6).`, "n");
   H.foot(pptx, s, src);
   return s;
 }
@@ -175,8 +175,8 @@ function whatChanged() {
   s.addNotes(`\n\n${opStore}'s August opcode increase was confirmed with the store as a real change (Noah, Oct 19 2026).`);
 }
 
-grid("yoy", { title: "Better Than Last Year", sub: "Top and bottom five stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025", groupLabel: "Group", src: SRC_Y });
-grid("mom", { title: "Who's Moving Now", sub: "Top and bottom five stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
+grid("yoy", { title: "Better Than Last Year", sub: "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025", groupLabel: "Group", src: SRC_Y });
+grid("mom", { title: "Who's Moving Now", sub: "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
 ORDER.forEach(moving);
 twoViews();
 whatChanged();

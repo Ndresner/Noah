@@ -2,13 +2,13 @@ import PptxGenJS from "pptxgenjs";
 import fs from "fs";
 import * as H from "./house.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
-/* ADP Tech Employee List export (paid hours, Dec 25 2025 - Oct 9 2026) + Qlik Closed Repair Orders c3efc739 sold hours by
+/* ADP Tech Employee List export (worked hours, Dec 25 2025 - Oct 9 2026) + Qlik Closed Repair Orders c3efc739 sold hours by
    Division x tech no for the same close dates, all pay types, pulled 2026-10-16. Population and outlier rules from the
    Technician Proficiency workbook skill (qualifies_for_prof_subset). Labelled Jan-Sep at Noah's direction (Oct 16 2026). */
 const P = JSON.parse(fs.readFileSync("./prof/prof.json", "utf8"));
 const SEG = "Fixed Ops Productivity", TITLE = "Technician Proficiency";
 const ST = P.stores.filter(r => r[0] !== "INEOS");
-const SRC = "ADP paid hours (regular + overtime) and Qlik - Closed Repair Orders sold hours, all pay types, matched by tech number. Dec 25, 2025 - Oct 9, 2026 (shown as Jan-Sep). Same-store, INEOS excluded (opened 2026). Service, express, team-leader and shop-foreman titles only; body shop, detail and tint excluded. Outliers dropped: shop foremen at or below 30% (workbook uses 20%; under 30% a foreman is mainly dispatching), team leaders at or below 20%, service and express technicians at or below 10% (workbook uses 2%; under 10% a tech is not working as a line tech). Unassigned codes (MULT, 999, 77777) excluded. Role changes: ADP shows one current title with paid hours for the whole period, so when a tech's paid hours exceed 125% of full time over the months they actually flagged, paid hours are scaled to that span (56 techs). 45 keying-error lines removed from sold hours (5,399 hrs: single lines of 20+ hours with under $25 labor sale per hour, e.g. 940.58 hrs for $0 at Hyundai St George, RO 177970).";
+const SRC = "ADP worked hours (regular + overtime) and Qlik - Closed Repair Orders sold hours, all pay types, matched by tech number. Dec 25, 2025 - Oct 9, 2026 (shown as Jan-Sep). Same-store, INEOS excluded (opened 2026). Service, express, team-leader and shop-foreman titles only; body shop, detail and tint excluded. Outliers dropped: shop foremen at or below 30% (workbook uses 20%; under 30% a foreman is mainly dispatching), team leaders at or below 20%, service and express technicians at or below 10% (workbook uses 2%; under 10% a tech is not working as a line tech). Unassigned codes (MULT, 999, 77777) excluded. Role changes: ADP shows one current title with worked hours for the whole period, so when a tech's worked hours exceed 125% of full time over the months they actually flagged, worked hours are scaled to that span (56 techs). 45 keying-error lines removed from sold hours (5,399 hrs: single lines of 20+ hours with under $25 labor sale per hour, e.g. 940.58 hrs for $0 at Hyundai St George, RO 177970).";
 const sum = i => ST.reduce((t, r) => t + r[i], 0);
 const G = sum(1) / sum(2), N = sum(3), BEN = 0.85;
 const pc = v => (Math.floor(v * 1000) / 10).toFixed(1) + "%";   // truncated so just-under never reads as on target
@@ -21,7 +21,7 @@ H.section(pptx, pptx, { kicker: "Fixed Ops", title: TITLE, chips: ["Store profic
 H.levelRanker(pptx, pptx, {
   eyebrow: SEG, title: TITLE, metric: "tech proficiency %", rows, group: G, bench: BEN, fmt: pc, floor: 0.4,
   takeaway: `${on} of 33 stores at or above the 85% target and ${over} above 100%. Group ${pc(G)}, led by ${sorted[0][0]} at ${pc(sorted[0][1])}; ${sorted[32][0]} lowest at ${pc(sorted[32][1])}.`,
-  source: `${SRC} Proficiency = sold hours / paid hours, from store totals. Green at or above 85%, red below. Bars start at 40%.`,
+  source: `${SRC} Proficiency = sold hours / worked hours, from store totals. Green at or above 85%, red below. Bars start at 40%.`,
 });
 
 const T = P.tiers, mix = ST.map(r => [r[0], [r[4] / r[3], r[5] / r[3], r[6] / r[3]]]);
@@ -32,16 +32,16 @@ H.mixBars(pptx, pptx, {
   takeaway: `Of ${N} technicians, ${T.above} are above 100% and ${T.under} (${(T.under / N * 100).toFixed(0)}%) are under 85%. ${mix.filter(r => r[1][2] > 0.5).length} stores have more than half their technicians under target.`,
   source: `${SRC} Share of each store's technicians by proficiency band (workbook status: Above Target, On Target, Under Target), most above first.`,
 });
-for (const sl of pptx._slides.slice(1, 3)) sl.addNotes(ST.map(r => `${r[0]}: ${pc(r[1] / r[2])} (${Math.round(r[1]).toLocaleString()} sold / ${Math.round(r[2]).toLocaleString()} paid, ${r[3]} techs: ${r[4]} above, ${r[5]} on, ${r[6]} under)`).join("\n"));
+for (const sl of pptx._slides.slice(1, 3)) sl.addNotes(ST.map(r => `${r[0]}: ${pc(r[1] / r[2])} (${Math.round(r[1]).toLocaleString()} sold / ${Math.round(r[2]).toLocaleString()} worked, ${r[3]} techs: ${r[4]} above, ${r[5]} on, ${r[6]} under)`).join("\n"));
 
 /* ---------- the opportunity (ADDED 2026-10-16) ----------
-   Each qualifying tech under 85% lifted to 85% of their own paid hours; no extra hours, no extra staff.
+   Each qualifying tech under 85% lifted to 85% of their own worked hours; no extra hours, no extra staff.
    Gap hours valued at the store's own labor gross, parts gross and labor cost (tech pay) per sold hour,
    all pay types, same dates (Qlik Closed Repair Orders). Per month = period total / 9.49 months. */
 const O = JSON.parse(fs.readFileSync("./prof/opp.json", "utf8")), OS = O.S, OG = O.G, MO = OG.months;
 const K = v => v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : "$" + Math.round(v / 1e3).toLocaleString("en-US") + "K";
 const tot = o => o.lab + o.parts;
-const OSRC = "Each technician under 85% lifted to 85% of their own paid hours; techs at or above 85% count as zero, so no store offsets one tech with another. Gap hours valued at what the store's own technicians (counted titles) earn per sold hour in labor gross and parts gross, all pay types, Qlik - Closed Repair Orders, same dates; tech pay at their labor cost per sold hour. Store-wide averages are not used because they carry detail, rental and recon sale booked with no hours. Per month = period total / 9.49 months (Dec 25, 2025 - Oct 9, 2026). Parts assumes the extra hours carry the store's average parts per hour. Population as on the proficiency slides.";
+const OSRC = "Each technician under 85% lifted to 85% of their own worked hours; techs at or above 85% count as zero, so no store offsets one tech with another. Gap hours valued at what the store's own technicians (counted titles) earn per sold hour in labor gross and parts gross, all pay types, Qlik - Closed Repair Orders, same dates; tech pay at their labor cost per sold hour. Store-wide averages are not used because they carry detail, rental and recon sale booked with no hours. Per month = period total / 9.49 months (Dec 25, 2025 - Oct 9, 2026). Parts assumes the extra hours carry the store's average parts per hour. Population as on the proficiency slides.";
 const perTech = OG.pay / OG.under / MO;
 H.statTiles(pptx, pptx, {
   eyebrow: SEG, title: "The Proficiency Opportunity",
@@ -86,7 +86,7 @@ H.dumbbell(pptx, pptx, {
   rows: OS.map(o => [o.n, o.prof, o.top]), bench: BEN, min: 0.5, max: 1.9, fmt: v => Math.round(v * 100) + "%",
   aLabel: "Store proficiency", bLabel: "Top quarter of that store's techs",
   takeaway: `At ${proven.length} of the ${under.length} stores under 85%, the top quarter of techs already run above 85%. Same bays, same dispatch, same car count.`,
-  source: `${SRC} Top quarter = the store's most proficient quarter of counted technicians (at least one), sold / paid hours combined. Bars capped at 190%.`,
+  source: `${SRC} Top quarter = the store's most proficient quarter of counted technicians (at least one), sold / worked hours combined. Bars capped at 190%.`,
 });
 const ws = under.map(o => ({ ...o, avg: o.lux ? OG.rpdL : OG.rpdN }));
 const short = ws.filter(o => o.rpd < o.avg), busy = ws.filter(o => o.rpd >= o.avg);
@@ -96,7 +96,7 @@ H.splitRanker(pptx, pptx, {
   sides: [{ label: "Fewer ROs", rows: short.map(o => [o.n, o.prof]) }, { label: "Enough ROs", rows: busy.map(o => [o.n, o.prof]) }],
   extra: [{ label: "ROs/day", w: 0.92, vals: exR }, { label: "Seg avg", w: 0.92, vals: exA }],
   takeaway: `${short.length} of the ${under.length} stores under 85% also see fewer ROs per tech than their segment: check car count and staffing first. At ${busy.map(o => o.n).join(", ")} the work is there.`,
-  source: `${SRC} Stores under 85% only. ROs/day = distinct ROs, all pay types, per counted tech per 8 paid hours. Seg avg = luxury ${OG.rpdL.toFixed(1)}, non-luxury ${OG.rpdN.toFixed(1)} (luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson). Fewer ROs per tech can mean too few cars for the staff or slow techs turning work away; it starts the conversation rather than settling it.`,
+  source: `${SRC} Stores under 85% only. ROs/day = distinct ROs, all pay types, per counted tech per 8 worked hours. Seg avg = luxury ${OG.rpdL.toFixed(1)}, non-luxury ${OG.rpdN.toFixed(1)} (luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson). Fewer ROs per tech can mean too few cars for the staff or slow techs turning work away; it starts the conversation rather than settling it.`,
 });
 const notes = OS.map(o => `${o.n}: ${pc(o.prof)}; ${o.under} of ${o.techs} under 85%; gap ${Math.round(o.gap).toLocaleString()} hrs; labor ${K(o.lab / MO)}/mo + parts ${K(o.parts / MO)}/mo; tech pay ${K(o.pay / MO)}/mo; ${(o.share * 100).toFixed(1)}% of ${K(o.rog / MO)}/mo RO gross; top quarter ${Math.round(o.top * 100)}% (${o.topn} techs); ${o.rpd.toFixed(2)} ROs/tech day; ${o.hpro.toFixed(2)} hrs/RO`).join("\n");
 pptx._slides.slice(3).forEach(sl => sl.addNotes(notes));
