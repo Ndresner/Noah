@@ -36,7 +36,7 @@ SECTIONS.forEach((sec, i) => H.section(pptx, pptx, {
   sections: TRACKER, current: i, logo: LOGO,
 }));
 // not a meeting section (no number, no tracker): alternate designs and slides still to be decided on. Not presented.
-H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Door rate: options A–E", "Your best techs prove it: options A–C"], logo: LOGO })
-  .addNotes("For review with Tommy, not for the room. Alternate versions of slides already in the deck, and slides not yet decided on. Door Rate / CP ELR % of Door Rate options A-E, and Your Best Techs Prove It options A-C. Pick one of each (or none), then delete this section before the meeting.");
+H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Gross & records", "Door rate", "Internal GP %", "Best techs", "Most improved"], logo: LOGO })
+  .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Gross Trend options A / B / B+Q4, Store Records (six designs), Door Rate options A-E, Internal GP %, CP vs Internal GP % options A-B, Headcount trend, Best Techs options A-C, Who's Moving Now alternate versions, Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
 
 await pptx.writeFile({ fileName: "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);

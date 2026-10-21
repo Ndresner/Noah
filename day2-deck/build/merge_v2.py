@@ -34,6 +34,11 @@ SRC = {
     "PROD": "Fixed Ops Productivity - House Style.pptx",
     "BT": "Best Techs - Design Options.pptx",
     "WMN": "Who's Moving Now - Review.pptx",
+    "GT": "Gross Trend - Review.pptx",
+    "SR": "Store Records - Review.pptx",
+    "IGP": "Internal Gross Profit - Review.pptx",
+    "CVI": "CP vs Internal GP - Review.pptx",
+    "MI1": "Most Improved - Review.pptx",
     "MI2": "Most Improved v2 - Review.pptx",  # 1 Better Than Last Year 2 Who's Moving Now grid 9 Two Ways 10 What Changed?  # 1 gross 2 ros 3 hpro 4 elr 5 parts$/RO 6 parts GP 7 align 8 bal 9 brake fluid 10 fuel
 }
 srcp = {k: Presentation(D + v) for k, v in SRC.items()}
@@ -118,15 +123,29 @@ order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
-# Open Decisions (was "Appendix"): alternate designs and slides not yet in or out. Door rate options A-E, then Best Techs A-C
+# Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
+# slides already in it, and slides not yet in or out. Nothing here moves into the deck by default. Grouped in deck
+# order. Each eyebrow is rewritten to OPEN DECISIONS · <TOPIC> · <OPTION>; None keeps no option label.
 order += O(11)
-OPEN = [("DOOR RATE", X("CP", 14, 15, 16, 11, 12)), ("BEST TECHS", X("BT", 1, 2, 3))]
-for topic, slides in OPEN:
-    for k, sl in enumerate(slides):
+L = lambda *a: list(a)
+OPEN = [
+    ("GROSS TREND", X("GT", *R(1, 10)), L(*["OPTION A"] * 6, *["OPTION B"] * 3, "OPTION B + Q4")),
+    ("STORE RECORDS", X("SR", *R(1, 6)), L("A RECORD YEAR", "RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
+    ("DOOR RATE", X("CP", 14, 15, 16, 11, 12), L(*[f"OPTION {c}" for c in "ABCDE"])),
+    ("INTERNAL GP %", X("IGP", *R(1, 6)), L(*[None] * 6)),
+    ("CP VS INTERNAL GP %", X("CVI", 1, 2, 3, 4), L("OPTION A", "OPTION A", "OPTION B", "OPTION B")),
+    ("HEADCOUNT TREND", X("GT", 11), L(None)),
+    ("BEST TECHS", X("BT", 1, 2, 3), L(*[f"OPTION {c}" for c in "ABC"])),
+    ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
+    ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),
+]
+for topic, slides, opts in OPEN:
+    assert len(slides) == len(opts), topic
+    for sl, opt in zip(slides, opts):
         # the eyebrow is the first text box; keep its run formatting, swap the words
         eb = next(sh for sh in sl.shapes if sh.has_text_frame and sh.text_frame.text.strip())
         runs = [r for para in eb.text_frame.paragraphs for r in para.runs]
-        runs[0].text = f"OPEN DECISIONS · {topic} · OPTION {'ABCDE'[k]}"
+        runs[0].text = " · ".join(["OPEN DECISIONS", topic] + ([opt] if opt else []))
         for r in runs[1:]:
             r.text = ""
         order.append(sl)

@@ -15,7 +15,7 @@ Read this first. It holds what the code can't tell you: the meeting, the data ru
 | `build/blocks.mjs` | A metric block in the Day 1 sequence: group picture (`groupYoy`: card over the monthly chart), level ranker (or segment / total ranker), change ranker. `load()` reads `{m25, m26, S}` JSON. |
 | `build/*-deck.mjs` | One script per deck (see the build table below). Each writes a `.pptx` into `build/`. |
 | `build/opening-deck.mjs` | Cover, agenda, the eight section transitions and the Open Decisions divider. **The section list lives here once**; agenda, kickers and tracker derive from it. |
-| `build/merge_v2.py` | Assembles the **v2 test deck** `decks/Fixed Ops - Day 2 Example Test Deck.pptx` (164 slides) from the rebuilt decks. The flow order is defined here. |
+| `build/merge_v2.py` | Assembles the **v2 test deck** `decks/Fixed Ops - Day 2 Example Test Deck.pptx` (206 slides) from the rebuilt decks. The flow order is defined here. |
 | `build/merge_test.py` | The v1 assembler (159 slides). Kept for reference; the v1 output is archived. |
 | `decks/v1 - house style/` | **The v1 archive:** all 28 v1 decks byte-for-byte, including the 159-slide v1 test deck (snapshot commit `205030e`). Don't edit. |
 | `build/swap_prod.py` | Replaces master slides 74–88 (Productivity) with the rebuilt Productivity deck. |
@@ -166,7 +166,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 164 slides (order in `merge_v2.py`)
+## Current test deck: v2, 206 slides (155 in the meeting flow + 51 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.
@@ -177,9 +177,9 @@ Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "Gen
 7. **06 Warranty & Internal**: Warranty Compliance, warranty ROs (total ranker added), warranty ELR, internal ELR.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
-10. **Open Decisions** (was the appendix; not presented, for review with Tommy): alternate versions of slides already in the deck and slides not yet decided on. Door rate options A–E, Best Techs options A–C, each eyebrow reads `OPEN DECISIONS · <TOPIC> · OPTION <X>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
+10. **Open Decisions** (slides 156–206; was the appendix; not presented, for review with Tommy): every slide built but not placed in the deck, grouped in deck order: Gross Trend options A / B / B+Q4 (10), Store Records (6), Door Rate options A–E (5), Internal GP % (6), CP vs Internal GP % options A–B (4), Headcount trend (1), Best Techs options A–C (3), Who's Moving Now alternate versions from Most Improved v2 (6), Most Improved v1 (9). Each eyebrow reads `OPEN DECISIONS · <TOPIC> · <OPTION>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
 
-Not in the test deck yet (review files only): Store Records, Internal GP%, CP vs Internal GP%, Gross Trend options.
+Not in the test deck at all: the door rate options deck (`Door Rate - Options (Jul-Sep).pptx`, duplicates of Open Decisions A–E), the v1 Master Review Deck, and the per-deck title slides (replaced by the section transitions).
 
 ## Open decisions (Noah / Tommy)
 - **What to cut.** Priority is dialogue.
