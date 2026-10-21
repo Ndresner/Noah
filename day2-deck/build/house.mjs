@@ -1261,8 +1261,13 @@ export function levelRanker(pptx, deck, o) {
      the group - the navy line moves to the benchmark and the strip names it.
      o.floor starts the bars above zero so close rates are readable (Oct 15).
      o.extra = [{ label, w, vals: {NAME: text} }] plain-ink reference columns after
-     the value, with o.valLabel heading the value column (Oct 15). */
-  const REF = o.bench ?? G;
+     the value, with o.valLabel heading the value column (Oct 15).
+     o.refOf(name) scores each store against its own reference (Oct 21, Noah: one
+     ranking for luxury and non-luxury instead of two side-by-side lists) - each row
+     gets a short navy tick at its own reference instead of the one line through the
+     column. o.mark = Set of names drawn on a tinted row with the name in bold navy;
+     o.legend = one line above the rows saying what the tint and tick mean. */
+  const REF = o.bench ?? G, refOf = o.refOf ?? (() => REF), mark = o.mark ?? new Set();
   const all = rows;
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
 
@@ -1271,11 +1276,13 @@ export function levelRanker(pptx, deck, o) {
   measureStrip(pptx, s, o.measure ?? o.title, lab, o.fmt(G), C.navy);
 
   const N = all.length, perCol = Math.ceil(N / 2);
-  const HEAD = EX.length ? 0.3 : 0;
+  const HEAD = EX.length ? 0.3 : o.legend ? 0.36 : 0;
+  if (o.legend) s.addText(words(o.legend, "ranker legend"), { x: 0.94, y: 2.02, w: 11.6, h: 0.3, fontFace: F, fontSize: sz(14, "ranker legend"),
+    color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
   const TOP = 2.02 + HEAD, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   // The scale runs from the lowest value to the highest, through zero, so a
   // negative store draws left of a zero line instead of vanishing into a sliver.
-  const lo = o.floor ?? Math.min(0, ...all.map(r => r.v)), hi = Math.max(0, REF * 1.02, ...all.map(r => r.v));
+  const lo = o.floor ?? Math.min(0, ...all.map(r => r.v)), hi = Math.max(0, REF * 1.02, ...all.map(r => r.v), ...all.map(r => refOf(r.n) * 1.02));
   const span = hi - lo || 1;
   const COLX = [0.72, 6.79];
   const FS = 12;   // traded down from 13 to carry the rank numbers
@@ -1286,9 +1293,10 @@ export function levelRanker(pptx, deck, o) {
   all.forEach((r, i) => {
     const col = i < perCol ? 0 : 1, k = i - col * perCol;
     const x0 = COLX[col], y = TOP + k * rowH;
-    const better = up ? r.v >= REF : r.v <= REF;
+    const ref = refOf(r.n), better = up ? r.v >= ref : r.v <= ref, mk = mark.has(r.n);
     const fill = neutral ? C.blue : (better ? C.good : C.bad);
     const txt  = neutral ? C.ink : (better ? C.goodInk : C.badInk);
+    if (mk) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.06, y, w: 5.86, h: rowH, fill: { color: C.blueTint } });
 
     s.addText(String(i + 1), {
       x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
@@ -1296,13 +1304,14 @@ export function levelRanker(pptx, deck, o) {
     });
     s.addText(r.n, {
       x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS,
-      color: C.ink, valign: "middle", isTextBox: true, margin: 0,
+      color: mk ? C.navy : C.ink, bold: mk, valign: "middle", isTextBox: true, margin: 0,
     });
     const bx = x0 + RANKW + 0.05 + NAMEW + 0.08;
     const zx = X(bx, Math.max(0, lo)), vx = X(bx, r.v), bh = rowH * 0.5;
     s.addShape(pptx.ShapeType.rect, {
       x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill },
     });
+    if (o.refOf) s.addShape(pptx.ShapeType.rect, { x: X(bx, ref) - 0.012, y: y + rowH * 0.1, w: 0.024, h: rowH * 0.8, fill: { color: C.navy } });
     s.addText(o.fmt(r.v), {
       x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
       color: txt, align: "right", valign: "middle", isTextBox: true, margin: 0,
@@ -1330,6 +1339,7 @@ export function levelRanker(pptx, deck, o) {
       const zx = X(bx, 0);
       s.addShape(pptx.ShapeType.rect, { x: zx - 0.005, y: TOP, w: 0.01, h: BOT - TOP, fill: { color: C.ink300 } });
     }
+    if (o.refOf) return;   // per-row ticks instead of one line
     const gx = X(bx, REF);
     s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } });
   });
@@ -2058,13 +2068,16 @@ export function talkingPoints(pptx, deck, o) {
   panel(pptx, s, { x: 7.68, y: BODY.top, w: 5.15, h: TPH, label: null });
   const head = (x, w, t) => s.addText(words(t, "tp head").toUpperCase(), { x, y: 1.5, w, h: 0.34, fontFace: F, fontSize: sz(14, "tp head"),
     bold: true, color: C.navy, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
-  head(0.78, 6.5, "What we said · " + o.saidFrom);
+  // Day 2 (Noah, Oct 21): no "What we said · <prior meeting>" header unless o.saidFrom is passed; bullets start at the top
+  if (o.saidFrom) {
+    head(0.78, 6.5, "What we said · " + o.saidFrom);
+    s.addShape(pptx.ShapeType.rect, { x: 0.78, y: 1.9, w: 6.45, h: 0.012, fill: { color: C.rule } });
+  }
   head(7.95, 4.7, o.nowLabel ?? "Where we are · Jan–Sep 2026");
-  s.addShape(pptx.ShapeType.rect, { x: 0.78, y: 1.9, w: 6.45, h: 0.012, fill: { color: C.rule } });
   s.addShape(pptx.ShapeType.rect, { x: 7.95, y: 1.9, w: 4.62, h: 0.012, fill: { color: C.rule } });
-  const fs = o.said.length > 6 ? 16 : 18;
+  const fs = o.said.length > 6 ? 16 : 18, SY = o.saidFrom ? 2.05 : 1.55;
   s.addText(o.said.map(t => ({ text: words(t, "tp bullet"), options: { bullet: { indent: 18 }, breakLine: true, paraSpaceAfter: 8 } })), {
-    x: 0.78, y: 2.05, w: 6.45, h: TPB - 2.2, fontFace: F, fontSize: sz(fs, "tp bullet"), color: C.ink, valign: "top", isTextBox: true, margin: 0 });
+    x: 0.78, y: SY, w: 6.45, h: TPB - SY - 0.15, fontFace: F, fontSize: sz(fs, "tp bullet"), color: C.ink, valign: "top", isTextBox: true, margin: 0 });
   const n = o.now.length, rowH = (TPB - 2.15) / n;
   o.now.forEach((d, i) => {
     const y = 2.05 + i * rowH, ink = d.tone === "g" ? C.goodInk : d.tone === "b" ? C.badInk : C.navy;

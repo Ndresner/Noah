@@ -79,12 +79,13 @@ export function block(pptx, X, M) {
     const la = f(tot(L.map(x => x.a26))), na = f(tot(N.map(x => x.a26)));
     const aL = L.filter(x => f(x.a26) >= la).length, aN = N.filter(x => f(x.a26) >= na).length;
     const topN = [...N].sort((p, q) => f(q.a26) - f(p.a26))[0];
-    H.segmentRanker(pptx, pptx, {
-      eyebrow: M.seg, title: M.title, metric: M.metric, fmt: FM.v, fmtD: FM.d, measure,
-      segments: [
-        { label: "LUXURY", rows: L.map(x => [x.n, f(x.a26)]), avg: la, prev: f(tot(L.map(x => x.a25))) },
-        { label: "NON-LUXURY", rows: N.map(x => [x.n, f(x.a26)]), avg: na, prev: f(tot(N.map(x => x.a25))) },
-      ],
+    // one ranking of all 33 (Noah, Oct 21: the side-by-side luxury / non-luxury lists read badly);
+    // each store is still scored against its own segment average, shown as a tick on its row
+    const lux = new Set(L.map(x => x.n));
+    H.levelRanker(pptx, pptx, {
+      eyebrow: M.seg, title: M.title, metric: M.metric, measure, rows: lv, group: g26, fmt: FM.v, groupLabel: LABEL.level,
+      refOf: n => lux.has(n) ? la : na, mark: lux,
+      legend: `Shaded = luxury. Navy tick = the store's segment average: luxury ${FM.v(la)}, non-luxury ${FM.v(na)}. Green at or above it.`,
       takeaway: `Against their own segment, ${aL} of ${L.length} luxury stores beat ${FM.v(la)} and ${aN} of ${N.length} others beat ${FM.v(na)}. ${nm(topN.n)} leads non-luxury at ${FM.v(f(topN.a26))}.`,
       source: `${M.src} ${M.def} Jan-Sep 2026 YTD. Green at or above own segment average, red below. Segment averages from segment totals. Luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson; Acura counted as non-luxury.`,
     });

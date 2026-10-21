@@ -1,4 +1,4 @@
-/* Who's Moving Now, top 10 per measure, for insertion into the CP Engine and Opcodes sections. Built from Most Improved v2 (2026-10-19, for review): "better than last year" (Jan-Sep 2026 vs Jan-Sep 2025) plus
+/* Who's Moving Now, top 5 per measure (was 10; Noah, Oct 21), for insertion into the CP Engine and Opcodes sections. Built from Most Improved v2 (2026-10-19, for review): "better than last year" (Jan-Sep 2026 vs Jan-Sep 2025) plus
    "who's moving now" (Q3 2026 vs Q1 2026, within this year). Qlik - Closed Repair Orders, customer pay, by close date,
    same-store 33 (INEOS excluded), GMC Prescott body shop labor types excluded. Data: imp/imp.json (compute.py) and
    imp/mom.json (momentum.py). Every name, count, month and number on the slides is derived from those files. */
@@ -80,18 +80,18 @@ function grid(view, { title, sub, groupLabel, src }) {
   return s;
 }
 
-/* ---- momentum, one measure: top 10 with the store's own 9-month line ---- */
+/* ---- momentum, one measure: top 5 with the store's own 9-month line (was 10; Noah, Oct 21) ---- */
 function moving(k) {
   const M = MO[k], s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: `${SEC[k]} \u00b7 Who's Moving Now`, title: `Who's Moving Now: ${M.label}` });
   H.panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
   s.addText(`Q1 → Q3 2026. Group ${val(k, M.group[0])} → ${val(k, M.group[1])}, ${chg(k, M.group[2])}: that is the season. ${M.beat} of ${M.rows.length} stores beat it.`,
     { x: 0.78, y: 1.42, w: 11.77, h: 0.34, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
-  const X = { rk: 0.82, name: 1.2, vals: 4.0, line: 5.85, step: 8.95, chg: 11.15 }, TOP = 2.18, rh = 0.418;
+  const X = { rk: 0.82, name: 1.2, vals: 4.0, line: 5.85, step: 8.95, chg: 11.15 }, TOP = 2.18, N = 5, rh = 0.8;
   [["Q1 → Q3", X.vals, 1.7, "left"], ["Jan – Sep 2026, by month", X.line, 2.9, "left"], ["Stepped up in", X.step, 1.9, "left"],
    ["Q1 → Q3", X.chg, 1.5, "right"]].forEach(([t, x, w, al]) =>
     s.addText(t, { x, y: 1.84, w, h: 0.3, fontFace: F, fontSize: 14, bold: true, color: C.ink600, align: al, isTextBox: true, margin: 0 }));
-  M.rows.slice(0, 10).forEach((r, j) => {
+  M.rows.slice(0, N).forEach((r, j) => {
     const y = TOP + j * rh;
     if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: 0.68, y, w: 11.97, h: rh, fill: { color: C.zebra } });
     s.addText(String(j + 1), { x: X.rk, y, w: 0.34, h: rh, fontFace: F, fontSize: 15, bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });

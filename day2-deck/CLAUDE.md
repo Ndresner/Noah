@@ -162,11 +162,17 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - Every chart slide has one.
 - **Number formats:** percentages **truncated**, not rounded, on the improvement slides.
 - **Speaker notes:** source and footnotes go in the notes, not on the slide (Tommy, Oct 2026).
+- **Rulings, Oct 21 (Noah):**
+  - Talking-point slides show no "What we said · <prior meeting>" header; the source stays in `saidFrom` and the notes.
+  - Absorption explainer: no P&L line numbers on the slide. ELR explainer: no Roundtable worked example.
+  - Luxury vs non-luxury: one ranking of all 33 (`levelRanker` with `refOf`/`mark`/`legend`), luxury rows shaded, a navy tick on each row at its own segment average, green at or above it. The side-by-side `segmentRanker` is retired.
+  - Who's Moving Now: top 5 stores (was 10).
+  - Door rate in the CP Engine flow: Door Rate, CP ELR % of Door Rate (benchmark) and CP ELR % of Door Rate (ELR and door columns). The other three designs live only in Open Decisions.
 - **Opportunity slides:** frame them as small, achievable increments (0.1 hr per RO, one more RO a day, a few %), not out-of-reach targets.
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 206 slides (155 in the meeting flow + 51 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 203 slides (152 in the meeting flow + 51 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.

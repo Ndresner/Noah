@@ -7,7 +7,8 @@ import * as H from "./house.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 const RT = "Roundtable 2024", GM = "GM meetings Jan & May 2026", JAN = "GM meeting Jan 2026", BOTH = "Roundtable & GM meetings";
 const SRC = "Talking points: Service Manager Roundtable (Nov 15, 2024) and GM meeting decks (Jan and May 2026). Data: Qlik (Profit & Loss, Closed Repair Orders, Productivity), Jan-Sep 2026 vs 2025, same-store, 33 stores, INEOS excluded.";
-const T = (o) => H.talkingPoints(pptx, pptx, { source: SRC, ...o });
+// saidFrom stays in each call as the record of where the line came from; the slide no longer shows it (Noah, Oct 21)
+const T = (o) => H.talkingPoints(pptx, pptx, { source: SRC, ...o, saidFrom: null });
 
 T({ eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: RT,
   said: ["Foster collaboration, introduce ideas that drive operational excellence, and set a clear path to exceptional service performance",
