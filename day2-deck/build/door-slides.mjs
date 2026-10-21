@@ -14,7 +14,7 @@ const at = st.filter(x => x.elr / x.door >= 0.70).length;
 const srt = [...st].sort((a, b) => b.elr / b.door - a.elr / a.door), low = srt[srt.length - 1];
 const SRC = "Qlik - Closed Repair Orders. CP ELR Jul-Sep 2026 (last three months, to match current door rates). Door rate = standard rate from the store door rate sheet; premium, EV and diesel rates not applied. Same-store, INEOS excluded; GMC Prescott body shop excluded. Averages weighted by Jul-Sep CP sold hours.";
 const base = { eyebrow: SEG, title: "CP ELR % of Door Rate", metric: "cp elr % of door rate",
-  rows: st.map(x => [x.n, x.elr / x.door]), group: ALL.elr / ALL.door, bench: 0.70, fmt: p, floor: 0.4, valLabel: "%" };
+  rows: st.map(x => [x.n, x.elr / x.door]), group: ALL.elr / ALL.door, bench: 0.70, groupLabel: "JULY–SEPTEMBER 2026", fmt: p, floor: 0.4, valLabel: "%" };
 const main = `Jul\u2013Sep: ${at} of 33 stores realize at least 70% of door rate; the group is at ${p(ALL.elr / ALL.door)}. ${low.n} is lowest at ${p(low.elr / low.door)}.`;
 
   // OPTION D / E - prices first
@@ -56,7 +56,7 @@ H.levelRanker(pptx, pptx, { ...base,
   source: "OPTION B - ELR and the ELR needed for 70% of door rate (door x 0.70). " + SRC });
   // Grid split, % + ELR + door
 H.splitRanker(pptx, pptx, {
-  eyebrow: SEG, title: "CP ELR % of Door Rate", metric: "cp elr % of door rate", fmt: p, valLabel: "%", bench: 0.70, floor: 0.4,
+  eyebrow: SEG, title: "CP ELR % of Door Rate", metric: "cp elr % of door rate", fmt: p, valLabel: "%", bench: 0.70, groupLabel: "JULY–SEPTEMBER 2026", floor: 0.4,
   sides: [
     { label: "Labor grid", rows: st.filter(x => x.grid).map(x => [x.n, x.elr / x.door]), avg: G.elr / G.door, avgLabel: "GRID AVG" },
     { label: "No grid", rows: st.filter(x => !x.grid).map(x => [x.n, x.elr / x.door]), avg: NG.elr / NG.door, avgLabel: "NO-GRID AVG" },

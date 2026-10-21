@@ -295,8 +295,9 @@ export function measureStrip(pptx, s, measure, label, value, valueColor) {
   // "YEAR-OVER-YEAR CHANGE" is always bold on a change ranker (Tommy, Oct 18 2026)
   // Day 2: a label too long for what is left of the strip drops its period
   // prefix ("2026 VS 2025 YTD · ") and keeps the bold comparison
-  const room = 8.8 - (0.94 + mw + 0.06), fits = t => t.replace(/\*\*/g, "").length * 0.6 * 14 / 72 <= room;
+  const room = 8.8 - (0.94 + mw + 0.06), fits = t => t.replace(/\*\*/g, "").length * 0.7 * 14 / 72 <= room;
   if (!fits(String(label)) && String(label).includes("·")) label = String(label).split("·").slice(1).join("·").trim();
+  if (!fits(String(label))) label = String(label).replace("YEAR-OVER-YEAR CHANGE", "YOY CHANGE");
   const runs = String(label).split("**")
     .map((t, i) => ({ text: t, options: i % 2 ? { bold: true, color: C.navy } : {} }))
     .filter(r => r.text);
@@ -1266,7 +1267,7 @@ export function levelRanker(pptx, deck, o) {
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
 
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
-  const lab = (o.groupLabel ?? "YEAR TO DATE") + (o.bench != null ? `   ·   **BENCHMARK ${o.fmt(o.bench)}**` : "");
+  const lab = (o.groupLabel ?? "SEPTEMBER 2026 YTD") + (o.bench != null ? `   ·   **BENCHMARK ${o.fmt(o.bench)}**` : "");
   measureStrip(pptx, s, o.measure ?? o.title, lab, o.fmt(G), C.navy);
 
   const N = all.length, perCol = Math.ceil(N / 2);

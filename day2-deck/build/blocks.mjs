@@ -55,7 +55,7 @@ export function block(pptx, X, M) {
   const months = rose ? (up === 9 ? "all nine" : `${NUM[up]} of nine`) : (up === 0 ? "all nine" : `${NUM[9 - up]} of nine`);
   const measure = M.measure ?? M.title;
   // a TOTAL's year is the sum of its months (bars); anything else is a rate (a line)
-  const total = M.level === false;
+  const total = M.level === false && FM === F.int;   // a count (ROs): bars, totalRanker
   const CS = chartSpec(FM);
 
   // 1. group picture
@@ -97,7 +97,7 @@ export function block(pptx, X, M) {
       tone: "n",
       source: `${M.src} ${M.def} Jan-Sep 2026 YTD.`,
     });
-  } else {
+  } else if (M.level !== false) {
     const sorted = [...lv].sort((p, q) => q[1] - p[1]);
     const above = lv.filter(r => r[1] >= g26).length;
     H.levelRanker(pptx, pptx, {

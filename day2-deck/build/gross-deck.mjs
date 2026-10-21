@@ -29,29 +29,26 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
   const lo = Math.min(...t12), hi = Math.max(...t12), hiI = t12.indexOf(hi), loI = t12.indexOf(lo);
   const up = yo.filter(x => x > 0).length;
   const last4 = yo.slice(-4).map(x => (x >= 0 ? "+" : "\u2212") + Math.abs(x * 100).toFixed(1) + "%");
-  H.trend(pptx, pptx, {
-    eyebrow: SEG, title, panelLabel: "Group total, trailing 12 months ($M)",
-    series: MLAB.map((m, i) => [m, t12[i]]), min: Math.floor(lo / 1e6 - 0.5), max: Math.ceil(hi / 1e6 + 0.5),
-    bullets: [
-      `Peak ${MLAB[hiI]} at ${M(hi)}. Low ${MLAB[loI]} at ${M(lo)}.`,
-      `Jun\u2013Sep year over year: ${last4.join(", ")}.`,
-      `${up} of 9 months in 2026 beat the same month of 2025.`,
-    ],
-    takeaway: `${title.replace("Total Gross Profit - ", "")} gross ran ${M(sum(t12) / 12)} a month over the last twelve, ${d >= 0 ? "up" : "down"} ${usd(d).replace(/^[+\u2212]/, "")} year to date.`,
-    tone: d >= 0 ? "g" : "b",
-    source: `${SRC} Trailing 12 months Oct 2025 - Sep 2026.`,
-  });
-  H.yoy(pptx, pptx, {
-    eyebrow: SEG, title, metric,
-    cardLabel: "Group \u00b7 January\u2013September \u00b7 same-store, 33 stores",
-    months: MON.map((m, i) => [m, m25[i], m26[i]]), expect: d,
+  // Day 1 group picture (Oct 21 rebuild): 2025 January-December against 2026 to date, bars
+  const G = JSON.parse(fs.readFileSync("./gross/monthly.json", "utf8"));
+  const full25 = title.endsWith("Fixed Ops") ? G["2025"].sv.map((v, i) => v + G["2025"].pt[i]) : title.endsWith("Service") ? G["2025"].sv : G["2025"].pt;
+  H.groupYoy(pptx, pptx, {
+    eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross",
+    prior: full25, current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26,
+    chartLabel: `${title.replace("Total Gross Profit - ", "")} gross by month, 2025 against 2026 ($M)`,
     takeaway: `${usd(d)} (${(d / v25 * 100).toFixed(1)}%) year to date; ${up} of nine months ahead of 2025, best ${FULL[m26.map((v, i) => v - m25[i]).indexOf(Math.max(...m26.map((v, i) => v - m25[i])))]} at ${usd(Math.max(...m26.map((v, i) => v - m25[i])))}.`,
-    source: `${SRC} Jan-Sep 2026 vs 2025.`,
+    source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December.`,
+  });
+  H.totalRanker(pptx, pptx, {
+    eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross", rows: S.map(r => [r[0], r[2]]), expect: v26,
+    groupLabel: "SEPTEMBER 2026 YTD",
+    takeaway: (() => { const t = [...S].sort((p, q) => q[2] - p[2]); return `${H.storeName(t[0][0])} is ${H.Mmixed(t[0][2])} of the group's ${H.Mmixed(v26)}; ${H.storeName(t.at(-1)[0])} is smallest at ${H.Mmixed(t.at(-1)[2])}.`; })(),
+    tone: "n", source: `${SRC} Jan-Sep 2026.`,
   });
   const ds = S.map(r => [r[0], r[2] - r[1]]).sort((a, b) => b[1] - a[1]);
   const grew = ds.filter(r => r[1] > 0).length;
   H.ranker(pptx, pptx, {
-    eyebrow: SEG, title, metric, rows: S, expect: d, groupLabel: "SAME-STORE, 33 STORES",
+    eyebrow: SEG, title, metric, rows: S, expect: d, groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**", measure: title.replace("Total Gross Profit - ", "") + " Gross",
     takeaway: `${grew} of 33 stores grew, led by ${ds[0][0]} at ${usd(ds[0][1])}; ${33 - grew} declined, ${ds[32][0]} most at ${usd(ds[32][1])}.`,
     source: `${SRC} Jan-Sep 2026 vs 2025, best first.`,
   });

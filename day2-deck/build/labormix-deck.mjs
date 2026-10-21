@@ -46,12 +46,12 @@ block(pptx, X, { seg: SEG, src: SRC_PT, title: "Customer Pay Share of Labor Sale
 
 const RULES = "Maintenance = descriptions naming oil and filter, rotation, brake pads, rotors and brake service, scheduled/interval/mileage service, OEM care plans, alignment, balance, fluid exchanges and flushes, fuel induction, transmission/differential/transfer case/coolant service, spark plugs, filters, wipers, multi-point inspection, timing belt, BG and refresh services, smog/emissions inspection, fluid services, tune-ups, tire promotions (buy 3 get 1), CVT, EGR, 4x4, AWD, intermediate and transmission services, and any coolant replacement or change. Repair = repair, replace, R&R, diagnosis, leak, noise, inoperative, check engine, warning light, struts, shocks, alternator, starter, water pump, reseal, gasket, calibration, overhaul, engine light, drive belt, belt and hose kit. Descriptions that are only a placeholder (exactly MISC, DEFAULT, STANDARD, GENERAL, GENERAL REPAIR, CUSTOMER STATES, GENERAL CONCERN, ADD DESCRIPTION, TELL US MORE and similar) are left unclassified; a placeholder followed by real detail is classified by that detail.";
 const SRC_WM = "Qlik - Closed Repair Orders. Customer-pay labor sale by op code description, Jan-Sep. Same-store, INEOS excluded. GMC Prescott body shop labor types excluded.";
-const SW = JSON.parse(fs.readFileSync("./wm.json", "utf8"));   // [name, T25, M25, R25, T26, M26, R26]
-const sh = (t, m, r) => [m / t, r / t, (t - m - r) / t];
-const totW = k => SW.reduce((a, s) => a + s[k], 0);
-const w26 = sh(totW(4), totW(5), totW(6)), w25 = sh(totW(1), totW(2), totW(3));
+/* Oct 21 2026: the raw op-code-description pull (wm.json) did not survive the move to Claude Code. The shares
+   are recovered from the v1 deck's speaker notes and takeaway (wm_shares.json, to 0.1%). */
+const WS = JSON.parse(fs.readFileSync("./wm_shares.json", "utf8"));
+const w26 = WS.group26, w25 = [null, null, WS.group25U];
 const pcW = v => (v * 100).toFixed(1) + "%";
-const rowsW = SW.map(s => [s[0], sh(s[4], s[5], s[6])]);
+const rowsW = Object.entries(WS.stores).map(([n, v]) => [n, v]);
 const byU = [...rowsW].sort((a, b) => a[1][2] - b[1][2]);
 H.mixBars(pptx, pptx, {
   eyebrow: SEG, title: "Customer-Pay Labor by Work Type",

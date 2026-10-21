@@ -32,7 +32,7 @@ const currentDoor = (pptx) => { const door = JSON.parse(fs.readFileSync("./door.
   const under = rows.filter(r => r[1] < 0.70).sort((a, b) => a[1] - b[1]);
   H.levelRanker(pptx, pptx, {
     eyebrow: SEG, title: "CP ELR % of Door Rate", metric: "cp elr % of door rate",
-    rows: rows.map(r => [r[0], r[1]]), group: grp, bench: 0.70, fmt: p, floor: 0.4,
+    rows: rows.map(r => [r[0], r[1]]), group: grp, bench: 0.70, groupLabel: "JULY–SEPTEMBER 2026", fmt: p, floor: 0.4,
     takeaway: `Jul\u2013Sep: ${at} of 33 stores realize at least 70% of door rate; the group is at ${p(grp)}. ${srt[0][0]} leads at ${p(srt[0][1])}; ${under[0][0]} is lowest at ${p(under[0][1])}.`,
     source: `CURRENT VERSION - bars and % only. ${SRC} CP ELR for JUL-SEP 2026 (last three months, to match current door rates) / store door rate (standard rate from the store door rate sheet; premium, EV and diesel rates not applied). Group = group CP labor sale / hours-weighted door rate. Green at or above 70%, red below. Bars start at 40%. Percentages are truncated, not rounded.\n`
           + srt.map(r => `${r[0]}: ELR $${r[3].toFixed(2)} / door $${r[4].toFixed(2)} = ${p(r[1])}`).join("\n"),
