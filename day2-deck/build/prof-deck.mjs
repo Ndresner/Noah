@@ -50,10 +50,10 @@ H.statTiles(pptx, pptx, {
       sub: `Labor ${K(OG.lab / MO)} + parts ${K(OG.parts / MO)}: ${(OG.share * 100).toFixed(1)}% of the ${K(OG.rog / MO)} a month our ROs generate.` },
     { label: "Tech pay missed a month", big: K(OG.pay / MO), tone: "b",
       sub: `About $${(Math.round(perTech / 10) * 10).toLocaleString("en-US")} a month for each tech under 85%. Same hours, bigger checks.` },
-    { label: "Hours not produced, year to date", big: Math.round(OG.gap / 1000) + "K YTD", tone: "b",
+    { label: "Hours not produced YTD", big: Math.round(OG.gap / 1000) + "K", tone: "b",   // label already says year to date (Oct 22: "79K YTD" overflowed)
       sub: `About ${(OG.gap / MO / 1000).toFixed(1)}K hours a month on the clock and not flagged, below the 85% line alone. ${Math.round(OG.gap / OG.fte)} full-time techs of capacity.` },
-    { label: "Techs under 85%", big: `${OG.under} of ${OG.techs}`, tone: "n",
-      sub: `${Math.round(OG.under / OG.techs * 100)}% of technicians. Every store has at least one.` },
+    { label: "Techs under 85%", big: String(OG.under), tone: "n",
+      sub: `Of ${OG.techs} technicians (${Math.round(OG.under / OG.techs * 100)}%). Every store has at least one.` },
   ],
   banner: "No extra hours, no extra techs, no extra bays. The techs, bays and lifts are already here; the hour is spent whether it is flagged or not. An hour not produced today cannot be sold tomorrow.",
   takeaway: `Lifting each tech under 85% to 85% is worth ${K((OG.lab + OG.parts) / MO)} a month in gross and ${K(OG.pay / MO)} a month in tech pay.`,
