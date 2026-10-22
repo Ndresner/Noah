@@ -33,8 +33,8 @@ const SRC = "Value of a minute = each store's counted technicians' labor gross +
   const hdr = ["Minutes a day", "A month", "A year"].map((x, i) => ({ text: x, options: { bold: true, color: C.white, fill: { color: C.navy }, align: i ? "right" : "left" } }));
   const rows = [1, 5, 10, 15].map((m, k) => [m, MOV * m, YR * m]).map(([m, mo, yr], k) => [
     { text: m === 1 ? "1 minute" : `${m} minutes`, options: { bold: true, color: C.ink, fill: { color: k % 2 ? C.white : C.zebra } } },
-    { text: usd(mo), options: { color: C.ink, align: "right", fill: { color: k % 2 ? C.white : C.zebra } } },
-    { text: usd(yr), options: { bold: true, color: C.goodInk, align: "right", fill: { color: k % 2 ? C.white : C.zebra } } }]);
+    { text: H.kusd(mo), options: { color: C.ink, align: "right", fill: { color: k % 2 ? C.white : C.zebra } } },
+    { text: H.kusd(yr), options: { bold: true, color: C.goodInk, align: "right", fill: { color: k % 2 ? C.white : C.zebra } } }]);
   s.addTable([hdr, ...rows], { x: 5.93, y: 2.0, w: 6.62, colW: [2.42, 2.1, 2.1], rowH: 0.52, fontFace: F, fontSize: sz(20, "minute table"), margin: [0, 0.12, 0, 0.12], valign: "middle", border: { type: "none" } });
   t("Where the minutes go: walking to the parts counter, waiting on dispatch or a customer approval, hunting for tools, chasing a key or a car.",
     { x: 5.93, y: 4.85, w: 6.62, h: 1.35, fontSize: sz(16, "where"), color: C.ink, valign: "top" });
@@ -49,7 +49,7 @@ const SRC = "Value of a minute = each store's counted technicians' labor gross +
   const top = [...S].sort((a, b) => b.mo - a.mo)[0], hi = [...S].sort((a, b) => b.vpm - a.vpm)[0];
   H.amountRanker(pptx, pptx, {
     eyebrow: SEG, title: TITLE,
-    rows: S.map(s => [s.n, s.mo * 12]), fmt: usd, color: C.blue, ink: C.navy, valLabel: "A year",
+    rows: S.map(s => [s.n, s.mo * 12]), fmt: v => H.kusd(v, 1),   // $K, one decimal: every store is under $50K (Noah, Oct 22) color: C.blue, ink: C.navy, valLabel: "A year",
     extra: [{ label: "Techs", w: 0.62, vals: ex1 }, { label: "Per min", w: 0.82, vals: ex2 }],
     takeaway: `One minute a day per tech: ${top.n} ${usd(top.mo * 12)} a year. ${hi.n} techs are worth the most per minute at ${usd2(hi.vpm)}.`,
     source: SRC + " A year = one minute a day for every counted tech at the store, for a year. Per min = gross per tech minute.",
