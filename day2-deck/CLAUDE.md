@@ -213,6 +213,12 @@ Not in the test deck at all: the door rate options deck (`Door Rate - Options (J
 - **Possible slides:** MPI, retention, discounting and capacity. Parked dollar slides: ELR to 70%, $1 of ELR, absorption, net to gross, parts margin.
 - **Fix the Qlik headcount load** at the source (CSV in `decks/`).
 
+## Microsoft 365 folder (Oct 22)
+- `OneDrive > Desktop > Claude Projects > GM Meeting` (driveId `b!J6svw2Rf2UOIxzzdsNTT0x4axzqN2UVDul1h428Xzut75-VFQhddT6WNX0ozvGJl`, folder id `01MMVWUBWL5NNOKEGWCBDL7KMYKOYO4FD3`).
+- At the end of each round of changes, update `Day 2 Fixed Ops Deck - Status.md` there (upload with conflictBehavior `replace`; SharePoint keeps the versions). Nothing else goes there unless Noah asks; never employee-level or pay data.
+- The connector caps uploads at 1 MB, so the deck itself does not go through it: send it in chat and Noah saves it to the folder.
+- No process changes before the Oct 29 meeting (Noah). Revisit local Claude Code (writes straight to the synced folder) afterwards.
+
 ## How Noah works
 - **Respect his format.** Lead with the answer. Build review files first (`* - Review.pptx`) and add to the test deck only when he says so.
 - **Send the .pptx only** after an update; no PDF unless he asks (Oct 21). Still render internally to check.
