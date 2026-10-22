@@ -138,7 +138,6 @@ L = lambda *a: list(a)
 OPEN = [
     # Oct 22 (Noah): removed Gross Trend A charts and tables except the parts table, all of option B, Record Year,
     # door rate B, CP vs Internal option B and the headcount trend - the deck versions now cover them
-    ("GROSS TREND", X("GT", 6, 10), L("OPTION A", "OPTION B + Q4")),
     ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
     ("DOOR RATE", X("CP", 17), L("OPTION A")),
