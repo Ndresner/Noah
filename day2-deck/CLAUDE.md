@@ -147,7 +147,8 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 ## House style: enforced in `house.mjs`, keep it that way
 - **Font:** Inter, 16:9 (LAYOUT_WIDE). The build stops below the **14pt floor**; store names may go to 13pt.
 - **Naming:** always "stores", never "rooftops"; `words()` stops the build on the old term. Store names in caps on the rankers, Title Case in takeaway prose (`proseNames()` converts them).
-- **Colour:**
+- **Colour:** (Oct 22, Noah) green/red only where a slide compares against something (group, benchmark, last year, own segment). Display-only slides (store totals, warranty rate increases) use blue bars and a neutral band.
+- **Colour (original rules):**
   - **Green is good, red is bad, always.** Below group, segment average or benchmark is red, with no exceptions.
   - **Blue** is for neutral facts and opportunity sizes.
   - Headcount change is neutral.

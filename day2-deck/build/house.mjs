@@ -1141,13 +1141,13 @@ export function totalRanker(pptx, deck, o) {
       color: C.ink, valign: "middle", isTextBox: true, margin: 0,
     });
 
-    // Magnitude bar, green above zero and red below it - never blue, which
-    // is identity in this deck and never judgment.
+    // Magnitude bar. Day 2 (Noah, Oct 22): blue - a store total is shown, not compared, and green/red
+    // is kept for slides that compare against something. A total below zero still reads red.
     x += NAMEW + 0.05;
     const bh = rowH * 0.46, w = Math.abs(r.b) / maxAbs * BARW;
     s.addShape(pptx.ShapeType.rect, {
       x, y: y + (rowH - bh) / 2, w: Math.max(w, 0.02), h: bh,
-      fill: { color: fav ? C.good : C.bad },
+      fill: { color: fav ? C.blue : C.bad },
     });
 
     x += BARW + 0.05;
