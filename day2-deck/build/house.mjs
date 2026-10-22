@@ -1009,15 +1009,27 @@ export function ranker(pptx, deck, o) {
   // the group figure as its own strip - its bar is the sum, so it never joins the scale
   const gFav = good ? groupD >= 0 : groupD < 0;
   measureStrip(pptx, s, o.measure ?? o.title, o.groupLabel ?? "**YEAR-OVER-YEAR CHANGE**",
-               (o.dfmt ?? Dmixed)(groupD), neutral ? C.navy : (gFav ? C.goodInk : C.badInk));
+               o.stripValue ?? (o.dfmt ?? Dmixed)(groupD), neutral ? C.navy : (gFav ? C.goodInk : C.badInk));
 
   const N = all.length, perCol = Math.ceil(N / 2);
-  const TOP = 2.02, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
+  // Oct 22 2026 (Noah, option A on the gross change slides): o.extra = [{ label, w, vals: {NAME: text} }]
+  // coloured columns after the value (e.g. the dollar change beside a % ranking), o.valLabel heads the value
+  // column, o.stripValue overrides the strip figure.
+  const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
+  const TOP = 2.02 + (EX.length ? 0.3 : 0), BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   const maxAbs = Math.max(...based.map(r => Math.abs(r.d)));
   const dfmt = o.dfmt ?? Dmixed;
   const COLX = [0.72, 6.79];
   const FS = 12;   // traded down from 13 to carry the rank numbers
-  const RANKW = 0.34, NAMEW = 2.10, BARW = 1.70, VALW = 1.35;
+  const RANKW = 0.34, NAMEW = 2.10, VALW = EX.length ? 0.85 : 1.35, BARW = 1.70 + (1.35 - VALW) - EXW;
+  if (EX.length) [0, 1].forEach(c => {
+    let hx = COLX[c] + RANKW + 0.05 + NAMEW + 0.08 + BARW + 0.06;
+    [{ label: o.valLabel ?? "", w: VALW }, ...EX].forEach(e => {
+      s.addText(e.label, { x: hx, y: 2.0, w: e.w, h: 0.28, fontFace: F, fontSize: sz(14, "column header"), bold: true,
+        color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      hx += e.w;
+    });
+  });
 
   all.forEach((r, i) => {
     const col = i < perCol ? 0 : 1, k = i - col * perCol;
@@ -1047,6 +1059,12 @@ export function ranker(pptx, deck, o) {
       // (|d| < 0.5) greyed "−0.3 pts" and coloured "−0.5 pts" beside it
       color: r.noBase ? C.ink300 : !/^[+−]/.test(dfmt(r.d)) ? C.ink600 : neutral ? C.ink : (favourable ? C.goodInk : C.badInk),
       align: "right", valign: "middle", isTextBox: true, margin: 0,
+    });
+    let ex = bx + BARW + 0.06 + VALW;
+    EX.forEach(e => {
+      s.addText(e.vals[r.n] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: FS,
+        color: neutral ? C.ink : (favourable ? C.goodInk : C.badInk), align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      ex += e.w;
     });
   });
   [0, 1].forEach(c => {
