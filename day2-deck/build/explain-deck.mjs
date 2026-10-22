@@ -181,4 +181,20 @@ X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
   ours: "The rules keep non-tech time and data errors out of the numbers, and every store is measured the same way.",
   tone: "n", notes: "PLACE: right after 'What Is Technician Proficiency?'.\nRules as applied on the proficiency slides (Oct 16 2026). Express techs at stores that pool express hours are mostly excluded by the 10% rule." });
 
+// 13. Gross section (Noah, Oct 22): how service and parts gross are built, in front of Total Gross Profit - Fixed Ops
+X({ eyebrow: "Fixed Ops Gross", title: "What Is Fixed Ops Gross?",
+  formula: ["Fixed ops gross", "=", "service gross", "+", "parts gross"],
+  define: "What each department keeps after the cost of what it sold: labor sale less technician cost, parts sale less parts cost.",
+  example: [["Service", "$126.87M"], ["Parts", "$61.93M"], ["Fixed ops", "$188.80M"]], exampleLabel: "JAN–SEP 2026",
+  whyHead: "HOW EACH IS BUILT",
+  why: ["Service earns only on labor hours sold: the labor sale less what the technician is paid for the job.",
+        "Parts sold on a service RO are parts gross, not service gross, even when an advisor sells them.",
+        "Both include customer pay, warranty and internal work."],
+  levers: [["Service: labor sale", "Hours sold times the rate collected (ELR)"],
+           ["Service: technician cost", "Pay on the RO; guarantees and bonuses paid off the RO come out of gross too"],
+           ["Parts: on the RO", "Customer pay, warranty and internal parts sold through service"],
+           ["Parts: over the counter", "Counter retail, wholesale, tires and oil"]],
+  ours: "Group: $188.80M fixed ops gross Jan–Sep 2026, up $7.47M (4.1%): service +$6.30M, parts +$1.17M.",
+  tone: "g", notes: "PLACE: Gross section, after Service Is Sales 2.0 and in front of Total Gross Profit - Fixed Ops.\nSource: Qlik Profit & Loss, Total Gross Profit - Service and Total Gross Profit - Parts, same-store, INEOS excluded, GMC Prescott body shop gross excluded (as on the gross slides). Guarantees and bonuses paid off the RO post as unapplied labor, a cost-of-sale adjustment against service gross." });
+
 await pptx.writeFile({ fileName: "Metric Explainers - Review.pptx" }); console.log("built", pptx._slides.length);

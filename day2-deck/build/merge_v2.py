@@ -103,7 +103,7 @@ def R(a, b):
 order = []
 order += O(1, 2) + X("TP", 1)
 # 01 Gross
-order += O(3) + X("TP", 2) + X("G", *R(2, 11))
+order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 11))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability
 order += O(4) + X("EX", 8) + X("PL", 2, 3, 4) + X("EX", 9) + X("PL", *R(5, 10))
 # 03 CP Engine
