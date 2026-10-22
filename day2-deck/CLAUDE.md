@@ -183,7 +183,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 219 slides (191 in the meeting flow + 28 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 218 slides (191 in the meeting flow + 27 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.
@@ -194,7 +194,7 @@ Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "Gen
 7. **06 Warranty** (renamed from Warranty & Internal, Oct 22): Warranty Compliance, Warranty Rate Increases, warranty ELR, Warranty Parts Gross Profit %, What Gets Claims Debited, Keep the Claim Paid (DRAFT), warranty ROs. Non-Qlik-block warranty slides come from `warranty-deck.mjs`.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
-10. **Open Decisions** (not presented, for review with Tommy; trimmed Oct 22): Gross Trend option A parts table and option B+Q4, Store Records (Record Board, Spotlight by % and by $, two rankers), Door Rate option A, CP vs Internal GP % option A (option B removed), Photo completion %, Best Techs option C, Who's Moving Now alternates (6), Most Improved v1 (9). Removed Oct 22: Gross Trend A charts/tables (except parts table) and all of B, Record Year, door rate B, CP vs Internal B, headcount trend. Eyebrows set in `merge_v2.py`; delete the section before the meeting.
+10. **Open Decisions** (not presented, for review with Tommy; trimmed Oct 22): Gross Trend option A parts table and option B+Q4, Store Records (Record Board, Spotlight by % and by $, two rankers), Door Rate option A, CP vs Internal GP % option A (option B removed), Photo completion %, Who's Moving Now alternates (6), Most Improved v1 (9). Removed Oct 22: Gross Trend A charts/tables (except parts table) and all of B, Record Year, door rate B, CP vs Internal B, headcount trend; Best Techs option C removed too. Eyebrows set in `merge_v2.py`; delete the section before the meeting.
 
 Not in the test deck at all: the door rate options deck (`Door Rate - Options (Jul-Sep).pptx`, duplicates of Open Decisions A–E), the v1 Master Review Deck, and the per-deck title slides (replaced by the section transitions).
 

@@ -144,7 +144,6 @@ OPEN = [
     ("DOOR RATE", X("CP", 17), L("OPTION A")),
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
-    ("BEST TECHS", X("BT", 3), L("OPTION C")),
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
     ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),
 ]

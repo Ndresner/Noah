@@ -36,7 +36,7 @@ SECTIONS.forEach((sec, i) => H.section(pptx, pptx, {
   sections: TRACKER, current: i, logo: LOGO,
 }));
 // not a meeting section (no number, no tracker): alternate designs and slides still to be decided on. Not presented.
-H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Trends & records", "Door rate", "CP vs internal", "Photo %", "Best techs"], logo: LOGO })
-  .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Gross Trend option A parts table and option B+Q4, Store Records (five designs), Door Rate option A, CP vs Internal GP % option A, Photo completion % (optional measure), Best Techs option C, Who's Moving Now alternate versions, Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
+H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Trends & records", "Door rate", "CP vs internal", "Photo %", "Most improved"], logo: LOGO })
+  .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Gross Trend option A parts table and option B+Q4, Store Records (five designs), Door Rate option A, CP vs Internal GP % option A, Photo completion % (optional measure), Who's Moving Now alternate versions, Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
 
 await pptx.writeFile({ fileName: "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);
