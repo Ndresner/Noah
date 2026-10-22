@@ -120,7 +120,8 @@ order += O(6) + X("TP", 7) + X("LM", *R(2, 6)) + X("TP", 8)
 order += O(7) + X("TP", 9) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
 # 06 Warranty & Internal
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
-order += O(8) + X("TP", 10) + X("WA", 1, 2) + X("WI", 5, 6, 7) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10)
+# Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
+order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2, 3) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10)
 # 07 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(5, 15))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)

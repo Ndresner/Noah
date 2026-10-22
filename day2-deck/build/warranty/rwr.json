@@ -1,0 +1,182 @@
+{
+ "source": "YTD RWR Financials - Findlay Automotive Group 2026 (vendor report, provided by Noah Oct 22 2026): YTD revenue secured from approved warranty labor and parts rate increases.",
+ "note": "Vendor's Honda North total ($463,296) is $100 less than its labor + parts ($463,396), so the report's grand total ($3,788,100) is $100 less than labor + parts ($3,788,200). Slides use the vendor's totals as reported.",
+ "rows": [
+  {
+   "src": "Findlay Acura",
+   "n": "ACURA",
+   "brand": "Acura",
+   "state": "NV",
+   "total": 74952,
+   "labor": 74952,
+   "parts": 0
+  },
+  {
+   "src": "Findlay Audi Reno Tahoe",
+   "n": "AUDI RENO",
+   "brand": "Audi",
+   "state": "NV",
+   "total": 283584,
+   "labor": 136824,
+   "parts": 146760
+  },
+  {
+   "src": "Findlay BGMC Prescott",
+   "n": "GMC PRESCOTT",
+   "brand": "GM",
+   "state": "AZ",
+   "total": 15204,
+   "labor": 0,
+   "parts": 15204
+  },
+  {
+   "src": "Findlay Chevrolet",
+   "n": "CHEVY LV",
+   "brand": "GM",
+   "state": "NV",
+   "total": 797928,
+   "labor": 419904,
+   "parts": 378024
+  },
+  {
+   "src": "Findlay Chrysler Post Falls",
+   "n": "CDJR POST FALLS",
+   "brand": "Chrysler",
+   "state": "ID",
+   "total": 61536,
+   "labor": 0,
+   "parts": 61536
+  },
+  {
+   "src": "Findlay Honda Flagstaff",
+   "n": "HONDA FLAGSTAFF",
+   "brand": "Honda",
+   "state": "AZ",
+   "total": 5340,
+   "labor": 0,
+   "parts": 5340
+  },
+  {
+   "src": "Findlay Honda Henderson",
+   "n": "HONDA HENDERSON",
+   "brand": "Honda",
+   "state": "NV",
+   "total": 96264,
+   "labor": 0,
+   "parts": 96264
+  },
+  {
+   "src": "Findlay Honda North",
+   "n": "HONDA NORTH",
+   "brand": "Honda",
+   "state": "NV",
+   "total": 463296,
+   "labor": 142960,
+   "parts": 320436
+  },
+  {
+   "src": "Findlay Honda Spokane",
+   "n": "HONDA SPOKANE",
+   "brand": "Honda",
+   "state": "WA",
+   "total": 94620,
+   "labor": 63852,
+   "parts": 30768
+  },
+  {
+   "src": "Findlay Hyundai Prescott",
+   "n": "HYUNDAI PRESCOTT",
+   "brand": "Hyundai",
+   "state": "AZ",
+   "total": 35304,
+   "labor": 35304,
+   "parts": 0
+  },
+  {
+   "src": "Findlay Kia St George",
+   "n": "KIA ST GEORGE",
+   "brand": "Kia",
+   "state": "UT",
+   "total": 209268,
+   "labor": 46440,
+   "parts": 162828
+  },
+  {
+   "src": "Findlay Lexus Spokane",
+   "n": "LEXUS",
+   "brand": "Lexus",
+   "state": "WA",
+   "total": 225360,
+   "labor": 127560,
+   "parts": 97800
+  },
+  {
+   "src": "Findlay Lincoln",
+   "n": "LINCOLN",
+   "brand": "Ford",
+   "state": "NV",
+   "total": 292056,
+   "labor": 165000,
+   "parts": 127056
+  },
+  {
+   "src": "Findlay Mazda",
+   "n": "MAZDA",
+   "brand": "Mazda",
+   "state": "NV",
+   "total": 133692,
+   "labor": 0,
+   "parts": 133692
+  },
+  {
+   "src": "Findlay Nissan Henderson",
+   "n": "NISSAN",
+   "brand": "Nissan",
+   "state": "NV",
+   "total": 325752,
+   "labor": 206340,
+   "parts": 119412
+  },
+  {
+   "src": "Findlay Subaru Prescott",
+   "n": "SUBARU PRESCOTT",
+   "brand": "Subaru",
+   "state": "AZ",
+   "total": 90672,
+   "labor": 37212,
+   "parts": 53460
+  },
+  {
+   "src": "Land Rover Henderson",
+   "n": "LR HENDERSON",
+   "brand": "Land Rover",
+   "state": "NV",
+   "total": 146088,
+   "labor": 49068,
+   "parts": 97020
+  },
+  {
+   "src": "Land Rover Las Vegas",
+   "n": "LR LV",
+   "brand": "Land Rover",
+   "state": "NV",
+   "total": 343968,
+   "labor": 123204,
+   "parts": 220764
+  },
+  {
+   "src": "Land Rover Reno",
+   "n": "LR RENO",
+   "brand": "Land Rover",
+   "state": "NV",
+   "total": 93216,
+   "labor": 32748,
+   "parts": 60468
+  }
+ ],
+ "total": {
+  "total": 3788100,
+  "labor": 1661368,
+  "parts": 2126832
+ }
+}

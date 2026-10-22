@@ -22,7 +22,7 @@ export const SECTIONS = [
   { short: "CP Engine",           detail: "ROs, hours per RO, rate and margin.",                         chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"], name: "The CP Engine" },
   { short: "Labor Mix",           detail: "Express, maintenance and repair mix.",                        chips: ["Pay type", "Work type", "Op code descriptions"] },
   { short: "Opcodes",             detail: "Alignment, balance, brake fluid and fuel.",                   chips: ["Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel service 7.5%"], name: "Opcode Benchmarks" },
-  { short: "Warranty & Internal", detail: "Warranty audits and compliance, warranty rate and ROs, internal rate.", chips: ["Warranty audits", "Warranty ELR", "Warranty ROs", "Internal ELR"] },
+  { short: "Warranty & Internal", detail: "Warranty rate increases, audits and compliance, internal rate.", chips: ["Rate increases", "Warranty audits", "Warranty ELR", "Internal ELR"] },
   { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
 ];

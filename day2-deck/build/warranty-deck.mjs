@@ -1,7 +1,8 @@
 import PptxGenJS from "pptxgenjs";
+import fs from "fs";
 import * as H from "./house.mjs";
 const { C, F, sz, words } = H;
-/* Warranty audit slides (DRAFT, Oct 22 2026, Noah: a warranty-audit focus in the Warranty section, more source
+/* Warranty slides: rate increases (vendor report) then audits (DRAFT, Oct 22 2026, Noah: a warranty-audit focus in the Warranty section, more source
    material to come from Noah). Content: Jan 2026 GM meeting Day 1, slides 13-14 (reference/). Stores are not named:
    the Warranty Compliance talking point already keeps the audit total without store call-outs from the podium.
    The one-line descriptions under each cause and step are drafted from the Jan slide's headings - confirm them
@@ -23,9 +24,25 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   });
 }
 
+/* 0. the money: approved warranty rate increases so far this year (vendor YTD report, Oct 22 2026) */
+{
+  const W = JSON.parse(fs.readFileSync("./warranty/rwr.json", "utf8")), T = W.total;
+  const usd = v => "$" + Math.round(v).toLocaleString("en-US"), dash = v => v ? usd(v) : "–";
+  const top = [...W.rows].sort((a, b) => b.total - a.total)[0];
+  H.amountRanker(pptx, pptx, {
+    eyebrow: SEG, title: "Warranty Rate Increases",
+    rows: W.rows.map(r => [r.n, r.total]), fmt: usd, color: C.good, ink: C.goodInk, valLabel: "Secured", valW: 1.0,
+    extra: [{ label: "Labor", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.labor)])) },
+            { label: "Parts", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.parts)])) }],
+    takeaway: `${usd(T.total)} secured so far this year from approved warranty rate increases at ${W.rows.length} stores. Higher rates bring more audits: the process is how we keep it.`,
+    tone: "g",
+    source: `YTD RWR Financials 2026 (warranty rate submission vendor): YTD revenue secured from approved warranty labor and parts rate increases, as reported. ${W.rows.length} stores with approvals to date; stores not listed have none reported yet. Labor ${usd(T.labor)}, parts ${usd(T.parts)}. ${W.note}`,
+  }).addNotes(`Talk track: these approvals are new money on every warranty claim, and they are why warranty ELR is up. The factory notices a higher rate too: more money in means more scrutiny. Every claim debited in an audit gives part of it back.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
+}
+
 /* 1. what the auditor debits */
 {
-  const s = pptx.addSlide(), tk = "Six audits cost over $400,000. Every cause on this list is documentation the store controls.";
+  const s = pptx.addSlide(), tk = "Six audits took back over $400,000, more than a tenth of what rate increases brought in this year. Every cause here is documentation the store controls.";
   H.page(pptx, s, { eyebrow: SEG, title: "What Gets Claims Debited" });
   H.panel(pptx, s, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(tk), label: "Primary causes in the six audits" });
   tiles(s, [
