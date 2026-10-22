@@ -27,11 +27,11 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
 /* 0. the money: approved warranty rate increases so far this year (vendor YTD report, Oct 22 2026) */
 {
   const W = JSON.parse(fs.readFileSync("./warranty/rwr.json", "utf8")), T = W.total;
-  const usd = v => "$" + Math.round(v).toLocaleString("en-US"), dash = v => v ? usd(v) : "–";
+  const usd = v => "$" + Math.round(v).toLocaleString("en-US"), dash = v => v ? H.kusd(v) : "–";   // table in $K (Noah, Oct 22)
   const top = [...W.rows].sort((a, b) => b.total - a.total)[0];
   H.amountRanker(pptx, pptx, {
     eyebrow: SEG, title: "Warranty Rate Increases",
-    rows: W.rows.map(r => [r.n, r.total]), fmt: usd, color: C.good, ink: C.goodInk, valLabel: "GP added", valW: 1.0,
+    rows: W.rows.map(r => [r.n, r.total]), fmt: H.kusd, color: C.good, ink: C.goodInk, valLabel: "GP added", valW: 1.0,
     extra: [{ label: "Labor", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.labor)])) },
             { label: "Parts", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.parts)])) }],
     takeaway: `${usd(T.total)} in added gross profit from warranty rate increases approved this year at ${W.rows.length} stores. Higher rates bring more audits: the process is how we keep it.`,

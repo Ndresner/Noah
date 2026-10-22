@@ -285,6 +285,10 @@ export function panel(pptx, s, { x, y, w, h, label }) {
    the measure - "NET PROFIT", "NEW FRONT PVR" - not "GROUP" (Tommy, Oct 18
    2026): the strip IS the group, so the word added nothing and the measure
    was missing. */
+/* Table dollars without the last three digits (Noah, Oct 22 2026): $296K, $1.16M. d = decimals on K
+   ($14.2K) where whole thousands would hide the difference. Takeaways and notes keep the exact figure. */
+export const kusd = (v, d = 0) => (v < 0 ? "−" : "") + (Math.abs(v) >= 1e6 ? "$" + (Math.abs(v) / 1e6).toFixed(2) + "M" : "$" + (Math.abs(v) / 1e3).toFixed(d) + "K");
+
 export function measureStrip(pptx, s, measure, label, value, valueColor) {
   s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 11.89, h: 0.46, fill: { color: C.blueTint } });
   s.addShape(pptx.ShapeType.rect, { x: 0.72, y: 1.46, w: 0.065, h: 0.46, fill: { color: C.navy } });

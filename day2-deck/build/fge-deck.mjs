@@ -21,9 +21,9 @@ const grp = R.reduce((t, r) => t + r.g, 0) / R.reduce((t, r) => t + r.em, 0);
 const SRC = `Gross: Qlik - Productivity app, P&L Total Gross Profit - Fixed Ops. Headcount: ADP Employee Master extract 10/19/2026 (rebuilt 2026-10-20; the Qlik headcount history undercounted). Fixed gross per fixed employee = gross / fixed employees, Jan-Sep 2026 monthly average. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop gross and body shop staff excluded. Each store is measured against its own number: Target = today + 5%. Gross/yr = 5% x the store's gross per employee x its average fixed employees x 12 (the same staff producing 5% more). Per working day uses 307 days open a year (6 days a week less the 6 service holidays).`;
 H.amountRanker(pptx, pptx, {
   eyebrow: "Fixed Ops Productivity", title: "What 5% More per Employee Is Worth",
-  rows: rows.map(r => [r.n, r.gain]), fmt: usd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 1.04,
-  extra: [{ label: "Today", w: 0.82, vals: Object.fromEntries(rows.map(r => [r.n, usd(r.per)])) },
-          { label: "Target", w: 0.82, vals: Object.fromEntries(rows.map(r => [r.n, usd(r.target)])) }],
+  rows: rows.map(r => [r.n, r.gain]), fmt: H.kusd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 1.0,
+  extra: [{ label: "Today", w: 0.82, vals: Object.fromEntries(rows.map(r => [r.n, H.kusd(r.per, 1)])) },
+          { label: "Target", w: 0.82, vals: Object.fromEntries(rows.map(r => [r.n, H.kusd(r.target, 1)])) }],
   takeaway: `5% more gross from the people already on staff is worth ${usd(tot)} a year. For the average employee that is ${usd(grp * UP)} more a month, about ${usd(grp * UP * 12 / 307)} a working day.`,
   tone: "g", source: SRC + " Today and Target = fixed gross per fixed employee a month.",
 });

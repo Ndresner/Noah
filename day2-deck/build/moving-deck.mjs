@@ -69,7 +69,9 @@ function grid(view, { title, sub, groupLabel, src }) {
     s.addText(`${groupLabel} ${chg(k, M.group[2])}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
       color: C.ink600, isTextBox: true, margin: 0 });
     const cell = (r, y, top) => {
-      s.addText(r.n, { x: x + 0.08, y: y + 0.05, w: CW - 0.1, h: 0.24, fontFace: F, fontSize: 13, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0, fit: "shrink" });
+      // Title Case, not caps (Noah, Oct 22): PowerPoint does not shrink-to-fit until a box is edited, so caps names
+      // like HYUNDAI ST GEORGE wrapped onto the change line below them
+      s.addText(H.storeName(r.n), { x: x + 0.08, y: y + 0.05, w: CW - 0.1, h: 0.24, fontFace: F, fontSize: 13, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
       s.addText(chg(k, r.chg), { x: x + 0.08, y: y + 0.29, w: CW - 0.12, h: 0.25, fontFace: F, fontSize: 16, bold: true, valign: "middle",
         color: /^[0.]+/.test(chg(k, r.chg)) ? C.ink600 : r.chg > 0 ? C.goodInk : C.badInk, isTextBox: true, margin: 0 });
     };
