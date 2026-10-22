@@ -40,7 +40,7 @@ const nm = H.storeName;
 // how a block's format reads on the group chart (groupYoy units)
 function chartSpec(FM) {
   if (FM === F.pct)  return { unit: "pct", scale: 100, chart: "line", fmt: v => (v).toFixed(1) + "%", dfmt: v => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " pts" };
-  if (FM === F.usd2) return { unit: "usd", scale: 1, chart: "line", labelFormat: '"$"#,##0.00', axisFormat: '"$"#,##0', fmt: FM.v, dfmt: FM.d };
+  if (FM === F.usd2) return { unit: "usd2", scale: 1, chart: "line", labelFormat: '"$"#,##0.00', axisFormat: '"$"#,##0', fmt: FM.v, dfmt: FM.d };
   if (FM === F.usd)  return { unit: "usd", scale: 1, chart: "line", fmt: FM.v, dfmt: FM.d };
   if (FM === F.dec2) return { unit: "count", scale: 1, chart: "line", labelFormat: "0.00", axisFormat: "0.0", fmt: FM.v, dfmt: FM.d };
   if (FM === F.dec1) return { unit: "count", scale: 1, chart: "line", labelFormat: "0.0", axisFormat: "0", fmt: FM.v, dfmt: FM.d };

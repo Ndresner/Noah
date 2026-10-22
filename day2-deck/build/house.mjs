@@ -802,6 +802,7 @@ const UNIT = {
   M:     { to: x => +(x / 1e6).toFixed(2), label: "0.0",               axis: '$0"M"',     fmt: Mmixed, dfmt: Dmixed },
   count: { to: x => x,                     label: '#,##0.0,"K"',       axis: '#,##0',     fmt: Int,    dfmt: Dint   },
   usd:   { to: x => Math.round(x),         label: '"$"#,##0',          axis: '"$"#,##0',  fmt: Mmixed, dfmt: Dmixed },
+  usd2:  { to: x => +x.toFixed(2),         label: '"$"#,##0.00',       axis: '"$"#,##0',  fmt: Mmixed, dfmt: Dmixed },   // rates in dollars and cents (ELR), Oct 22 2026
   pct:   { to: x => +x.toFixed(1),         label: '0.0"%"',            axis: '0"%"',      fmt: Pct,    dfmt: Dpts   },
 };
 const niceStep = span => {

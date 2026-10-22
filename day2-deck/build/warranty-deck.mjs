@@ -60,18 +60,18 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
 {
   const s = pptx.addSlide(), tk = "Six audits took back over $400,000, more than a tenth of what rate increases brought in this year. Every cause here is documentation the store controls.";
   H.page(pptx, s, { eyebrow: SEG, title: "What Gets Claims Debited" });
-  H.panel(pptx, s, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(tk), label: "Primary causes in the six audits" });
+  H.panel(pptx, s, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(tk), label: "What auditors check: the causes in the six audits, plus supporting evidence" });
   tiles(s, [
     ["Written documentation", "Complaint, cause and correction written on the RO, and matching what was claimed"],
-    ["Manager signature on add-ons", "Any added repair approved and signed by a manager before it is claimed"],
-    ["Signatures on in-stock units", "Customer and manager signatures on repairs to units in stock"],
+    ["Required signatures", "Manager sign-off on added repairs; customer and manager signatures on in-stock units"],
+    ["Supporting evidence", "Photos of the failed part, test results and proof the required procedure was followed, where the manufacturer asks for it"],
     ["Out mileage", "Recorded on every RO and consistent with the mileage in"],
     ["Punch times", "Technician clock times on the RO support the hours claimed"],
     ["Manufacturer authorization", "Prior approval on file wherever the manufacturer requires it"],
   ], { cols: 3, top: H.BODY.top + 0.72, bot: H.bodyBot(tk) - 0.2, accent: C.bad, headH: 0.7 });
   H.takeaway(pptx, s, tk, "b");
   H.foot(pptx, s, SRC);
-  s.addNotes("DRAFT. Causes from Jan 2026 GM meeting slide 13. That slide named six stores and their debits; stores are left off here, as on Warranty Compliance. The store amounts on the Jan slide add to $414,000 (headline said $400,000), so the slide says 'over $400,000'.");
+  s.addNotes("DRAFT. Causes from Jan 2026 GM meeting slide 13; the two signature causes combined and Supporting evidence added (Noah, Oct 22: some manufacturers require photos of the failed component or proof a procedure was followed). That slide named six stores and their debits; stores are left off here, as on Warranty Compliance. The store amounts on the Jan slide add to $414,000 (headline said $400,000), so the slide says 'over $400,000'.");
 }
 
 /* 2. how a store keeps the claim paid */
