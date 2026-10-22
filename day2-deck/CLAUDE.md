@@ -169,7 +169,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - Who's Moving Now: top 5 stores (was 10).
   - **Proficiency is sold hours ÷ worked hours, never "paid hours"** (most techs are flat rate: clocked time isn't paid unless they sell hours). ADP regular + overtime = hours worked.
   - How We Measured It: no "Same-store: INEOS excluded" line under Who Counts.
-  - **No bar charts** (Oct 22): every group YOY chart is a line, totals included.
+  - **No bar charts** (Oct 22): every group YOY chart is a line, totals included, and every one runs Jan–Sep for both years (the gross charts no longer carry 2025 Oct–Dec).
   - Warranty rate increases (Oct 22): `inputs/YTD_RWR_Financials_2026.xlsx` (vendor report) -> `build/warranty/rwr.json`. **"Revenue secured" = added gross profit** from approved increases (more dollars per warranty labor hour sold, or more parts markup); say gross profit on the slides. 19 stores have an approval this year; the other 14 have had none. Honda North uses the higher of its two figures ($463,396 labor + parts, not the vendor's $463,296), so the group is $3,788,200. Vendor 'Findlay Lexus Spokane' = LEXUS.
   - Warranty audits (Oct 22): built from Jan 2026 GM slides 13-14. Stores are not named (Warranty Compliance notes: no store call-outs from the podium); the Jan store amounts sum to $414,000 vs the $400,000 headline, so slides say "over $400,000".
   - Better Than Last Year / Who's Moving Now grids (Close): top 3 and bottom 3 per measure (was 5 and 5; too crowded).
