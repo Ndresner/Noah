@@ -34,6 +34,7 @@ SRC = {
     "PROD": "Fixed Ops Productivity - House Style.pptx",
     "BT": "Best Techs - Design Options.pptx",
     "WMN": "Who's Moving Now - Review.pptx",
+    "WA": "Warranty Audits - Draft.pptx",
     "GT": "Gross Trend - Review.pptx",
     "SR": "Store Records - Review.pptx",
     "IGP": "Internal Gross Profit - Review.pptx",
@@ -118,7 +119,8 @@ order += O(6) + X("TP", 7) + X("LM", *R(2, 6)) + X("TP", 8)
 # 05 Opcodes
 order += O(7) + X("TP", 9) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
 # 06 Warranty & Internal
-order += O(8) + X("TP", 10) + X("WI", *R(2, 10))
+# warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
+order += O(8) + X("TP", 10) + X("WA", 1, 2) + X("WI", 5, 6, 7) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10)
 # 07 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(5, 15))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)

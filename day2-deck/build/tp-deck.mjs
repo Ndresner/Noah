@@ -117,7 +117,7 @@ T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
 
 T({ eyebrow: "Warranty & Internal", title: "Warranty Compliance", saidFrom: JAN,
   said: ["Higher labor rates and tariffs are driving up OEM scrutiny",
-         "Six audits cost $400,000",
+         "Six audits cost over $400,000",
          "Primary causes: written documentation, manager signatures on add-ons and in-stock units, out mileage, punch times, manufacturer authorization",
          "The general manager is responsible for warranty policy being followed",
          "Spot-check repair orders and self-audit"],

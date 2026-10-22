@@ -64,7 +64,7 @@ export function block(pptx, X, M) {
     prior: D.m25.map(r => f(r) * CS.scale), current: D.m26.map(r => f(r) * CS.scale),
     priorName: "2025", currentName: "2026",
     ytdPrior: total ? undefined : g25 * CS.scale, ytdCurrent: total ? undefined : g26 * CS.scale,
-    unit: total ? "count" : CS.unit, chart: total ? "bar" : CS.chart,
+    unit: total ? "count" : CS.unit, chart: "line",   // totals are lines too (Noah, Oct 22: no bar charts)
     labelFormat: total ? undefined : CS.labelFormat, axisFormat: total ? undefined : CS.axisFormat,
     fmt: total ? FM.v : CS.fmt, dfmt: total ? FM.d : CS.dfmt,
     chartLabel: `${M.title} by month, 2025 against 2026`,

@@ -169,13 +169,15 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - Who's Moving Now: top 5 stores (was 10).
   - **Proficiency is sold hours ÷ worked hours, never "paid hours"** (most techs are flat rate: clocked time isn't paid unless they sell hours). ADP regular + overtime = hours worked.
   - How We Measured It: no "Same-store: INEOS excluded" line under Who Counts.
+  - **No bar charts** (Oct 22): every group YOY chart is a line, totals included.
+  - Warranty audits (Oct 22): built from Jan 2026 GM slides 13-14. Stores are not named (Warranty Compliance notes: no store call-outs from the podium); the Jan store amounts sum to $414,000 vs the $400,000 headline, so slides say "over $400,000".
   - Better Than Last Year / Who's Moving Now grids (Close): top 3 and bottom 3 per measure (was 5 and 5; too crowded).
   - Door rate in the CP Engine flow: Door Rate, CP ELR % of Door Rate (benchmark) and CP ELR % of Door Rate (ELR and door columns). The other three designs live only in Open Decisions.
 - **Opportunity slides:** frame them as small, achievable increments (0.1 hr per RO, one more RO a day, a few %), not out-of-reach targets.
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 198 slides (152 in the meeting flow + 46 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 200 slides (154 in the meeting flow + 46 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.
@@ -183,7 +185,7 @@ Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "Gen
 4. **03 The CP Engine**: talking points, ROs (store total ranker added), hours sold (total ranker added), hours per RO, Pricing Strategy, ELR, door rate, $ per RO, Goldilocks Margin, GP%, Who's Moving Now after each measure.
 5. **04 Labor Mix**, with Express Service and Tracking & Accountability.
 6. **05 Opcode Benchmarks**: Road to the Sale, explainer, four benchmarks each with Who's Moving Now, then Missed Opportunity.
-7. **06 Warranty & Internal**: Warranty Compliance, warranty ROs (total ranker added), warranty ELR, internal ELR.
+7. **06 Warranty & Internal**: Warranty Compliance, What Gets Claims Debited and Keep the Claim Paid (DRAFT warranty-audit slides, `warranty-deck.mjs`; more source material coming from Noah), warranty ELR, warranty ROs (total ranker added), internal ELR.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
 10. **Open Decisions** (slides 156–206; was the appendix; not presented, for review with Tommy): every slide built but not placed in the deck, grouped in deck order: Gross Trend options A / B / B+Q4 (10), Store Records (6), CP ELR % of Door Rate options A–B (2; C–E removed Oct 21), Internal GP % (6), CP vs Internal GP % options A–B (4), Headcount trend (1), Best Techs option C (1; A–B removed Oct 21), Who's Moving Now alternate versions from Most Improved v2 (6), Most Improved v1 (9). Each eyebrow reads `OPEN DECISIONS · <TOPIC> · <OPTION>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
