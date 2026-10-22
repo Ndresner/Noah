@@ -15,7 +15,7 @@ const S = k => R.reduce((t, r) => t + r[k], 0);
 const top = [...R].sort((a, b) => b.totYr - a.totYr);
 const SRC = "Qlik - Closed Repair Orders. Customer pay, all CP ROs, Jan-Sep 2026 by close date. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded. Each store: 0.1 x its CP RO count x its own customer-pay labor gross and parts gross per sold hour; a year = Jan-Sep x 12 / 9. Gross, not sale, so it will not match the $4,543,691 labor sale on the Hours per RO slide.";
 H.amountRanker(pptx, pptx, {
-  eyebrow: "The CP Engine", title: "What 0.1 Hour per RO Is Worth",
+  eyebrow: "Customer Pay", title: "What 0.1 Hour per RO Is Worth",
   rows: R.map(r => [r.n, r.totYr]), fmt: H.kusd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 1.0,
   extra: [{ label: "Labor", w: 0.98, vals: Object.fromEntries(R.map(r => [r.n, H.kusd(r.labYr)])) },
           { label: "Parts", w: 0.92, vals: Object.fromEntries(R.map(r => [r.n, H.kusd(r.partsYr)])) }],

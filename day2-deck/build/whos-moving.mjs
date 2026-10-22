@@ -25,7 +25,7 @@ const val = (k, v) => ({
   ros: Math.round(v).toLocaleString("en-US"), hpro: v.toFixed(2), elr: "$" + v.toFixed(2),
   pro: "$" + Math.round(v), pgp: (v * 100).toFixed(1) + "%",
   align: (v * 100).toFixed(1) + "%", bal: (v * 100).toFixed(1) + "%", bf: (v * 100).toFixed(1) + "%", fuel: (v * 100).toFixed(1) + "%" }[k]);
-const SEC = { gross: "The CP Engine", ros: "The CP Engine", hpro: "The CP Engine", elr: "The CP Engine", pro: "The CP Engine", pgp: "The CP Engine",
+const SEC = { gross: "Customer Pay", ros: "Customer Pay", hpro: "Customer Pay", elr: "Customer Pay", pro: "Customer Pay", pgp: "Customer Pay",
   align: "Opcodes", bal: "Opcodes", bf: "Opcodes", fuel: "Opcodes" };
 const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
 const NUMW = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
@@ -96,7 +96,10 @@ function moving(k) {
     if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: 0.68, y, w: 11.97, h: rh, fill: { color: C.zebra } });
     s.addText(String(j + 1), { x: X.rk, y, w: 0.34, h: rh, fontFace: F, fontSize: 15, bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
     s.addText(r.n, { x: X.name, y, w: 2.7, h: rh, fontFace: F, fontSize: 14, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(`${val(k, r.v0)} → ${val(k, r.v1)}`, { x: X.vals, y, w: 1.8, h: rh, fontFace: F, fontSize: 14, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    // the later value and its arrow green when it moved the right way (Noah, Oct 22)
+    const up = r.chg >= 0, vc = up ? C.goodInk : C.badInk;
+    s.addText([{ text: `${val(k, r.v0)}  `, options: { color: C.ink600 } }, { text: "→  ", options: { color: vc, bold: true } }, { text: val(k, r.v1), options: { color: vc, bold: true } }],
+      { x: X.vals, y, w: 1.95, h: rh, fontFace: F, fontSize: 14, valign: "middle", isTextBox: true, margin: 0 });
     const lo = Math.min(...r.m), hi = Math.max(...r.m), pad = (hi - lo) * 0.15 || hi * 0.05;
     s.addChart(pptx.ChartType.line, [{ name: r.n, labels: MON, values: r.m }], {
       x: X.line - 0.08, y: y + 0.02, w: 2.95, h: rh - 0.04, showLegend: false, showTitle: false,

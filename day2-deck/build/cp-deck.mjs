@@ -5,7 +5,7 @@ import fs from "fs";
 import { doorSlides } from "./door-slides.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 /* Qlik Closed Repair Orders app c3efc739 (Fixed space), pulled 2026-10-14. a = [ROs, labor sale, hours, labor gross, parts sale, parts gross] */
-const X = load("./m5.json"), SEG = "The CP Engine";
+const X = load("./m5.json"), SEG = "Customer Pay";
 const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep by close month. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded.";
 const ELR = a => a[1] / a[2];
 H.section(pptx, pptx, { kicker: "Fixed Ops", title: SEG, chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"] });

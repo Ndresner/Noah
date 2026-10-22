@@ -103,30 +103,30 @@ def R(a, b):
 order = []
 order += O(1, 2) + X("TP", 1)
 # 01 Gross
-order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 11))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
+order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability
-order += O(4) + X("EX", 8) + X("PL", 2, 3, 4) + X("EX", 9) + X("PL", *R(5, 10))
-# 03 CP Engine
+order += O(4) + X("EX", 8) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
+# 03 Customer Pay (renamed from The CP Engine, Oct 22). Every metric block now ends with a top/bottom-five movers slide.
 order += O(5) + X("TP", 3, 4)
-order += X("EX", 1) + X("CP", 2, 3, 4) + X("WMN", 2) + X("CPH", 4) + X("CPH", 1, 2, 3)
-order += X("EX", 2) + X("CP", 5, 6, 7) + X("WMN", 3) + X("HPRO", 1)
+order += X("EX", 1) + X("CP", 2, 3, 4, 5) + X("WMN", 2) + X("CPH", 5) + X("CPH", 1, 2, 3, 4)
+order += X("EX", 2) + X("CP", 6, 7, 8, 9) + X("WMN", 3) + X("HPRO", 1)
 # door rate: CP 12, 15 and 16 (v2 slides 53, 56, 57) cut from the flow (Noah, Oct 21); they stay in Open Decisions
-order += X("TP", 5) + X("EX", 3) + X("CP", 8, 9, 10) + X("WMN", 4) + X("CP", 11, 13, 14)
-order += X("EX", 4) + X("CP", 17, 18, 19)
-order += X("EX", 5) + X("CP", 20, 21, 22) + X("WMN", 5)
-order += X("TP", 6) + X("EX", 6) + X("CP", 23, 24, 25) + X("EX", 7) + X("CP", 26, 27, 28) + X("WMN", 6) + X("WMN", 1)
+order += X("TP", 5) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("WMN", 4) + X("CP", 14, 16, 17)
+order += X("EX", 4) + X("CP", 20, 21, 22, 23)
+order += X("EX", 5) + X("CP", 24, 25, 26, 27) + X("WMN", 5)
+order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35) + X("WMN", 6) + X("WMN", 1)
 # 04 Labor Mix
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
-order += O(6) + X("TP", 7) + X("LM", 2, 3, 4) + X("WI", 8, 9, 10) + X("IGP", *R(1, 6)) + X("LM", 5, 6) + X("TP", 8)
+order += O(6) + X("TP", 7) + X("LM", 2, 3, 4, 5) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("LM", 6) + X("TP", 8)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
 # 05 Opcodes
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
-order += O(7) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
+order += O(7) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3, 4) + X("WMN", 7) + X("OPC", 5, 6, 7) + X("WMN", 8) + X("OPC", 8, 9, 10) + X("WMN", 9) + X("OPC", 11, 12, 13) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
 # 06 Warranty & Internal
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
-order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4)
+order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 6, 7, 8, 9) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4, 5)
 # 07 Productivity (Technician Proficiency runs inside it, no break of its own)
-order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(5, 15))
+order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
@@ -141,7 +141,7 @@ OPEN = [
     ("GROSS TREND", X("GT", 6, 10), L("OPTION A", "OPTION B + Q4")),
     ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
-    ("DOOR RATE", X("CP", 14), L("OPTION A")),
+    ("DOOR RATE", X("CP", 17), L("OPTION A")),
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
     ("BEST TECHS", X("BT", 3), L("OPTION C")),

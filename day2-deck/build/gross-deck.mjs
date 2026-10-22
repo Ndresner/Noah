@@ -1,6 +1,7 @@
 import PptxGenJS from "pptxgenjs";
 import fs from "fs";
 import * as H from "./house.mjs";
+import { moversSlide } from "./blocks.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 /* Qlik P&L app bc30d66f, pulled 2026-10-15. Service = GROSS PROFIT / INCOME - Mechanical Dept, Parts = GROSS PROFIT /
    INCOME - P&A Dept (Detail statement; these equal the GM lines Total Gross Profit - Service / - Parts). Fixed Ops here =
@@ -58,6 +59,11 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
     takeaway: `${grew} of 33 stores grew. ${H.storeName(pr[0].n)} grew most at ${pcA(pr[0].p)} (${kd(pr[0].d)}); ${H.storeName(pr.at(-1).n)} fell most at ${pcA(pr.at(-1).p)} (${kd(pr.at(-1).d)}).`,
     source: `${SRC} Ranked by percent change, Jan-Sep 2026 vs Jan-Sep 2025, so store size does not set the order; dollar change alongside.`,
   });
+  // top and bottom five (Noah, Oct 22); fixed ops keeps its "who moved it" chain instead
+  if (!chain) moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA,
+    rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1 })),
+    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${H.kusd(v25)} → ${H.kusd(v26)} (${pcA(gp)}). Ranked by percent change.`,
+    src: `${SRC} Top and bottom five stores by percent change in ${title.replace("Total Gross Profit - ", "").toLowerCase()} gross, Jan-Sep 2026 vs 2025.` });
   if (chain) {
     const top = ds.slice(0, 5), bot = ds.slice(-4);
     H.chain(pptx, pptx, {

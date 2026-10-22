@@ -2169,3 +2169,41 @@ export function explainer(pptx, deck, o) {
   if (o.notes) s.addNotes(words(o.notes, "notes"));
   return s;
 }
+
+/* ---------- MOVERS - top five and bottom five on one change -----------------
+   ADDED 2026-10-22 (Noah): one per metric, after its change ranker - a conversation starter on what each store did.
+   Laid out like Who's Moving Now. o.rows = [{ n, v0, v1, d }] already formatted v0/v1 (text), d = signed change
+   used to sort and colour, o.fmtD formats d. o.sub = the one line under the title. The 2026 value, its arrow and the
+   change read green when better than last year, red when worse (navy for a neutral metric).
+   --------------------------------------------------------------------- */
+export function movers(pptx, deck, o) {
+  const s = deck.addSlide();
+  page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
+  const dir = dirOf(o.metric), neutral = dir === "neutral", up = dir !== "down";
+  const rows = [...o.rows].sort((a, b) => up ? b.d - a.d : a.d - b.d), K = o.k ?? 5;
+  const top = rows.slice(0, K), bot = rows.slice(-K).reverse();   // bottom list reads worst first
+  panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
+  s.addText(words(o.sub, "movers sub"), { x: 0.78, y: 1.42, w: 11.77, h: 0.34, fontFace: F, fontSize: sz(14, "movers sub"),
+    color: C.ink600, isTextBox: true, margin: 0 });
+  const TOP = 2.32, BOT = bodyBot(o.takeaway) - 0.12, rh = (BOT - TOP) / K;
+  [[top, 0.72, "TOP " + K, C.good, C.goodInk, i => i + 1], [bot, 6.79, "BOTTOM " + K, C.bad, C.badInk, i => rows.length - i]].forEach(([list, x0, head, bar, ink, rank]) => {
+    const W = 5.82, X = { rk: x0 + 0.1, n: x0 + 0.5, v: x0 + 2.45, c: x0 + W - 1.22 };
+    s.addShape(pptx.ShapeType.rect, { x: x0, y: 1.9, w: W, h: 0.05, fill: { color: neutral ? C.blue : bar } });
+    s.addText(head, { x: X.rk, y: 1.98, w: 2.0, h: 0.3, fontFace: F, fontSize: sz(14, "movers head"), bold: true, color: neutral ? C.navy : ink, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(o.valHead ?? "2025 → 2026", { x: X.v, y: 1.98, w: 2.0, h: 0.3, fontFace: F, fontSize: sz(14, "column header"), bold: true, color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText("Change", { x: X.c, y: 1.98, w: 1.15, h: 0.3, fontFace: F, fontSize: sz(14, "column header"), bold: true, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    list.forEach((r, j) => {
+      const y = TOP + j * rh, better = up ? r.d >= 0 : r.d <= 0, col = neutral ? C.navy : (better ? C.goodInk : C.badInk);
+      if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x0, y, w: W, h: rh, fill: { color: C.zebra } });
+      s.addText(String(rank(j)), { x: X.rk, y, w: 0.35, h: rh, fontFace: F, fontSize: sz(15, "movers rank"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
+      s.addText(r.n, { x: X.n, y, w: 1.9, h: rh, fontFace: F, fontSize: sz(14, "movers store"), bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+      s.addText([{ text: r.v0 + "  ", options: { color: C.ink600 } }, { text: "→  ", options: { color: col, bold: true } }, { text: r.v1, options: { color: col, bold: true } }],
+        { x: X.v, y, w: 2.1, h: rh, fontFace: F, fontSize: sz(14, "movers values"), valign: "middle", isTextBox: true, margin: 0 });
+      s.addText(o.fmtD(r.d), { x: X.c, y, w: 1.15, h: rh, fontFace: F, fontSize: sz(16, "movers change"), bold: true, color: col, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    });
+  });
+  takeaway(pptx, s, o.takeaway, o.tone ?? "n");
+  foot(pptx, s, o.source, o.page);
+  if (o.notes) s.addNotes(words(o.notes, "notes"));
+  return s;
+}

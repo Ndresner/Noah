@@ -10,7 +10,7 @@ const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFo
 const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep by close date. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded.";
 
 // 1-2: CP sold hours, group card + change by store
-block(pptx, load("./prof/cphrs.json"), { seg: "The CP Engine", src: SRC, title: "Customer Pay Hours Sold", metric: "cp hours sold",
+block(pptx, load("./prof/cphrs.json"), { seg: "Customer Pay", src: SRC, title: "Customer Pay Hours Sold", metric: "cp hours sold",
   fn: a => a[0], f: F.int, level: false,
   def: "Total customer-pay labor hours sold, all CP ROs.",
   extra: () => "CP RO count rose only 0.2%, so the extra hours came from selling more on each visit.",
@@ -29,7 +29,7 @@ const usd = v => "$" + Math.round(v).toLocaleString("en-US");
 const tot = R.reduce((t, r) => t + r.yr, 0), gGPR = HP.reduce((t, r) => t + r[4] + r[5], 0) / HP.reduce((t, r) => t + r[1], 0);
 const top = [...R].sort((a, b) => b.yr - a.yr);
 H.amountRanker(pptx, pptx, {
-  eyebrow: "The CP Engine", title: "One More CP RO a Day",
+  eyebrow: "Customer Pay", title: "One More CP RO a Day",
   rows: R.map(r => [r.n, r.yr]), fmt: H.kusd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
   extra: [{ label: "ROs/day", w: 0.86, vals: Object.fromEntries(R.map(r => [r.n, r.perDay.toFixed(0)])) },
           { label: "Per RO", w: 0.8, vals: Object.fromEntries(R.map(r => [r.n, usd(r.gpr)])) }],

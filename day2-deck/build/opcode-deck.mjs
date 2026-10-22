@@ -1,6 +1,7 @@
 import PptxGenJS from "pptxgenjs";
 import fs from "fs";
 import * as H from "./house.mjs";
+import { moversSlide } from "./blocks.mjs";
 
 const pptx = new PptxGenJS();
 pptx.layout = "LAYOUT_WIDE";
@@ -65,6 +66,11 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
     source: `${SRC} Jan-Sep 2026 YTD; green at or above the ${B} benchmark, red below.${dq}\n`
           + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${p1(r[1])} (2025 ${p1(r[2])})`).join("\n"),
   });
+  // top and bottom five by change in points (Noah, Oct 22)
+  moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d,
+    rows: rows.map(r => ({ n: r[0], v0: pt(r[2]), v1: pt(r[1]), d: r[1] - r[2] })),
+    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${pt(y25)} → ${pt(y26)} (${fmt.d(y26 - y25)}). Ranked by change in points.`,
+    src: `${SRC} Top and bottom five stores by change in ${title}, Jan-Sep 2026 vs 2025, in points.` });
 }
 
 pair("align", "Alignment %",     "alignment %",    "ALIGNMENT %",    0.15,  "alignment", "alignments");

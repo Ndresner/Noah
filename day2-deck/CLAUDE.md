@@ -170,6 +170,8 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - **Proficiency is sold hours ÷ worked hours, never "paid hours"** (most techs are flat rate: clocked time isn't paid unless they sell hours). ADP regular + overtime = hours worked.
   - How We Measured It: no "Same-store: INEOS excluded" line under Who Counts.
   - Fixed Ops Headcount (Oct 22): group chart now 2025 Jan–Dec vs 2026 like the others (card YTD = average month-end headcount Jan–Sep); the trailing-12 version is retired. Job titles verified against the Qlik Productivity app: the 32 'Fixed Employee' JobGroup titles match `hc/build_prod.py` exactly; its 6 manager titles match Qlik's 'Fixed Manager' group. Qlik's headcount history before 2026 is not usable (it climbs from 1,065 in Jan 2023, an artifact), and the ADP extract starts Oct 2024.
+  - Section 03 is **Customer Pay** (was The CP Engine), eyebrows too. Absorption explainer says *total store* fixed expenses. CP RO Count explainer: no "whether or not labor was charged" line. Unclassified Customer-Pay Labor slide removed from Labor Mix (the Tracking & Accountability talking point still cites 15.2%).
+  - **Every metric gets a top-5 / bottom-5 movers slide** after its change ranker (`H.movers`, `blocks.moversSlide`; also gross service/parts and the four opcodes; fixed ops gross keeps its "who moved it" chain). Same ranking basis as the change ranker; 2026 value, arrow and change green/red. Takeaway: ask the top three what changed, the bottom three what got in the way. Who's Moving Now values colour the same way.
   - Gross change slides (Oct 22, option A): ranked by % change with the $ change in a second column, so store size does not set the order; strip shows both (+4.1% · +$7.47M). `ranker` takes `extra`/`valLabel`/`stripValue`.
   - **No bar charts** (Oct 22): every group YOY chart is a line, totals included, and **2025 runs January–December on every one** (Noah). Oct–Dec 2025 group months live in each data file's `q4` key (chart only; YTD, takeaways and store rankers stay Jan–Sep), pulled Oct 22 on the same basis; raw values and checks in `build/pulls/q4_2025.json`.
   - Warranty Parts Gross Profit % (Oct 22): group chart only, after Warranty ELR, as the example of rate increases showing up as margin (42.6% -> 44.7%, ahead every month). Data: `pulls/q4_2025.json` `w_parts`.
@@ -181,7 +183,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 192 slides (164 in the meeting flow + 28 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 219 slides (191 in the meeting flow + 28 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.

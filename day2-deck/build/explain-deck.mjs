@@ -8,10 +8,10 @@ const SRC = "Definitions match the data slides: Qlik - Closed Repair Orders (all
 const X = (o) => H.explainer(pptx, pptx, { source: SRC, ...o });
 const RT = "Roundtable example";
 
-X({ eyebrow: "The CP Engine", title: "What Is CP RO Count?",
+X({ eyebrow: "Customer Pay", title: "What Is CP RO Count?",
   formula: ["CP RO count", "=", "customer-pay repair orders closed in the period"], formulaSize: 22,
-  define: "Every RO with a customer-pay line, whether or not labor was charged on it. One RO counts once, however many lines it has.",
-  why: ["It is the top of the engine. Hours, ELR and $ per RO all multiply off it.",
+  define: "Every RO with a customer-pay line. One RO counts once, however many lines it has.",
+  why: ["Everything else starts here: hours, ELR and $ per RO all multiply off the RO count.",
         "It is the clearest read on retention and on whether the front door is open.",
         "Flat car count means growth has to come from selling more on each visit."],
   levers: [["Appointment availability", "Same-day and next-day slots; an easy online scheduler"],
@@ -23,7 +23,7 @@ X({ eyebrow: "The CP Engine", title: "What Is CP RO Count?",
   ours: "Group: 279,756 CP ROs, up 456 from 2025. Volume is flat.",
   notes: "PLACE: CP Engine, in front of CP RO Count.\nDefinition is the data slides' own: distinct ROs with a customer-pay line, by close month. This includes the roughly 0.9% of CP ROs with no labor charged (parts-only sales such as additives, wipers and batteries, and blank CP lines); Qlik's hasLabor flag is set on every line, so it does not filter them, and the count is kept that way to match the numbers stores are used to. GMC Prescott body-shop-only ROs excluded." });
 
-X({ eyebrow: "The CP Engine", title: "What Is Hours per RO?",
+X({ eyebrow: "Customer Pay", title: "What Is Hours per RO?",
   formula: ["Hours per RO", "=", "CP hours sold", "÷", "CP RO count"],
   define: "How much labor time we sell on the average customer-pay visit.",
   example: [["0.1 hour more per RO", "= $4,543,691 of labor"], ["at a $162.42 ELR on", "279,756 ROs"]], exampleLabel: "0.1 HOUR",
@@ -39,7 +39,7 @@ X({ eyebrow: "The CP Engine", title: "What Is Hours per RO?",
   ours: "Group: 1.87 CP hours per RO, up 0.07 and ahead of 2025 in all nine months.",
   tone: "g", notes: "PLACE: CP Engine, in front of CP Hours per RO.\n$4,543,691 = 0.1 x 279,756 CP ROs x $162.42 CP ELR (on the Hours per RO data slide)." });
 
-X({ eyebrow: "The CP Engine", title: "What Is Effective Labor Rate?",
+X({ eyebrow: "Customer Pay", title: "What Is Effective Labor Rate?",
   formula: ["Effective labor rate", "=", "CP labor sale", "÷", "CP hours sold"],
   define: "What we collect for each customer-pay labor hour after menus, discounts and mix. Door rate is what we post.",
   why: ["Every hour sold is worth the ELR, so it sets the value of the whole shop.",
@@ -54,7 +54,7 @@ X({ eyebrow: "The CP Engine", title: "What Is Effective Labor Rate?",
   ours: "Group: $162.42 CP ELR, up $3.56. Jul-Sep it ran 74.7% of door rate; 25 of 33 stores at or above 70%.",
   tone: "g", notes: "PLACE: CP Engine, in front of CP ELR (and ahead of the door-rate slides).\nRoundtable worked example removed from the slide (Noah, Oct 21)." });
 
-X({ eyebrow: "The CP Engine", title: "What Is CP Labor $ per RO?",
+X({ eyebrow: "Customer Pay", title: "What Is CP Labor $ per RO?",
   formula: ["CP labor $ per RO", "=", "hours per RO", "×", "ELR"],
   define: "Customer-pay labor sale divided by CP RO count. It combines how much we sell with what we collect for it.",
   example: [["1.87 hours per RO", "× $162.42"], ["= CP labor per RO", "$304"]], exampleLabel: "OUR NUMBERS",
@@ -68,7 +68,7 @@ X({ eyebrow: "The CP Engine", title: "What Is CP Labor $ per RO?",
   ours: "Group: $304 CP labor per RO, up $17. With ROs flat, the $4,899,376 labor gain came from selling more per visit.",
   tone: "g", notes: "PLACE: CP Engine, in front of CP Labor $ per RO.\n1.87 x $162.42 = $303.73, which rounds to the $304 on the data slide." });
 
-X({ eyebrow: "The CP Engine", title: "What Is CP Parts $ per RO?",
+X({ eyebrow: "Customer Pay", title: "What Is CP Parts $ per RO?",
   formula: ["CP parts $ per RO", "=", "CP parts sale", "÷", "CP RO count"],
   define: "Customer-pay parts sold through the service drive, per visit.",
   why: ["Parts follow labor: sell the hour and the parts come with it.",
@@ -81,7 +81,7 @@ X({ eyebrow: "The CP Engine", title: "What Is CP Parts $ per RO?",
   ours: "Group: $238 CP parts per RO, up $9 and ahead of 2025 in all nine months.",
   tone: "g", notes: "PLACE: CP Engine, in front of CP Parts $ per RO." });
 
-X({ eyebrow: "The CP Engine", title: "What Is Labor Gross Profit %?",
+X({ eyebrow: "Customer Pay", title: "What Is Labor Gross Profit %?",
   formula: ["Labor GP %", "=", "(CP labor sale", "−", "tech cost)", "÷", "CP labor sale"],
   define: "The share of each labor dollar we keep after paying the technician. The Roundtable target is 78% to 80%.",
   example: [["Tire rotation", "62.4%"], ["Oil change", "68.8%"], ["Alignment", "78.7%"], ["Steering rack", "84.4%"], ["All 7 jobs", "80.8%"]], exampleLabel: RT,
@@ -96,7 +96,7 @@ X({ eyebrow: "The CP Engine", title: "What Is Labor Gross Profit %?",
   ours: "Group: 80.8% CP labor gross profit, down 0.1 pts and just above the 78-80% target.",
   notes: "PLACE: CP Engine, in front of CP Labor Gross Profit %.\nExample: Roundtable slide 21, every job at a $25 tech rate; margins differ because each job's ELR differs." });
 
-X({ eyebrow: "The CP Engine", title: "What Is Parts Gross Profit %?",
+X({ eyebrow: "Customer Pay", title: "What Is Parts Gross Profit %?",
   formula: ["Parts GP %", "=", "(CP parts sale", "−", "parts cost)", "÷", "CP parts sale"],
   define: "The share of each customer-pay parts dollar we keep after the cost of the part.",
   why: ["It is the other half of the gross on every RO.",
@@ -110,14 +110,14 @@ X({ eyebrow: "The CP Engine", title: "What Is Parts Gross Profit %?",
   tone: "g", notes: "PLACE: CP Engine, in front of CP Parts Gross Profit %." });
 
 X({ eyebrow: "Fixed Ops Profitability", title: "What Is Absorption?",
-  formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "fixed expenses"],
-  define: "How much of the store's fixed expenses service and parts gross pays for.",
+  formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
+  define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
   example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "78.1%"]], exampleLabel: "READING IT",
   why: ["At 100%, the store covers its fixed costs before it sells a car.",
         "It protects the store when car sales slow.",
         "It is the clearest measure of fixed ops' value to the dealership."],
-  levers: [["Fixed ops gross", "Everything on the CP engine slides: ROs, hours, ELR, margin"],
-           ["Fixed expenses", "Rent, facility and the other fixed costs on the P&L"],
+  levers: [["Fixed ops gross", "Everything on the customer-pay slides: ROs, hours, ELR, margin"],
+           ["Store fixed expenses", "The whole store's rent, facility and other fixed costs"],
            ["Warranty and internal", "Gross from warranty and reconditioning counts too"],
            ["Parts", "Counter and wholesale parts gross counts as well"]],
   ours: "Group: 78.1% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.",

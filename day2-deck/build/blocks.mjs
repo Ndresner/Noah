@@ -124,4 +124,26 @@ export function block(pptx, X, M) {
             + (fell.length ? `${fell.length} declined; ${nm(fell[0][0])} fell most at ${CF(fell[0][1])}.` : "None declined."),
     source: `${M.src} Change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025, best first.`,
   });
+
+  // 4. top and bottom five, a conversation starter (Noah, Oct 22)
+  if (M.movers !== false) moversSlide(pptx, {
+    seg: M.seg, title: M.title, metric: M.metric, fmtD: CF,
+    rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26) })),
+    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${FM.v(g25)} → ${FM.v(g26)} (${CF(ch(G25, G26))}). Ranked by ${M.chgDesc ? "percent change" : "change"}.`,
+    src: `${M.src} ${M.def ?? ""} Top and bottom five stores by change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025.`,
+  });
+}
+
+/* the top-and-bottom-five slide for any metric (also used by the gross and opcode decks) */
+export function moversSlide(pptx, o) {
+  const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
+  const up = H.dirOf(o.metric) !== "down";
+  const r = [...o.rows].sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
+  const top = r.slice(0, 3).map(x => x.n), bot = r.slice(-3).reverse().map(x => x.n);
+  return H.movers(pptx, pptx, {
+    eyebrow: o.seg, title: o.title, metric: o.metric, rows: r, fmtD: o.fmtD, sub: o.sub, valHead: o.valHead,
+    takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way.`, tone: "n",
+    source: o.src,
+    notes: "Conversation starter: each top store says one thing they started doing; each bottom store says what got in the way and what they would try. The room trades ideas.",
+  });
 }

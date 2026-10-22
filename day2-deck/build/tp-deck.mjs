@@ -36,8 +36,8 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
   ask: "run service like a sales department: every visit is a chance to sell the next hour and the next car.",
   notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship)." });
 
-T({ eyebrow: "The CP Engine", title: "What Can You Control?", saidFrom: RT,
-  said: ["ROs > Hours per RO > ELR > Mix > GP%",
+T({ eyebrow: "Customer Pay", title: "What Can You Control?", saidFrom: RT,
+  said: ["Work it in order: ROs first, then hours per RO, the rate (ELR), the mix and the margin (GP%)",
          "CP labor $ per RO represents how well you execute, store and individual",
          "ELR plus hours per RO cannot be manipulated: true performance",
          "Total dollars per RO matters more than any single measure. It's what we sell."],
@@ -47,7 +47,7 @@ T({ eyebrow: "The CP Engine", title: "What Can You Control?", saidFrom: RT,
   ask: "with car count flat, the growth is in hours per RO. Sell the next tenth of an hour on every RO.",
   tone: "g", notes: "PLACE: CP Engine section, after the section break and before CP RO Count.\nSaid: Roundtable slides 18-19 (KPIs; CP Labor $ per RO)." });
 
-T({ eyebrow: "The CP Engine", title: "The Front Door", saidFrom: GM,
+T({ eyebrow: "Customer Pay", title: "The Front Door", saidFrom: GM,
   said: ["Open and available scheduler: same-day or next-day appointments, quick online scheduling",
          "75% of visits are basic services. Saturdays are what you choose to make them.",
          "Every call is a sales opportunity. Mishandled calls cost millions.",
@@ -59,7 +59,7 @@ T({ eyebrow: "The CP Engine", title: "The Front Door", saidFrom: GM,
   ask: "every customer leaves with the next appointment booked, and every call reaches someone who asks for it.",
   notes: "PLACE: CP Engine section, after the CP RO Count slides and before Hours per RO.\nSaid: Jan/May GM slides on Appointment Scheduling, Appointment Discipline, Phone Call Handling and Retention Management (Jan 2, 7, 9, 11; May 2, 4, 8, 9).\nOptional: the Flai voice AI service view (Jul 16-Aug 15 pull: 4,368 of 8,351 transfers rang out) fits here, but it is a different source and period; refresh it before use and keep it off any slide with a P&L number." });
 
-T({ eyebrow: "The CP Engine", title: "Pricing Strategy", saidFrom: BOTH,
+T({ eyebrow: "Customer Pay", title: "Pricing Strategy", saidFrom: BOTH,
   said: ["Do a comprehensive market labor study",
          "Calculate your ELR on every maintenance item; target ELR by work type",
          "Know your loss leader, and what the competition is charging",
@@ -71,7 +71,7 @@ T({ eyebrow: "The CP Engine", title: "Pricing Strategy", saidFrom: BOTH,
   ask: "know what you collect on every op code, and run every discount through ADC so we can see it.",
   notes: "PLACE: CP Engine section, before the CP ELR slides (ahead of the door-rate options).\nSaid: Roundtable slide 15 (Pricing Strategy); Jan/May GM Road to the Sale slide (pricing lines); Jan GM slide 54 (Discounting Discipline); 70% benchmark from the Jan/May door rate slides." });
 
-T({ eyebrow: "The CP Engine", title: "The Goldilocks Margin", saidFrom: RT,
+T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
   said: ["Gross profit % is the share of labor you keep after paying the tech",
          "Not too high, not too low: 78% to 80%",
          "Skill code costing: a hybrid of traditional and percentage",
