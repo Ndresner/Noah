@@ -97,8 +97,8 @@ T({ eyebrow: "Labor Mix", title: "Tracking & Accountability", saidFrom: BOTH,
          "Give feedback quickly and often. Trends start early: don't wait until the 15th.",
          "Tracked metrics improve performance; we are responsible for the knowing",
          "Scoreboard techs and advisors: CP $ per RO, ELR, MPI completion, closing %, key op codes"],
-  now: [{ big: "15.2%", label: "Customer-pay labor whose op code description can't be classified, down from 19.0%.", tone: "g" },
-        { big: "4.2% to 63.5%", label: "The range across stores. Vague descriptions hide what the shop sells.", tone: "b" }],
+  // 15.2% group figure removed with the Unclassified Customer-Pay Labor slide (Noah, Oct 22); the range now explains itself
+  now: [{ big: "4.2% to 63.5%", label: "Share of each store's customer-pay labor whose op code description doesn't say what was sold. Vague descriptions hide what the shop sells.", tone: "b" }],
   ask: "if it isn't described, it can't be tracked. Clean up op code descriptions so the reports show what you sell.",
   notes: "PLACE: Labor Mix section, before the work-type (maintenance / repair / unclassified) slides.\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
 
@@ -116,13 +116,14 @@ T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
   notes: "PLACE: Opcodes section, after the section break and before Alignment %.\nSaid: Roundtable slides 11, 12, 14 (Road to the Sale, Maintenance Menus, MPI Mandate); Jan GM slide 15 / May GM slide 11 (Road to the Sale). Fuel service is 5.8% vs 7.5% (4,731 short)." });
 
 T({ eyebrow: "Warranty", title: "Warranty Compliance", saidFrom: JAN,
-  said: ["Higher labor rates and tariffs are driving up OEM scrutiny",
+  said: ["Higher labor rates, higher parts reimbursement and tariffs are driving up OEM scrutiny",
          "Six audits cost over $400,000",
          "Primary causes: written documentation, manager signatures on add-ons and in-stock units, out mileage, punch times, manufacturer authorization",
          "The general manager is responsible for warranty policy being followed",
          "Spot-check repair orders and self-audit"],
   now: [{ big: "$3,788,200", label: "Added gross profit from warranty labor and parts rate increases approved this year, 19 stores.", tone: "g" },
-        { big: "$197.17", label: "Warranty ELR, up $16.93; 30 of 33 stores raised it.", tone: "g" }],
+        { big: "$197.17", label: "Warranty ELR, up $16.93; 30 of 33 stores raised it.", tone: "g" },
+        { big: "44.7%", label: "Warranty parts gross profit, up 2.1 pts and ahead of 2025 in all nine months.", tone: "g" }],
   ask: "a higher warranty rate brings more scrutiny. Self-audit before the factory does.",
   notes: "PLACE: Warranty section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
 
