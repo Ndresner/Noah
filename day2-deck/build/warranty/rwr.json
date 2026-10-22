@@ -1,6 +1,6 @@
 {
  "source": "YTD RWR Financials - Findlay Automotive Group 2026 (vendor report, provided by Noah Oct 22 2026): YTD revenue secured from approved warranty labor and parts rate increases.",
- "note": "Vendor's Honda North total ($463,296) is $100 less than its labor + parts ($463,396), so the report's grand total ($3,788,100) is $100 less than labor + parts ($3,788,200). Slides use the vendor's totals as reported.",
+ "note": "Honda North uses its labor + parts ($463,396), not the vendor's $463,296 total (Noah, Oct 22: take the higher), so the group is $3,788,200 vs the report's $3,788,100.",
  "rows": [
   {
    "src": "Findlay Acura",
@@ -70,9 +70,10 @@
    "n": "HONDA NORTH",
    "brand": "Honda",
    "state": "NV",
-   "total": 463296,
+   "total": 463396,
    "labor": 142960,
-   "parts": 320436
+   "parts": 320436,
+   "vendor_total": 463296
   },
   {
    "src": "Findlay Honda Spokane",
@@ -175,8 +176,10 @@
   }
  ],
  "total": {
-  "total": 3788100,
+  "total": 3788200,
   "labor": 1661368,
   "parts": 2126832
- }
+ },
+ "vendor_total": 3788100,
+ "meaning": "Revenue secured = the added gross profit the approved increases generate: more dollars per warranty labor hour sold, or more parts markup (Noah, Oct 22). The 14 stores not listed have had no approval so far this year."
 }

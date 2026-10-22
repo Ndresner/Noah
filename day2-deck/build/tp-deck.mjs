@@ -121,10 +121,10 @@ T({ eyebrow: "Warranty & Internal", title: "Warranty Compliance", saidFrom: JAN,
          "Primary causes: written documentation, manager signatures on add-ons and in-stock units, out mileage, punch times, manufacturer authorization",
          "The general manager is responsible for warranty policy being followed",
          "Spot-check repair orders and self-audit"],
-  now: [{ big: "$3,788,100", label: "Secured so far this year from approved warranty labor and parts rate increases, 19 stores (vendor YTD report).", tone: "g" },
+  now: [{ big: "$3,788,200", label: "Added gross profit from warranty labor and parts rate increases approved this year, 19 stores.", tone: "g" },
         { big: "$197.17", label: "Warranty ELR, up $16.93; 30 of 33 stores raised it.", tone: "g" }],
   ask: "a higher warranty rate brings more scrutiny. Self-audit before the factory does.",
-  notes: "PLACE: Warranty & Internal section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,100 from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
+  notes: "PLACE: Warranty & Internal section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
 
 T({ eyebrow: "Fixed Ops Productivity", title: "People", saidFrom: BOTH,
   said: ["Our most valuable asset: this is what separates us",

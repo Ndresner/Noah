@@ -31,12 +31,12 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   const top = [...W.rows].sort((a, b) => b.total - a.total)[0];
   H.amountRanker(pptx, pptx, {
     eyebrow: SEG, title: "Warranty Rate Increases",
-    rows: W.rows.map(r => [r.n, r.total]), fmt: usd, color: C.good, ink: C.goodInk, valLabel: "Secured", valW: 1.0,
+    rows: W.rows.map(r => [r.n, r.total]), fmt: usd, color: C.good, ink: C.goodInk, valLabel: "GP added", valW: 1.0,
     extra: [{ label: "Labor", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.labor)])) },
             { label: "Parts", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.parts)])) }],
-    takeaway: `${usd(T.total)} secured so far this year from approved warranty rate increases at ${W.rows.length} stores. Higher rates bring more audits: the process is how we keep it.`,
+    takeaway: `${usd(T.total)} in added gross profit from warranty rate increases approved this year at ${W.rows.length} stores. Higher rates bring more audits: the process is how we keep it.`,
     tone: "g",
-    source: `YTD RWR Financials 2026 (warranty rate submission vendor): YTD revenue secured from approved warranty labor and parts rate increases, as reported. ${W.rows.length} stores with approvals to date; stores not listed have none reported yet. Labor ${usd(T.labor)}, parts ${usd(T.parts)}. ${W.note}`,
+    source: `YTD RWR Financials 2026 (warranty rate submission vendor), "YTD revenue secured": the added gross profit from approved increases, as more dollars per warranty labor hour sold or more parts markup. ${W.rows.length} stores have an approval this year; the other ${33 - W.rows.length} have not had one yet. Labor ${usd(T.labor)}, parts ${usd(T.parts)}. ${W.note}`,
   }).addNotes(`Talk track: these approvals are new money on every warranty claim, and they are why warranty ELR is up. The factory notices a higher rate too: more money in means more scrutiny. Every claim debited in an audit gives part of it back.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
 }
 
