@@ -121,7 +121,7 @@ order += O(7) + X("TP", 9) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC
 # 06 Warranty & Internal
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
-order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2, 3) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10)
+order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2, 3) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10) + X("IGP", *R(1, 6))   # internal labor and parts GP% after internal ELR (Noah, Oct 22; moved out of Open Decisions)
 # 07 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(5, 15))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
@@ -137,7 +137,6 @@ OPEN = [
     ("STORE RECORDS", X("SR", *R(1, 6)), L("A RECORD YEAR", "RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
     ("DOOR RATE", X("CP", 14, 15), L("OPTION A", "OPTION B")),
-    ("INTERNAL GP %", X("IGP", *R(1, 6)), L(*[None] * 6)),
     ("CP VS INTERNAL GP %", X("CVI", 1, 2, 3, 4), L("OPTION A", "OPTION A", "OPTION B", "OPTION B")),
     ("HEADCOUNT TREND", X("GT", 11), L(None)),
     ("BEST TECHS", X("BT", 3), L("OPTION C")),

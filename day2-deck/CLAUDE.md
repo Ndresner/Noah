@@ -178,7 +178,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 201 slides (155 in the meeting flow + 46 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 201 slides (161 in the meeting flow + 40 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.
@@ -186,10 +186,10 @@ Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "Gen
 4. **03 The CP Engine**: talking points, ROs (store total ranker added), hours sold (total ranker added), hours per RO, Pricing Strategy, ELR, door rate, $ per RO, Goldilocks Margin, GP%, Who's Moving Now after each measure.
 5. **04 Labor Mix**, with Express Service and Tracking & Accountability.
 6. **05 Opcode Benchmarks**: Road to the Sale, explainer, four benchmarks each with Who's Moving Now, then Missed Opportunity.
-7. **06 Warranty & Internal**: Warranty Compliance (now leads with the $3,788,200 of added gross profit), Warranty Rate Increases (store ranker from the vendor YTD RWR report), warranty ELR, What Gets Claims Debited and Keep the Claim Paid (DRAFT audit slides), warranty ROs (total ranker added), internal ELR. All warranty slides other than the Qlik blocks come from `warranty-deck.mjs`.
+7. **06 Warranty & Internal**: Warranty Compliance (now leads with the $3,788,200 of added gross profit), Warranty Rate Increases (store ranker from the vendor YTD RWR report), warranty ELR, What Gets Claims Debited and Keep the Claim Paid (DRAFT audit slides), warranty ROs (total ranker added), internal ELR, then internal labor and parts GP % (moved in from Open Decisions Oct 22). All warranty slides other than the Qlik blocks come from `warranty-deck.mjs`.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.
-10. **Open Decisions** (slides 156–206; was the appendix; not presented, for review with Tommy): every slide built but not placed in the deck, grouped in deck order: Gross Trend options A / B / B+Q4 (10), Store Records (6), CP ELR % of Door Rate options A–B (2; C–E removed Oct 21), Internal GP % (6), CP vs Internal GP % options A–B (4), Headcount trend (1), Best Techs option C (1; A–B removed Oct 21), Who's Moving Now alternate versions from Most Improved v2 (6), Most Improved v1 (9). Each eyebrow reads `OPEN DECISIONS · <TOPIC> · <OPTION>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
+10. **Open Decisions** (slides 156–206; was the appendix; not presented, for review with Tommy): every slide built but not placed in the deck, grouped in deck order: Gross Trend options A / B / B+Q4 (10), Store Records (6), CP ELR % of Door Rate options A–B (2; C–E removed Oct 21), CP vs Internal GP % options A–B (4), Headcount trend (1), Best Techs option C (1; A–B removed Oct 21), Who's Moving Now alternate versions from Most Improved v2 (6), Most Improved v1 (9). Each eyebrow reads `OPEN DECISIONS · <TOPIC> · <OPTION>` (set in `merge_v2.py`). Nothing here moves into the deck by default (Noah, Oct 21); delete the section before the meeting.
 
 Not in the test deck at all: the door rate options deck (`Door Rate - Options (Jul-Sep).pptx`, duplicates of Open Decisions A–E), the v1 Master Review Deck, and the per-deck title slides (replaced by the section transitions).
 
