@@ -12,6 +12,8 @@ const T = (o) => H.talkingPoints(pptx, pptx, { source: SRC, ...o, saidFrom: null
 
 T({ eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: RT,
   said: ["Foster collaboration, introduce ideas that drive operational excellence, and set a clear path to exceptional service performance",
+         "Focus on profit-generating activities: the work that brings in incremental dollars, not just the work that fills the day",
+         "Work on the business, not just in it: step out of the daily fires long enough to fix the process behind them",
          "No risk of judgement: your success is our success",
          "Customer first, company second, team third",
          "You get what you tolerate",
@@ -20,7 +22,7 @@ T({ eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: RT,
         { big: "78.1%", label: "Fixed ops absorption, up 2.1 pts. Fixed gross grew 4.1%, fixed expenses 1.3%.", tone: "g" },
         { big: "21.8%", label: "Service net to gross, up 2.9 pts and ahead of 2025 in all nine months.", tone: "g" }],
   ask: "leave today with one or two things you will put in place before year end, and tell the room what they are.",
-  tone: "g", notes: "PLACE: right after the cover, before the Gross section.\nSaid: Roundtable slides 2, 5, 7, 6 (objective; philosophy & culture; 'you get what you tolerate'; collaboration). Ask adapted from Roundtable slide 24 closing questions." });
+  tone: "g", notes: "PLACE: right after the cover, before the Gross section.\nSaid: Roundtable slides 2, 5, 7, 6 (objective; philosophy & culture; 'you get what you tolerate'; collaboration). Ask adapted from Roundtable slide 24 closing questions.\nAdded Oct 22 (Noah): profit-generating activities and incremental dollars; working on the business versus in it." });
 
 T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
   said: ["Sell hours, build value, sell peace of mind",
