@@ -136,13 +136,14 @@ order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
 order += O(11)
 L = lambda *a: list(a)
 OPEN = [
-    ("GROSS TREND", X("GT", *R(1, 10)), L(*["OPTION A"] * 6, *["OPTION B"] * 3, "OPTION B + Q4")),
-    ("STORE RECORDS", X("SR", *R(1, 6)), L("A RECORD YEAR", "RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
+    # Oct 22 (Noah): removed Gross Trend A charts and tables except the parts table, all of option B, Record Year,
+    # door rate B, CP vs Internal option B and the headcount trend - the deck versions now cover them
+    ("GROSS TREND", X("GT", 6, 10), L("OPTION A", "OPTION B + Q4")),
+    ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
-    ("DOOR RATE", X("CP", 14, 15), L("OPTION A", "OPTION B")),
-    ("CP VS INTERNAL GP %", X("CVI", 1, 2, 3, 4), L("OPTION A", "OPTION A", "OPTION B", "OPTION B")),
+    ("DOOR RATE", X("CP", 14), L("OPTION A")),
+    ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
-    ("HEADCOUNT TREND", X("GT", 11), L(None)),
     ("BEST TECHS", X("BT", 3), L("OPTION C")),
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
     ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),

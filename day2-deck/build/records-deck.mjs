@@ -50,10 +50,10 @@ H.recordBoard(pptx, pptx, { eyebrow: `${SEG} · Record Board`, title: "Best Janu
   source: `${SRC} Record = Jan-Sep 2026 above every prior Jan-Sep for that store. % = combined gain over the previous best Jan-Sep. Stores with shorter histories count the same: ${stores.filter(s => s.short).map(s => `${s.n} (from ${R.ytd[s.n].years[0]})`).join(", ")}. Order: records in all three first, then by % gain.` });
 
 // ---- 3 & 4. Spotlight by % and by $
-function spotlight(label, pick, big, sub, why) {
+function spotlight(label, pick, big, sub, why, bigSize) {
   const top = [...combined].sort(pick).slice(0, 4);
   H.statTiles(pptx, pptx, { eyebrow: `${SEG} · Spotlight ${label}`, title: "Best January–September Ever",
-    tiles: top.map(s => ({ label: s.n, big: big(s), sub: sub(s), tone: "g" })),
+    tiles: top.map(s => ({ label: s.n, big: big(s), sub: sub(s), tone: "g" })), bigSize,
     banner: "What changed? Each of these stores tells the room one thing they did differently this year.",
     takeaway: `${list(top.map(s => s.n))} beat their previous best by the most ${why}.`, tone: "g",
     source: `${SRC} Combined service + parts, Jan-Sep 2026 vs the store's best prior Jan-Sep.` });
@@ -61,7 +61,8 @@ function spotlight(label, pick, big, sub, why) {
 spotlight("by %", (a, b) => b.jump - a.jump, s => "+" + tp(s.jump),
   s => `${M(s.r.tot.v)} vs ${M(s.r.tot.prev)}, the previous best (${s.r.tot.prevYear}).`, "in percentage terms");
 spotlight("by $", (a, b) => b.add - a.add, s => "+" + M(s.add),
-  s => `${M(s.r.tot.v)} vs ${M(s.r.tot.prev)}, the previous best (${s.r.tot.prevYear}); +${tp(s.jump)}.`, "in dollars");
+  s => `${M(s.r.tot.v)} vs ${M(s.r.tot.prev)}, the previous best (${s.r.tot.prevYear}); +${tp(s.jump)}.`, "in dollars",
+  32);   // "+$1.77M" at 40pt is wider than the tile; PowerPoint does not shrink-to-fit until edited (Noah, Oct 22)
 
 // ---- 5. Most monthly records broken in 2026
 {
