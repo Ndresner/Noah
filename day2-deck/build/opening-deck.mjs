@@ -21,7 +21,7 @@ export const SECTIONS = [
   { short: "Profitability",       detail: "Absorption and net to gross.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "CP Engine",           detail: "ROs, hours per RO, rate and margin.",                         chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"], name: "The CP Engine" },
   { short: "Labor Mix",           detail: "Pay type and internal, maintenance and repair mix.",          chips: ["Pay type", "Internal rate & margin", "Work type", "Op code descriptions"] },
-  { short: "Opcodes",             detail: "Alignment, balance, brake fluid and fuel.",                   chips: ["Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel service 7.5%"], name: "Opcode Benchmarks" },
+  { short: "Opcodes",             detail: "MPI and video, then alignment, balance, brake fluid and fuel.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
   { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
@@ -36,7 +36,7 @@ SECTIONS.forEach((sec, i) => H.section(pptx, pptx, {
   sections: TRACKER, current: i, logo: LOGO,
 }));
 // not a meeting section (no number, no tracker): alternate designs and slides still to be decided on. Not presented.
-H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Gross & records", "Door rate", "CP vs internal", "Best techs", "Most improved"], logo: LOGO })
-  .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Gross Trend options A / B / B+Q4, Store Records (six designs), Door Rate options A-B, CP vs Internal GP % options A-B, Headcount trend, Best Techs option C, Who's Moving Now alternate versions, Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
+H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Trends & records", "Door rate", "CP vs internal", "Photo %", "Best techs"], logo: LOGO })
+  .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Gross Trend options A / B / B+Q4, Store Records (six designs), Door Rate options A-B, CP vs Internal GP % options A-B, Photo completion % (optional measure), Headcount trend, Best Techs option C, Who's Moving Now alternate versions, Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
 
 await pptx.writeFile({ fileName: "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);

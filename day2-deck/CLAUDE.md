@@ -179,14 +179,14 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 202 slides (162 in the meeting flow + 40 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 205 slides (164 in the meeting flow + 41 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here.
 2. **01 Gross**, with Service Is Sales 2.0.
 3. **02 Profitability**, with the Absorption and Net to Gross explainers.
 4. **03 The CP Engine**: talking points, ROs (store total ranker added), hours sold (total ranker added), hours per RO, Pricing Strategy, ELR, door rate, $ per RO, Goldilocks Margin, GP%, Who's Moving Now after each measure.
 5. **04 Labor Mix**: Express Service, Labor Sale by Pay Type, CP share of labor sale, then the internal slides (internal ELR, internal labor GP %, internal parts GP %; moved out of Warranty Oct 22: internal is not warranty), work type, unclassified, Tracking & Accountability.
-6. **05 Opcode Benchmarks**: Road to the Sale, explainer, four benchmarks each with Who's Moving Now, then Missed Opportunity.
+6. **05 Opcode Benchmarks**: Road to the Sale, MPI Completion % and Video Completion % (`mpi-deck.mjs`, store-reported Jul–Sep from `MPI_Video_Completion_Jul-Sep_2026.xlsx` on Noah's OneDrive -> `build/mpi/mpi.json`; MPI against the 90% Roundtable benchmark, video against the RO-weighted group; Photo % is in Open Decisions), explainer, four benchmarks each with Who's Moving Now, then Missed Opportunity.
 7. **06 Warranty** (renamed from Warranty & Internal, Oct 22): Warranty Compliance, Warranty Rate Increases, warranty ELR, Warranty Parts Gross Profit %, What Gets Claims Debited, Keep the Claim Paid (DRAFT), warranty ROs. Non-Qlik-block warranty slides come from `warranty-deck.mjs`.
 8. **07 Productivity**: People, Pay Plans, gross per employee, ROs per advisor/employee/manager, headcount, then Technician Proficiency and Tech Minute.
 9. **08 Close**: Better Than Last Year, Who's Moving Now, Two Ways to Read Improvement, What Changed?, Where the Money Is, Before You Leave.

@@ -35,6 +35,7 @@ SRC = {
     "BT": "Best Techs - Design Options.pptx",
     "WMN": "Who's Moving Now - Review.pptx",
     "WA": "Warranty Audits - Draft.pptx",
+    "MPI": "MPI & Video Completion - Review.pptx",
     "GT": "Gross Trend - Review.pptx",
     "SR": "Store Records - Review.pptx",
     "IGP": "Internal Gross Profit - Review.pptx",
@@ -118,7 +119,8 @@ order += X("TP", 6) + X("EX", 6) + X("CP", 23, 24, 25) + X("EX", 7) + X("CP", 26
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
 order += O(6) + X("TP", 7) + X("LM", 2, 3, 4) + X("WI", 8, 9, 10) + X("IGP", *R(1, 6)) + X("LM", 5, 6) + X("TP", 8)
 # 05 Opcodes
-order += O(7) + X("TP", 9) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
+# MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
+order += O(7) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
 # 06 Warranty & Internal
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
@@ -139,6 +141,7 @@ OPEN = [
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
     ("DOOR RATE", X("CP", 14, 15), L("OPTION A", "OPTION B")),
     ("CP VS INTERNAL GP %", X("CVI", 1, 2, 3, 4), L("OPTION A", "OPTION A", "OPTION B", "OPTION B")),
+    ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
     ("HEADCOUNT TREND", X("GT", 11), L(None)),
     ("BEST TECHS", X("BT", 3), L("OPTION C")),
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
