@@ -115,7 +115,7 @@ T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
   ask: "every car gets the walk-around and the menu. The benchmarks are where that process lands.",
   notes: "PLACE: Opcodes section, after the section break and before Alignment %.\nSaid: Roundtable slides 11, 12, 14 (Road to the Sale, Maintenance Menus, MPI Mandate); Jan GM slide 15 / May GM slide 11 (Road to the Sale). Fuel service is 5.8% vs 7.5% (4,731 short)." });
 
-T({ eyebrow: "Warranty & Internal", title: "Warranty Compliance", saidFrom: JAN,
+T({ eyebrow: "Warranty", title: "Warranty Compliance", saidFrom: JAN,
   said: ["Higher labor rates and tariffs are driving up OEM scrutiny",
          "Six audits cost over $400,000",
          "Primary causes: written documentation, manager signatures on add-ons and in-stock units, out mileage, punch times, manufacturer authorization",
@@ -124,7 +124,7 @@ T({ eyebrow: "Warranty & Internal", title: "Warranty Compliance", saidFrom: JAN,
   now: [{ big: "$3,788,200", label: "Added gross profit from warranty labor and parts rate increases approved this year, 19 stores.", tone: "g" },
         { big: "$197.17", label: "Warranty ELR, up $16.93; 30 of 33 stores raised it.", tone: "g" }],
   ask: "a higher warranty rate brings more scrutiny. Self-audit before the factory does.",
-  notes: "PLACE: Warranty & Internal section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
+  notes: "PLACE: Warranty section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
 
 T({ eyebrow: "Fixed Ops Productivity", title: "People", saidFrom: BOTH,
   said: ["Our most valuable asset: this is what separates us",

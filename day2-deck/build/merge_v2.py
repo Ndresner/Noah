@@ -115,13 +115,14 @@ order += X("EX", 4) + X("CP", 17, 18, 19)
 order += X("EX", 5) + X("CP", 20, 21, 22) + X("WMN", 5)
 order += X("TP", 6) + X("EX", 6) + X("CP", 23, 24, 25) + X("EX", 7) + X("CP", 26, 27, 28) + X("WMN", 6) + X("WMN", 1)
 # 04 Labor Mix
-order += O(6) + X("TP", 7) + X("LM", *R(2, 6)) + X("TP", 8)
+# internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
+order += O(6) + X("TP", 7) + X("LM", 2, 3, 4) + X("WI", 8, 9, 10) + X("IGP", *R(1, 6)) + X("LM", 5, 6) + X("TP", 8)
 # 05 Opcodes
 order += O(7) + X("TP", 9) + X("EX", 10) + X("OPC", 2, 3) + X("WMN", 7) + X("OPC", 4, 5) + X("WMN", 8) + X("OPC", 6, 7) + X("WMN", 9) + X("OPC", 8, 9) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
 # 06 Warranty & Internal
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
-order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4) + X("WI", 8, 9, 10) + X("IGP", *R(1, 6))   # internal labor and parts GP% after internal ELR (Noah, Oct 22; moved out of Open Decisions)
+order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 5, 6, 7) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4)
 # 07 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(5, 15))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)

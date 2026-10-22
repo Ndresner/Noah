@@ -20,9 +20,9 @@ export const SECTIONS = [
   { short: "Gross",               detail: "Fixed ops, service and parts gross, and the store records.", chips: ["Fixed ops", "Service", "Parts"] },
   { short: "Profitability",       detail: "Absorption and net to gross.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "CP Engine",           detail: "ROs, hours per RO, rate and margin.",                         chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"], name: "The CP Engine" },
-  { short: "Labor Mix",           detail: "Express, maintenance and repair mix.",                        chips: ["Pay type", "Work type", "Op code descriptions"] },
+  { short: "Labor Mix",           detail: "Pay type and internal, maintenance and repair mix.",          chips: ["Pay type", "Internal rate & margin", "Work type", "Op code descriptions"] },
   { short: "Opcodes",             detail: "Alignment, balance, brake fluid and fuel.",                   chips: ["Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel service 7.5%"], name: "Opcode Benchmarks" },
-  { short: "Warranty & Internal", detail: "Warranty rate increases, audits and compliance, internal rate and margin.", chips: ["Rate increases", "Warranty audits", "Warranty ELR", "Internal ELR"] },
+  { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
 ];

@@ -6,7 +6,7 @@ const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFo
    Qlik Closed Repair Orders app c3efc739, pulled 2026-10-21. a = [I ROs, I labor sale, I hours, I labor gross, I parts sale, I parts gross].
    Same set as the CP GP% slides (validated: CP labor 80.9/80.8%, CP parts 39.4/40.7%, internal ELR $126.09/$129.84).
    Colour: green at or above the group, red below (Noah). Store rows reconcile on every $ and hours input, both years. */
-const X = load("./internal/internal.json"), SEG = "Warranty & Internal";
+const X = load("./internal/internal.json"), SEG = "Labor Mix";   // with the other internal slides, not warranty (Noah, Oct 22)
 const SRC = "Qlik - Closed Repair Orders. Internal pay type, Jan-Sep by close month. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded.";
 const base = { seg: SEG, src: SRC };
 block(pptx, X, { ...base, title: "Internal Labor Gross Profit %", metric: "internal labor gp %", fn: a => a[3] / a[1], f: F.pct, floor: 0.5,

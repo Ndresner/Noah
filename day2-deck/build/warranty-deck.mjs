@@ -8,7 +8,7 @@ const { C, F, sz, words } = H;
    The one-line descriptions under each cause and step are drafted from the Jan slide's headings - confirm them
    against OEM policy before the meeting. */
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
-const SEG = "Warranty & Internal";
+const SEG = "Warranty";
 const SRC = "Jan 2026 GM meeting (Day 1), slides 13-14: six warranty audits, primary causes and Warranty Compliance steps. Descriptions under each heading drafted for this deck; confirm against each OEM's warranty policy manual.";
 
 function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: room for a heading that wraps
