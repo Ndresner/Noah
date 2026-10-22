@@ -47,10 +47,16 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
   });
   const ds = S.map(r => [r[0], r[2] - r[1]]).sort((a, b) => b[1] - a[1]);
   const grew = ds.filter(r => r[1] > 0).length;
+  // Ranked by % change with the $ change alongside (Noah, Oct 22, option A): store size no longer sets the order
+  const sgn = v => v >= 0 ? "+" : "\u2212", pcA = v => sgn(v) + Math.abs(v * 100).toFixed(1) + "%", kd = v => sgn(v) + H.kusd(Math.abs(v));
+  const pr = S.map(([n, a, b]) => ({ n, p: b / a - 1, d: b - a })).sort((x, y) => y.p - x.p), gp = v26 / v25 - 1;
   H.ranker(pptx, pptx, {
-    eyebrow: SEG, title, metric, rows: S, expect: d, groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**", measure: title.replace("Total Gross Profit - ", "") + " Gross",
-    takeaway: `${grew} of 33 stores grew, led by ${ds[0][0]} at ${usd(ds[0][1])}; ${33 - grew} declined, ${ds[32][0]} most at ${usd(ds[32][1])}.`,
-    source: `${SRC} Jan-Sep 2026 vs 2025, best first.`,
+    eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross",
+    deltas: pr.map(r => [r.n, r.p]), groupD: gp, fmtD: pcA, valLabel: "Change", stripValue: `${pcA(gp)}  ·  ${kd(d)}`,
+    extra: [{ label: "$", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, kd(r.d)])) }],
+    groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
+    takeaway: `${grew} of 33 stores grew. ${H.storeName(pr[0].n)} grew most at ${pcA(pr[0].p)} (${kd(pr[0].d)}); ${H.storeName(pr.at(-1).n)} fell most at ${pcA(pr.at(-1).p)} (${kd(pr.at(-1).d)}).`,
+    source: `${SRC} Ranked by percent change, Jan-Sep 2026 vs Jan-Sep 2025, so store size does not set the order; dollar change alongside.`,
   });
   if (chain) {
     const top = ds.slice(0, 5), bot = ds.slice(-4);
