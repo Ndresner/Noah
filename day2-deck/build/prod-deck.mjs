@@ -34,21 +34,19 @@ block(pptx, rpm, { ...base, title: "CP & W ROs per Fixed Manager", metric: "ros 
 // headcount
 const T = JSON.parse(fs.readFileSync("./prod/trend.json", "utf8"));
 const i25 = 8, i26 = 20, d = a => a[i26] - a[i25], sg = v => v === 0 ? "0" : (v > 0 ? "+" : "\u2212") + Math.abs(v).toLocaleString("en-US");
-const K = 9;   // trailing 12 months: Oct 2025 - Sep 2026
-const low = Math.min(...T.fe.slice(K)), lowAt = T.months[K + T.fe.slice(K).indexOf(low)];
-H.trend(pptx, pptx, {
-  eyebrow: SEG, title: "Fixed Ops Headcount", panelLabel: "Fixed employees, trailing 12 months",
-  series: T.months.slice(K).map((m, i) => [m.replace(" ", " '"), T.fe[K + i]]), scale: 1, labelFormat: "#,##0", axisFormat: "#,##0",
-  min: Math.floor((Math.min(...T.fe.slice(K)) - 10) / 20) * 20, max: Math.ceil((Math.max(...T.fe.slice(K)) + 10) / 20) * 20, majorUnit: 20, pad: 0,
-  bullets: [
-    `${sg(d(T.fe))} fixed staff, Sep to Sep, to ${T.fe[i26].toLocaleString("en-US")}.`,
-    `Technicians ${sg(d(T.tech))}, advisors ${sg(d(T.sa))}, managers ${sg(d(T.mgr))}.`,
-    `Low of ${low.toLocaleString("en-US")} in ${lowAt}; up ${(T.fe[i26] - low).toLocaleString("en-US")} since.`,
-  ],
+// Day 1 group picture, like every other YOY chart (Noah, Oct 22): 2025 Jan-Dec against 2026 to date. Headcount is a
+// level, so the card's YTD is the average month-end headcount Jan-Sep, not a sum.
+const avg = a => a.reduce((t, v) => t + v, 0) / a.length;
+const p25 = T.fe.slice(0, 12), c26 = T.fe.slice(12, 21);
+H.groupYoy(pptx, pptx, {
+  eyebrow: SEG, title: "Fixed Ops Headcount", metric: "fixed headcount", measure: "Fixed Ops Headcount",
+  prior: p25, current: c26, priorName: "2025", currentName: "2026",
+  ytdPrior: avg(p25.slice(0, 9)), ytdCurrent: avg(c26), unit: "count", chart: "line", labelFormat: "#,##0", axisFormat: "#,##0",
+  fmt: v => Math.round(v).toLocaleString("en-US"), dfmt: v => sg(Math.round(v)),
+  chartLabel: "Fixed employees at month end, 2025 against 2026",
   takeaway: (() => { const g = rpe.G25[0], h = rpe.G26[0];
     return `Fixed ops headcount ${d(T.fe) >= 0 ? "rose" : "fell"} ${Math.abs(d(T.fe))} to ${T.fe[i26].toLocaleString("en-US")} (${sg(d(T.fe)).replace(/\d.*/, "")}${pc(d(T.fe) / T.fe[i25])}), Sep to Sep; CP & W ROs ${h >= g ? "rose" : "fell"} ${pc(h / g - 1)} year to date.`; })(),
-  tone: "n",
-  source: `${SRC} Fixed employees include managers; technicians = service, express, foreman and team-leader titles.\n`
+  source: `${SRC} YTD = average month-end fixed headcount, Jan-Sep. Fixed employees include managers; technicians = service, express, foreman and team-leader titles. 2025 shown January-December.\n`
         + T.months.map((m, i) => `${m}: ${T.fe[i]} fixed, ${T.tech[i]} techs, ${T.sa[i]} advisors, ${T.mgr[i]} managers`).join("\n"),
 });
 const add = T.S.filter(r => r[2] > r[1]).sort((p, q) => (q[2] - q[1]) - (p[2] - p[1]));

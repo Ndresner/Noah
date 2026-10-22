@@ -691,7 +691,7 @@ export function trend(pptx, deck, o) {
     chartColors: [C.blue], lineSize: 3, lineSmooth: false,
     lineDataSymbol: "circle", lineDataSymbolSize: 8,
     lineDataSymbolLineColor: C.blue, lineDataSymbolLineSize: 1,
-    showValue: true, dataLabelPosition: "t",
+    showValue: o.showValue ?? true, dataLabelPosition: "t",   // o.showValue false for long series (Oct 22 2026)
     dataLabelFontFace: "+mn-lt", dataLabelFontSize: sz(14, "data label"), dataLabelColor: C.ink,
     dataLabelFormatCode: o.labelFormat ?? '0.0',      // bare number; the axis says $M
     showLegend: false, showTitle: false,
