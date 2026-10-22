@@ -155,6 +155,7 @@ export const METRICS = {
   "alignment %":          { dir: "up",   fmt: "pct"   },
   "balance %":            { dir: "up",   fmt: "pct"   },
   "brake fluid %":        { dir: "up",   fmt: "pct"   },
+  "warranty parts gp %":  { dir: "up",   fmt: "pct"   },   // Oct 22 2026 (Noah): example for the warranty rate-increase story
   "fuel service %":       { dir: "up",   fmt: "pct"   },
   // 2026-10-15 (Noah, CP Engine + Productivity rebuild) - PROVISIONAL until Tray confirms.
   "cp labor per ro":      { dir: "up",   fmt: "money" },

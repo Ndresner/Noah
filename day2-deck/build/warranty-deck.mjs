@@ -40,6 +40,22 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   }).addNotes(`Talk track: these approvals are new money on every warranty claim, and they are why warranty ELR is up. The factory notices a higher rate too: more money in means more scrutiny. Every claim debited in an audit gives part of it back.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
 }
 
+/* 0b. warranty parts gross profit %: the rate increases showing up as margin (Noah, Oct 22 2026: an example) */
+{
+  const P = JSON.parse(fs.readFileSync("./pulls/q4_2025.json", "utf8")).w_parts;
+  const gp = ([s, g]) => g / s * 100, ytd = rows => rows.reduce((t, r) => t + r[1], 0) / rows.reduce((t, r) => t + r[0], 0) * 100;
+  const y25 = ytd(P.m25.slice(0, 9)), y26 = ytd(P.m26);
+  const ahead = P.m26.filter((r, i) => gp(r) > gp(P.m25[i])).length;
+  H.groupYoy(pptx, pptx, {
+    eyebrow: SEG, title: "Warranty Parts Gross Profit %", metric: "warranty parts gp %", measure: "Warranty Parts GP %",
+    prior: P.m25.map(gp), current: P.m26.map(gp), priorName: "2025", currentName: "2026",
+    ytdPrior: y25, ytdCurrent: y26, unit: "pct", chart: "line",
+    chartLabel: "Warranty parts gross profit % by month, 2025 against 2026",
+    takeaway: `Up ${(y26 - y25).toFixed(1)} pts to ${y26.toFixed(1)}%, ahead of 2025 in ${ahead === 9 ? "all nine" : ahead + " of nine"} months: approved parts markup increases show up as margin.`,
+    source: "Qlik - Closed Repair Orders. Warranty pay type, parts gross / parts sale, by close month; 2025 January-December, 2026 January-September. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded. Pulled Oct 22 2026.",
+  }).addNotes("Example for the rate-increase story. The link to the approvals is the point we are making, not something the data proves on its own: 17 of the 19 stores with approvals got a parts markup increase (vendor YTD report), and warranty parts margin rose in every month. Mix of parts and campaigns also moves this line.");
+}
+
 /* 1. what the auditor debits */
 {
   const s = pptx.addSlide(), tk = "Six audits took back over $400,000, more than a tenth of what rate increases brought in this year. Every cause here is documentation the store controls.";

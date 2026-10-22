@@ -39,7 +39,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
   // Day 1 group picture (Oct 21 rebuild): a rate, so a line, in percent
   H.groupYoy(pptx, pptx, {
     eyebrow: SEG, title, metric, measure,
-    prior: MON.map((m, i) => M.m25[i] / d25[i] * 100), current: MON.map((m, i) => M.m26[i] / d26[i] * 100),
+    prior: [...MON.map((m, i) => M.m25[i] / d25[i] * 100), ...M.q4.map((v, i) => v / A.den_q4[i] * 100)], current: MON.map((m, i) => M.m26[i] / d26[i] * 100),
     priorName: "2025", currentName: "2026", ytdPrior: y25 * 100, ytdCurrent: y26 * 100, unit: "pct", chart: "line",
     fmt: v => fmt.v(v / 100), dfmt: v => fmt.d(v / 100),
     chartLabel: `${title} by month, 2025 against 2026`,

@@ -29,15 +29,15 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
   const lo = Math.min(...t12), hi = Math.max(...t12), hiI = t12.indexOf(hi), loI = t12.indexOf(lo);
   const up = yo.filter(x => x > 0).length;
   const last4 = yo.slice(-4).map(x => (x >= 0 ? "+" : "\u2212") + Math.abs(x * 100).toFixed(1) + "%");
-  // Day 1 group picture: 2025 against 2026, Jan-Sep both years so it matches every other YOY line chart (Noah, Oct 22)
+  // Day 1 group picture: 2025 January-December against 2026 to date, like every other YOY chart (Noah, Oct 22)
   const G = JSON.parse(fs.readFileSync("./gross/monthly.json", "utf8"));
   const full25 = title.endsWith("Fixed Ops") ? G["2025"].sv.map((v, i) => v + G["2025"].pt[i]) : title.endsWith("Service") ? G["2025"].sv : G["2025"].pt;
   H.groupYoy(pptx, pptx, {
     eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross",
-    prior: full25.slice(0, m26.length), current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line",   // Noah, Oct 22: no bar charts
+    prior: full25, current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line",   // Noah, Oct 22: no bar charts
     chartLabel: `${title.replace("Total Gross Profit - ", "")} gross by month, 2025 against 2026 ($M)`,
     takeaway: `${usd(d)} (${(d / v25 * 100).toFixed(1)}%) year to date; ${up} of nine months ahead of 2025, best ${FULL[m26.map((v, i) => v - m25[i]).indexOf(Math.max(...m26.map((v, i) => v - m25[i])))]} at ${usd(Math.max(...m26.map((v, i) => v - m25[i])))}.`,
-    source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025.`,
+    source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December.`,
   });
   H.totalRanker(pptx, pptx, {
     eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross", rows: S.map(r => [r[0], r[2]]), expect: v26,

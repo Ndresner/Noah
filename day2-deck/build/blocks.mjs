@@ -61,7 +61,8 @@ export function block(pptx, X, M) {
   // 1. group picture
   H.groupYoy(pptx, pptx, {
     eyebrow: M.seg, title: M.title, metric: M.metric, measure,
-    prior: D.m25.map(r => f(r) * CS.scale), current: D.m26.map(r => f(r) * CS.scale),
+    // 2025 runs Jan-Dec on the chart (D.q4 = Oct-Dec group months; Noah, Oct 22); YTD stays Jan-Sep
+    prior: [...D.m25, ...(D.q4 ?? [])].map(r => f(r) * CS.scale), current: D.m26.map(r => f(r) * CS.scale),
     priorName: "2025", currentName: "2026",
     ytdPrior: total ? undefined : g25 * CS.scale, ytdCurrent: total ? undefined : g26 * CS.scale,
     unit: total ? "count" : CS.unit, chart: "line",   // totals are lines too (Noah, Oct 22: no bar charts)
@@ -69,7 +70,7 @@ export function block(pptx, X, M) {
     fmt: total ? FM.v : CS.fmt, dfmt: total ? FM.d : CS.dfmt,
     chartLabel: `${M.title} by month, 2025 against 2026`,
     takeaway: `${rose ? "Up" : "Down"} ${FM.d(g26 - g25).replace(/^[+−]/, "")} to ${FM.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
-    source: `${M.src} ${M.def} YTD from YTD totals, not the mean of months. Store rows reconcile to the group on every input, both years.`,
+    source: `${M.src} ${M.def} YTD from YTD totals, not the mean of months. Store rows reconcile to the group on every input, both years.${D.q4 ? " 2025 shown January-December; October-December pulled Oct 22 on the same basis (chart only)." : ""}`,
   });
 
   // 2. level

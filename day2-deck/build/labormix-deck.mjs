@@ -17,6 +17,7 @@ const wi = Object.fromEntries(WI.S.map(s => [s[0], s]));
 const D = {
   m25: C5.m25.map((r, k) => [r[1], WI.m25[k][1], WI.m25[k][3]]),
   m26: C5.m26.map((r, k) => [r[1], WI.m26[k][1], WI.m26[k][3]]),
+  q4: C5.q4.map((r, k) => [r[1], WI.q4[k][1], WI.q4[k][3]]),   // 2025 Oct-Dec, chart only
   S: C5.S.map(s => { const w = wi[s[0]]; return [s[0], s[2], w[2], w[4], s[8], w[7], w[9]]; }),
 };
 const tot = rows => rows.reduce((t, r) => t.map((x, i) => x + r[i]), [0, 0, 0]);
