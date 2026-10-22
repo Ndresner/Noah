@@ -50,7 +50,7 @@ const total = res.reduce((t, s) => t + s.miss, 0);
   const rows = Object.entries(T), top = [...rows].sort((a, b) => b[1].miss - a[1].miss), all4 = rows.filter(([, t]) => t.k === 4).length;
   H.amountRanker(pptx, pptx, {
     eyebrow: "Opcodes", title: "Total Missed Opportunity by Store",
-    rows: rows.map(([n, t]) => [n, t.miss]), fmt: usd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.98,
+    rows: rows.map(([n, t]) => [n, t.miss]), fmt: H.kusd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
     extra: [{ label: "Below", w: 0.66, vals: Object.fromEntries(rows.map(([n, t]) => [n, `${t.k} of 4`])) },
             { label: "Services", w: 0.92, vals: Object.fromEntries(rows.map(([n, t]) => [n, int(t.short)])) }],
     takeaway: `${top[0][0]} leaves the most at ${usd(top[0][1].miss)} a year. ${all4} stores are under all four benchmarks.`,
@@ -64,7 +64,7 @@ res.forEach(s => {
   const top = [...s.rows].sort((a, b) => b.miss - a.miss);
   H.amountRanker(pptx, pptx, {
     eyebrow: "Opcodes", title: `${s.name} Missed Opportunity`,
-    rows: s.rows.map(x => [x.n, x.miss]), fmt: usd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.98,
+    rows: s.rows.map(x => [x.n, x.miss]), fmt: H.kusd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
     extra: [{ label: "Rate", w: 0.62, vals: Object.fromEntries(s.rows.map(x => [x.n, pc(x.rate)])) },
             { label: "Services", w: 0.96, vals: Object.fromEntries(s.rows.map(x => [x.n, int(x.short)])) }],
     takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year: ${int(s.short)} services. ${top[0].n} has the most at ${usd(top[0].miss)}.`,

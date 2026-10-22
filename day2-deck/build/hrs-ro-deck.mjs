@@ -30,7 +30,7 @@ const tot = R.reduce((t, r) => t + r.yr, 0), gGPR = HP.reduce((t, r) => t + r[4]
 const top = [...R].sort((a, b) => b.yr - a.yr);
 H.amountRanker(pptx, pptx, {
   eyebrow: "The CP Engine", title: "One More CP RO a Day",
-  rows: R.map(r => [r.n, r.yr]), fmt: usd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 0.98,
+  rows: R.map(r => [r.n, r.yr]), fmt: H.kusd, color: C.blue, ink: C.navy, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
   extra: [{ label: "ROs/day", w: 0.86, vals: Object.fromEntries(R.map(r => [r.n, r.perDay.toFixed(0)])) },
           { label: "Per RO", w: 0.8, vals: Object.fromEntries(R.map(r => [r.n, usd(r.gpr)])) }],
   takeaway: `One more customer-pay RO a day at every store is worth ${usd(tot)} a year in labor and parts gross. Each RO averages ${usd(gGPR)}.`,
