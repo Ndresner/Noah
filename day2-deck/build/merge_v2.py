@@ -115,19 +115,19 @@ order += X("TP", 5) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("WMN", 4) + X("CP
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
 order += X("EX", 5) + X("CP", 24, 25, 26, 27) + X("WMN", 5)
 order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35) + X("WMN", 6) + X("WMN", 1)
-# 04 Labor Mix
-# internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
-order += O(6) + X("TP", 7) + X("LM", 2, 3, 4, 5) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("LM", 6) + X("TP", 8)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
-# 05 Opcodes
+# 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
-order += O(7) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3, 4) + X("WMN", 7) + X("OPC", 5, 6, 7) + X("WMN", 8) + X("OPC", 8, 9, 10) + X("WMN", 9) + X("OPC", 11, 12, 13) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
-# 06 Warranty & Internal
+order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3, 4) + X("WMN", 7) + X("OPC", 5, 6, 7) + X("WMN", 8) + X("OPC", 8, 9, 10) + X("WMN", 9) + X("OPC", 11, 12, 13) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
+# 05 Labor Mix
+# internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
+order += O(7) + X("TP", 7) + X("LM", 2, 3, 4, 5) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("LM", 6) + X("TP", 8)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
+# 06 Productivity (Technician Proficiency runs inside it, no break of its own)
+order += O(8) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
+order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
+# 07 Warranty
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
-order += O(8) + X("TP", 10) + X("WA", 1) + X("WI", 6, 7, 8, 9) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4, 5)
-# 07 Productivity (Technician Proficiency runs inside it, no break of its own)
-order += O(9) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
-order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
+order += O(9) + X("TP", 10) + X("WA", 1) + X("WI", 6, 7, 8, 9) + X("WA", 2) + X("WA", 3, 4) + X("WI", 2, 3, 4, 5)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of

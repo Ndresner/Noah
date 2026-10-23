@@ -20,10 +20,10 @@ export const SECTIONS = [
   { short: "Gross",               detail: "Fixed ops, service and parts gross, and the store records.", chips: ["Fixed ops", "Service", "Parts"] },
   { short: "Profitability",       detail: "Absorption and net to gross.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "Customer Pay",        detail: "ROs, hours per RO, rate and margin.",                         chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"] },
-  { short: "Labor Mix",           detail: "Pay type and internal, maintenance and repair mix.",          chips: ["Pay type", "Internal rate & margin", "Work type", "Op code descriptions"] },
   { short: "Opcodes",             detail: "MPI and video, then alignment, balance, brake fluid and fuel.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
-  { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
+  { short: "Labor Mix",           detail: "Pay type and internal, maintenance and repair mix.",          chips: ["Pay type", "Internal rate & margin", "Work type", "Op code descriptions"] },
   { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
+  { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
 ];
 const TRACKER = SECTIONS.map(s => s.short);
