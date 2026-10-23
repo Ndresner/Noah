@@ -118,18 +118,26 @@ order += X("EX", 2) + X("CP", 6, 7, 8) + X("HPRO", 1) + X("CP", 9)
 # Oct 23 (Noah): Labor Sale by Pay Type, then the ELR explainer, then Pricing Strategy, Express Service and Labor by
 # Work Type ahead of the CP ELR slides. The CP share of labor sale block (LM 3-5) is out of the deck.
 # pay type after the ELR explainer too (Oct 23)
-order += X("EX", 3) + X("LM", 2) + X("TP", 5) + X("TP", 7) + X("LM", 6) +  X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
+# Oct 23 (Noah): Express Service (TP 7) moves to Opcodes; Door Rate (CP 14) to Open Decisions; the two CP ELR % of
+# door rate slides (CP 16, 17) follow the ELR change ranker, ahead of its movers slide
+order += X("EX", 3) + X("LM", 2) + X("TP", 5) + X("LM", 6) + X("CP", 10, 11, 12, 16, 17, 13)
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
-order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)
+# The Goldilocks Margin (TP 6) folded into What Is Labor GP % (Oct 23)
+order += X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)
 # 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
-order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", *R(2, 13)) + X("OP", 3, 4, 5, 6, 2, 1)
+# Oct 23 (Noah): Express Service ahead of MPI, Tracking & Accountability after MPI and video; each measure's missed
+# opportunity slide sits inside its block, ahead of the top/bottom slide; the two totals close the section
+order += O(6) + X("TP", 9) + X("TP", 7) + X("MPI", 1, 2) + X("TP", 8) + X("EX", 10)
+for (a, b, c), op in zip([(2, 3, 4), (5, 6, 7), (8, 9, 10), (11, 12, 13)], (3, 4, 5, 6)):
+    order += X("OPC", a, b) + X("OP", op) + X("OPC", c)
+order += X("OP", 2, 1)
 # 05 Internal (was Labor Mix; renamed Oct 23)
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
-order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("TP", 8)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
+order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8))   # TP 8 Tracking & Accountability moved to Opcodes (Oct 23)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
 # 06 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(8) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
-order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
+order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 7)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23)
 # 07 Warranty
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
@@ -146,7 +154,7 @@ OPEN = [
     # door rate B, CP vs Internal option B and the headcount trend - the deck versions now cover them
     ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
-    ("DOOR RATE", X("CP", 17), L("OPTION A")),
+    ("DOOR RATE", X("CP", 14, 17), L("STORE DOOR RATES", "OPTION A")),   # CP 14 out of the flow (Noah, Oct 23)
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),

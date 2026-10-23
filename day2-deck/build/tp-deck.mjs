@@ -81,7 +81,7 @@ T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
   ask: "hold labor margin in the 78-80% band by matching the tech to the job, not by squeezing tech pay.",
   notes: "PLACE: CP Engine section, before CP Labor Gross Profit %.\nSaid: Roundtable slide 21 (Gross Profit %). Above 80% can mean techs are underpaid on the work they do; below 78% means the job mix or the dispatch is off." });
 
-T({ eyebrow: "Customer Pay", title: "Express Service", saidFrom: GM,
+T({ eyebrow: "Opcodes", title: "Express Service", saidFrom: GM,
   said: ["Express service is the #1 retention driver and business builder",
          "75% of your business includes some type of maintenance work",
          "Express bays are simply MPI bays. Unknown dollars are worth 2.5 times the known.",
@@ -90,9 +90,9 @@ T({ eyebrow: "Customer Pay", title: "Express Service", saidFrom: GM,
   now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor; repair 30.5%.", tone: "n" },
         { big: "52.5%", label: "Customer pay as a share of labor sale, down 0.3 pts. Warranty labor rose 8.8%, internal 5.8%.", tone: "n" }],
   ask: "treat every express visit as an inspection: fast in, inspected, and sold the next service.",
-  notes: "PLACE: Customer Pay section, after Pricing Strategy and before the pay type slides (moved from Labor Mix, Oct 23).\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
+  notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: express visits and a complete MPI go hand in hand).\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
 
-T({ eyebrow: "Internal", title: "Tracking & Accountability", saidFrom: BOTH,
+T({ eyebrow: "Opcodes", title: "Tracking & Accountability", saidFrom: BOTH,
   said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",
          "Give feedback quickly and often. Trends start early: don't wait until the 15th.",
          "Tracked metrics improve performance; we are responsible for the knowing",
@@ -100,7 +100,7 @@ T({ eyebrow: "Internal", title: "Tracking & Accountability", saidFrom: BOTH,
   // 15.2% group figure removed with the Unclassified Customer-Pay Labor slide (Noah, Oct 22); the range now explains itself
   now: [{ big: "81.3%", label: "MPI completion, July to September (store-reported). 12 of 33 stores at the 90% benchmark.", tone: "b" }],
   ask: "if it isn't described, it can't be tracked. Clean up op code descriptions so the reports show what you sell.",
-  notes: "PLACE: end of the Internal section (renamed from Labor Mix, Oct 23; Noah may move it).\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
+  notes: "PLACE: Opcode Benchmarks, after MPI and Video Completion %, ahead of the op code closing % slides (moved out of Internal, Oct 23).\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
 
 T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
   said: ["Every advisor, every customer: timely meet and greet at the vehicle",
