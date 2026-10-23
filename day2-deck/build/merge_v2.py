@@ -154,7 +154,7 @@ OPEN = [
     # door rate B, CP vs Internal option B and the headcount trend - the deck versions now cover them
     ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
-    ("DOOR RATE", X("CP", 14, 17), L("STORE DOOR RATES", "OPTION A")),   # CP 14 out of the flow (Noah, Oct 23)
+    ("DOOR RATE", X("CP", 14), L("STORE DOOR RATES")),   # CP 14 out of the flow; option A (CP 17, same as the flow slide) removed (Noah, Oct 23)
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
