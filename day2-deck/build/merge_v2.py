@@ -115,9 +115,9 @@ order += O(5) + X("TP", 3, 4)
 order += X("EX", 1) + X("CP", 2, 3, 4) + X("CPH", 5) + X("CP", 5) + X("CPH", 1, 2, 3, 4)
 order += X("EX", 2) + X("CP", 6, 7, 8) + X("HPRO", 1) + X("CP", 9)
 # door rate: CP 12, 15 and 16 (v2 slides 53, 56, 57) cut from the flow (Noah, Oct 21); they stay in Open Decisions
-# Oct 23 (Noah): Express Service, Labor Sale by Pay Type, the CP share of labor sale block and Labor by Work Type
-# move from Labor Mix to right after Pricing Strategy
-order += X("TP", 5) + X("TP", 7) + X("LM", 2, 3, 4, 5, 6) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
+# Oct 23 (Noah): Labor Sale by Pay Type, then the ELR explainer, then Pricing Strategy, Express Service and Labor by
+# Work Type ahead of the CP ELR slides. The CP share of labor sale block (LM 3-5) is out of the deck.
+order += X("LM", 2) + X("EX", 3) + X("TP", 5) + X("TP", 7) + X("LM", 6) + X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
 order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)
 # 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
