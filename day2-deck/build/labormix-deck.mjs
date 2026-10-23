@@ -5,7 +5,7 @@ import { block, F, LUX } from "./blocks.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 /* LABOR MIX - one segment: how labor splits by pay type, then how customer-pay labor splits by work type.
    Merged from mix-deck.mjs and wm-deck.mjs, Oct 15 2026. Segment name is the eyebrow on every slide. */
-const SEG = "Labor Mix";
+const SEG = "Customer Pay";   // these slides moved into Customer Pay, after Pricing Strategy (Noah, Oct 23)
 H.section(pptx, pptx, { kicker: "Fixed Ops", title: "Labor Mix", chips: ["Pay type", "Work type", "Op code descriptions"] });
 /* Qlik Closed Repair Orders app c3efc739, pulled 2026-10-14/15. Labor sale by pay type: C from m5.json a[1],
    W and I from wi.json a[1], a[3]. Same-store, INEOS excluded, GMC Prescott body shop labor types excluded. */

@@ -81,7 +81,7 @@ T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
   ask: "hold labor margin in the 78-80% band by matching the tech to the job, not by squeezing tech pay.",
   notes: "PLACE: CP Engine section, before CP Labor Gross Profit %.\nSaid: Roundtable slide 21 (Gross Profit %). Above 80% can mean techs are underpaid on the work they do; below 78% means the job mix or the dispatch is off." });
 
-T({ eyebrow: "Labor Mix", title: "Express Service", saidFrom: GM,
+T({ eyebrow: "Customer Pay", title: "Express Service", saidFrom: GM,
   said: ["Express service is the #1 retention driver and business builder",
          "75% of your business includes some type of maintenance work",
          "Express bays are simply MPI bays. Unknown dollars are worth 2.5 times the known.",
@@ -90,7 +90,7 @@ T({ eyebrow: "Labor Mix", title: "Express Service", saidFrom: GM,
   now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor; repair 30.5%.", tone: "n" },
         { big: "52.5%", label: "Customer pay as a share of labor sale, down 0.3 pts. Warranty labor rose 8.8%, internal 5.8%.", tone: "n" }],
   ask: "treat every express visit as an inspection: fast in, inspected, and sold the next service.",
-  notes: "PLACE: Labor Mix section, after the section break and before the pay type slides.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
+  notes: "PLACE: Customer Pay section, after Pricing Strategy and before the pay type slides (moved from Labor Mix, Oct 23).\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
 
 T({ eyebrow: "Labor Mix", title: "Tracking & Accountability", saidFrom: BOTH,
   said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",
