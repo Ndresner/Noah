@@ -1130,7 +1130,7 @@ export function totalRanker(pptx, deck, o) {
     const x0 = COLX[col], y = TOP + k * rowH;
     const fav = good ? r.b >= 0 : r.b < 0;   // green above the line, red below it
 
-    s.addText(String(i + 1), {
+    s.addText(String(r.rk ?? i + 1), {
       x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
       color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
     });
@@ -1295,8 +1295,12 @@ export function levelRanker(pptx, deck, o) {
      gets a short navy tick at its own reference instead of the one line through the
      column. o.mark = Set of names drawn on a tinted row with the name in bold navy;
      o.legend = one line above the rows saying what the tint and tick mean. */
-  const REF = o.bench ?? G, refOf = o.refOf ?? (() => REF), mark = o.mark ?? new Set();
-  const all = rows;
+  const REF = o.bench ?? G, mark = o.mark ?? new Set();
+  /* o.groups = [{ label, names: Set, ref }] (review, Oct 23): one list per group, each sorted and ranked on its own,
+     under a header row, in the same two columns; each store is scored against its group's ref. */
+  const grp = o.groups ? n => o.groups.find(g => g.names.has(n)) : null;
+  const refOf = o.refOf ?? (grp ? n => grp(n).ref : () => REF);
+  const all = !o.groups ? rows : o.groups.flatMap(g => [{ hdr: g.label }, ...rows.filter(r => g.names.has(r.n)).map((r, i) => ({ ...r, rk: i + 1 }))]);
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
 
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
@@ -1310,7 +1314,7 @@ export function levelRanker(pptx, deck, o) {
   const TOP = 2.02 + HEAD, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
   // The scale runs from the lowest value to the highest, through zero, so a
   // negative store draws left of a zero line instead of vanishing into a sliver.
-  const lo = o.floor ?? Math.min(0, ...all.map(r => r.v)), hi = Math.max(0, REF * 1.02, ...all.map(r => r.v), ...all.map(r => refOf(r.n) * 1.02));
+  const lo = o.floor ?? Math.min(0, ...rows.map(r => r.v)), hi = Math.max(0, REF * 1.02, ...rows.map(r => r.v), ...rows.map(r => refOf(r.n) * 1.02));
   const span = hi - lo || 1;
   const COLX = [0.72, 6.79];
   const FS = 12;   // traded down from 13 to carry the rank numbers
@@ -1321,12 +1325,17 @@ export function levelRanker(pptx, deck, o) {
   all.forEach((r, i) => {
     const col = i < perCol ? 0 : 1, k = i - col * perCol;
     const x0 = COLX[col], y = TOP + k * rowH;
+    if (r.hdr) {
+      s.addText(r.hdr, { x: x0, y, w: 5.8, h: rowH, fontFace: F, fontSize: FS + 1, bold: true, color: C.navy, charSpacing: 1.0, valign: "bottom", isTextBox: true, margin: 0 });
+      s.addShape(pptx.ShapeType.rect, { x: x0, y: y + rowH - 0.02, w: 5.8, h: 0.02, fill: { color: C.navy } });
+      return;
+    }
     const ref = refOf(r.n), better = up ? r.v >= ref : r.v <= ref, mk = mark.has(r.n);
     const fill = neutral ? C.blue : (better ? C.good : C.bad);
     const txt  = neutral ? C.ink : (better ? C.goodInk : C.badInk);
     if (mk) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.06, y, w: 5.86, h: rowH, fill: { color: C.blueTint } });
 
-    s.addText(String(i + 1), {
+    s.addText(String(r.rk ?? i + 1), {
       x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: FS,
       color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
     });

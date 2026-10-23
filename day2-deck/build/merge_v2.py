@@ -108,16 +108,19 @@ order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is
 order += O(4) + X("EX", 8) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
 # 03 Customer Pay (renamed from The CP Engine, Oct 22). Every metric block now ends with a top/bottom-five movers slide.
 order += O(5) + X("TP", 3, 4)
-order += X("EX", 1) + X("CP", 2, 3, 4, 5) + X("WMN", 2) + X("CPH", 5) + X("CPH", 1, 2, 3, 4)
-order += X("EX", 2) + X("CP", 6, 7, 8, 9) + X("WMN", 3) + X("HPRO", 1)
+# Oct 23 (Noah): One More CP RO a Day (CPH 5) sits after the CP RO change ranker, and What 0.1 Hour per RO Is Worth
+# (HPRO 1) after the hours-per-RO change ranker, each ahead of its movers slide. The Who's Moving Now line charts
+# (WMN 1-4, 6-10) move to Open Decisions. CP Parts $ per RO (EX 5, CP 24-27, WMN 5) is out of the deck: the link
+# from labor to parts now sits on the CP Labor $ per RO explainer.
+order += X("EX", 1) + X("CP", 2, 3, 4) + X("CPH", 5) + X("CP", 5) + X("CPH", 1, 2, 3, 4)
+order += X("EX", 2) + X("CP", 6, 7, 8) + X("HPRO", 1) + X("CP", 9)
 # door rate: CP 12, 15 and 16 (v2 slides 53, 56, 57) cut from the flow (Noah, Oct 21); they stay in Open Decisions
-order += X("TP", 5) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("WMN", 4) + X("CP", 14, 16, 17)
+order += X("TP", 5) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
-order += X("EX", 5) + X("CP", 24, 25, 26, 27) + X("WMN", 5)
-order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35) + X("WMN", 6) + X("WMN", 1)
+order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)
 # 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
-order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", 2, 3, 4) + X("WMN", 7) + X("OPC", 5, 6, 7) + X("WMN", 8) + X("OPC", 8, 9, 10) + X("WMN", 9) + X("OPC", 11, 12, 13) + X("WMN", 10) + X("OP", 3, 4, 5, 6, 2, 1)
+order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", *R(2, 13)) + X("OP", 3, 4, 5, 6, 2, 1)
 # 05 Labor Mix
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
 order += O(7) + X("TP", 7) + X("LM", 2, 3, 4, 5) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("LM", 6) + X("TP", 8)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
@@ -144,6 +147,9 @@ OPEN = [
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
     ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
+    # the line-chart Who's Moving Now slides, moved out of the flow (Noah, Oct 23): CP ROs, hours per RO, ELR,
+    # parts GP %, CP gross, then the four opcodes. The parts $ per RO one (WMN 5) left with its section.
+    ("WHO'S MOVING NOW", X("WMN", 2, 3, 4, 6, 1, 7, 8, 9, 10), L(*["LINE CHART"] * 9)),
     ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),
 ]
 for topic, slides, opts in OPEN:
