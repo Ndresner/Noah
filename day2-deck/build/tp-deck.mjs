@@ -146,7 +146,7 @@ T({ eyebrow: "Fixed Ops Productivity", title: "Pay Plans Are Work Instructions",
          "Base versus bonus: a 50/50 ratio",
          "Every system is perfectly designed to get the results it gets"],
   now: [{ big: "$304", label: "CP labor per RO, the number the plans should pay on. Up $17.", tone: "g" },
-        { big: "166", label: "CP & W ROs per advisor a month, down 7. Advisors grew 1.5%; ROs fell 2.3%.", tone: "b" }],
+        { big: "94.7%", label: "Technician proficiency, Jan-Sep: 20 of 33 stores at or above 85%. Flat-rate pay rewards what techs produce.", tone: "g" }],   // replaces ROs per advisor, now in Open Decisions (Noah, Oct 23)
   ask: "check that every advisor and tech pay plan pays for the numbers on these slides.",
   notes: "PLACE: Productivity section, before CP & W ROs per Service Advisor.\nSaid: Jan GM slide 16 / May GM slide 12 (Pay Plans aka Work Instructions)." });
 

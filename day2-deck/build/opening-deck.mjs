@@ -22,7 +22,7 @@ export const SECTIONS = [
   { short: "Customer Pay",        detail: "ROs, hours per RO, pricing and labor mix, rate and margin.",  chips: ["ROs", "Hours per RO", "Pricing & mix", "ELR", "$ per RO", "Margin"] },
   { short: "Opcodes",             detail: "Express service, MPI and video, tracking, then alignment, balance, brake fluid and fuel.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
   { short: "Internal",            detail: "Internal labor rate and margin.", chips: ["Internal ELR", "Internal labor GP %", "Internal parts GP %"] },   // tracking moved to Opcodes (Oct 23)   // pay type and work type moved to Customer Pay (Oct 23)
-  { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
+  { short: "Productivity",        detail: "Headcount, gross per employee and technician proficiency.",   chips: ["Headcount", "Gross per employee", "Technician proficiency"] },   // ROs per person dropped (Noah, Oct 23)
   { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
 ];
