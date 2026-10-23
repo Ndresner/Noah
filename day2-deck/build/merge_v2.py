@@ -123,7 +123,7 @@ order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP"
 # 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
 order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", *R(2, 13)) + X("OP", 3, 4, 5, 6, 2, 1)
-# 05 Labor Mix
+# 05 Internal (was Labor Mix; renamed Oct 23)
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
 order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("TP", 8)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
 # 06 Productivity (Technician Proficiency runs inside it, no break of its own)

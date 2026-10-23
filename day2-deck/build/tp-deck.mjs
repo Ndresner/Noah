@@ -92,7 +92,7 @@ T({ eyebrow: "Customer Pay", title: "Express Service", saidFrom: GM,
   ask: "treat every express visit as an inspection: fast in, inspected, and sold the next service.",
   notes: "PLACE: Customer Pay section, after Pricing Strategy and before the pay type slides (moved from Labor Mix, Oct 23).\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
 
-T({ eyebrow: "Labor Mix", title: "Tracking & Accountability", saidFrom: BOTH,
+T({ eyebrow: "Internal", title: "Tracking & Accountability", saidFrom: BOTH,
   said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",
          "Give feedback quickly and often. Trends start early: don't wait until the 15th.",
          "Tracked metrics improve performance; we are responsible for the knowing",
@@ -100,7 +100,7 @@ T({ eyebrow: "Labor Mix", title: "Tracking & Accountability", saidFrom: BOTH,
   // 15.2% group figure removed with the Unclassified Customer-Pay Labor slide (Noah, Oct 22); the range now explains itself
   now: [{ big: "81.3%", label: "MPI completion, July to September (store-reported). 12 of 33 stores at the 90% benchmark.", tone: "b" }],
   ask: "if it isn't described, it can't be tracked. Clean up op code descriptions so the reports show what you sell.",
-  notes: "PLACE: Labor Mix section, before the work-type (maintenance / repair / unclassified) slides.\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
+  notes: "PLACE: end of the Internal section (renamed from Labor Mix, Oct 23; Noah may move it).\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
 
 T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
   said: ["Every advisor, every customer: timely meet and greet at the vehicle",

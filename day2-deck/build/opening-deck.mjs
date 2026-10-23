@@ -21,7 +21,7 @@ export const SECTIONS = [
   { short: "Profitability",       detail: "Absorption and net to gross.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "Customer Pay",        detail: "ROs, hours per RO, pricing and labor mix, rate and margin.",  chips: ["ROs", "Hours per RO", "Pricing & mix", "ELR", "$ per RO", "Margin"] },
   { short: "Opcodes",             detail: "MPI and video, then alignment, balance, brake fluid and fuel.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
-  { short: "Labor Mix",           detail: "Internal labor rate and margin, then tracking and accountability.", chips: ["Internal ELR", "Internal labor GP %", "Internal parts GP %", "Tracking"] },   // pay type and work type moved to Customer Pay (Oct 23)
+  { short: "Internal",            detail: "Internal labor rate and margin, then tracking and accountability.", chips: ["Internal ELR", "Internal labor GP %", "Internal parts GP %", "Tracking"] },   // pay type and work type moved to Customer Pay (Oct 23)
   { short: "Productivity",        detail: "Gross per employee, headcount and technician proficiency.",   chips: ["Gross per employee", "ROs per person", "Headcount", "Technician proficiency"] },
   { short: "Warranty",            detail: "Rate increases, warranty rate and parts margin, audits and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Close",               detail: "What changed, where the money is, and commitments.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
