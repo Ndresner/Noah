@@ -14,6 +14,7 @@ const BASIS = "Qlik - Closed Repair Orders. Customer pay, by close date. Same-st
 const SRC_Y = BASIS + " Change is Jan-Sep 2026 vs Jan-Sep 2025. Ranked by percent change (points for parts GP %), so store size does not drive the ranking.";
 const SRC_M = BASIS + " Change is Jul-Sep 2026 (Q3) vs Jan-Mar 2026 (Q1), each store against itself. Gross and ROs are per-month averages of each quarter. The group's own Q1-to-Q3 change is the seasonal baseline: it is the same for every store, so ranking by a store's change is the same as ranking by how far it beat the group. 'Stepped up in' = the month that best splits the store's year into a lower stretch before and a higher stretch after (at least three months before, two after). It is a conversation starter, not proof of cause.";
 const ORDER = ["gross", "ros", "hpro", "elr", "pro", "pgp"];
+const GRID = ORDER.filter(k => k !== "pro");   // grids drop parts $ per RO (Noah, Oct 23: that section left the deck)
 const MON = ["J", "F", "M", "A", "M", "J", "J", "A", "S"];
 const SHORT = { gross: "CP gross", ros: "CP ROs", hpro: "hours/RO", elr: "ELR", pro: "parts $/RO", pgp: "parts GP%" };
 const sg = v => v >= 0 ? "+" : "−";
@@ -39,11 +40,11 @@ const VIEW = {
 
 function tops(view, n = 3) {
   const c = {};
-  ORDER.forEach(k => VIEW[view][k].rows.slice(0, n).forEach(r => (c[r.n] ??= []).push(k)));
+  GRID.forEach(k => VIEW[view][k].rows.slice(0, n).forEach(r => (c[r.n] ??= []).push(k)));
   return Object.entries(c).sort((a, b) => b[1].length - a[1].length);
 }
 
-/* ---- grids: six measures, top 3 and bottom 3 each (was 5 and 5; cut Oct 21, Noah: too crowded to read) ---- */
+/* ---- grids: five measures (parts $ per RO dropped Oct 23), top 3 and bottom 3 each (was 5 and 5; cut Oct 21, Noah: too crowded to read) ---- */
 function grid(view, { title, sub, groupLabel, src }) {
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title });
@@ -51,7 +52,7 @@ function grid(view, { title, sub, groupLabel, src }) {
   s.addText(sub, { x: 0.78, y: 1.4, w: 11.77, h: 0.28, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
   // leaderboard: measures across; top 5 then bottom 5 down (bottom 5 ADDED 2026-10-20, Noah). Each cell = store, change.
   // Before -> after values moved to the speaker notes to make room for ten rows.
-  const K = 3, X0 = 1.0, CW = 11.68 / 6, HY = 1.85, rh = 0.58, TOPS = 2.55, BOTS = 4.46, N = VIEW[view][ORDER[0]].rows.length;
+  const K = 3, X0 = 1.0, CW = 11.68 / GRID.length, HY = 1.85, rh = 0.58, TOPS = 2.55, BOTS = 4.46, N = VIEW[view][ORDER[0]].rows.length;
   [[TOPS, C.good, C.goodInk, j => j + 1], [BOTS, C.bad, C.badInk, j => N - K + 1 + j]].forEach(([y0, bar, ink, rank]) => {
     s.addShape(pptx.ShapeType.rect, { x: 0.68, y: y0, w: 0.05, h: rh * K, fill: { color: bar } });
     for (let j = 0; j < K; j++) {
@@ -61,7 +62,7 @@ function grid(view, { title, sub, groupLabel, src }) {
     }
   });
   const notes = [];
-  ORDER.forEach((k, i) => {
+  GRID.forEach((k, i) => {
     const M = VIEW[view][k], x = X0 + i * CW;
     s.addShape(pptx.ShapeType.rect, { x: x + 0.06, y: HY, w: CW - 0.12, h: 0.05, fill: { color: C.good } });
     s.addText(M.label.replace(" per Month", "").toUpperCase(), { x: x + 0.08, y: HY + 0.09, w: CW - 0.16, h: 0.26, fontFace: F, fontSize: 13, bold: true,
@@ -83,10 +84,10 @@ function grid(view, { title, sub, groupLabel, src }) {
   s.addNotes("\n\nBefore \u2192 after, by measure:\n" + notes.join("\n"));
   const rep = tops(view, K), hi = rep[0][1].length;
   const lead = rep.filter(e => e[1].length === hi).map(e => e[0]), next = rep.filter(e => e[1].length === hi - 1).map(e => e[0]);
-  const bc = {}; ORDER.forEach(k => VIEW[view][k].rows.slice(-K).forEach(r => (bc[r.n] ??= []).push(k)));
+  const bc = {}; GRID.forEach(k => VIEW[view][k].rows.slice(-K).forEach(r => (bc[r.n] ??= []).push(k)));
   const brep = Object.entries(bc).sort((p, q) => q[1].length - p[1].length), bh = brep[0][1].length;
   const blead = brep.filter(e => e[1].length === bh).map(e => e[0]);
-  H.takeaway(pptx, s, `Most top-three finishes: ${list(lead)} (${hi} of 6). Most bottom-three: ${list(blead)} (${bh} of 6).`, "n");
+  H.takeaway(pptx, s, `Most top-three finishes: ${list(lead)} (${hi} of ${GRID.length}). Most bottom-three: ${list(blead)} (${bh} of ${GRID.length}).`, "n");
   H.foot(pptx, s, src);
   return s;
 }
@@ -131,7 +132,7 @@ function twoViews() {
   [[A, 0.5, "Better than last year", "Jan–Sep 2026 vs Jan–Sep 2025"], [B, 6.75, "Moving now", "Q3 vs Q1, this year"]].forEach(([rows, x, head, sub]) => {
     const w = 6.08;
     H.panel(pptx, s, { x, y: 1.32, w, h: 5.08, label: `${head} · ${sub}` });
-    s.addText("Top-5 finishes, of six measures", { x: x + 0.25, y: 1.96, w: w - 0.5, h: 0.3, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
+    s.addText(`Top-5 finishes, of ${NUMW[GRID.length]} measures`, { x: x + 0.25, y: 1.96, w: w - 0.5, h: 0.3, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
     const rh = 0.64, mx = rows[0][1].length;
     rows.forEach(([n, ks], j) => {
       const y = 2.38 + j * rh;
@@ -145,7 +146,7 @@ function twoViews() {
   const inA = new Set(tops("yoy", 5).map(e => e[0])), both = tops("mom", 5).filter(e => inA.has(e[0])).map(e => e[0]);
   const lead = rows => { const t = rows.filter(r => r[1].length === rows[0][1].length); return t.length === 1 ? `${t[0][0]} leads` : `${cap(NUMW[t.length])} stores tie`; };
   H.takeaway(pptx, s, `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${both.length === 0 ? "No store makes both views." : cap(NUMW[both.length]) + " stores make both views."}`, "g");
-  H.foot(pptx, s, BASIS + " Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across six measures; top six stores shown in each view.");
+  H.foot(pptx, s, BASIS + ` Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across ${NUMW[GRID.length]} measures (parts $ per RO dropped, Oct 23); top six stores shown in each view.`);
 }
 
 /* ---- the ask: one question for each measure's top mover ---- */

@@ -88,8 +88,8 @@ export function block(pptx, X, M) {
     const lux = new Set(L.map(x => x.n));
     H.levelRanker(pptx, pptx, {
       eyebrow: M.seg, title: M.title, metric: M.metric, measure, rows: lv, group: g26, fmt: FM.v, groupLabel: LABEL.level,
-      refOf: n => lux.has(n) ? la : na, mark: lux,
-      legend: `Shaded = luxury. Navy tick = the store's segment average: luxury ${FM.v(la)}, non-luxury ${FM.v(na)}. Green at or above it.`,
+      refOf: n => lux.has(n) ? la : na, mark: lux, alignRef: true,   // bars line up on each segment's average (Noah, Oct 23)
+      legend: `Shaded = luxury. Navy line = the store's segment average: luxury ${FM.v(la)}, non-luxury ${FM.v(na)}. Green at or above it.`,
       takeaway: `Against their own segment, ${aL} of ${L.length} luxury stores beat ${FM.v(la)} and ${aN} of ${N.length} others beat ${FM.v(na)}. ${nm(topN.n)} leads non-luxury at ${FM.v(f(topN.a26))}.`,
       source: `${M.src} ${M.def} Jan-Sep 2026 YTD. Green at or above own segment average, red below. Segment averages from segment totals. Luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson; Acura counted as non-luxury.`,
     });

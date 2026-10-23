@@ -16,10 +16,11 @@ X({ eyebrow: "Customer Pay", title: "What Is CP RO Count?",
         "Flat car count means growth has to come from selling more on each visit."],
   levers: [["Appointment availability", "Same-day and next-day slots; an easy online scheduler"],
            ["Phone handling", "Every call answered, and every caller asked for the appointment"],
-           ["Retention", "Call lapsed, inactive and sold-not-serviced customers; lists in the VizAuto retention app"],
+           ["Retention", "Proactive outreach and ongoing engagement: lapsed, inactive and sold-not-serviced customers (VizAuto retention app)"],
            ["Next visit booked", "First appointment at the sale; next one before the customer leaves"],
            ["Express service", "Fast, easy maintenance keeps customers coming back"],
            ["Marketing", "Fixed ops budget, keyword search, OEM and third-party reminders"]],
+  leverRows: [1, 1.35, 1],   // the retention line runs four lines (Oct 23)
   ours: "Group: 279,756 CP ROs, up 456 from 2025. Volume is flat.",
   notes: "PLACE: CP Engine, in front of CP RO Count.\nDefinition is the data slides' own: distinct ROs with a customer-pay line, by close month. This includes the roughly 0.9% of CP ROs with no labor charged (parts-only sales such as additives, wipers and batteries, and blank CP lines); Qlik's hasLabor flag is set on every line, so it does not filter them, and the count is kept that way to match the numbers stores are used to. GMC Prescott body-shop-only ROs excluded." });
 

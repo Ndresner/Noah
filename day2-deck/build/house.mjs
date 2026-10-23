@@ -1321,6 +1321,10 @@ export function levelRanker(pptx, deck, o) {
   const RANKW = 0.34, NAMEW = 2.10, VALW = EX.length ? 0.74 : 1.25;
   const BARW = EX.length ? 5.62 - RANKW - NAMEW - VALW - EXW - 0.19 : 1.85;
   const X = (bx, v) => bx + (Math.max(v, lo) - lo) / span * BARW;
+  /* o.alignRef (Oct 23, Noah): each bar is drawn against its own reference, so every store's segment average lands
+     on the same line and a store at its average reaches it; values printed stay the real ones. */
+  const hiR = Math.max(1.02, ...rows.map(r => r.v / refOf(r.n) * 1.02));
+  const XR = (bx, v, n) => o.alignRef ? bx + Math.max(v / refOf(n), 0) / hiR * BARW : X(bx, v);
 
   all.forEach((r, i) => {
     const col = i < perCol ? 0 : 1, k = i - col * perCol;
@@ -1344,11 +1348,11 @@ export function levelRanker(pptx, deck, o) {
       color: mk ? C.navy : C.ink, bold: mk, valign: "middle", isTextBox: true, margin: 0,
     });
     const bx = x0 + RANKW + 0.05 + NAMEW + 0.08;
-    const zx = X(bx, Math.max(0, lo)), vx = X(bx, r.v), bh = rowH * 0.5;
+    const zx = o.alignRef ? bx : X(bx, Math.max(0, lo)), vx = XR(bx, r.v, r.n), bh = rowH * 0.5;
     s.addShape(pptx.ShapeType.rect, {
       x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill },
     });
-    if (o.refOf) s.addShape(pptx.ShapeType.rect, { x: X(bx, ref) - 0.012, y: y + rowH * 0.1, w: 0.024, h: rowH * 0.8, fill: { color: C.navy } });
+    if (o.refOf || o.groups) s.addShape(pptx.ShapeType.rect, { x: XR(bx, ref, r.n) - 0.012, y: y + rowH * 0.1, w: 0.024, h: rowH * 0.8, fill: { color: C.navy } });
     s.addText(o.fmt(r.v), {
       x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
       color: txt, align: "right", valign: "middle", isTextBox: true, margin: 0,

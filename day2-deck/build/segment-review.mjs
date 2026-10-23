@@ -17,7 +17,7 @@ const base = { title: "CP ELR", metric: "elr", measure: "CP ELR", fmt, groupLabe
 
 H.levelRanker(pptx, pptx, { ...base, eyebrow: "Customer Pay · Review · Option A: grouped", rows, group: f(X.G26),
   groups: [{ label: `LUXURY · AVERAGE ${fmt(la)}`, names: lv, ref: la }, { label: `NON-LUXURY · AVERAGE ${fmt(na)}`, names: nv, ref: na }],
-  legend: "Each segment ranked on its own. Navy tick = the segment average; green at or above it.",
+  alignRef: true, legend: "Each segment ranked on its own. Navy line = the segment average; green at or above it.",
   takeaway: `${at(L, la)} of ${L.length} luxury stores beat ${fmt(la)} and ${at(N, na)} of ${N.length} others beat ${fmt(na)}. ${nm(best(L).n)} leads luxury, ${nm(best(N).n)} non-luxury.`,
   source: SRC + " Option A: one slide, two groups." });
 
