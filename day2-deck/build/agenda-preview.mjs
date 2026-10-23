@@ -11,6 +11,6 @@ H.agenda(pptx, pptx, { eyebrow: "Day 2 · General Managers & Service Managers", 
   { name: "Internal", detail: "Internal labor rate and margins." },
   { name: "Productivity", detail: "Staffing, output and technician proficiency." },
   { name: "Warranty", detail: "Warranty rates, margins and compliance." },
-  { name: "Close", detail: "What changed, and what we commit to." },
+  { name: "Close", detail: "What changed, where the money is, and what we commit to." },
 ] });
 await pptx.writeFile({ fileName: "../decks/Agenda - Preview.pptx" }); console.log("preview built");
