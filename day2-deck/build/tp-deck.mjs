@@ -67,9 +67,9 @@ T({ eyebrow: "Customer Pay", title: "Pricing Strategy", saidFrom: BOTH,
          "Benchmark: CP ELR at least 70% of door rate"],
   now: [{ big: "$162.42", label: "CP effective labor rate, up $3.56 and ahead in all nine months.", tone: "g" },
         { big: "74.7%", label: "CP ELR as a share of door rate, Jul-Sep. 25 of 33 stores at or above 70%.", tone: "g" },
-        { big: "73.9% vs 76.4%", label: "Grid stores realize less of their door rate than flat-rate stores, Jul-Sep.", tone: "b" }],
+        { big: "$127K a month", label: "Added labor if the 8 stores under 70% reached it on the hours they already sell, Jul-Sep: $126,831 a month.", tone: "n" }],   // opportunity size: blue
   ask: "know what you collect on every op code, and run every discount through ADC so we can see it.",
-  notes: "PLACE: CP Engine section, before the CP ELR slides (ahead of the door-rate options).\nSaid: Roundtable slide 15 (Pricing Strategy); Jan/May GM Road to the Sale slide (pricing lines); Jan GM slide 54 (Discounting Discipline); 70% benchmark from the Jan/May door rate slides." });
+  notes: "PLACE: CP Engine section, before the CP ELR slides (ahead of the door-rate options).\nSaid: Roundtable slide 15 (Pricing Strategy); Jan/May GM Road to the Sale slide (pricing lines); Jan GM slide 54 (Discounting Discipline); 70% benchmark from the Jan/May door rate slides.\nOct 23 (Noah): grid vs non-grid tile replaced. $126,831 a month = Jul-Sep, for each of the 8 stores under 70% (Chevy LV, Toyota Spokane, Cadillac, Kia LV, Subaru Prescott, Lincoln, GMC Prescott, Hyundai Prescott): (70% x door rate - CP ELR) x CP hours sold, summed ($380,494) / 3. Door rates from the store door rate sheet (door.json), ELR and hours from elr_q3.json." });
 
 T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
   said: ["Gross profit % is the share of labor you keep after paying the tech",
