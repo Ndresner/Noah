@@ -136,7 +136,9 @@ order += X("OP", 2, 1)
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
 order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8))   # TP 8 Tracking & Accountability moved to Opcodes (Oct 23)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
 # 06 Productivity (Technician Proficiency runs inside it, no break of its own)
-order += O(8) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
+# Oct 23 (Noah): headcount (PROD 18-19) leads the data; ROs per advisor (PROD 6-9), ROs per manager (PROD 14-17), the
+# gross-per-employee gap (FGEG) and 5% more per employee (FGE5) move to Open Decisions
+order += O(8) + X("TP", 11, 12) + X("PROD", 18, 19) + X("PROD", 2, 3, 4, 5) + X("PROD", 10, 11, 12, 13)
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 7)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23)
 # 07 Warranty
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
@@ -156,7 +158,10 @@ OPEN = [
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
     ("DOOR RATE", X("CP", 14), L("STORE DOOR RATES")),   # CP 14 out of the flow; option A (CP 17, same as the flow slide) removed (Noah, Oct 23)
     ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
-    ("PHOTO COMPLETION", X("MPI", 3), L(None)),   # optional measure, 5 stores do not report it
+    ("PHOTO COMPLETION", X("MPI", 3), L(None)),
+    # out of the Productivity flow (Noah, Oct 23)
+    ("PRODUCTIVITY", X("FGEG", 1) + X("FGE5", 1) + X("PROD", 6, 7, 8, 9, 14, 15, 16, 17),
+     L("GROSS PER EMPLOYEE GAP", "5% MORE PER EMPLOYEE", *["ROS PER ADVISOR"] * 4, *["ROS PER MANAGER"] * 4)),   # optional measure, 5 stores do not report it
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
     # the line-chart Who's Moving Now slides, moved out of the flow (Noah, Oct 23): CP ROs, hours per RO, ELR,
     # parts GP %, CP gross, then the four opcodes. The parts $ per RO one (WMN 5) left with its section.
