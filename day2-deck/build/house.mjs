@@ -1352,7 +1352,7 @@ export function levelRanker(pptx, deck, o) {
     s.addShape(pptx.ShapeType.rect, {
       x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill },
     });
-    if (o.refOf || o.groups) s.addShape(pptx.ShapeType.rect, { x: XR(bx, ref, r.n) - 0.012, y: y + rowH * 0.1, w: 0.024, h: rowH * 0.8, fill: { color: C.navy } });
+    if ((o.refOf || o.groups) && !o.hideRef) s.addShape(pptx.ShapeType.rect, { x: XR(bx, ref, r.n) - 0.012, y: y + rowH * 0.1, w: 0.024, h: rowH * 0.8, fill: { color: C.navy } });
     s.addText(o.fmt(r.v), {
       x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
       color: txt, align: "right", valign: "middle", isTextBox: true, margin: 0,
@@ -1380,7 +1380,7 @@ export function levelRanker(pptx, deck, o) {
       const zx = X(bx, 0);
       s.addShape(pptx.ShapeType.rect, { x: zx - 0.005, y: TOP, w: 0.01, h: BOT - TOP, fill: { color: C.ink300 } });
     }
-    if (o.refOf) return;   // per-row ticks instead of one line
+    if (o.refOf || o.groups) return;   // per-row ticks instead of one line (groups: no group-wide line, Oct 23)
     const gx = X(bx, REF);
     s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } });
   });

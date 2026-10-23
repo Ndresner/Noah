@@ -1,6 +1,7 @@
 /* Review (Noah, Oct 23): two other ways to show luxury vs non-luxury on the segment level slides, using CP ELR as the
    example. Not in the deck; the deck keeps one ranking of all 33 with a tick at each store's segment average.
    A: same two columns, luxury grouped first, then non-luxury, each ranked on its own and scored against its own average.
+   A without the line (Oct 23): same, no navy average line; colour alone shows above or below.
    B: two slides, one per segment, each against its own segment average. Segment averages from segment totals. */
 import PptxGenJS from "pptxgenjs";
 import * as H from "./house.mjs";
@@ -20,6 +21,12 @@ H.levelRanker(pptx, pptx, { ...base, eyebrow: "Customer Pay · Review · Option 
   alignRef: true, legend: "Each segment ranked on its own. Navy line = the segment average; green at or above it.",
   takeaway: `${at(L, la)} of ${L.length} luxury stores beat ${fmt(la)} and ${at(N, na)} of ${N.length} others beat ${fmt(na)}. ${nm(best(L).n)} leads luxury, ${nm(best(N).n)} non-luxury.`,
   source: SRC + " Option A: one slide, two groups." });
+
+H.levelRanker(pptx, pptx, { ...base, eyebrow: "Customer Pay · Review · Option A: grouped, no average line", rows, group: f(X.G26),
+  groups: [{ label: `LUXURY · AVERAGE ${fmt(la)}`, names: lv, ref: la }, { label: `NON-LUXURY · AVERAGE ${fmt(na)}`, names: nv, ref: na }],
+  alignRef: true, hideRef: true, legend: "Each segment ranked on its own. Green at or above its segment average, red below.",
+  takeaway: `${at(L, la)} of ${L.length} luxury stores beat ${fmt(la)} and ${at(N, na)} of ${N.length} others beat ${fmt(na)}. ${nm(best(L).n)} leads luxury, ${nm(best(N).n)} non-luxury.`,
+  source: SRC + " Option A without the average line (Noah, Oct 23): bars still drawn against each segment average, colour shows above or below." });
 
 for (const [S, ref, lab, names] of [[L, la, "Luxury", lv], [N, na, "Non-Luxury", nv]]) {
   const b = best(S);

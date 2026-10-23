@@ -157,7 +157,7 @@ function whatChanged() {
   const X = { n: 0.82, m: 3.85, v: 6.2, st: 8.45, q: 10.2 }, rh = 0.6, TOP = 1.94;
   [["Store", X.n], ["Moved on", X.m], ["Q1 → Q3", X.v], ["Stepped up in", X.st], ["Change", X.q]].forEach(([t, x]) =>
     s.addText(t, { x, y: 1.5, w: 2.2, h: 0.32, fontFace: F, fontSize: 14, bold: true, color: C.ink600, isTextBox: true, margin: 0 }));
-  const rows = ORDER.map(k => [k, MO[k].rows[0], MO[k].label]);
+  const rows = GRID.map(k => [k, MO[k].rows[0], MO[k].label]);   // parts $ per RO out (Noah, Oct 23)
   // opcodes: the store that tops the most of the four opcode lists, shown on its biggest move (added 2026-10-19)
   const OPK = ["align", "bal", "bf", "fuel"], tally = {};
   OPK.forEach(k => { const n = MO[k].rows[0].n; tally[n] = (tally[n] ?? 0) + 1; });
