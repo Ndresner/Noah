@@ -191,10 +191,11 @@ X({ eyebrow: "Fixed Ops Gross", title: "What Is Fixed Ops Gross?",
         "Parts sold on a service RO are parts gross, not service gross, even when an advisor sells them.",
         "Both include customer pay, warranty and internal work."],
   levers: [["Service: labor sale", "Hours sold times the rate collected (ELR)"],
-           ["Service: technician cost", "Pay on the RO; guarantees and bonuses paid off the RO come out of gross too"],
+           ["Service: technician cost", "Pay on the RO. Hourly pay, guarantees and bonuses paid off the RO are unapplied labor: not on the RO, but they lower gross"],
            ["Parts: on the RO", "Customer pay, warranty and internal parts sold through service"],
            ["Parts: over the counter", "Counter retail, wholesale, tires and oil"]],
+  leverRows: [1.6, 1],   // the technician cost line runs four lines
   ours: "Group: $188.80M fixed ops gross Jan–Sep 2026, up $7.47M (4.1%): service +$6.30M, parts +$1.17M.",
-  tone: "g", notes: "PLACE: Gross section, after Service Is Sales 2.0 and in front of Total Gross Profit - Fixed Ops.\nSource: Qlik Profit & Loss, Total Gross Profit - Service and Total Gross Profit - Parts, same-store, INEOS excluded, GMC Prescott body shop gross excluded (as on the gross slides). Guarantees and bonuses paid off the RO post as unapplied labor, a cost-of-sale adjustment against service gross." });
+  tone: "g", notes: "PLACE: Gross section, after Service Is Sales 2.0 and in front of Total Gross Profit - Fixed Ops.\nSource: Qlik Profit & Loss, Total Gross Profit - Service and Total Gross Profit - Parts, same-store, INEOS excluded, GMC Prescott body shop gross excluded (as on the gross slides). Hourly technician pay, guarantees and bonuses paid off the RO post as unapplied labor: not charged on any repair order, a cost-of-sale adjustment that reduces service gross (Noah, Oct 23)." });
 
 await pptx.writeFile({ fileName: "Metric Explainers - Review.pptx" }); console.log("built", pptx._slides.length);

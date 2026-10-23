@@ -2158,9 +2158,12 @@ export function explainer(pptx, deck, o) {
   head(0.72, 4.3, o.whyHead ?? "WHY IT MATTERS"); head(5.62, 7.0, o.leverHead ?? "WHAT MOVES IT");
   s.addText(o.why.map(t => ({ text: words(t, "why"), options: { bullet: { indent: 16 }, breakLine: true, paraSpaceAfter: 6 } })),
     { x: 0.72, y: Y + 0.55, w: 4.35, h: H2 - 0.7, fontFace: F, fontSize: sz(o.why.length > 3 || H2 < 3.4 ? 15 : 16, "why"), color: C.ink, valign: "top", isTextBox: true, margin: 0 });
-  const L = o.levers, COLS = L.length > 4 && H2 < 3.6 ? 3 : 2, rows = Math.ceil(L.length / COLS), cw = (7.0 - 0.12 * (COLS - 1)) / COLS, ch = (H2 - 0.65) / rows;
+  const L = o.levers, COLS = L.length > 4 && H2 < 3.6 ? 3 : 2, rows = Math.ceil(L.length / COLS), cw = (7.0 - 0.12 * (COLS - 1)) / COLS;
+  // o.leverRows: optional row weights, e.g. [1.6, 1] when one row's lines run longer (Oct 23)
+  const wt = o.leverRows ?? Array(rows).fill(1), wsum = wt.reduce((a, b) => a + b, 0);
+  const rh = wt.map(v => (H2 - 0.65) * v / wsum), ry = rh.map((_, r) => rh.slice(0, r).reduce((a, b) => a + b, 0));
   L.forEach(([name, line], i) => {
-    const x = 5.62 + (i % COLS) * (cw + 0.12), y = Y + 0.55 + Math.floor(i / COLS) * ch;
+    const r = Math.floor(i / COLS), ch = rh[r], x = 5.62 + (i % COLS) * (cw + 0.12), y = Y + 0.55 + ry[r];
     s.addShape(pptx.ShapeType.rect, { x, y, w: 0.05, h: ch - 0.12, fill: { color: C.blue } });
     s.addText([{ text: words(name, "lever"), options: { bold: true, color: C.ink, breakLine: true } }, { text: words(line, "lever"), options: { color: C.ink600 } }],
       { x: x + 0.14, y, w: cw - 0.2, h: ch - 0.12, fontFace: F, fontSize: sz(14, "lever"), valign: "top", isTextBox: true, margin: 0 });
