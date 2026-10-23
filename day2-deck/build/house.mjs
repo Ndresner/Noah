@@ -2209,8 +2209,9 @@ export function movers(pptx, deck, o) {
   return s;
 }
 
-/* Three lists side by side (review, Oct 23): top K and bottom K year over year, then top K moving now (within 2026).
-   No sub line: each column head says what it ranks. o.cols = [{ head, sub, rows: [{ n, v0, v1, d }], tone: "good"|"bad"|"blue" }] */
+/* Three lists side by side (Oct 23, every top/bottom slide in the deck): top K and bottom K year over year, then top K
+   moving now (within 2026). No sub line: each column head says what it ranks. o.cols = [{ head, sub, rows: [{ n, v0,
+   v1, d }], tone: "good"|"bad"|"blue", rank }]; o.up false for lower-is-better metrics, o.neutral for no colour. */
 export function movers3(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
@@ -2224,14 +2225,14 @@ export function movers3(pptx, deck, o) {
     s.addText(col.head, { x: x0 + 0.1, y: HEAD + 0.08, w: W - 0.2, h: 0.3, fontFace: F, fontSize: sz(15, "movers head"), bold: true, color: ink, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
     s.addText(col.sub, { x: x0 + 0.1, y: HEAD + 0.4, w: W - 0.2, h: 0.3, fontFace: F, fontSize: sz(12, "movers col sub"), color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
     col.rows.forEach((r, j) => {
-      const y = TOP + j * rh, better = r.d >= 0, c = better ? C.goodInk : C.badInk;
+      const y = TOP + j * rh, better = o.up === false ? r.d <= 0 : r.d >= 0, c = o.neutral ? C.navy : (better ? C.goodInk : C.badInk);
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x0, y, w: W, h: rh, fill: { color: C.zebra } });
       s.addText(String(col.rank ? col.rank(j) : j + 1), { x: x0 + 0.1, y, w: 0.4, h: rh, fontFace: F, fontSize: sz(big ? 20 : 15, "movers rank"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
       s.addText([{ text: r.n, options: { bold: true, color: C.ink, fontSize: sz(big ? 17 : 14, "movers store"), breakLine: true } },
                  { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(big ? 14 : 12, "movers values") } },
                  { text: r.v1, options: { color: c, bold: true, fontSize: sz(big ? 14 : 12, "movers values") } }],
-        { x: x0 + (big ? 0.55 : 0.48), y, w: W - (big ? 1.72 : 1.6), h: rh, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
-      s.addText(o.fmtD(r.d), { x: x0 + W - 1.12, y, w: 1.02, h: rh, fontFace: F, fontSize: sz(big ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+        { x: x0 + (big ? 0.55 : 0.48), y, w: W - (big ? 1.72 : 1.82), h: rh, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
+      s.addText(o.fmtD(r.d), { x: x0 + W - (big ? 1.12 : 1.32), y, w: big ? 1.02 : 1.22, h: rh, fontFace: F, fontSize: sz(big ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     });
   });
   takeaway(pptx, s, o.takeaway, o.tone ?? "n");

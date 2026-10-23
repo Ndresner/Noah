@@ -21,8 +21,11 @@ const D = {
   S: C5.S.map(s => { const w = wi[s[0]]; return [s[0], s[2], w[2], w[4], s[8], w[7], w[9]]; }),
 };
 const tot = rows => rows.reduce((t, r) => t.map((x, i) => x + r[i]), [0, 0, 0]);
+// moving now (Oct 23): Jan-Mar and Jul-Sep 2026 [cp, w, i] labor sale (m5 mn: labor sale at 2 and 8; wi mn: W at 2 and 7, I at 4 and 9)
+const c5m = Object.fromEntries(C5.mn.map(r => [r[0], r])), wim = Object.fromEntries(WI.mn.map(r => [r[0], r]));
 const X = { D, tot, G25: tot(D.m25), G26: tot(D.m26),
-  st: D.S.map(s => ({ n: s[0], a25: s.slice(1, 4), a26: s.slice(4, 7), lux: LUX.has(s[0]) })) };
+  st: D.S.map(s => ({ n: s[0], a25: s.slice(1, 4), a26: s.slice(4, 7), lux: LUX.has(s[0]),
+    q1: [c5m[s[0]][2], wim[s[0]][2], wim[s[0]][4]], q3: [c5m[s[0]][8], wim[s[0]][7], wim[s[0]][9]] })) };
 const share = a => a.map(v => v / (a[0] + a[1] + a[2]));
 const pc = v => (v * 100).toFixed(1) + "%";
 const g = share(X.G26), g5 = share(X.G25);

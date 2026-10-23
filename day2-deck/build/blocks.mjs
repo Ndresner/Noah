@@ -22,8 +22,11 @@ export function load(file) {
   const D = JSON.parse(fs.readFileSync(file, "utf8"));
   const w = D.m25[0].length;
   const tot = rows => rows.reduce((t, r) => t.map((x, i) => x + r[i]), Array(w).fill(0));
+  // mn: Jan-Mar and Jul-Sep 2026 inputs per store (pulls/mn/build_mn.py) for the moving-now column
+  const mn = Object.fromEntries((D.mn ?? []).map(r => [r[0], [r.slice(1, 1 + w), r.slice(1 + w, 1 + 2 * w)]]));
   return { D, tot, G25: tot(D.m25), G26: tot(D.m26),
-    st: D.S.map(s => ({ n: s[0], a25: s.slice(1, 1 + w), a26: s.slice(1 + w, 1 + 2 * w), lux: LUX.has(s[0]) })) };
+    st: D.S.map(s => ({ n: s[0], a25: s.slice(1, 1 + w), a26: s.slice(1 + w, 1 + 2 * w), lux: LUX.has(s[0]),
+      q1: mn[s[0]]?.[0], q3: mn[s[0]]?.[1] })) };
 }
 
 /* Day 1 sequence (Tommy, Oct 18 2026; Day 2 rebuilt to match, Noah Oct 21 2026):
@@ -125,25 +128,44 @@ export function block(pptx, X, M) {
     source: `${M.src} Change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025, best first.`,
   });
 
-  // 4. top and bottom five, a conversation starter (Noah, Oct 22)
+  // 4. top and bottom five, a conversation starter (Noah, Oct 22), plus top five moving now within 2026 (Oct 23)
+  const pm = a => a.map(v => v / 3);   // a quarter's inputs as a monthly average: totals read per month, rates unchanged
+  const nw = st.filter(x => x.q1);
   if (M.movers !== false) moversSlide(pptx, {
     seg: M.seg, title: M.title, metric: M.metric, fmtD: CF,
     rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26) })),
-    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${FM.v(g25)} → ${FM.v(g26)} (${CF(ch(G25, G26))}). Ranked by ${M.chgDesc ? "percent change" : "change"}.`,
+    now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3) })) : undefined,
+    nowGroup: nw.length ? CF(ch(tot(nw.map(x => x.q1)), tot(nw.map(x => x.q3)))) : undefined,
+    perMonth: total || M.chgDesc !== undefined,
     src: `${M.src} ${M.def ?? ""} Top and bottom five stores by change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025.`,
   });
 }
 
-/* the top-and-bottom-five slide for any metric (also used by the gross and opcode decks) */
+/* the top-and-bottom-five slide for any metric (also used by the gross and opcode decks). With o.now (Oct 23, Noah: every
+   top/bottom slide) it is three columns: top five and bottom five year over year, then top five moving now, Jul-Sep vs
+   Jan-Mar 2026, each store against itself (same basis as Who's Moving Now). */
 export function moversSlide(pptx, o) {
   const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
-  const up = H.dirOf(o.metric) !== "down";
-  const r = [...o.rows].sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
+  const dir = H.dirOf(o.metric), up = dir !== "down", K = 5;
+  const srt = rs => [...rs].sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
+  const r = srt(o.rows);
   const top = r.slice(0, 3).map(x => x.n), bot = r.slice(-3).reverse().map(x => x.n);
-  return H.movers(pptx, pptx, {
+  const notes = "Conversation starter: each top store says one thing they started doing; each bottom store says what got in the way and what they would try. The room trades ideas.";
+  if (!o.now) return H.movers(pptx, pptx, {
     eyebrow: o.seg, title: o.title, metric: o.metric, rows: r, fmtD: o.fmtD, sub: o.sub, valHead: o.valHead,
-    takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way.`, tone: "n",
-    source: o.src,
-    notes: "Conversation starter: each top store says one thing they started doing; each bottom store says what got in the way and what they would try. The room trades ideas.",
+    takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way.`, tone: "n", source: o.src, notes,
+  });
+  const nw = srt(o.now).slice(0, K);
+  return H.movers3(pptx, pptx, {
+    eyebrow: o.seg, title: o.title, k: K, fmtD: o.fmtD, up, neutral: dir === "neutral",
+    cols: [
+      { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep 2026 vs Jan–Sep 2025", rows: r.slice(0, K), tone: "good" },
+      { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep 2026 vs Jan–Sep 2025", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
+      { head: `TOP ${K} MOVING NOW`, sub: "Jul–Sep vs Jan–Mar 2026" + (o.perMonth ? ", per month" : ""), rows: nw, tone: "blue" },
+    ],
+    takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
+    tone: "n",
+    source: `${o.src} Moving now: Jul-Sep 2026 vs Jan-Mar 2026, each store against itself${o.perMonth ? " (monthly averages)" : ""}; the group moved ${o.nowGroup} on the same basis, so part of every store's change is seasonal.`,
+    notes: notes + " Moving now: ask the top three what they started this year.",
   });
 }

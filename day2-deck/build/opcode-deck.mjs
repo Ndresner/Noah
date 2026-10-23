@@ -69,7 +69,9 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
   // top and bottom five by change in points (Noah, Oct 22)
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d,
     rows: rows.map(r => ({ n: r[0], v0: pt(r[2]), v1: pt(r[1]), d: r[1] - r[2] })),
-    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${pt(y25)} → ${pt(y26)} (${fmt.d(y26 - y25)}). Ranked by change in points.`,
+    // moving now (Oct 23): Jul-Sep vs Jan-Mar 2026 closing %, from all.json mn = [store, num_q1, den_q1, num_q3, den_q3]
+    now: M.mn.map(([n, a, b, c, d]) => ({ n, v0: pt(a / b), v1: pt(c / d), d: c / d - a / b })),
+    nowGroup: fmt.d(M.mn.reduce((t, r) => t + r[3], 0) / M.mn.reduce((t, r) => t + r[4], 0) - M.mn.reduce((t, r) => t + r[1], 0) / M.mn.reduce((t, r) => t + r[2], 0)),
     src: `${SRC} Top and bottom five stores by change in ${title}, Jan-Sep 2026 vs 2025, in points.` });
 }
 

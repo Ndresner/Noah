@@ -15,6 +15,9 @@ const FULL = ["January","February","March","April","May","June","July","August",
 const sv25 = N.m25.map(r => r[1]), sv26 = N.m26.map(r => r[1]), pt25 = P.m25.map(r => r[1]), pt26 = P.m26.map(r => r[1]);
 const Q4 = { sv: [13742904.77, 11835094.76, 12919268.17], pt: [7528553.86, 5908964.47, 6398186.93] };   // Oct-Dec 2025
 const svS = N.S.map(s => [s[0], s[2], s[4]]), ptS = P.S.map(s => [s[0], s[2], s[4]]);
+// moving now (Oct 23): Jan-Mar and Jul-Sep 2026 service / parts gross per store, monthly averages (ntgs/ntgp mn: [profit, gross] x 2)
+const NM = Object.fromEntries(N.mn.map(r => [r[0], [r[2] / 3, r[4] / 3]])), PM = Object.fromEntries(P.mn.map(r => [r[0], [r[2] / 3, r[4] / 3]]));
+const MN = { sv: NM, pt: PM, fx: Object.fromEntries(Object.keys(NM).map(n => [n, [NM[n][0] + PM[n][0], NM[n][1] + PM[n][1]]])) };
 const fxS = svS.map((r, i) => [r[0], r[1] + ptS[i][1], r[2] + ptS[i][2]]);
 const sum = a => a.reduce((t, x) => t + x, 0);
 const M = v => "$" + (v / 1e6).toFixed(2) + "M";
@@ -23,7 +26,7 @@ const MLAB = ["Oct '25","Nov '25","Dec '25","Jan '26","Feb '26","Mar '26","Apr '
 
 H.section(pptx, pptx, { kicker: "Fixed Ops", title: "Gross", chips: ["Fixed ops", "Service", "Parts"] });
 
-function grossBlock(title, metric, m25, m26, q4, S, chain) {
+function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
   const t12 = [...q4, ...m26];
   const v25 = sum(m25), v26 = sum(m26), d = v26 - v25;
   const yo = m26.map((v, i) => v / m25[i] - 1);
@@ -62,7 +65,8 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
   // top and bottom five for all three (Noah, Oct 22: replaces the fixed ops "who moved it" chain, for continuity)
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA,
     rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1 })),
-    sub: `Jan–Sep 2026 against Jan–Sep 2025. Group ${H.kusd(v25)} → ${H.kusd(v26)} (${pcA(gp)}). Ranked by percent change.`,
+    now: S.map(([n]) => ({ n, v0: H.kusd(mn[n][0]), v1: H.kusd(mn[n][1]), d: mn[n][1] / mn[n][0] - 1 })),
+    nowGroup: pcA(sum(S.map(([n]) => mn[n][1])) / sum(S.map(([n]) => mn[n][0])) - 1), perMonth: true,
     src: `${SRC} Top and bottom five stores by percent change in ${title.replace("Total Gross Profit - ", "").toLowerCase()} gross, Jan-Sep 2026 vs 2025.` });
   if (false && chain) {   // retired Oct 22: the group bridge repeated the YOY card
     const top = ds.slice(0, 5), bot = ds.slice(-4);
@@ -76,7 +80,7 @@ function grossBlock(title, metric, m25, m26, q4, S, chain) {
   }
 }
 grossBlock("Total Gross Profit - Fixed Ops", "fixed ops gross", sv25.map((v, i) => v + pt25[i]), sv26.map((v, i) => v + pt26[i]),
-  Q4.sv.map((v, i) => v + Q4.pt[i]), fxS, true);
-grossBlock("Total Gross Profit - Service", "service gross", sv25, sv26, Q4.sv, svS, false);
-grossBlock("Total Gross Profit - Parts", "parts gross", pt25, pt26, Q4.pt, ptS, false);
+  Q4.sv.map((v, i) => v + Q4.pt[i]), fxS, true, MN.fx);
+grossBlock("Total Gross Profit - Service", "service gross", sv25, sv26, Q4.sv, svS, false, MN.sv);
+grossBlock("Total Gross Profit - Parts", "parts gross", pt25, pt26, Q4.pt, ptS, false, MN.pt);
 await pptx.writeFile({ fileName: "Fixed Ops Gross - House Style.pptx" }); console.log("gross built");
