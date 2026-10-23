@@ -115,7 +115,9 @@ order += O(5) + X("TP", 3, 4)
 order += X("EX", 1) + X("CP", 2, 3, 4) + X("CPH", 5) + X("CP", 5) + X("CPH", 1, 2, 3, 4)
 order += X("EX", 2) + X("CP", 6, 7, 8) + X("HPRO", 1) + X("CP", 9)
 # door rate: CP 12, 15 and 16 (v2 slides 53, 56, 57) cut from the flow (Noah, Oct 21); they stay in Open Decisions
-order += X("TP", 5) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
+# Oct 23 (Noah): Express Service, Labor Sale by Pay Type, the CP share of labor sale block and Labor by Work Type
+# move from Labor Mix to right after Pricing Strategy
+order += X("TP", 5) + X("TP", 7) + X("LM", 2, 3, 4, 5, 6) + X("EX", 3) + X("CP", 10, 11, 12, 13) + X("CP", 14, 16, 17)
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
 order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)
 # 04 Opcodes (moved ahead of Labor Mix, Noah, Oct 23)
@@ -123,7 +125,7 @@ order += X("TP", 6) + X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP"
 order += O(6) + X("TP", 9) + X("MPI", 1, 2) + X("EX", 10) + X("OPC", *R(2, 13)) + X("OP", 3, 4, 5, 6, 2, 1)
 # 05 Labor Mix
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
-order += O(7) + X("TP", 7) + X("LM", 2, 3, 4, 5) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("LM", 6) + X("TP", 8)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
+order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8)) + X("TP", 8)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
 # 06 Productivity (Technician Proficiency runs inside it, no break of its own)
 order += O(8) + X("TP", 11, 12) + X("PROD", 2, 3, 4, 5) + X("FGEG", 1) + X("FGE5", 1) + X("PROD", *R(6, 19))
 order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 8)) + X("TM", 1, 2)
