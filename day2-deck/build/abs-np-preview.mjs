@@ -8,7 +8,8 @@ import { moversSlide } from "./blocks.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 const J = f => JSON.parse(fs.readFileSync(f, "utf8"));
 const sum = a => a.reduce((t, x) => t + x, 0);
-const M = v => "$" + (v / 1e6).toFixed(2) + "M", usd = v => "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
+const M = v => "$" + (v / 1e6).toFixed(2) + "M", M1 = v => "$" + (v / 1e6).toFixed(1) + "M",   // one decimal on the fixed expense slide (Noah, Oct 24)
+  usd = v => "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 const sgn = v => v >= 0 ? "+" : "−", pcA = v => sgn(v) + Math.abs(v * 100).toFixed(1) + "%", kd = v => sgn(v) + H.kusd(Math.abs(v));
 
 // ---------- 1-2. Fixed absorption ----------
@@ -46,9 +47,9 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
   tone: "g", notes: `PREVIEW (Noah, Oct 24). Title now "What Is Fixed Absorption?". The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
 H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36, subSize: 14,
-  tiles: CAT.map(x => ({ label: x.k, big: M(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
+  tiles: CAT.map(x => ({ label: x.k, big: M1(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
   banner: `Not included: sales and F&I commissions, delivery, policy, floorplan interest and new and used vehicle advertising, the costs that rise and fall with each car sold.`,
-  takeaway: `${M(fxTot)} of fixed expenses Jan-Sep 2026; fixed ops gross of ${M(absG)} covers ${(absG / absE * 100).toFixed(1)}% of it. People are ${(CAT[0].v / fxTot * 100).toFixed(0)}% of the total.`,
+  takeaway: `${M1(fxTot)} of fixed expenses Jan-Sep 2026; fixed ops gross of ${M1(absG)} covers ${(absG / absE * 100).toFixed(1)}% of it. People are ${(CAT[0].v / fxTot * 100).toFixed(0)}% of the total.`,
   tone: "n", source: `${SRCA} Fixed Expenses line by account class, every department of the store; categories reconcile to the line to the cent (${usd(fxTot)}).` });
 
 // ---------- 3-7. Fixed ops net profit ----------
