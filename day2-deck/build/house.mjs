@@ -1086,9 +1086,9 @@ export function ranker(pptx, deck, o) {
     EX.forEach(e => {
       s.addText(e.vals[r.n] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: FS,
         color: neutral ? C.ink : (favourable ? C.goodInk : C.badInk), align: "right", valign: "middle", isTextBox: true, margin: 0 });
-      // e.marks = { NAME: "g" | "r" } (Noah, Oct 24): a small bar beside the value, e.g. the top and bottom three by %
+      // e.marks = { NAME: "g" | "r" } (Noah, Oct 24): a thin vertical bar just right of the value, e.g. the top and bottom three by %
       const mk = e.marks?.[r.n];
-      if (mk) s.addShape(pptx.ShapeType.rect, { x: ex + 0.04, y: y + rowH / 2 - 0.035, w: 0.2, h: 0.07, fill: { color: mk === "g" ? C.good : C.bad } });
+      if (mk) s.addShape(pptx.ShapeType.rect, { x: ex + e.w + 0.06, y: y + 0.05, w: 0.06, h: rowH - 0.1, fill: { color: mk === "g" ? C.good : C.bad } });
       ex += e.w;
     });
   });
