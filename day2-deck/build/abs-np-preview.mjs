@@ -109,7 +109,16 @@ const chg = (deck, x = {}) => H.ranker(pptx, deck, { eyebrow: SEG, title: T, met
   groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
   takeaway: `${grew} of 33 stores grew fixed ops net profit. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)}; ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)}.`,
   source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, top three and bottom three by percent marked. Percent change = dollar change / 2025 profit; where 2025 was a loss, divided by the size of the loss, so an improvement reads as positive.`, ...x });
-chg(pptx);
+// stores whose fixed ops net profit crossed zero (Noah, Oct 24: option A, shaded rows): green band = 2025 loss to
+// 2026 profit, red band = profit to loss; the takeaway names them, biggest swing first
+const bySwing = (p, q) => Math.abs(q[2] - q[1]) - Math.abs(p[2] - p[1]);
+const toP = S.filter(r => r[1] < 0 && r[2] >= 0).sort(bySwing), toL = S.filter(r => r[1] >= 0 && r[2] < 0).sort(bySwing);
+const lst = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
+const nmL = a => lst(a.map(r => H.storeName(r[0])));
+const ba = r => `${H.storeName(r[0])} ${H.kusd(r[1])} to ${H.kusd(r[2])}`;
+chg(pptx, { shade: Object.fromEntries([...toP.map(r => [r[0], "g"]), ...toL.map(r => [r[0], "r"])]), tone: "n",
+  takeaway: `${nmL(toP)} turned a 2025 loss into a profit (green rows)${toL.length ? `; ${nmL(toL)} went from a profit to a loss (red row)` : ""}. ${grew} of 33 stores grew.`,
+  notes: `Green band: lost money in fixed ops in 2025, made money in 2026 (${lst(toP.map(ba))}). Red band: made money in 2025, lost money in 2026 (${lst(toL.map(ba))}).` });
 
 const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));
 moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
@@ -119,21 +128,3 @@ moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
   src: `${SRC} Top and bottom five stores by dollar change in fixed ops net profit, Jan-Sep 2026 vs 2025 (dollars, not percent: several stores lost money in 2025).` });
 
 await pptx.writeFile({ fileName: "../decks/Fixed Absorption & Net Profit - Preview.pptx" }); console.log("preview built");
-
-// Options (Noah, Oct 24): two ways to flag stores whose fixed ops net profit crossed zero
-const bySwing = (p, q) => Math.abs(q[2] - q[1]) - Math.abs(p[2] - p[1]);   // biggest swing named first
-const toP = S.filter(r => r[1] < 0 && r[2] >= 0).sort(bySwing), toL = S.filter(r => r[1] >= 0 && r[2] < 0).sort(bySwing);
-const lst = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
-const flip = Object.fromEntries([...toP.map(r => [r[0], "g"]), ...toL.map(r => [r[0], "r"])]);
-const nmL = a => lst(a.map(r => H.storeName(r[0])));
-const opt = new PptxGenJS(); opt.layout = "LAYOUT_WIDE"; opt.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
-// A: pale band behind the row, takeaway names them
-chg(opt, { shade: flip, tone: "n",
-  takeaway: `${nmL(toP)} turned a 2025 loss into a profit (green rows)${toL.length ? `; ${nmL(toL)} went from a profit to a loss (red row)` : ""}. ${grew} of 33 stores grew.`,
-  notes: "OPTION A: shaded rows. Green band = loss in 2025, profit in 2026. Red band = profit in 2025, loss in 2026." });
-// B: store name in bold green / red, takeaway gives the before and after
-const ba = r => `${H.storeName(r[0])} ${H.kusd(r[1])} → ${H.kusd(r[2])}`;
-chg(opt, { nameTone: flip, tone: "n",
-  takeaway: `Loss to profit: ${lst(toP.map(ba))}.${toL.length ? ` Profit to loss: ${lst(toL.map(ba))}.` : ""}`,
-  notes: "OPTION B: store name in bold green (loss to profit) or bold red (profit to loss); the band gives each store's 2025 and 2026 fixed ops net profit." });
-await opt.writeFile({ fileName: "../decks/Net Profit Loss-Profit Flags - Options.pptx" }); console.log("options built");

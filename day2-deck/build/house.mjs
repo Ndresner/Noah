@@ -1060,8 +1060,6 @@ export function ranker(pptx, deck, o) {
     // o.shade = { NAME: "g" | "r" } (Noah, Oct 24): a pale band behind the whole row, e.g. a store that went from a loss to a profit
     const sh = o.shade?.[r.n];
     if (sh) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.05, y: y + 0.01, w: 5.62, h: rowH - 0.02, fill: { color: sh === "g" ? C.goodBg : C.badBg } });
-    // o.nameTone = { NAME: "g" | "r" } (Noah, Oct 24): the store name in bold green or red instead of a band
-    const nt = o.nameTone?.[r.n];
 
     // A store with no prior year has no variance, so it has no rank either.
     s.addText(r.noBase ? "—" : String(i + 1), {
@@ -1069,8 +1067,8 @@ export function ranker(pptx, deck, o) {
       color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0,
     });
     s.addText(r.n, {
-      x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS, bold: !!nt,
-      color: nt ? (nt === "g" ? C.goodInk : C.badInk) : r.noBase ? C.ink600 : C.ink, valign: "middle", isTextBox: true, margin: 0,
+      x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: FS,
+      color: r.noBase ? C.ink600 : C.ink, valign: "middle", isTextBox: true, margin: 0,
     });
     const bx = x0 + RANKW + 0.05 + NAMEW + 0.08, mid = bx + BARW / 2;
     if (!r.noBase) {
