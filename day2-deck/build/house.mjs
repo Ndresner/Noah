@@ -1392,6 +1392,10 @@ export function levelRanker(pptx, deck, o) {
         color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
       ex += e.w;
     });
+    // segBreak (Noah, Oct 24): a solid rule under a group's last store, the same width as the header rule, closing
+    // the group off from the next one in the same column
+    if (o.segBreak && all[i + 1]?.hdr && (i + 1 < perCol) === (i < perCol))
+      s.addShape(pptx.ShapeType.rect, { x: x0, y: y + rowH - 0.02, w: 5.8, h: 0.02, fill: { color: C.navy } });
   });
   if (EX.length) [0, 1].forEach(c => {
     let ex = COLX[c] + RANKW + 0.05 + NAMEW + 0.08 + BARW + 0.06;
