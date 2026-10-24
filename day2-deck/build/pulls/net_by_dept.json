@@ -30,5 +30,10 @@
    "parts": -22663379.95,
    "net_gm": -82240434.42
   }
+ },
+ "fx_sales_26": {
+  "_note": "Qlik P&L bc30d66f, Detail statement, pulled 2026-10-24, Jan-Sep 2026 same-store (INEOS excluded), signs flipped. NET SALES - Mechanical Dept / - P&A Dept. Used for revenue needed per $1 of fixed ops net profit.",
+  "service": 182131162.38,
+  "parts": 165675399.88
  }
 }

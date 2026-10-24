@@ -2054,7 +2054,8 @@ export function statTiles(pptx, deck, o) {
     s.addText(words(t.big, "tile number"), { x: x + 0.2, y: 2.5, w: W - 0.4, h: 0.95, fontFace: F, fontSize: sz(o.bigSize ?? 40, "tile number"), bold: true,   // o.bigSize ADDED 2026-10-19
      
       color: ink, valign: "middle", fit: "shrink", isTextBox: true, margin: 0 });
-    s.addText(words(t.sub, "tile sub"), { x: x + 0.2, y: 3.5, w: W - 0.4, h: 1.3, fontFace: F, fontSize: sz(15, "tile sub"),
+    s.addText(words(t.sub, "tile sub"), { x: x + 0.2, y: 3.5, w: W - 0.4, h: 1.3, fontFace: F, fontSize: sz(o.subSize ?? 15, "tile sub"),   // o.subSize ADDED 2026-10-24
+
       color: C.ink, valign: "top", isTextBox: true, margin: 0 });
   });
   if (o.banner) s.addText(words(o.banner, "banner"), { x: 0.78, y: 5.15, w: 11.77, h: 1.0, fontFace: F, fontSize: sz(17, "banner"),

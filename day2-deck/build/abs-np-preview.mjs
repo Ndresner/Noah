@@ -15,7 +15,7 @@ const sgn = v => v >= 0 ? "+" : "−", pcA = v => sgn(v) + Math.abs(v * 100).toF
 const FX = J("./pulls/fixed_exp.json"), E = FX.y26, fxTot = sum(Object.values(E));
 const CAT = [
   { k: "People", c: ["SALARIES SUPERVISION", "OTHER SALARIES AND WAGES", "CLERICAL WAGES", "TAXES PAYROLL", "EMPLOYEE BENEFITS", "ABSENTEE COMP", "RETIREMENT BENEFITS"],
-    ex: "Salaries and wages (managers, advisors, techs, porters, office), payroll taxes, benefits, PTO" },
+    ex: "Salaries and wages, payroll taxes, benefits, PTO" },
   { k: "Building & equipment", c: ["RENT", "AMORTIZATION LEASEHOLDS", "DEPRECIATION", "TAXES REAL ESTATE", "REPAIRS REAL ESTATE", "REPAIRS EQUIPMENT", "EQUIPMENT RENTAL", "UTILITIES", "INSURANCE"],
     ex: "Rent, depreciation, property taxes, utilities, insurance, building and equipment repairs" },
   { k: "Systems & services", c: ["INFORMATION TECH SVCS", "OUTSIDE SERVICES", "TELEPHONE", "LEGAL AND AUDITING"],
@@ -45,7 +45,7 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
   ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.`,
   tone: "g", notes: `PREVIEW (Noah, Oct 24). Title now "What Is Fixed Absorption?". The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
-H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36,
+H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36, subSize: 14,
   tiles: CAT.map(x => ({ label: x.k, big: M(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
   banner: `Not included: sales and F&I commissions, delivery, policy, floorplan interest and new and used vehicle advertising, the costs that rise and fall with each car sold.`,
   takeaway: `${M(fxTot)} of fixed expenses Jan-Sep 2026; fixed ops gross of ${M(absG)} covers ${(absG / absE * 100).toFixed(1)}% of it. People are ${(CAT[0].v / fxTot * 100).toFixed(0)}% of the total.`,
@@ -64,6 +64,8 @@ if (Math.abs(sum(S.map(r => r[1])) - v25) > 1 || Math.abs(sum(S.map(r => r[2])) 
 const PM = Object.fromEntries(P.mn.map(r => [r[0], r]));
 const MN = Object.fromEntries(N.mn.map(r => [r[0], [(r[1] + PM[r[0]][1]) / 3, (r[3] + PM[r[0]][3]) / 3]]));   // Jan-Mar, Jul-Sep monthly
 const ex25 = g25gross - v25, ex26 = g26gross - v26;
+// revenue needed per $1 of net (Noah, Oct 24): service + parts net sales / fixed ops net profit
+const SL = J("./pulls/net_by_dept.json").fx_sales_26, sales26 = SL.service + SL.parts, per1 = sales26 / v26;
 
 H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops Net Profit?",
   formula: ["Fixed ops net profit", "=", "service & parts gross", "−", "service & parts expenses"], formulaSize: 22,
@@ -71,13 +73,13 @@ H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops N
   example: [["Gross", M(g26gross)], ["− Expenses", M(ex26)], ["= Net profit", M(v26)]], exampleLabel: "OUR NUMBERS",
   why: ["It is what fixed ops actually contributes to the store.",
         "Gross can grow while profit shrinks if expenses grow faster.",
-        `Every dollar of expense saved drops straight to the bottom line.`],
+        `Every dollar of expense saved drops straight to the bottom line. Adding that same $1 through sales takes about $${per1.toFixed(2)} of service and parts sales.`],
   levers: [["Gross", "Every lever in this deck: ROs, hours, ELR, margin"],
            ["People", "The largest expense: staffing to the workload, pay plans tied to gross"],
            ["Productivity", "More gross from the same team and the same stalls"],
            ["Spending", "Supplies, outside services, policy and comebacks"]],
   ours: `Group: ${M(v26)} fixed ops net profit, ${pcA(v26 / v25 - 1)}. Gross grew ${pcA(g26gross / g25gross - 1)}; department expenses ${pcA(ex26 / ex25 - 1)}.`,
-  tone: "g", notes: `PREVIEW (Noah, Oct 24). Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides.` });
+  tone: "g", notes: `PREVIEW (Noah, Oct 24). Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides. Revenue per $1 of net: service + parts net sales ${usd(sales26)} (P&L Detail NET SALES, Mechanical ${usd(SL.service)} + P&A ${usd(SL.parts)}) / net profit ${usd(v26)} = $${per1.toFixed(2)}; net profit is ${(v26 / sales26 * 100).toFixed(1)} cents of every sales dollar. Parts sales include parts sold to the service department.` });
 
 const FULL = ["January","February","March","April","May","June","July","August","September"];
 const dm = m26.map((v, i) => v - m25[i]), up = dm.filter(x => x > 0).length, bi = dm.indexOf(Math.max(...dm));
