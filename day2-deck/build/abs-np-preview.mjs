@@ -97,16 +97,18 @@ H.totalRanker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed
   tone: "n", source: `${SRC} Jan-Sep 2026.` });
 
 // $ change ranks (some 2025 bases are losses, so a percent change does not read); % alongside only where 2025 made money
-const pr = S.map(([n, a, b]) => ({ n, d: b - a, p: a > 0 ? b / a - 1 : null }));
-const val = pr.filter(r => r.p !== null).sort((x, y) => y.p - x.p);
+// % change over the size of 2025 (Noah, Oct 24): a store that lost money in 2025 divides by the loss as a positive
+// number, so an improvement always reads +, e.g. Lincoln -$389K -> +$94K = +124.3%
+const pr = S.map(([n, a, b]) => ({ n, d: b - a, p: (b - a) / Math.abs(a) }));
+const val = [...pr].sort((x, y) => y.p - x.p);
 const mk = Object.fromEntries([...val.slice(0, 3).map(r => [r.n, "g"]), ...val.slice(-3).map(r => [r.n, "r"])]);
 const grew = pr.filter(r => r.d > 0).length, bd = [...pr].sort((x, y) => y.d - x.d);
 H.ranker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit",
   deltas: pr.map(r => [r.n, r.d]), groupD: d, fmtD: kd, valLabel: "$", stripValue: `${kd(d)}  ·  ${pcA(d / v25)}`,
-  extra: [{ label: "Change", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, r.p === null ? "n/m" : pcA(r.p)])), marks: mk }],
+  extra: [{ label: "Change", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, pcA(r.p)])), marks: mk }],
   groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
   takeaway: `${grew} of 33 stores grew fixed ops net profit. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)}; ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)}.`,
-  source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, top three and bottom three by percent marked. n/m: the store lost money in fixed ops in 2025, so a percent change has no meaning.` });
+  source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, top three and bottom three by percent marked. Percent change = dollar change / 2025 profit; where 2025 was a loss, divided by the size of the loss, so an improvement reads as positive.` });
 
 const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));
 moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
