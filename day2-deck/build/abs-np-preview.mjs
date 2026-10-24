@@ -1,0 +1,115 @@
+/* Preview (Noah, Oct 24): What Is Fixed Absorption? with what total store fixed expenses include, and a five-slide
+   Fixed Ops Net Profit block (explainer, group YOY, store ranker, change ranker, top / bottom / moving now).
+   Data: pulls/fixed_exp.json (GM line 258 by account class), ntgs.json / ntgp.json (department profit and gross). */
+import PptxGenJS from "pptxgenjs";
+import fs from "fs";
+import * as H from "./house.mjs";
+import { moversSlide } from "./blocks.mjs";
+const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
+const J = f => JSON.parse(fs.readFileSync(f, "utf8"));
+const sum = a => a.reduce((t, x) => t + x, 0);
+const M = v => "$" + (v / 1e6).toFixed(2) + "M", usd = v => "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
+const sgn = v => v >= 0 ? "+" : "−", pcA = v => sgn(v) + Math.abs(v * 100).toFixed(1) + "%", kd = v => sgn(v) + H.kusd(Math.abs(v));
+
+// ---------- 1-2. Fixed absorption ----------
+const FX = J("./pulls/fixed_exp.json"), E = FX.y26, fxTot = sum(Object.values(E));
+const CAT = [
+  { k: "People", c: ["SALARIES SUPERVISION", "OTHER SALARIES AND WAGES", "CLERICAL WAGES", "TAXES PAYROLL", "EMPLOYEE BENEFITS", "ABSENTEE COMP", "RETIREMENT BENEFITS"],
+    ex: "Salaries and wages (managers, advisors, techs, porters, office), payroll taxes, benefits, PTO" },
+  { k: "Building & equipment", c: ["RENT", "AMORTIZATION LEASEHOLDS", "DEPRECIATION", "TAXES REAL ESTATE", "REPAIRS REAL ESTATE", "REPAIRS EQUIPMENT", "EQUIPMENT RENTAL", "UTILITIES", "INSURANCE"],
+    ex: "Rent, depreciation, property taxes, utilities, insurance, building and equipment repairs" },
+  { k: "Systems & services", c: ["INFORMATION TECH SVCS", "OUTSIDE SERVICES", "TELEPHONE", "LEGAL AND AUDITING"],
+    ex: "DMS and IT, outside services, phones, legal and audit" },
+];
+const used = new Set(CAT.flatMap(x => x.c));
+CAT.push({ k: "Everything else", c: Object.keys(E).filter(k => !used.has(k)),
+  ex: "Service and parts advertising, training, company vehicles, freight, supplies, travel, other taxes" });
+CAT.forEach(x => { x.v = sum(x.c.map(c => E[c])); });
+if (Math.abs(sum(CAT.map(x => x.v)) - fxTot) > 0.01) throw new Error("fixed expense categories do not reconcile");
+const ABS = J("./abs.json"), absG = sum(ABS.m26.map(r => r[0])), absE = sum(ABS.m26.map(r => r[1]));
+if (Math.abs(absE - fxTot) > 1) throw new Error(`fixed expenses ${fxTot} vs absorption denominator ${absE}`);
+const SRCA = "Qlik - Profit & Loss, GM statement. Jan-Sep 2026, same-store, INEOS excluded (opened 2026).";
+
+H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", title: "What Is Fixed Absorption?",
+  formula: ["Fixed absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
+  define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
+  example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", (absG / absE * 100).toFixed(1) + "%"]], exampleLabel: "READING IT",
+  why: ["At 100%, the store covers its fixed costs before it sells a car.",
+        "It protects the store when car sales slow.",
+        "It is the clearest measure of fixed ops' value to the dealership."],
+  levers: [["Fixed ops gross", "Everything on the customer-pay slides: ROs, hours, ELR, margin"],
+           ["Store fixed expenses", "Every department's people, rent and systems, carried whether or not a car sells"],
+           ["Warranty and internal", "Gross from warranty and reconditioning counts too"],
+           ["Parts", "Counter and wholesale parts gross counts as well"]],
+  leverRows: [1.3, 1],
+  ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.`,
+  tone: "g", notes: `PREVIEW (Noah, Oct 24). Title now "What Is Fixed Absorption?". The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
+
+H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36,
+  tiles: CAT.map(x => ({ label: x.k, big: M(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
+  banner: `Not included: sales and F&I commissions, delivery, policy, floorplan interest and new and used vehicle advertising, the costs that rise and fall with each car sold.`,
+  takeaway: `${M(fxTot)} of fixed expenses Jan-Sep 2026; fixed ops gross of ${M(absG)} covers ${(absG / absE * 100).toFixed(1)}% of it. People are ${(CAT[0].v / fxTot * 100).toFixed(0)}% of the total.`,
+  tone: "n", source: `${SRCA} Fixed Expenses line by account class, every department of the store; categories reconcile to the line to the cent (${usd(fxTot)}).` });
+
+// ---------- 3-7. Fixed ops net profit ----------
+const N = J("./ntgs.json"), P = J("./ntgp.json");
+const SEG = "Fixed Ops Profitability", T = "Fixed Ops Net Profit", MET = "net profit";
+const SRC = "Qlik - Profit & Loss, Detail statement. Same-store, INEOS excluded (opened 2026). Fixed ops net profit = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses; GMC Prescott body shop is its own department and is not included.";
+const m25 = N.m25.map((r, i) => r[0] + P.m25[i][0]), m26 = N.m26.map((r, i) => r[0] + P.m26[i][0]), q4 = N.q4.map((r, i) => r[0] + P.q4[i][0]);
+const g25gross = sum(N.m25.map((r, i) => r[1] + P.m25[i][1])), g26gross = sum(N.m26.map((r, i) => r[1] + P.m26[i][1]));
+const v25 = sum(m25), v26 = sum(m26), d = v26 - v25;
+const PS = Object.fromEntries(P.S.map(r => [r[0], r]));
+const S = N.S.map(r => [r[0], r[1] + PS[r[0]][1], r[3] + PS[r[0]][3]]);   // [name, profit 2025, profit 2026]
+if (Math.abs(sum(S.map(r => r[1])) - v25) > 1 || Math.abs(sum(S.map(r => r[2])) - v26) > 1) throw new Error("net profit stores do not reconcile");
+const PM = Object.fromEntries(P.mn.map(r => [r[0], r]));
+const MN = Object.fromEntries(N.mn.map(r => [r[0], [(r[1] + PM[r[0]][1]) / 3, (r[3] + PM[r[0]][3]) / 3]]));   // Jan-Mar, Jul-Sep monthly
+const ex25 = g25gross - v25, ex26 = g26gross - v26;
+
+H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops Net Profit?",
+  formula: ["Fixed ops net profit", "=", "service & parts gross", "−", "service & parts expenses"], formulaSize: 22,
+  define: "What service and parts keep after paying their own people, building, systems and supplies.",
+  example: [["Gross", M(g26gross)], ["− Expenses", M(ex26)], ["= Net profit", M(v26)]], exampleLabel: "OUR NUMBERS",
+  why: ["It is what fixed ops actually contributes to the store.",
+        "Gross can grow while profit shrinks if expenses grow faster.",
+        `Every dollar of expense saved drops straight to the bottom line.`],
+  levers: [["Gross", "Every lever in this deck: ROs, hours, ELR, margin"],
+           ["People", "The largest expense: staffing to the workload, pay plans tied to gross"],
+           ["Productivity", "More gross from the same team and the same stalls"],
+           ["Spending", "Supplies, outside services, policy and comebacks"]],
+  ours: `Group: ${M(v26)} fixed ops net profit, ${pcA(v26 / v25 - 1)}. Gross grew ${pcA(g26gross / g25gross - 1)}; department expenses ${pcA(ex26 / ex25 - 1)}.`,
+  tone: "g", notes: `PREVIEW (Noah, Oct 24). Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides.` });
+
+const FULL = ["January","February","March","April","May","June","July","August","September"];
+const dm = m26.map((v, i) => v - m25[i]), up = dm.filter(x => x > 0).length, bi = dm.indexOf(Math.max(...dm));
+H.groupYoy(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit",
+  prior: [...m25, ...q4], current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line",
+  chartLabel: "Fixed ops net profit by month, 2025 against 2026 ($M)",
+  takeaway: `${kd(d)} (${pcA(d / v25)}) year to date; ${up} of nine months ahead of 2025, best ${FULL[bi]} at ${kd(dm[bi])}.`,
+  source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December. Store rows reconcile to the group, both years.` });
+
+const loss = S.filter(r => r[2] < 0).length;
+H.totalRanker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit", rows: S.map(r => [r[0], r[2]]), expect: v26,
+  groupLabel: "SEPTEMBER 2026 YTD",
+  takeaway: (() => { const t = [...S].sort((p, q) => q[2] - p[2]); return `${H.storeName(t[0][0])} leads at ${H.Mmixed(t[0][2])} of the group's ${H.Mmixed(v26)}. ${loss ? `${loss} ${loss === 1 ? "store is" : "stores are"} losing money in fixed ops, ${H.storeName(t.at(-1)[0])} the most at ${H.Mmixed(t.at(-1)[2])}.` : ""}`; })(),
+  tone: "n", source: `${SRC} Jan-Sep 2026.` });
+
+// $ change ranks (some 2025 bases are losses, so a percent change does not read); % alongside only where 2025 made money
+const pr = S.map(([n, a, b]) => ({ n, d: b - a, p: a > 0 ? b / a - 1 : null }));
+const val = pr.filter(r => r.p !== null).sort((x, y) => y.p - x.p);
+const mk = Object.fromEntries([...val.slice(0, 3).map(r => [r.n, "g"]), ...val.slice(-3).map(r => [r.n, "r"])]);
+const grew = pr.filter(r => r.d > 0).length, bd = [...pr].sort((x, y) => y.d - x.d);
+H.ranker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit",
+  deltas: pr.map(r => [r.n, r.d]), groupD: d, fmtD: kd, valLabel: "$", stripValue: `${kd(d)}  ·  ${pcA(d / v25)}`,
+  extra: [{ label: "Change", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, r.p === null ? "n/m" : pcA(r.p)])), marks: mk }],
+  groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
+  takeaway: `${grew} of 33 stores grew fixed ops net profit. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)}; ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)}.`,
+  source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, top three and bottom three by percent marked. n/m: the store lost money in fixed ops in 2025, so a percent change has no meaning.` });
+
+const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));
+moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
+  rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b - a })),
+  now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] - MN[n][0] })),
+  nowGroup: kd(nowG) + " a month", perMonth: true,
+  src: `${SRC} Top and bottom five stores by dollar change in fixed ops net profit, Jan-Sep 2026 vs 2025 (dollars, not percent: several stores lost money in 2025).` });
+
+await pptx.writeFile({ fileName: "../decks/Fixed Absorption & Net Profit - Preview.pptx" }); console.log("preview built");
