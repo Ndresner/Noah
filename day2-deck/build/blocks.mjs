@@ -94,10 +94,9 @@ export function block(pptx, X, M) {
       // option A (Noah, Oct 23): luxury then non-luxury, each ranked on its own; bars drawn against each segment's
       // average so both averages fall on one solid navy line
       groups: [{ label: `LUXURY · AVERAGE ${FM.v(la)}`, names: lux, ref: la }, { label: `NON-LUXURY · AVERAGE ${FM.v(na)}`, names: new Set(N.map(x => x.n)), ref: na }],
-      alignRef: true, refLine: true,
-      legend: "Each segment ranked on its own. Navy line = each segment's average; green at or above it.",
-      takeaway: `Against their own segment, ${aL} of ${L.length} luxury stores beat ${FM.v(la)} and ${aN} of ${N.length} others beat ${FM.v(na)}. ${nm(topN.n)} leads non-luxury at ${FM.v(f(topN.a26))}.`,
-      source: `${M.src} ${M.def} Jan-Sep 2026 YTD. Green at or above own segment average, red below. Segment averages from segment totals. Luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson; Acura counted as non-luxury.`,
+      alignRef: true, refLine: true, segBreak: true,   // Oct 24 (Noah): no legend, no takeaway band, line stops per group, rule under each group
+      // the old takeaway sentence now opens the source line, so it stays with the slide
+      source: `Against their own segment, ${aL} of ${L.length} luxury stores beat ${FM.v(la)} and ${aN} of ${N.length} others beat ${FM.v(na)}. ${nm(topN.n)} leads non-luxury at ${FM.v(f(topN.a26))}. ${M.src} ${M.def} Jan-Sep 2026 YTD. Green at or above own segment average, red below. Segment averages from segment totals. Luxury = Lexus, Lincoln, Cadillac, Volvo, Audi Reno, Audi Henderson, LR Reno, LR LV, LR Henderson; Acura counted as non-luxury.`,
     });
   } else if (total) {
     const sorted = [...lv].sort((p, q) => q[1] - p[1]);
