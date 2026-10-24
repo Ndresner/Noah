@@ -16,6 +16,7 @@ layout = prs.slide_layouts[0]
 
 SRC = {
     "TP": "Talking Points - Day 2.pptx",
+    "NP": "Fixed Absorption & Net Profit - House Style.pptx",   # np-deck.mjs (Oct 24)
     "EX": "Metric Explainers - Review.pptx",
     "CPH": "CP Hours & RO a Day - Review.pptx",
     "HPRO": "Hours per RO Value - Review.pptx",
@@ -102,10 +103,13 @@ def R(a, b):
 
 order = []
 order += O(1, 2) + X("TP", 1)
+# Fixed Ops Net Profit block right after Why We Are Here: the high-level view before the sections (Noah, Oct 24)
+order += X("NP", 3, 4, 5, 6, 7)
 # 01 Gross
 order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability
-order += O(4) + X("EX", 8) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
+# What Is Fixed Absorption? + What Is in Total Store Fixed Expenses? (NP 1-2) replace EX 8 (Oct 24)
+order += O(4) + X("NP", 1, 2) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
 # 03 Customer Pay (renamed from The CP Engine, Oct 22). Every metric block now ends with a top/bottom-five movers slide.
 order += O(5) + X("TP", 3, 4)
 # Oct 23 (Noah): One More CP RO a Day (CPH 5) sits after the CP RO change ranker, and What 0.1 Hour per RO Is Worth

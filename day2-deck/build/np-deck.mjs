@@ -1,4 +1,4 @@
-/* Preview (Noah, Oct 24): What Is Fixed Absorption? with what total store fixed expenses include, and a five-slide
+/* In the deck Oct 24 (Noah; built as a preview first): What Is Fixed Absorption? with what total store fixed expenses include, and a five-slide
    Fixed Ops Net Profit block (explainer, group YOY, store ranker, change ranker, top / bottom / moving now).
    Data: pulls/fixed_exp.json (GM line 258 by account class), ntgs.json / ntgp.json (department profit and gross). */
 import PptxGenJS from "pptxgenjs";
@@ -44,7 +44,7 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
            ["Parts", "Counter and wholesale parts gross counts as well"]],
   leverRows: [1.3, 1],
   ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.`,
-  tone: "g", notes: `PREVIEW (Noah, Oct 24). Title now "What Is Fixed Absorption?". The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
+  tone: "g", notes: `PLACE: Profitability, in front of Fixed Ops Absorption %; the next slide breaks down the fixed expenses. The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
 H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36, subSize: 14,
   tiles: CAT.map(x => ({ label: x.k, big: M1(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
@@ -54,7 +54,7 @@ H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in
 
 // ---------- 3-7. Fixed ops net profit ----------
 const N = J("./ntgs.json"), P = J("./ntgp.json");
-const SEG = "Fixed Ops Profitability", T = "Fixed Ops Net Profit", MET = "net profit";
+const SEG = "Fixed Ops Net Profit", T = "Fixed Ops Net Profit", MET = "net profit";
 const SRC = "Qlik - Profit & Loss, Detail statement. Same-store, INEOS excluded (opened 2026). Fixed ops net profit = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses; GMC Prescott body shop is its own department and is not included.";
 const m25 = N.m25.map((r, i) => r[0] + P.m25[i][0]), m26 = N.m26.map((r, i) => r[0] + P.m26[i][0]), q4 = N.q4.map((r, i) => r[0] + P.q4[i][0]);
 const g25gross = sum(N.m25.map((r, i) => r[1] + P.m25[i][1])), g26gross = sum(N.m26.map((r, i) => r[1] + P.m26[i][1]));
@@ -80,7 +80,7 @@ H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops N
            ["Productivity", "More gross from the same team and the same stalls"],
            ["Spending", "Supplies, outside services, policy and comebacks"]],
   ours: `Group: ${M(v26)} fixed ops net profit, ${pcA(v26 / v25 - 1)}. Gross grew ${pcA(g26gross / g25gross - 1)}; department expenses ${pcA(ex26 / ex25 - 1)}.`,
-  tone: "g", notes: `PREVIEW (Noah, Oct 24). Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides. Revenue per $1 of net: service + parts net sales ${usd(sales26)} (P&L Detail NET SALES, Mechanical ${usd(SL.service)} + P&A ${usd(SL.parts)}) / net profit ${usd(v26)} = $${per1.toFixed(2)}; net profit is ${(v26 / sales26 * 100).toFixed(1)} cents of every sales dollar. Parts sales include parts sold to the service department.` });
+  tone: "g", notes: `PLACE: opening, right after Why We Are Here (Noah, Oct 24): the high-level view of service and parts before the sections. Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides. Revenue per $1 of net: service + parts net sales ${usd(sales26)} (P&L Detail NET SALES, Mechanical ${usd(SL.service)} + P&A ${usd(SL.parts)}) / net profit ${usd(v26)} = $${per1.toFixed(2)}; net profit is ${(v26 / sales26 * 100).toFixed(1)} cents of every sales dollar. Parts sales include parts sold to the service department.` });
 
 const FULL = ["January","February","March","April","May","June","July","August","September"];
 const dm = m26.map((v, i) => v - m25[i]), up = dm.filter(x => x > 0).length, bi = dm.indexOf(Math.max(...dm));
@@ -127,4 +127,4 @@ moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
   nowGroup: kd(nowG) + " a month", perMonth: true,
   src: `${SRC} Top and bottom five stores by dollar change in fixed ops net profit, Jan-Sep 2026 vs 2025 (dollars, not percent: several stores lost money in 2025).` });
 
-await pptx.writeFile({ fileName: "../decks/Fixed Absorption & Net Profit - Preview.pptx" }); console.log("preview built");
+await pptx.writeFile({ fileName: "Fixed Absorption & Net Profit - House Style.pptx" }); console.log("np built");
