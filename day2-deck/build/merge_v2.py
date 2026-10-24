@@ -139,7 +139,7 @@ order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8))   # TP 8 Tracking &
 # Oct 23 (Noah): headcount (PROD 18-19) leads the data; ROs per advisor (PROD 6-9), ROs per manager (PROD 14-17), the
 # gross-per-employee gap (FGEG) and 5% more per employee (FGE5) move to Open Decisions
 order += O(8) + X("TP", 11, 12) + X("PROD", 18, 19) + X("PROD", 2, 3, 4, 5)   # ROs per fixed employee (PROD 10-13) to Open Decisions (Oct 24)
-order += X("TP", 13) + X("EX", 11) + X("PROF", *R(2, 7)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23)
+order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23); PROF 7 Your Best Techs Prove It to Open Decisions (Oct 24)
 # 07 Warranty
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
@@ -163,7 +163,7 @@ OPEN = [
     # out of the Productivity flow (Noah, Oct 23)
     ("PRODUCTIVITY", X("FGEG", 1) + X("FGE5", 1) + X("PROD", 6, 7, 8, 9, 14, 15, 16, 17, 10, 11, 12, 13),
      L("GROSS PER EMPLOYEE GAP", "5% MORE PER EMPLOYEE", *["ROS PER ADVISOR"] * 4, *["ROS PER MANAGER"] * 4, *["ROS PER EMPLOYEE"] * 4)),
-    ("TECHNICIAN PROFICIENCY", X("EX", 12), L("HOW WE MEASURED IT")),   # out of the flow (Noah, Oct 24)
+    ("TECHNICIAN PROFICIENCY", X("PROF", 7), L("YOUR BEST TECHS PROVE IT")),   # out of the flow (Noah, Oct 24)
     ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
     # the line-chart Who's Moving Now slides, moved out of the flow (Noah, Oct 23): CP ROs, hours per RO, ELR,
     # parts GP %, CP gross, then the four opcodes. The parts $ per RO one (WMN 5) left with its section.

@@ -1076,7 +1076,7 @@ export function ranker(pptx, deck, o) {
       });
     }
     s.addText(r.noBase ? "—" : dfmt(r.d), {
-      x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS,
+      x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: FS, bold: true,   // the ranked column bold (Noah, Oct 24)
       // grey only when the PRINTED change carries no sign - a dollar test
       // (|d| < 0.5) greyed "−0.3 pts" and coloured "−0.5 pts" beside it
       color: r.noBase ? C.ink300 : !/^[+−]/.test(dfmt(r.d)) ? C.ink600 : neutral ? C.ink : (favourable ? C.goodInk : C.badInk),
@@ -1086,6 +1086,9 @@ export function ranker(pptx, deck, o) {
     EX.forEach(e => {
       s.addText(e.vals[r.n] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: FS,
         color: neutral ? C.ink : (favourable ? C.goodInk : C.badInk), align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      // e.marks = { NAME: "g" | "r" } (Noah, Oct 24): a small bar beside the value, e.g. the top and bottom three by %
+      const mk = e.marks?.[r.n];
+      if (mk) s.addShape(pptx.ShapeType.rect, { x: ex + 0.04, y: y + rowH / 2 - 0.035, w: 0.2, h: 0.07, fill: { color: mk === "g" ? C.good : C.bad } });
       ex += e.w;
     });
   });
@@ -2291,6 +2294,9 @@ export function movers3(pptx, deck, o) {
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const K = o.k, gap = 0.22, W = (12.33 - 0.44 - gap * 2) / 3, HEAD = 1.5, TOP = 2.3, BOT = bodyBot(o.takeaway) - 0.12, rh = (BOT - TOP) / K;
   const big = K <= 3;
+  // Oct 24 (Noah): a store on both the first list (top vs last year) and the last (moving now) gets a green bar down
+  // the right edge of its row on both lists
+  const both = new Set(o.cols[0].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n)));
   o.cols.forEach((col, ci) => {
     const x0 = 0.72 + ci * (W + gap);
     const bar = { good: C.good, bad: C.bad, blue: C.blue }[col.tone], ink = { good: C.goodInk, bad: C.badInk, blue: C.navy }[col.tone];
@@ -2300,6 +2306,7 @@ export function movers3(pptx, deck, o) {
     col.rows.forEach((r, j) => {
       const y = TOP + j * rh, better = o.up === false ? r.d <= 0 : r.d >= 0, c = o.neutral ? C.navy : (better ? C.goodInk : C.badInk);
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x0, y, w: W, h: rh, fill: { color: C.zebra } });
+      if ((ci === 0 || ci === o.cols.length - 1) && both.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x0 + W - 0.07, y: y + 0.04, w: 0.07, h: rh - 0.08, fill: { color: C.good } });
       s.addText(String(col.rank ? col.rank(j) : j + 1), { x: x0 + 0.1, y, w: 0.4, h: rh, fontFace: F, fontSize: sz(big ? 20 : 15, "movers rank"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
       s.addText([{ text: r.n, options: { bold: true, color: C.ink, fontSize: sz(big ? 17 : 14, "movers store"), breakLine: true } },
                  { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(big ? 14 : 12, "movers values") } },

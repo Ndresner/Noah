@@ -1,0 +1,3 @@
+{"_note": "Qlik Profit & Loss bc30d66f, pulled 2026-10-24, set identifier 1, Division excludes INEOS (same-store), Jan-Sep (RangeSum Jan-Sep MTD). Values as stored (profit negative). Department profit = department gross less its own expenses (Detail statement). Store net = 'Net Profit Or Loss' on the GM statement. F&I, other income and store-level costs are not allocated to departments on the P&L.",
+ "y25": {"service": -22774221.55, "parts": -22561913.22, "body": -371463.84, "new": 13533588.23, "used": 16805384.21, "net_gm": -95664708.97, "net_before_bonus_tax": -133338737.85},
+ "y26": {"service": -27697214.22, "parts": -22752679.98, "body": -393187.08, "new": 23041014.30, "used": 25430942.33, "net_gm": -82743115.16, "net_before_bonus_tax": -119985938.85}}

@@ -54,13 +54,16 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
   // Ranked by % change with the $ change alongside (Noah, Oct 22, option A): store size no longer sets the order
   const sgn = v => v >= 0 ? "+" : "\u2212", pcA = v => sgn(v) + Math.abs(v * 100).toFixed(1) + "%", kd = v => sgn(v) + H.kusd(Math.abs(v));
   const pr = S.map(([n, a, b]) => ({ n, p: b / a - 1, d: b - a })).sort((x, y) => y.p - x.p), gp = v26 / v25 - 1;
+  // Oct 24 (Noah): the store slide before this one ranks dollars, so this one ranks the dollar change; % alongside,
+  // with a small bar marking the top three (green) and bottom three (red) by %
+  const byP = [...pr].sort((x, y) => y.p - x.p), mk = Object.fromEntries([...byP.slice(0, 3).map(r => [r.n, "g"]), ...byP.slice(-3).map(r => [r.n, "r"])]);
   H.ranker(pptx, pptx, {
     eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross",
-    deltas: pr.map(r => [r.n, r.p]), groupD: gp, fmtD: pcA, valLabel: "Change", stripValue: `${pcA(gp)}  ·  ${kd(d)}`,
-    extra: [{ label: "$", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, kd(r.d)])) }],
+    deltas: pr.map(r => [r.n, r.d]), groupD: d, fmtD: kd, valLabel: "$", stripValue: `${kd(d)}  ·  ${pcA(gp)}`,
+    extra: [{ label: "Change", w: 0.95, vals: Object.fromEntries(pr.map(r => [r.n, pcA(r.p)])), marks: mk }],
     groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
-    takeaway: `${grew} of 33 stores grew. ${H.storeName(pr[0].n)} grew most at ${pcA(pr[0].p)} (${kd(pr[0].d)}); ${H.storeName(pr.at(-1).n)} fell most at ${pcA(pr.at(-1).p)} (${kd(pr.at(-1).d)}).`,
-    source: `${SRC} Ranked by percent change, Jan-Sep 2026 vs Jan-Sep 2025, so store size does not set the order; dollar change alongside.`,
+    takeaway: (() => { const bd = [...pr].sort((x, y) => y.d - x.d); return `${grew} of 33 stores grew. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)} (${pcA(bd[0].p)}); ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)} (${pcA(bd.at(-1).p)}).`; })(),
+    source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, the top three and bottom three by percent marked.`,
   });
   // top and bottom five for all three (Noah, Oct 22: replaces the fixed ops "who moved it" chain, for continuity)
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA,
