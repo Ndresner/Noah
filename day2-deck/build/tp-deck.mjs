@@ -31,7 +31,7 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
          "Drive retention and sell cars",
          "Sales sells the first car. Service sells the next six."],
   now: [{ big: "+$6,297,386", label: "Service gross, up 5.2%, ahead of 2025 in all nine months.", tone: "g" },
-        { big: "+$1,171,181", label: "Parts gross, up 1.9%, but parts net to gross slipped 0.4 pts to 36.7%.", tone: "n" },
+        { big: "+$1,171,181", label: "Parts gross, up 1.9%, ahead of 2025 in six of nine months.", tone: "g" },   // same pattern as service (Noah, Oct 24)
         { big: "$20.59M", label: "Fixed ops gross a month over the last twelve months.", tone: "g" }],
   ask: "run service like a sales department: every visit is a chance to sell the next hour and the next car.",
   notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship)." });
@@ -49,13 +49,13 @@ T({ eyebrow: "Customer Pay", title: "What Can You Control?", saidFrom: RT,
 
 T({ eyebrow: "Customer Pay", title: "The Front Door", saidFrom: GM,
   said: ["Open and available scheduler: same-day or next-day appointments, quick online scheduling",
-         "75% of visits are basic services. Saturdays are what you choose to make them.",
+         "Handle basic maintenance quickly and efficiently. Saturdays are what you choose to make them.",
          "Every call is a sales opportunity. Mishandled calls cost millions.",
          "Where do calls go after hours and Sundays?",
          "No-show process; first appointment at time of sale; next appointment before the customer leaves",
          "Active retention tracking: work the Viz 'Close to Losing' and 'Unretained' lists"],
   now: [{ big: "+0.2%", label: "Customer-pay RO count. 13 of 33 stores had fewer CP ROs than last year.", tone: "n" },
-        { big: "166 ROs per advisor", label: "CP & W ROs per service advisor a month, down 7. Advisors grew 1.5%; ROs fell 2.3%.", tone: "b" }],
+        { big: "$4,473,284", label: "A year in labor and parts gross from one more customer-pay RO a day at every store.", tone: "n" }],   // ROs per advisor moved to Open Decisions (Oct 24)
   ask: "every customer leaves with the next appointment booked, and every call reaches someone who asks for it.",
   notes: "PLACE: CP Engine section, after the CP RO Count slides and before Hours per RO.\nSaid: Jan/May GM slides on Appointment Scheduling, Appointment Discipline, Phone Call Handling and Retention Management (Jan 2, 7, 9, 11; May 2, 4, 8, 9).\nOptional: the Flai voice AI service view (Jul 16-Aug 15 pull: 4,368 of 8,351 transfers rang out) fits here, but it is a different source and period; refresh it before use and keep it off any slide with a P&L number." });
 

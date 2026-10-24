@@ -855,7 +855,9 @@ export function groupYoy(pptx, deck, o) {
   // Day 2: when neither year runs past a month (a Jan-Sep prior year), the axis stops there
   const NM   = Math.max(o.prior.length, o.current.length);
   const pad  = arr => [...arr, ...Array(NM - arr.length).fill(null)];
-  const all  = [...o.prior, ...o.current].map(U.to);
+  // o.benchLines = [value, ...] in chart units, o.benchLabel (Noah, Oct 24): a dashed gray benchmark line (two for a range)
+  const BL = o.benchLines ?? [];
+  const all  = [...o.prior, ...o.current, ...BL].map(U.to);
   // Totals are bars - each month is an amount. A rate is a line: bars would
   // imply the months add up, and they do not.
   const line = (o.chart ?? "bar") === "line";
@@ -937,9 +939,18 @@ export function groupYoy(pptx, deck, o) {
     // whole-year rule.
     const meanOf = a => a.reduce((t, v) => t + v, 0) / a.length;
     const curHigh = meanOf(current.values.slice(0, n)) >= meanOf(prior.values.slice(0, n));
+    // A month only one year has (Oct-Dec 2025): label above a peak, below a dip, judged against its neighbours, so
+    // the label clears the line running in and out of it (Noah, Oct 24: the Oct and Nov 2025 labels sat on the line)
+    const side = (vals, i) => {
+      const nb = [vals[i - 1], vals[i + 1]].filter(v => v != null);
+      return nb.length ? vals[i] >= nb.reduce((t, v) => t + v, 0) / nb.length : true;
+    };
     const curTop = current.values.map((c, i) => {
       const p = prior.values[i];
-      return c != null && p != null ? c >= p : curHigh;
+      if (c != null && p != null) return c >= p;
+      if (p != null) return !side(prior.values, i);
+      if (c != null) return side(current.values, i);
+      return curHigh;
     });
     const only = (ser, keep) => ({ ...ser, values: ser.values.map((v, i) => keep(i) ? v : null) });
     const labelSets = [
@@ -952,6 +963,7 @@ export function groupYoy(pptx, deck, o) {
                      valGridLine: { style: "none" } };
     s.addChart(pptx.ChartType.line, [current], {
       ...common, ...ln, ...g, ...masked, showValue: false, chartColors: [C.blue],
+      valGridLine: { color: C.rule, size: 0.75 },   // gridlines drawn here, first, so a benchmark line can sit on top
     });
     labelSets.forEach(([ser, col, pos]) => {
       s.addChart(pptx.ChartType.line, [ser], {
@@ -959,17 +971,26 @@ export function groupYoy(pptx, deck, o) {
         lineSize: 0, lineDataSymbol: "none", chartColors: [col], dataLabelPosition: pos,
       });
     });
+    BL.forEach((b, i) => s.addChart(pptx.ChartType.line, [{ name: "bench" + i, labels: MONTHS.slice(0, NM), values: Array(NM).fill(U.to(b)) }], {
+      ...common, ...ln, ...g, ...masked, ...clear, showValue: false, lineSize: 2, lineDataSymbol: "none", lineDash: "dash",
+      chartColors: [C.ink600],
+    }));   // one chart per line: a second series in one chart lost its dash
     // the real axes go on last, so no masked axis text sits over them
     s.addChart(pptx.ChartType.line, [prior], {
-      ...common, ...ln, ...g, ...clear, showValue: false, chartColors: [C.ink300],
+      ...common, ...ln, ...g, ...clear, showValue: false, chartColors: [C.ink300], valGridLine: { style: "none" },
     });
-    const ly = cy + 0.66, lx = 6.665 - 1.25;
+    const ly = cy + 0.66, lx = 6.665 - 1.25 - (BL.length ? 1.3 : 0);
     [[o.priorName, C.ink300], [o.currentName, C.blue]].forEach(([t, col], i) => {
       const x = lx + i * 1.35;
       s.addShape(pptx.ShapeType.rect, { x, y: ly + 0.135, w: 0.34, h: 0.05, fill: { color: col } });
       s.addShape(pptx.ShapeType.ellipse, { x: x + 0.11, y: ly + 0.1, w: 0.12, h: 0.12, fill: { color: col } });
       s.addText(t, { x: x + 0.42, y: ly, w: 0.85, h: 0.32, fontFace: F, fontSize: sz(14, "legend"), color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
     });
+    if (BL.length) {   // dashed swatch + label for the benchmark
+      const x = lx + 2 * 1.35;
+      [0, 0.13, 0.26].forEach(d => s.addShape(pptx.ShapeType.rect, { x: x + d, y: ly + 0.135, w: 0.08, h: 0.04, fill: { color: C.ink600 } }));
+      s.addText(o.benchLabel ?? "Benchmark", { x: x + 0.42, y: ly, w: 2.6, h: 0.32, fontFace: F, fontSize: sz(14, "legend"), color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    }
   }
 
   takeaway(pptx, s, o.takeaway, o.tone ?? (neu ? "n" : (up ? "g" : "b")));
@@ -1300,14 +1321,22 @@ export function levelRanker(pptx, deck, o) {
      under a header row, in the same two columns; each store is scored against its group's ref. */
   const grp = o.groups ? n => o.groups.find(g => g.names.has(n)) : null;
   const refOf = o.refOf ?? (grp ? n => grp(n).ref : () => REF);
-  const all = !o.groups ? rows : o.groups.flatMap(g => [{ hdr: g.label }, ...rows.filter(r => g.names.has(r.n)).map((r, i) => ({ ...r, rk: i + 1 }))]);
+  const all = !o.groups ? rows : o.groups.flatMap((g, gi) => [{ hdr: g.label, gi }, ...rows.filter(r => g.names.has(r.n)).map((r, i) => ({ ...r, rk: i + 1, gi }))]);
+  /* o.segBreak (Noah, Oct 24): when a group runs over into the right column, that column opens with the group's
+     label again ("... (CONTINUED)"), and the average line stops at each group instead of running through the headers */
+  let perColFix = null;
+  if (o.groups && o.segBreak) {
+    const pc = Math.ceil((all.length + 1) / 2), at = all[pc];
+    if (at && !at.hdr) all.splice(pc, 0, { hdr: o.groups[at.gi].label + "  (CONTINUED)", gi: at.gi });
+    perColFix = pc;
+  }
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
 
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const lab = (o.groupLabel ?? "SEPTEMBER 2026 YTD") + (o.bench != null ? `   ·   **BENCHMARK ${o.fmt(o.bench)}**` : "");
   measureStrip(pptx, s, o.measure ?? o.title, lab, o.fmt(G), C.navy);
 
-  const N = all.length, perCol = Math.ceil(N / 2);
+  const N = all.length, perCol = perColFix ?? Math.ceil(N / 2);
   const HEAD = EX.length ? 0.3 : o.legend ? 0.36 : 0;
   if (o.legend) s.addText(words(o.legend, "ranker legend"), { x: 0.94, y: 2.02, w: 11.6, h: 0.3, fontFace: F, fontSize: sz(14, "ranker legend"),
     color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
@@ -1382,7 +1411,14 @@ export function levelRanker(pptx, deck, o) {
     }
     if (o.refLine && o.alignRef) {   // one solid line: every store's own segment average sits here (Noah, Oct 23)
       const gx = bx + 1 / hiR * BARW;
-      s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } });
+      if (!o.segBreak) { s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP, w: 0.016, h: BOT - TOP, fill: { color: C.navy } }); return; }
+      // segBreak: one line per run of store rows in this column, so it never crosses a group header
+      const idx = all.map((r, i) => i).filter(i => (c === 0 ? i < perCol : i >= perCol));
+      let run = null;
+      const flush = () => { if (run) { const k0 = run[0] - c * perCol, k1 = run[1] - c * perCol;
+        s.addShape(pptx.ShapeType.rect, { x: gx - 0.008, y: TOP + k0 * rowH, w: 0.016, h: (k1 - k0 + 1) * rowH, fill: { color: C.navy } }); run = null; } };
+      idx.forEach(i => { if (all[i].hdr) flush(); else run = run ? [run[0], i] : [i, i]; });
+      flush();
       return;
     }
     if (o.refOf || o.groups) return;   // per-row ticks instead of one line (groups: no group-wide line, Oct 23)
@@ -2028,32 +2064,44 @@ export function statTiles(pptx, deck, o) {
    o.extra = [{ label, w, vals: {NAME: text} }] plain-ink columns.
    --------------------------------------------------------------------- */
 export function amountRanker(pptx, deck, o) {
+  // Oct 24 (Noah): rank numbers and the thin gray line between the two store columns, as on the other rankers.
+  // o.signed: values can be negative (variance from a benchmark) - bars run right of a zero line in green for
+  // above, left in red for below; o.fmt should carry the sign.
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const rows = [...o.rows].sort((a, b) => b[1] - a[1]);
   const EX = o.extra ?? [], EXW = EX.reduce((t, e) => t + e.w, 0);
-  const COLX = [0.72, 6.79], NAMEW = 2.12, VALW = o.valW ?? 0.86, BARW = 5.7 - NAMEW - VALW - EXW - 0.14;   // o.valW ADDED 2026-10-19 for 7-digit dollars
-  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol, maxV = rows[0][1];
+  const RANKW = 0.34, COLX = [0.72, 6.79], NAMEW = EXW > 1 ? 1.95 : 2.2, VALW = o.valW ?? 0.86, BARW = 5.7 - RANKW - NAMEW - VALW - EXW - 0.14;   // o.valW ADDED 2026-10-19 for 7-digit dollars
+  const perCol = Math.ceil(rows.length / 2), TOP = 1.86, BOT = bodyBot(o.takeaway) - 0.07, rowH = (BOT - TOP) / perCol;
+  const lo = Math.min(0, ...rows.map(r => r[1])), hi = Math.max(0, ...rows.map(r => r[1])), span = hi - lo || 1;
+  const X = (bx, v) => bx + (v - lo) / span * BARW;
   [0, 1].forEach(c => {
-    let hx = COLX[c] + NAMEW + 0.08 + BARW + 0.06;
+    let hx = COLX[c] + RANKW + 0.05 + NAMEW + 0.08 + BARW + 0.06;
     [{ label: o.valLabel ?? "", w: VALW }, ...EX].forEach(e => {
       s.addText(e.label, { x: hx, y: 1.44, w: e.w, h: 0.36, fontFace: F, fontSize: sz(14, "column header"), bold: true,
         color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
       hx += e.w;
     });
+    if (lo < 0) {   // zero line, through the rows of this column
+      const n = c === 0 ? perCol : rows.length - perCol, zx = X(COLX[c] + RANKW + 0.05 + NAMEW + 0.08, 0);
+      s.addShape(pptx.ShapeType.rect, { x: zx - 0.006, y: TOP, w: 0.012, h: n * rowH, fill: { color: C.ink300 } });
+    }
   });
   rows.forEach((r, i) => {
-    const c = i < perCol ? 0 : 1, k = i - c * perCol, x0 = COLX[c], y = TOP + k * rowH, bx = x0 + NAMEW + 0.08;
-    s.addText(r[0], { x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
-    const bh = rowH * 0.55;
-    s.addShape(pptx.ShapeType.rect, { x: bx, y: y + (rowH - bh) / 2, w: Math.max(r[1] / maxV * BARW, 0.02), h: bh, fill: { color: o.color ?? C.blue } });
+    const c = i < perCol ? 0 : 1, k = i - c * perCol, x0 = COLX[c], y = TOP + k * rowH, bx = x0 + RANKW + 0.05 + NAMEW + 0.08;
+    const neg = r[1] < 0, fill = o.signed ? (neg ? C.bad : C.good) : (o.color ?? C.blue), ink = o.signed ? (neg ? C.badInk : C.goodInk) : (o.ink ?? C.ink);
+    s.addText(String(i + 1), { x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: 12, color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(r[0], { x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    const bh = rowH * 0.55, zx = X(bx, 0), vx = X(bx, r[1]);
+    s.addShape(pptx.ShapeType.rect, { x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill } });
     s.addText(o.fmt(r[1]), { x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: 13, bold: true,
-      color: o.ink ?? C.ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     let ex = bx + BARW + 0.06 + VALW;
     EX.forEach(e => { s.addText(e.vals[r[0]] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: 13,
       color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 }); ex += e.w; });
   });
+  s.addShape(pptx.ShapeType.rect, { x: 6.655, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.rule } });
   takeaway(pptx, s, o.takeaway, o.tone ?? "n");
   foot(pptx, s, o.source, o.page);
   return s;
@@ -2253,6 +2301,11 @@ export function movers3(pptx, deck, o) {
                  { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(big ? 14 : 12, "movers values") } },
                  { text: r.v1, options: { color: c, bold: true, fontSize: sz(big ? 14 : 12, "movers values") } }],
         { x: x0 + (big ? 0.55 : 0.48), y, w: W - (big ? 1.72 : 1.82), h: rh, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
+      // r.d2 (Oct 24): a smaller second change under the main one, e.g. +0.30 hrs under +17.4%
+      if (r.d2 != null) {
+        s.addText(o.fmtD(r.d), { x: x0 + W - 1.32, y: y + rh * 0.12, w: 1.22, h: rh * 0.5, fontFace: F, fontSize: sz(16, "movers change"), bold: true, color: c, align: "right", valign: "bottom", isTextBox: true, margin: 0 });
+        s.addText(r.d2, { x: x0 + W - 1.32, y: y + rh * 0.58, w: 1.22, h: rh * 0.32, fontFace: F, fontSize: sz(13, "movers change sub"), color: C.ink600, align: "right", valign: "top", isTextBox: true, margin: 0 });
+      } else
       s.addText(o.fmtD(r.d), { x: x0 + W - (big ? 1.12 : 1.32), y, w: big ? 1.02 : 1.22, h: rh, fontFace: F, fontSize: sz(big ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     });
   });

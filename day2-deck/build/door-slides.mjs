@@ -5,7 +5,8 @@ import * as H from "./house.mjs";
 export function doorSlides(pptx, SEG, current) {
 const I = JSON.parse(fs.readFileSync("./doorinfo.json", "utf8")), Q = JSON.parse(fs.readFileSync("./elr_q3.json", "utf8"));
 const st = Object.keys(Q).map(n => ({ n, ls: Q[n].ls, hrs: Q[n].hrs, elr: Q[n].ls / Q[n].hrs, ...I[n] }));
-const d2 = v => "$" + v.toFixed(2), p = v => (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%";
+const d2 = v => "$" + Math.round(v).toLocaleString("en-US"),   // whole dollars (Noah, Oct 24)
+      p = v => (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%";
 const agg = f => { const r = st.filter(f), h = r.reduce((t, x) => t + x.hrs, 0);
   return { elr: r.reduce((t, x) => t + x.ls, 0) / h, door: r.reduce((t, x) => t + x.door * x.hrs, 0) / h, n: r.length }; };
 const ALL = agg(() => true), G = agg(x => x.grid), NG = agg(x => !x.grid);

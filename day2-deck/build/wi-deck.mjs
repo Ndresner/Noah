@@ -14,7 +14,7 @@ block(pptx, X, { ...base, title: "Warranty RO Count", metric: "warranty ro count
   chg: (a, b) => b[0] / a[0] - 1, cf: F.pctc.d, verb: "grew warranty RO count", chgDesc: "warranty RO count (percent, so store size does not drive the ranking)" });
 block(pptx, X, { ...base, title: "Warranty ELR", metric: "warranty elr", fn: a => a[1] / a[2], f: F.usd2,
   def: "Warranty labor sale / warranty sold hours.", verb: "raised warranty ELR" });
-block(pptx, X, { ...base, seg: "Internal", title: "Internal ELR", metric: "internal elr", fn: a => a[3] / a[4], f: F.usd2,
+block(pptx, X, { ...base, seg: "Internal", title: "Internal ELR", metric: "internal elr", fn: a => a[3] / a[4], f: F.usd2, pct: true, whole: true, absLabel: "$",   // % rank, whole dollars (Noah, Oct 24)
   def: "Internal labor sale / internal sold hours. A higher internal rate adds service gross but is a cost to used cars.",
   verb: "raised internal ELR" });
 await pptx.writeFile({ fileName: "Warranty & Internal - House Style.pptx" }); console.log("wi built");

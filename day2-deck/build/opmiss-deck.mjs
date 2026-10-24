@@ -15,9 +15,12 @@ const usd = v => "$" + Math.round(v).toLocaleString("en-US"), int = v => Math.ro
 const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep 2026 by close date, op code report basis. Same-store, INEOS excluded (opened 2026). Services short = benchmark x the store's CP ROs, minus the services it sold. Each service valued at the store's own labor + parts gross per service sold (group average where the store sold fewer than 30), capped at twice the group average because some flagged lines carry other work bundled on them. A year = Jan-Sep x 12 / 9. Stores at or above the benchmark are not shown and do not offset anyone.";
 const res = SV.map(([name, b], i) => {
   const groupGPJ = R.reduce((t, r) => t + r[6 + i], 0) / R.reduce((t, r) => t + r[2 + i], 0);
-  const rows = R.map(r => { const D = r[1], n = r[2 + i], raw = n >= MIN ? r[6 + i] / n : groupGPJ, gpj = Math.min(raw, CAP * groupGPJ), capped = raw > CAP * groupGPJ, short = Math.max(0, b * D - n);
-    return { n: r[0], rate: n / D, short: short * YR, gpj, raw, capped, own: n >= MIN, miss: short * gpj * YR }; }).filter(x => x.rate < b);
-  return { name, b, groupGPJ, rows, miss: rows.reduce((t, x) => t + x.miss, 0), short: rows.reduce((t, x) => t + x.short, 0) };
+  const rowsAll = R.map(r => { const D = r[1], n = r[2 + i], raw = n >= MIN ? r[6 + i] / n : groupGPJ, gpj = Math.min(raw, CAP * groupGPJ), capped = raw > CAP * groupGPJ, short = Math.max(0, b * D - n);
+    return { n: r[0], rate: n / D, short: short * YR, gpj, raw, capped, own: n >= MIN, miss: short * gpj * YR,
+      // signed gross a year against the benchmark: above = positive, below = negative (Noah, Oct 24: show every store)
+      vs: (n - b * D) * gpj * YR }; });
+  const all = rowsAll, below = all.filter(x => x.rate < b);
+  return { name, b, groupGPJ, all, rows: below, miss: below.reduce((t, x) => t + x.miss, 0), short: below.reduce((t, x) => t + x.short, 0) };
 });
 const total = res.reduce((t, s) => t + s.miss, 0);
 
@@ -43,34 +46,33 @@ const total = res.reduce((t, s) => t + s.miss, 0);
   s.addNotes("Talk track: every one of these cars is already on a customer-pay RO in our drive. The inspection and the menu find the need; the advisor presents it.");
 }
 
-// total by store (ADDED 2026-10-19): the four services added together, only where the store is under that benchmark
+// total by store (ADDED 2026-10-19; Oct 24, Noah: every store, signed gross against all four benchmarks added together)
+const sgnK = v => (v >= 0 ? "+" : "\u2212") + H.kusd(Math.abs(v));
 {
   const T = {};
-  res.forEach(r => r.rows.forEach(x => { const t = (T[x.n] ??= { miss: 0, short: 0, k: 0 }); t.miss += x.miss; t.short += x.short; t.k += 1; }));
-  const rows = Object.entries(T), top = [...rows].sort((a, b) => b[1].miss - a[1].miss), all4 = rows.filter(([, t]) => t.k === 4).length;
+  res.forEach(r => r.all.forEach(x => { const t = (T[x.n] ??= { vs: 0, k: 0 }); t.vs += x.vs; if (x.rate < r.b) t.k += 1; }));
+  const rows = Object.entries(T), srt = [...rows].sort((a, b) => a[1].vs - b[1].vs), all4 = rows.filter(([, t]) => t.k === 4).length;
+  const above = rows.filter(([, t]) => t.vs >= 0).length;
   H.amountRanker(pptx, pptx, {
-    eyebrow: "Opcodes", title: "Total Missed Opportunity by Store",
-    rows: rows.map(([n, t]) => [n, t.miss]), fmt: H.kusd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
-    extra: [{ label: "Below", w: 0.66, vals: Object.fromEntries(rows.map(([n, t]) => [n, `${t.k} of 4`])) },
-            { label: "Services", w: 0.92, vals: Object.fromEntries(rows.map(([n, t]) => [n, int(t.short)])) }],
-    takeaway: `${top[0][0]} leaves the most at ${usd(top[0][1].miss)} a year. ${all4} stores are under all four benchmarks.`,
-    tone: "b", source: SRC + " Alignment, tire balance, brake fluid and fuel system service added together. Below = how many of the four benchmarks the store is under. Services = services short a year.",
+    eyebrow: "Opcodes", title: "Total Missed Opportunity by Store", signed: true,
+    rows: rows.map(([n, t]) => [n, t.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
+    takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} a year; ${above} of 33 stores are ahead of benchmark across the four services. ${all4} stores are under all four.`,
+    tone: "b", source: SRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross a year above (+) or below (-) the four benchmarks, at the store's own gross per service. Below-benchmark services count against above-benchmark ones here.",
   });
-  pptx._slides[pptx._slides.length - 1].addNotes(top.map(([n, t]) => `${n}: ${usd(t.miss)} a year, ${int(t.short)} services, under ${t.k} of 4`).join("\n"));
+  pptx._slides[pptx._slides.length - 1].addNotes(srt.map(([n, t]) => `${n}: ${sgnK(t.vs)} a year against the four benchmarks; under ${t.k} of 4`).join("\n"));
 }
 
-// one ranker per service
+// one ranker per service (Oct 24, Noah: every store, signed gross against the benchmark, rate only)
 res.forEach(s => {
-  const top = [...s.rows].sort((a, b) => b.miss - a.miss);
+  const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
   H.amountRanker(pptx, pptx, {
-    eyebrow: "Opcodes", title: `${s.name} Missed Opportunity`,
-    rows: s.rows.map(x => [x.n, x.miss]), fmt: H.kusd, color: C.bad, ink: C.badInk, valLabel: "Gross/yr", valW: 0.9,   // $K (Noah, Oct 22)
-    extra: [{ label: "Rate", w: 0.62, vals: Object.fromEntries(s.rows.map(x => [x.n, pc(x.rate)])) },
-            { label: "Services", w: 0.96, vals: Object.fromEntries(s.rows.map(x => [x.n, int(x.short)])) }],
-    takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year: ${int(s.short)} services. ${top[0].n} has the most at ${usd(top[0].miss)}.`,
-    tone: "b", source: SRC + ` ${s.name}: group gross per service ${usd(s.groupGPJ)}. Rate = Jan-Sep closing %. Services = services short a year.`,
+    eyebrow: "Opcodes", title: `${s.name} Missed Opportunity`, signed: true,
+    rows: s.all.map(x => [x.n, x.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
+    extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) }],
+    takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-top[0].miss)}.`,
+    tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service; group gross per service ${usd(s.groupGPJ)}. Rate = Jan-Sep closing %.`,
   });
-  pptx._slides[pptx._slides.length - 1].addNotes("Near-zero stores are included on purpose (Noah, Oct 19 2026): some stores sell little of a service by OEM recommendation or local habit (e.g. Spokane customers swap seasonal tires, so fewer balances), but not every customer fits that pattern, so the opportunity is real. A store with a high RO count can show more opportunity than one selling at zero.\n" + s.rows.map(x => `${x.n}: ${pc(x.rate)}, ${int(x.short)} services short a year x ${usd(x.gpj)}/service${x.own ? "" : " (group avg)"} = ${usd(x.miss)}${x.capped ? ` (capped; raw ${usd(x.raw)}/service)` : ""}`).join("\n"));
+  pptx._slides[pptx._slides.length - 1].addNotes("Near-zero stores are included on purpose (Noah, Oct 19 2026): some stores sell little of a service by OEM recommendation or local habit (e.g. Spokane customers swap seasonal tires, so fewer balances), but not every customer fits that pattern, so the opportunity is real. A store with a high RO count can show more opportunity than one selling at zero.\n" + [...s.all].sort((a, b) => a.vs - b.vs).map(x => `${x.n}: ${pc(x.rate)}, ${sgnK(x.vs)} a year at ${usd(x.gpj)}/service${x.own ? "" : " (group avg)"}${x.capped ? ` (capped; raw ${usd(x.raw)}/service)` : ""}`).join("\n"));
 });
 await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
 console.log("total", usd(total), res.map(s => `${s.name} ${s.rows.length} ${usd(s.miss)} ${int(s.short)} gpj ${usd(s.groupGPJ)}`).join(" | "));

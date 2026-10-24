@@ -51,7 +51,9 @@ function chartSpec(FM) {
 }
 
 export function block(pptx, X, M) {
-  const { D, tot, G25, G26, st } = X, f = M.fn, FM = M.f;
+  const { D, tot, G25, G26, st } = X, f = M.fn, FM0 = M.f;
+  // M.whole (Noah, Oct 24): store rankers and movers show whole dollars; the group card and chart keep cents
+  const FM = M.whole ? F.usd : FM0;
   const g25 = f(G25), g26 = f(G26);
   const up = D.m26.filter((r, i) => f(r) > f(D.m25[i])).length;
   const rose = g26 >= g25;
@@ -59,7 +61,7 @@ export function block(pptx, X, M) {
   const measure = M.measure ?? M.title;
   // a TOTAL's year is the sum of its months (bars); anything else is a rate (a line)
   const total = M.level === false && FM === F.int;   // a count (ROs): bars, totalRanker
-  const CS = chartSpec(FM);
+  const CS = chartSpec(FM0);
 
   // 1. group picture
   H.groupYoy(pptx, pptx, {
@@ -70,9 +72,10 @@ export function block(pptx, X, M) {
     ytdPrior: total ? undefined : g25 * CS.scale, ytdCurrent: total ? undefined : g26 * CS.scale,
     unit: total ? "count" : CS.unit, chart: "line",   // totals are lines too (Noah, Oct 22: no bar charts)
     labelFormat: total ? undefined : CS.labelFormat, axisFormat: total ? undefined : CS.axisFormat,
-    fmt: total ? FM.v : CS.fmt, dfmt: total ? FM.d : CS.dfmt,
+    fmt: total ? FM0.v : CS.fmt, dfmt: total ? FM0.d : CS.dfmt,
     chartLabel: `${M.title} by month, 2025 against 2026`,
-    takeaway: `${rose ? "Up" : "Down"} ${FM.d(g26 - g25).replace(/^[+−]/, "")} to ${FM.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
+    benchLines: M.chartBench, benchLabel: M.chartBenchLabel,   // dashed benchmark line(s) (Noah, Oct 24)
+    takeaway: `${rose ? "Up" : "Down"} ${FM0.d(g26 - g25).replace(/^[+−]/, "")} to ${FM0.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
     source: `${M.src} ${M.def} YTD from YTD totals, not the mean of months. Store rows reconcile to the group on every input, both years.${D.q4 ? " 2025 shown January-December; October-December pulled Oct 22 on the same basis (chart only)." : ""}`,
   });
 
@@ -116,19 +119,23 @@ export function block(pptx, X, M) {
     });
   }
 
-  // 3. change
-  const ch = M.chg ?? ((a, b) => f(b) - f(a));
-  const CF = M.cf ?? FM.d;
+  // 3. change. M.pct (Noah, Oct 24): rank by percent change so store size and level do not set the order; the
+  // change in the metric's own unit rides alongside (a column here, a smaller line on the movers slide)
+  const ch = M.pct ? ((a, b) => f(b) / f(a) - 1) : (M.chg ?? ((a, b) => f(b) - f(a)));
+  const CF = M.pct ? F.pctc.d : (M.cf ?? FM.d);
+  const absD = (a, b) => FM.d(f(b) - f(a));
   const deltas = st.map(x => [x.n, ch(x.a25, x.a26)]);
   const grew = deltas.filter(r => r[1] > 0).sort((p, q) => q[1] - p[1]);
   const fell = deltas.filter(r => r[1] < 0).sort((p, q) => p[1] - q[1]);
   const lead = st.find(x => x.n === grew[0][0]);
   H.ranker(pptx, pptx, {
     eyebrow: M.seg, title: M.title, metric: M.metric, measure, deltas, groupD: ch(G25, G26), fmtD: CF,
+    ...(M.pct ? { valLabel: "Change", stripValue: `${CF(ch(G25, G26))}  ·  ${absD(G25, G26)}`,
+                  extra: [{ label: M.absLabel ?? "Change", w: 0.95, vals: Object.fromEntries(st.map(x => [x.n, absD(x.a25, x.a26)])) }] } : {}),
     groupLabel: LABEL.change,
-    takeaway: `${grew.length} of 33 stores ${M.verb}, led by ${nm(grew[0][0])} at ${CF(grew[0][1])} to ${FM.v(f(lead.a26))}. `
+    takeaway: `${grew.length} of 33 stores ${M.verb}, led by ${nm(grew[0][0])} at ${CF(grew[0][1])}${M.pct ? ` (${absD(lead.a25, lead.a26)})` : ""} to ${FM.v(f(lead.a26))}. `
             + (fell.length ? `${fell.length} declined; ${nm(fell[0][0])} fell most at ${CF(fell[0][1])}.` : "None declined."),
-    source: `${M.src} Change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025, best first.`,
+    source: `${M.src} Change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025, best first.${M.pct ? " Ranked by percent change; the change in the measure's own unit alongside." : ""}`,
   });
 
   // 4. top and bottom five, a conversation starter (Noah, Oct 22), plus top five moving now within 2026 (Oct 23)
@@ -136,8 +143,8 @@ export function block(pptx, X, M) {
   const nw = st.filter(x => x.q1);
   if (M.movers !== false) moversSlide(pptx, {
     seg: M.seg, title: M.title, metric: M.metric, fmtD: CF,
-    rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26) })),
-    now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3) })) : undefined,
+    rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26), d2: M.pct ? absD(x.a25, x.a26) + (M.absUnit ?? "") : undefined })),
+    now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3), d2: M.pct ? absD(pm(x.q1), pm(x.q3)) + (M.absUnit ?? "") : undefined })) : undefined,
     nowGroup: nw.length ? CF(ch(tot(nw.map(x => x.q1)), tot(nw.map(x => x.q3)))) : undefined,
     perMonth: total || M.chgDesc !== undefined,
     src: `${M.src} ${M.def ?? ""} Top and bottom five stores by change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025.`,

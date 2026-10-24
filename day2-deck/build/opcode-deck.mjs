@@ -44,6 +44,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
     priorName: "2025", currentName: "2026", ytdPrior: y25 * 100, ytdCurrent: y26 * 100, unit: "pct", chart: "line",
     fmt: v => fmt.v(v / 100), dfmt: v => fmt.d(v / 100),
     chartLabel: `${title} by month, 2025 against 2026`,
+    benchLines: [bench * 100], benchLabel: `Benchmark ${B}`,   // dashed benchmark line (Noah, Oct 24)
     takeaway: `Up ${(Math.abs(y26 - y25) * 100).toFixed(1)} pts to ${fmt.v(y26)}, ahead of 2025 in ${up === 9 ? "all nine" : NUM[up] + " of nine"} months, `
             + (y26 >= bench ? `and above the ${B} benchmark.` : `but ${((bench - y26) * 100).toFixed(1)} pts under the ${B} benchmark \u2014 ${gap.toLocaleString()} ${nouns} short.`),
     source: `${SRC} ${measure} = ${noun} ROs \u00f7 customer-pay ROs on the op-code report basis. YTD from YTD totals, not the mean of months.`,

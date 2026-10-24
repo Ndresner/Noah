@@ -14,11 +14,11 @@ block(pptx, X, { ...base, title: "CP RO Count", metric: "ro count", fn: a => a[0
   def: "Distinct customer-pay ROs: every RO with a customer-pay line, whether or not labor was charged (governed RO Count).",
   extra: () => "Volume is flat, so every gain here comes from selling more per RO.",
   chg: (a, b) => b[0] / a[0] - 1, cf: F.pctc.d, verb: "grew CP RO count", chgDesc: "CP RO count (percent, so store size does not drive the ranking)" });
-block(pptx, X, { ...base, title: "CP Hours per RO", metric: "hpro", fn: a => a[2] / a[0], f: F.dec2, segment: true,
+block(pptx, X, { ...base, title: "CP Hours per RO", metric: "hpro", fn: a => a[2] / a[0], f: F.dec2, segment: true, pct: true, absLabel: "Hours", absUnit: " hrs",   // % rank (Noah, Oct 24)
   def: "Customer-pay sold hours / all customer-pay ROs.",
   extra: ({ G26 }) => `Each 0.1 hour per RO is worth ${F.usd.v(0.1 * G26[0] * ELR(G26))} of labor at the 2026 ELR.`,
   verb: "sold more hours per RO" });
-block(pptx, X, { ...base, title: "CP ELR", metric: "elr", fn: ELR, f: F.usd2, segment: true,
+block(pptx, X, { ...base, title: "CP ELR", metric: "elr", fn: ELR, f: F.usd2, segment: true, pct: true, whole: true, absLabel: "$",   // % rank, whole dollars (Oct 24)
   def: "Customer-pay labor sale / customer-pay sold hours.", verb: "raised CP ELR" });
 /* CP ELR as % of door rate - door rates from Store_Door_Rate_Sheet.xlsx (uploaded Oct 15 2026; standard rate,
    premium/EV/diesel rates not used). ELR is JUL-SEP 2026 (last three months), not YTD: the sheet holds today's
@@ -35,11 +35,11 @@ const currentDoor = (pptx) => { const door = JSON.parse(fs.readFileSync("./door.
     rows: rows.map(r => [r[0], r[1]]), group: grp, bench: 0.70, groupLabel: "JULY–SEPTEMBER 2026", fmt: p, floor: 0.4,
     takeaway: `Jul\u2013Sep: ${at} of 33 stores realize at least 70% of door rate; the group is at ${p(grp)}. ${srt[0][0]} leads at ${p(srt[0][1])}; ${under[0][0]} is lowest at ${p(under[0][1])}.`,
     source: `CURRENT VERSION - bars and % only. ${SRC} CP ELR for JUL-SEP 2026 (last three months, to match current door rates) / store door rate (standard rate from the store door rate sheet; premium, EV and diesel rates not applied). Group = group CP labor sale / hours-weighted door rate. Green at or above 70%, red below. Bars start at 40%. Percentages are truncated, not rounded.\n`
-          + srt.map(r => `${r[0]}: ELR $${r[3].toFixed(2)} / door $${r[4].toFixed(2)} = ${p(r[1])}`).join("\n"),
+          + srt.map(r => `${r[0]}: ELR $${Math.round(r[3])} / door $${Math.round(r[4])} = ${p(r[1])}`).join("\n"),
   });
 };
 doorSlides(pptx, SEG, currentDoor);
-block(pptx, X, { ...base, title: "CP Labor $ per RO", metric: "cp labor per ro", fn: a => a[1] / a[0], f: F.usd, segment: true,
+block(pptx, X, { ...base, title: "CP Labor $ per RO", metric: "cp labor per ro", fn: a => a[1] / a[0], f: F.usd, segment: true, pct: true, absLabel: "$",   // % rank (Oct 24)
   def: "Customer-pay labor sale / all customer-pay ROs (governed Labor Sale/RO).",
   extra: ({ G25, G26 }) => `ROs were flat, so the ${F.usd.v(G26[1] - G25[1])} labor gain came from selling more per visit.`,
   verb: "grew CP labor per RO" });
@@ -47,7 +47,7 @@ block(pptx, X, { ...base, title: "CP Parts $ per RO", metric: "cp parts per ro",
   def: "Customer-pay parts sale / all customer-pay ROs (governed Parts Sale/RO).",
   extra: ({ G25, G26 }) => `Parts sale grew ${F.usd.v(G26[4] - G25[4])} on flat RO count.`,
   verb: "grew CP parts per RO" });
-block(pptx, X, { ...base, title: "CP Labor Gross Profit %", metric: "cp labor gp %", fn: a => a[3] / a[1], f: F.pct, floor: 0.6,
+block(pptx, X, { ...base, title: "CP Labor Gross Profit %", metric: "cp labor gp %", fn: a => a[3] / a[1], f: F.pct, floor: 0.6, chartBench: [78, 80], chartBenchLabel: "Target range 78–80%",
   def: "Customer-pay labor gross / customer-pay labor sale. Target range 78-80%.",
   extra: () => "The target range is 78\u201380%.", verb: "improved labor margin" });
 block(pptx, X, { ...base, title: "CP Parts Gross Profit %", metric: "cp parts gp %", fn: a => a[5] / a[4], f: F.pct, floor: 0.25,

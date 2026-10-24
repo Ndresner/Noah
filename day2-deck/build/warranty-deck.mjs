@@ -40,20 +40,39 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   }).addNotes(`Talk track: these approvals are new money on every warranty claim, and they are why warranty ELR is up. The factory notices a higher rate too: more money in means more scrutiny. Every claim debited in an audit gives part of it back.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
 }
 
-/* 0b. warranty parts gross profit %: the rate increases showing up as margin (Noah, Oct 22 2026: an example) */
+/* 0b. warranty ELR and warranty parts gross profit % on one slide (Noah, Oct 24: replaces the warranty ELR block and
+   the parts GP % chart). The point is direction, not detail: both are rising, so documentation has to hold up. */
 {
-  const P = JSON.parse(fs.readFileSync("./pulls/q4_2025.json", "utf8")).w_parts;
-  const gp = ([s, g]) => g / s * 100, ytd = rows => rows.reduce((t, r) => t + r[1], 0) / rows.reduce((t, r) => t + r[0], 0) * 100;
-  const y25 = ytd(P.m25.slice(0, 9)), y26 = ytd(P.m26);
-  const ahead = P.m26.filter((r, i) => gp(r) > gp(P.m25[i])).length;
-  H.groupYoy(pptx, pptx, {
-    eyebrow: SEG, title: "Warranty Parts Gross Profit %", metric: "warranty parts gp %", measure: "Warranty Parts GP %",
-    prior: P.m25.map(gp), current: P.m26.map(gp), priorName: "2025", currentName: "2026",
-    ytdPrior: y25, ytdCurrent: y26, unit: "pct", chart: "line",
-    chartLabel: "Warranty parts gross profit % by month, 2025 against 2026",
-    takeaway: `Up ${(y26 - y25).toFixed(1)} pts to ${y26.toFixed(1)}%, ahead of 2025 in ${ahead === 9 ? "all nine" : ahead + " of nine"} months: approved parts markup increases show up as margin.`,
-    source: "Qlik - Closed Repair Orders. Warranty pay type, parts gross / parts sale, by close month; 2025 January-December, 2026 January-September. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded. Pulled Oct 22 2026.",
-  }).addNotes("Example for the rate-increase story. The link to the approvals is the point we are making, not something the data proves on its own: 17 of the 19 stores with approvals got a parts markup increase (vendor YTD report), and warranty parts margin rose in every month. Mix of parts and campaigns also moves this line.");
+  const Wd = JSON.parse(fs.readFileSync("./wi.json", "utf8")), P = JSON.parse(fs.readFileSync("./pulls/q4_2025.json", "utf8")).w_parts;
+  const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const elr = r => r[1] / r[2], gp = r => r[1] / r[0] * 100;
+  const ytd = (rows, n, d) => rows.reduce((t, r) => t + r[n], 0) / rows.reduce((t, r) => t + r[d], 0);
+  const E = { p: [...Wd.m25, ...Wd.q4].map(elr), c: Wd.m26.map(elr), y25: ytd(Wd.m25, 1, 2), y26: ytd(Wd.m26, 1, 2) };
+  const G = { p: P.m25.map(gp), c: P.m26.map(gp), y25: ytd(P.m25.slice(0, 9), 1, 0) * 100, y26: ytd(P.m26, 1, 0) * 100 };
+  const ahead = X => X.c.filter((v, i) => v > X.p[i]).length;
+  const tk = `Warranty ELR is up $${Math.round(E.y26 - E.y25)} to $${Math.round(E.y26)} and warranty parts margin up ${(G.y26 - G.y25).toFixed(1)} pts to ${G.y26.toFixed(1)}%. Higher rates draw more audits: every claim's documentation has to hold up.`;
+  const s = pptx.addSlide();
+  H.page(pptx, s, { eyebrow: SEG, title: "Warranty Rates Are Rising" });
+  [[E, "WARRANTY ELR", v => "$" + Math.round(v), '"$"#,##0', 0.5, 10], [G, "WARRANTY PARTS GROSS PROFIT %", v => v.toFixed(1) + "%", '0"%"', 6.72, 2]].forEach(([X, lab, fmt, axis, x, step]) => {
+    const w = 6.11, top = H.BODY.top, h = H.bodyH(tk);
+    H.panel(pptx, s, { x, y: top, w, h, label: null });
+    s.addText(lab, { x: x + 0.22, y: top + 0.14, w: w - 0.44, h: 0.32, fontFace: F, fontSize: sz(14, "twin head"), bold: true, color: C.navy, charSpacing: 1.0, isTextBox: true, margin: 0 });
+    s.addText([{ text: "2025  ", options: { color: C.ink600, fontSize: sz(16, "twin label") } }, { text: fmt(X.y25) + "     ", options: { color: C.ink600, bold: true, fontSize: sz(24, "twin value") } },
+               { text: "2026  ", options: { color: C.ink600, fontSize: sz(16, "twin label") } }, { text: fmt(X.y26), options: { color: C.goodInk, bold: true, fontSize: sz(24, "twin value") } }],
+      { x: x + 0.22, y: top + 0.5, w: w - 0.44, h: 0.5, fontFace: F, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(`Jan–Sep year to date · ahead of 2025 in ${ahead(X) === 9 ? "all nine" : ahead(X) + " of nine"} months`, { x: x + 0.22, y: top + 1.0, w: w - 0.44, h: 0.3, fontFace: F, fontSize: sz(14, "twin sub"), color: C.ink600, isTextBox: true, margin: 0 });
+    const all = [...X.p, ...X.c], lo = Math.floor(Math.min(...all) / step) * step - step, hi = Math.ceil(Math.max(...all) / step) * step + step;
+    s.addChart(pptx.ChartType.line, [{ name: "2025", labels: MON, values: X.p }, { name: "2026", labels: MON, values: [...X.c, null, null, null] }], {
+      x: x + 0.1, y: top + 1.35, w: w - 0.2, h: h - 1.45, chartColors: [C.ink300, C.blue], lineSize: 3, lineDataSymbol: "circle", lineDataSymbolSize: 7,
+      showLegend: true, legendPos: "t", legendFontFace: "+mn-lt", legendFontSize: sz(14, "legend"), legendColor: C.ink,
+      catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(14, "cat axis"), catAxisLabelColor: C.ink,
+      valAxisLabelFontFace: "+mn-lt", valAxisLabelFontSize: sz(14, "val axis"), valAxisLabelColor: C.ink600, valAxisLabelFormatCode: axis,
+      valAxisMinVal: lo, valAxisMaxVal: hi, valAxisMajorUnit: step, valGridLine: { color: C.rule, size: 0.75 }, catGridLine: { style: "none" }, valAxisLineShow: false,
+    });
+  });
+  H.takeaway(pptx, s, tk, "n");
+  H.foot(pptx, s, "Qlik - Closed Repair Orders. Warranty pay type, by close month; 2025 shown January-December, 2026 January-September. Warranty ELR = warranty labor sale / warranty hours sold; parts margin = warranty parts gross / parts sale. Same-store, INEOS excluded; GMC Prescott body shop labor types excluded.");
+  s.addNotes("Talk track (Noah, Oct 24): the point is the direction. Rate increases are lifting both warranty ELR and warranty parts margin. The factory notices higher rates: more money in means more scrutiny, so documentation and process on every claim have to be right. Store detail for warranty ELR is no longer in the flow.");
 }
 
 /* 1. what the auditor debits */
