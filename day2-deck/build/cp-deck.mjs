@@ -47,9 +47,9 @@ block(pptx, X, { ...base, title: "CP Parts $ per RO", metric: "cp parts per ro",
   def: "Customer-pay parts sale / all customer-pay ROs (governed Parts Sale/RO).",
   extra: ({ G25, G26 }) => `Parts sale grew ${F.usd.v(G26[4] - G25[4])} on flat RO count.`,
   verb: "grew CP parts per RO" });
-block(pptx, X, { ...base, title: "CP Labor Gross Profit %", metric: "cp labor gp %", fn: a => a[3] / a[1], f: F.pct, floor: 0.6, chartBench: [78, 80], chartBenchLabel: "Target range 78–80%",
-  def: "Customer-pay labor gross / customer-pay labor sale. Target range 78-80%.",
-  extra: () => "The target range is 78\u201380%.", verb: "improved labor margin" });
+block(pptx, X, { ...base, title: "CP Labor Gross Profit %", metric: "cp labor gp %", fn: a => a[3] / a[1], f: F.pct, floor: 0.6, chartBench: [78, 82], chartBenchLabel: "Target range 78–82%",   // 78-82 (Noah, Oct 25)
+  def: "Customer-pay labor gross / customer-pay labor sale. Target range 78-82%: luxury stores run toward the top, domestic stores toward the bottom.",
+  extra: () => "The target range is 78\u201382%.", verb: "improved labor margin" });
 block(pptx, X, { ...base, title: "CP Parts Gross Profit %", metric: "cp parts gp %", fn: a => a[5] / a[4], f: F.pct, floor: 0.25,
   def: "Customer-pay parts gross / customer-pay parts sale on repair orders (counter and wholesale not included).",
   verb: "improved parts margin" });

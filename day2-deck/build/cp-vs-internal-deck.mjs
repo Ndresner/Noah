@@ -17,22 +17,22 @@ const M = [
   { key: "L", title: "Internal vs Customer-Pay Labor Gross Profit %", word: "labor", min: 0.55, max: 0.9 },
   { key: "P", title: "Internal vs Customer-Pay Parts Gross Profit %", word: "parts", min: 0.2, max: 0.5 },
 ];
-for (const [mode, opt] of [["bar", "Option A"], ["dumbbell", "Option B"]]) {
-  for (const m of M) {
-    const rows = D.rows.map(r => [r.n, r["cp" + m.key], r["in" + m.key]]);
-    const gG = D.G["in" + m.key] - D.G["cp" + m.key];
-    const g = r => r[2] - r[1];
-    const sorted = [...rows].sort((p, q) => g(p) - g(q));
-    const atOrBetter = rows.filter(r => g(r) >= gG - 1e-9).length;
-    const above = rows.filter(r => g(r) >= 0).map(r => r[0]);
-    const widest = sorted.slice(0, 3);
-    H.gapRanker(pptx, pptx, { eyebrow: `${SEG} · ${opt}`, title: m.title, mode,
-      rows, group: [D.G["cp" + m.key], D.G["in" + m.key]], fmt: pct, fmtGap: pts,
-      aLabel: "CUSTOMER PAY", bLabel: "INTERNAL", aShort: "CP", bShort: "INT",
-      plotLabel: "", min: m.min, max: m.max,
-      note: mode === "bar" ? "green = gap at or better than the group" : "navy dot = CP, green/red dot = internal",
-      takeaway: `Internal ${m.word} margin runs ${pts(gG).replace(/^[+−]/, "")} ${gG < 0 ? "below" : "above"} customer pay across the group; ${atOrBetter} of 33 stores are at or better than that gap. Widest: ${list(widest.map(r => `${r[0]} (${pts(g(r))})`))}.`,
-      source: `${SRC} Green at or better than the group gap (${pts(gG)}), red below. ${above.length} stores run internal at or above customer pay: ${list(above)}. A wide gap can be a policy (internal detail, used-car recon pricing) rather than a miss; confirm with the store before calling it out.` });
-  }
+// Oct 25 (Noah): in the Internal section, each store against its OWN customer-pay rate, not the group: internal at or
+// above its CP rate is green, below is red (CP parts 41% and internal 38% shows as -3.0 pts). Option B (dumbbell) retired.
+for (const m of M) {
+  const rows = D.rows.map(r => [r.n, r["cp" + m.key], r["in" + m.key]]);
+  const gG = D.G["in" + m.key] - D.G["cp" + m.key];
+  const g = r => r[2] - r[1];
+  const sorted = [...rows].sort((p, q) => g(p) - g(q));
+  const below = rows.filter(r => g(r) < 0).length;
+  const above = rows.filter(r => g(r) >= 0).map(r => r[0]);
+  const widest = sorted.slice(0, 3);
+  H.gapRanker(pptx, pptx, { eyebrow: "Internal", title: m.title, mode: "bar", okRef: 0,
+    rows, group: [D.G["cp" + m.key], D.G["in" + m.key]], fmt: pct, fmtGap: pts,
+    aLabel: "CUSTOMER PAY", bLabel: "INTERNAL", aShort: "CP", bShort: "INT",
+    plotLabel: "", min: m.min, max: m.max,
+    note: "gap = internal minus own CP",
+    takeaway: `${below} of 33 stores collect less ${m.word} margin on internal work than on customer pay; the group is ${pts(gG)}. Widest: ${list(widest.map(r => `${H.storeName(r[0])} (${pts(g(r))})`))}.`,
+    source: `${SRC} Green: internal at or above the store's own customer-pay rate; red: below. Dashed line: the group gap (${pts(gG)}). ${above.length ? `At or above customer pay: ${list(above.map(H.storeName))}.` : ""} A gap can be a policy (internal detail, used-car recon pricing) rather than a miss; confirm with the store before calling it out.` });
 }
 await pptx.writeFile({ fileName: "CP vs Internal GP - Review.pptx" }); console.log("cp vs internal built");

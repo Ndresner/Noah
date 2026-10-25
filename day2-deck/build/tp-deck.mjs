@@ -41,7 +41,7 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
         { big: "+$1,171,181", label: "Parts gross, up 1.9%, ahead of 2025 in six of nine months.", tone: "g" },   // same pattern as service (Noah, Oct 24)
         { big: "$20.59M", label: "Fixed ops gross a month over the last twelve months.", tone: "g" }],
   ask: "run service like a sales department: every visit is a chance to sell the next hour and the next car.",
-  notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship)." });
+  notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship).\nFor the GMs who come from sales (Noah, Oct 25): service and parts keep far more of every gross dollar than vehicle sales does. Jan-Sep 2026, after each department's own expenses, fixed ops kept 27 cents of every gross dollar; new, used and F&I together kept 7 cents (before doc fees, packs and factory money, which the P&L books outside the departments). People cost 45 cents of every fixed ops gross dollar and 62 cents of every vehicle sales gross dollar. That is why paying yourself first, on internal work, matters: see Pay Yourself First at the start of the Internal section." });
 
 T({ eyebrow: "Customer Pay", title: "What Can You Control?", saidFrom: RT,
   said: ["Work it in order: ROs first, then hours per RO, the rate (ELR), the mix and the margin (GP%)",
@@ -88,16 +88,17 @@ T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
   ask: "hold labor margin in the 78-80% band by matching the tech to the job, not by squeezing tech pay.",
   notes: "PLACE: CP Engine section, before CP Labor Gross Profit %.\nSaid: Roundtable slide 21 (Gross Profit %). Above 80% can mean techs are underpaid on the work they do; below 78% means the job mix or the dispatch is off." });
 
-T({ eyebrow: "Opcodes", title: "Express Service", saidFrom: GM,
-  said: ["Express service is the #1 retention driver and business builder",
-         "75% of your business includes some type of maintenance work",
-         "Express bays are simply MPI bays. Unknown dollars are worth 2.5 times the known.",
-         "Minimize labor costs for lower-skilled work",
-         "If you don't help them, someone else will"],
-  now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor; repair 30.5%.", tone: "n" },
-        { big: "52.5%", label: "Customer pay as a share of labor sale, down 0.3 pts. Warranty labor rose 8.8%, internal 5.8%.", tone: "n" }],
-  ask: "treat every express visit as an inspection: fast in, inspected, and sold the next service.",
-  notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: express visits and a complete MPI go hand in hand).\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service)." });
+// Oct 25 (Noah): was "Express Service". The point is capitalizing on the maintenance visits we already have.
+T({ eyebrow: "Opcodes", title: "Basic Maintenance Service", saidFrom: GM,
+  said: ["On-demand maintenance appointments: get cars in quickly",
+         "A complete, comprehensive multi-point inspection on every visit, with the right recommendations at that time",
+         "Experienced eyes on every car: entry-level staff alone won't know what to look for",
+         "A quick cleaning that misses the cavity starting to form is a disservice to the customer",
+         "More cars in the door is great, and we want both. Capitalize on the opportunities we already have",
+         "Processes and policies that make it happen: every car, every time"],
+  now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor across the group; repair 30.5%. Depending on work mix, maintenance runs 25% to 75% of a store's service.", tone: "n" }],
+  ask: "capitalize on every maintenance visit: in quickly, inspected completely by someone who knows what to look for, and every finding recommended.",
+  notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: express visits and a complete MPI go hand in hand).\nTalk track (Noah, Oct 25): go to the dentist for a quick cleaning and they don't tell you something is starting to look like a cavity: that is a disservice. Get cars in quickly, perform a complete, comprehensive MPI, and make the proper recommendations at that time. This is critical, and it can't be left to entry-level employees alone: someone with experience who knows what to look for has to be looking at these cars. Depending on work mix, maintenance can be 25% to 75% of a store's service. Many stores focus on getting more cars in the door, which is great, and we want both, but they miss the opportunities they already have. Processes and policies make sure we capitalize on them: every car, every time.\nThe 52.5% customer-pay share of labor sale tile was dropped with the rewrite.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service), reworded." });
 
 T({ eyebrow: "Opcodes", title: "Tracking & Accountability", saidFrom: BOTH,
   said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",
@@ -115,7 +116,8 @@ T({ eyebrow: "Opcodes", title: "Road To The Sale", saidFrom: BOTH,
          "Review history and previously declined items",
          "Time and mileage recommendations from an accurate, available menu",
          "MPI mandate: every car, every time",
-         "Consistency is key: trained, documented and actively managed"],
+         "Consistency is key: trained, documented and actively managed",
+         "We produce hours. A service not recommended is an hour a technician never gets the chance to turn"],   // Noah, Oct 25
   now: [{ big: "Up in all four", label: "Alignment, balance, brake fluid and fuel service each rose 1.2-1.4 pts and beat 2025 every month.", tone: "g" },
         { big: "18,493", label: "Balances short of the 15% benchmark. The group is at 8.3%.", tone: "b" },
         { big: "4,821", label: "Alignments short of 15%; the group is at 13.2%. Brake fluid is 0.7 pts from its 10%.", tone: "b" }],
@@ -162,11 +164,12 @@ T({ eyebrow: "Technician Proficiency", title: "Technicians & Stalls", saidFrom: 
          "Tech level in line with job skill: right tech, right job",
          "5/6 of staff on schedule at all times, Saturdays included",
          "90%+ MPI completion; track and report technician efficiency",
-         "Use scoreboarding and Teams to show techs where they stand"],
+         "Use scoreboarding and teams to show techs where they stand",
+         "Set clear objectives and give feedback: no one can be held to a goal they don't know. We're responsible for the knowing"],   // Noah, Oct 25
   now: [{ big: "94.7%", label: "Group technician proficiency (sold hours / worked hours). 20 of 33 stores at or above 85%.", tone: "g" },
         { big: "262 of 583", label: "Counted technicians under 85%. Every store has at least one.", tone: "b" },
         { big: "$1.65M a month", label: "Gross missed if each of them reached 85%: no extra hours, techs or bays.", tone: "b" }],
-  ask: "show every tech their own proficiency every week. The best techs in each store already prove 85% is possible.",
+  ask: "set clear goals, show every tech where they stand every week, and give feedback. The best techs in each store already prove 85% is possible.",
   notes: "PLACE: Technician Proficiency section, after the section break and before the store proficiency ranker.\nSaid: Roundtable slide 22 (Technicians & Stalls); Jan GM slide 52 / May GM slide 16 (MPI Completion and Tech Efficiency).\nNow: proficiency slides (ADP worked hours + Qlik sold hours, Dec 25-Oct 9, with the foreman 30%, tech 10%, role-change and keying-error rules)." });
 
 T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
@@ -180,5 +183,27 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
         { big: "$1.65M a month", label: "Technician proficiency, lifting each tech under 85% to 85%.", tone: "b" }],
   ask: "name your one or two commitments out loud, with a number attached, before you leave the room.",
   tone: "g", notes: "PLACE: the close, after the last Productivity / Proficiency slide.\nSaid: Roundtable slide 24 (Misc & Closing). Commitments tracking was dropped for this meeting, so this asks for commitments without a scorecard." });
+
+// Pay Yourself First (Noah, Oct 25): opens the Internal section. Internal work isn't service making money off sales;
+// it keeps gross in the department that holds on to the most of it. Data: pulls/dept_keep.json (P&L Detail, Jan-Sep 2026).
+{
+  const D = JSON.parse(fs.readFileSync("./pulls/dept_keep.json", "utf8")), f = D.fixed, s = D.sales;
+  const fg = f.gross_service + f.gross_parts, fp = f.profit_service + f.profit_parts, fpe = f.personnel_service + f.personnel_parts;
+  const sg = s.gross_new + s.gross_used + s.gross_fi, sp = s.profit_new + s.profit_used + s.gross_fi - s.fi_comp;
+  const spe = s.personnel_new + s.personnel_used + s.slsp_comp_new + s.slsp_comp_used + s.fi_comp;
+  const c = v => Math.round(v * 100) + "\u00a2", M = v => "$" + (v / 1e6).toFixed(1) + "M";
+  T({ eyebrow: "Internal", title: "Pay Yourself First", saidFrom: null,
+    said: ["Internal work isn't service making money off sales: it is gross the store earns on its own cars",
+           "Sales prices a car off what it costs, within reason. A fair internal charge is part of that cost",
+           "Service and parts keep far more of every gross dollar than vehicle sales does",
+           "Every gross dollar in sales carries commissions, pay and expense that fixed ops doesn't",
+           "Price internal labor and parts like customer pay: pay yourself first"],
+    now: [{ big: c(fp / fg), label: `Fixed ops keeps of every gross dollar after its own expenses: ${M(fp)} of ${M(fg)}.`, tone: "g" },
+          { big: c(sp / sg), label: `New, used and F&I keep of every gross dollar: ${M(sp)} of ${M(sg)}, before other income such as doc fees, packs and factory money.`, tone: "n" },
+          { big: `${c(fpe / fg)} vs ${c(spe / sg)}`, label: "Of every gross dollar spent on people and commissions: fixed ops vs vehicle sales.", tone: "n" }],
+    ask: "hold internal labor and parts margins to customer pay. Every internal dollar is gross in the department that keeps the most of it.",
+    source: "Qlik - Profit & Loss, Detail statement, Jan-Sep 2026, same-store. Kept = department gross less the department's own expenses. Vehicle sales = new + used departments plus F&I income and F&I compensation. Other income not assigned to a department (doc fees, packs, factory money, holdback: $87.2M net) and management fees are left out of both.",
+    notes: `PLACE: Internal section, after the section break and before Internal ELR (Noah, Oct 25).\nTalk track: a lot of stores see internal as service making money off sales. It isn't: sales prices a car off its cost, within reason, so a fair internal charge is part of the deal, and the gross lands in the department that keeps the most of it. Example: if sales makes $500 of gross on a car, the commissions, pay and expense that come out of it leave far less than the same $500 of internal gross keeps in service and parts.\nNumbers (P&L Detail, Jan-Sep 2026, same-store): fixed ops gross ${M(fg)}, department profit ${M(fp)} (${c(fp / fg)}); people ${M(fpe)} (${c(fpe / fg)}). Vehicle sales gross (new ${M(s.gross_new)}, used ${M(s.gross_used)}, F&I ${M(s.gross_fi)}) ${M(sg)}; new and used department results ${M(s.profit_new)} and ${M(s.profit_used)}, less F&I compensation ${M(s.fi_comp)}: ${M(sp)} kept (${c(sp / sg)}); people and commissions ${M(spe)} (${c(spe / sg)}). Caveat: $87.2M of net other income (doc fees, packs, factory money, holdback, interest) is booked outside the departments and most of it comes with vehicle sales; with it, vehicle sales keeps much more. The comparison is department against department, as the P&L reports them.` });
+}
 
 await pptx.writeFile({ fileName: "Talking Points - Day 2.pptx" }); console.log("tp built", pptx._slides.length);

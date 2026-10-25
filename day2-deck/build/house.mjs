@@ -1830,7 +1830,7 @@ export function gapRanker(pptx, deck, o) {
   });
   rows.forEach((r, i) => {
     const c = i < per ? 0 : 1, k = i - c * per, x0 = COLX[c], y = TOP + k * rowH, cy = y + rowH / 2, px = x0 + NAMEW + 0.05;
-    const g = gap(r), ok = g >= gG - 1e-9;
+    const g = gap(r), ok = g >= (o.okRef ?? gG) - 1e-9;   // o.okRef (Noah, Oct 25): 0 scores each store against its own CP rate
     if (k % 2) s.addShape(pptx.ShapeType.rect, { x: x0 - 0.08, y, w: 5.9, h: rowH, fill: { color: C.zebra } });
     s.addText(words(r[0], "store"), { x: x0, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
     if (o.mode === "bar") {
@@ -2104,7 +2104,8 @@ export function amountRanker(pptx, deck, o) {
     const c = i < perCol ? 0 : 1, k = i - c * perCol, x0 = COLX[c], y = TOP + k * rowH, bx = x0 + RANKW + 0.05 + NAMEW + 0.08;
     const neg = r[1] < 0, fill = o.signed ? (neg ? C.bad : C.good) : (o.color ?? C.blue), ink = o.signed ? (neg ? C.badInk : C.goodInk) : (o.ink ?? C.ink);
     s.addText(String(i + 1), { x: x0, y, w: RANKW, h: rowH, fontFace: F, fontSize: 12, color: C.ink300, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(r[0], { x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    // 12pt when two extra columns narrow the name column, so CHEVY GMC BULLHEAD stays on one line (Noah, Oct 25)
+    s.addText(r[0], { x: x0 + RANKW + 0.05, y, w: NAMEW, h: rowH, fontFace: F, fontSize: EXW > 1 ? 12 : 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
     const bh = rowH * 0.55, zx = X(bx, 0), vx = X(bx, r[1]);
     s.addShape(pptx.ShapeType.rect, { x: Math.min(zx, vx), y: y + (rowH - bh) / 2, w: Math.max(Math.abs(vx - zx), 0.02), h: bh, fill: { color: fill } });
     s.addText(o.fmt(r[1]), { x: bx + BARW + 0.06, y, w: VALW, h: rowH, fontFace: F, fontSize: 13, bold: true,

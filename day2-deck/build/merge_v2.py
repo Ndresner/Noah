@@ -17,6 +17,7 @@ layout = prs.slide_layouts[0]
 SRC = {
     "TP": "Talking Points - Day 2.pptx",
     "NP": "Fixed Absorption & Net Profit - House Style.pptx",   # np-deck.mjs (Oct 24)
+    "REC": "Store Records - Opening.pptx",   # records-open.mjs (Oct 25)
     "EX": "Metric Explainers - Review.pptx",
     "CPH": "CP Hours & RO a Day - Review.pptx",
     "HPRO": "Hours per RO Value - Review.pptx",
@@ -105,6 +106,8 @@ order = []
 order += O(1, 2) + X("TP", 1)
 # Fixed Ops Net Profit block right after Why We Are Here: the high-level view before the sections (Noah, Oct 24)
 order += X("NP", 3, 4, 5, 6, 7)
+# store records in the opening: A Record Year, Record Months in 2026 (Noah, Oct 25; the Open Decisions record slides retired)
+order += X("REC", 1, 2)
 # 01 Gross
 order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability
@@ -132,13 +135,15 @@ order += X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34,
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
 # Oct 23 (Noah): Express Service ahead of MPI, Tracking & Accountability after MPI and video; each measure's missed
 # opportunity slide sits inside its block, ahead of the top/bottom slide; the two totals close the section
-order += O(6) + X("TP", 9) + X("TP", 7) + X("MPI", 1, 2) + X("TP", 8) + X("EX", 10)
+order += O(6) + X("TP", 9) + X("TP", 7) + X("MPI", 1, 2, 3) + X("TP", 8) + X("EX", 10)
 for (a, b, c), op in zip([(2, 3, 4), (5, 6, 7), (8, 9, 10), (11, 12, 13)], (3, 4, 5, 6)):
     order += X("OPC", a, b) + X("OP", op) + X("OPC", c)
 order += X("OP", 2, 1)
 # 05 Internal (was Labor Mix; renamed Oct 23)
 # internal ELR and internal labor / parts GP % follow the pay-type slides (Noah, Oct 22: internal is not warranty)
-order += O(7) + X("WI", 10, 11, 12, 13) + X("IGP", *R(1, 8))   # TP 8 Tracking & Accountability moved to Opcodes (Oct 23)   # TP 7 and LM 2-6 moved to Customer Pay (Oct 23)   # LM 6 Unclassified Customer-Pay Labor removed (Noah, Oct 22: confusing)
+# Oct 25 (Noah): Pay Yourself First (TP 15) opens the section; each internal GP level ranker (IGP 2, 6) is replaced by
+# the store's internal rate against its own customer-pay rate (CVI 1 labor, CVI 2 parts)
+order += O(7) + X("TP", 15) + X("WI", 10, 11, 12, 13) + X("IGP", 1) + X("CVI", 1) + X("IGP", 3, 4, 5) + X("CVI", 2) + X("IGP", 7, 8)
 # 06 Productivity (Technician Proficiency runs inside it, no break of its own)
 # Oct 23 (Noah): headcount (PROD 18-19) leads the data; ROs per advisor (PROD 6-9), ROs per manager (PROD 14-17), the
 # gross-per-employee gap (FGEG) and 5% more per employee (FGE5) move to Open Decisions
@@ -148,7 +153,8 @@ order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)   #
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid
 # Oct 24 (Noah): the warranty ELR block (WI 6-9) is out; WA 2 now shows warranty ELR and parts margin rising together
-order += O(9) + X("TP", 10) + X("WA", 1, 2) + X("WA", 3, 4) + X("WI", 2, 3, 4, 5)
+# Oct 25 (Noah): rate increases and rising rates on one slide (WA 1); warranty RO count replaced by warranty gross profit (WI 2-5)
+order += O(9) + X("TP", 10) + X("WA", 1) + X("WA", 2, 3) + X("WI", 2, 3, 4, 5)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
@@ -159,11 +165,8 @@ L = lambda *a: list(a)
 OPEN = [
     # Oct 22 (Noah): removed Gross Trend A charts and tables except the parts table, all of option B, Record Year,
     # door rate B, CP vs Internal option B and the headcount trend - the deck versions now cover them
-    ("STORE RECORDS", X("SR", *R(2, 6)), L("RECORD BOARD", "SPOTLIGHT BY %", "SPOTLIGHT BY $", "RANKER", "RANKER BY CATEGORY")),
     # door options C-E (CP 16, 11, 12) and Best Techs A-B removed (Noah, Oct 21); the survivors keep their letters
     ("DOOR RATE", X("CP", 14, 16), L("STORE DOOR RATES", "ELR % OF DOOR RATE, BARS ONLY")),   # CP 16 out of the flow (Noah, Oct 24)   # CP 14 out of the flow; option A (CP 17, same as the flow slide) removed (Noah, Oct 23)
-    ("CP VS INTERNAL GP %", X("CVI", 1, 2), L("OPTION A", "OPTION A")),
-    ("PHOTO COMPLETION", X("MPI", 3), L(None)),
     # out of the Productivity flow (Noah, Oct 23)
     ("PRODUCTIVITY", X("FGEG", 1) + X("FGE5", 1) + X("PROD", 6, 7, 8, 9, 14, 15, 16, 17, 10, 11, 12, 13),
      L("GROSS PER EMPLOYEE GAP", "5% MORE PER EMPLOYEE", *["ROS PER ADVISOR"] * 4, *["ROS PER MANAGER"] * 4, *["ROS PER EMPLOYEE"] * 4)),

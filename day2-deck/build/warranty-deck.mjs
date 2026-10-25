@@ -24,55 +24,56 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   });
 }
 
-/* 0. the money: approved warranty rate increases so far this year (vendor YTD report, Oct 22 2026) */
+/* 0. the money and where it shows, on one slide (Noah, Oct 25: combines Warranty Rate Increases and Warranty Rates
+   Are Rising). Left: approved rate increases by store (vendor YTD report), a compact bar list. Right: warranty ELR and
+   warranty parts gross profit %, 2025 against 2026. The point is direction: rates are up, so documentation has to hold up. */
 {
   const W = JSON.parse(fs.readFileSync("./warranty/rwr.json", "utf8")), T = W.total;
-  const usd = v => "$" + Math.round(v).toLocaleString("en-US"), dash = v => v ? H.kusd(v) : "–";   // table in $K (Noah, Oct 22)
-  const top = [...W.rows].sort((a, b) => b.total - a.total)[0];
-  H.amountRanker(pptx, pptx, {
-    eyebrow: SEG, title: "Warranty Rate Increases",
-    rows: W.rows.map(r => [r.n, r.total]), fmt: H.kusd, color: C.blue, ink: C.navy, valLabel: "GP added", valW: 1.0,
-    extra: [{ label: "Labor", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.labor)])) },
-            { label: "Parts", w: 0.92, vals: Object.fromEntries(W.rows.map(r => [r.n, dash(r.parts)])) }],
-    takeaway: `${usd(T.total)} in added gross profit from warranty rate increases approved this year at ${W.rows.length} stores. Higher rates bring more audits: the process is how we keep it.`,
-    tone: "n",   // display, not a comparison (Noah, Oct 22)
-    source: `YTD RWR Financials 2026 (warranty rate submission vendor), "YTD revenue secured": the added gross profit from approved increases, as more dollars per warranty labor hour sold or more parts markup. ${W.rows.length} stores have an approval this year; the other ${33 - W.rows.length} have not had one yet. Labor ${usd(T.labor)}, parts ${usd(T.parts)}. ${W.note}`,
-  }).addNotes(`Talk track: these approvals are new money on every warranty claim, and they are why warranty ELR is up. The factory notices a higher rate too: more money in means more scrutiny. Every claim debited in an audit gives part of it back.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
-}
-
-/* 0b. warranty ELR and warranty parts gross profit % on one slide (Noah, Oct 24: replaces the warranty ELR block and
-   the parts GP % chart). The point is direction, not detail: both are rising, so documentation has to hold up. */
-{
+  const usd = v => "$" + Math.round(v).toLocaleString("en-US");
   const Wd = JSON.parse(fs.readFileSync("./wi.json", "utf8")), P = JSON.parse(fs.readFileSync("./pulls/q4_2025.json", "utf8")).w_parts;
   const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const elr = r => r[1] / r[2], gp = r => r[1] / r[0] * 100;
   const ytd = (rows, n, d) => rows.reduce((t, r) => t + r[n], 0) / rows.reduce((t, r) => t + r[d], 0);
   const E = { p: [...Wd.m25, ...Wd.q4].map(elr), c: Wd.m26.map(elr), y25: ytd(Wd.m25, 1, 2), y26: ytd(Wd.m26, 1, 2) };
   const G = { p: P.m25.map(gp), c: P.m26.map(gp), y25: ytd(P.m25.slice(0, 9), 1, 0) * 100, y26: ytd(P.m26, 1, 0) * 100 };
-  const ahead = X => X.c.filter((v, i) => v > X.p[i]).length;
-  const tk = `Warranty ELR is up $${Math.round(E.y26 - E.y25)} to $${Math.round(E.y26)} and warranty parts margin up ${(G.y26 - G.y25).toFixed(1)} pts to ${G.y26.toFixed(1)}%. Higher rates draw more audits: every claim's documentation has to hold up.`;
+  const tk = `${usd(T.total)} in gross profit added by rate increases approved at ${W.rows.length} stores this year. Warranty ELR is up $${Math.round(E.y26 - E.y25)} and parts margin ${(G.y26 - G.y25).toFixed(1)} pts: higher rates draw more audits, so every claim has to hold up.`;
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: SEG, title: "Warranty Rates Are Rising" });
-  [[E, "WARRANTY ELR", v => "$" + Math.round(v), '"$"#,##0', 0.5, 10], [G, "WARRANTY PARTS GROSS PROFIT %", v => v.toFixed(1) + "%", '0"%"', 6.72, 2]].forEach(([X, lab, fmt, axis, x, step]) => {
-    const w = 6.11, top = H.BODY.top, h = H.bodyH(tk);
-    H.panel(pptx, s, { x, y: top, w, h, label: null });
-    s.addText(lab, { x: x + 0.22, y: top + 0.14, w: w - 0.44, h: 0.32, fontFace: F, fontSize: sz(14, "twin head"), bold: true, color: C.navy, charSpacing: 1.0, isTextBox: true, margin: 0 });
-    s.addText([{ text: "2025  ", options: { color: C.ink600, fontSize: sz(16, "twin label") } }, { text: fmt(X.y25) + "     ", options: { color: C.ink600, bold: true, fontSize: sz(24, "twin value") } },
-               { text: "2026  ", options: { color: C.ink600, fontSize: sz(16, "twin label") } }, { text: fmt(X.y26), options: { color: C.goodInk, bold: true, fontSize: sz(24, "twin value") } }],
-      { x: x + 0.22, y: top + 0.5, w: w - 0.44, h: 0.5, fontFace: F, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(`Jan–Sep year to date · ahead of 2025 in ${ahead(X) === 9 ? "all nine" : ahead(X) + " of nine"} months`, { x: x + 0.22, y: top + 1.0, w: w - 0.44, h: 0.3, fontFace: F, fontSize: sz(14, "twin sub"), color: C.ink600, isTextBox: true, margin: 0 });
+  const top = H.BODY.top, h = H.bodyH(tk);
+  // left: rate increases by store
+  const lx = 0.5, lw = 5.75;
+  H.panel(pptx, s, { x: lx, y: top, w: lw, h, label: null });
+  s.addText([{ text: "RATE INCREASES IN 2026", options: { color: C.navy, bold: true } }],
+    { x: lx + 0.22, y: top + 0.12, w: 3.6, h: 0.34, fontFace: F, fontSize: sz(14, "twin head"), charSpacing: 1.0, isTextBox: true, margin: 0 });
+  s.addText(H.kusd(T.total) + " GP", { x: lx + lw - 2.0, y: top + 0.08, w: 1.78, h: 0.4, fontFace: F, fontSize: sz(20, "twin value"), bold: true, color: C.navy, align: "right", isTextBox: true, margin: 0 });
+  const rows = [...W.rows].sort((a, b) => b.total - a.total), RT = top + 0.58, rh = (h - 0.7) / rows.length, mx = rows[0].total;
+  rows.forEach((r, i) => {
+    const y = RT + i * rh, bx = lx + 2.45, bw = 2.15;
+    s.addText(r.n, { x: lx + 0.22, y, w: 2.2, h: rh, fontFace: F, fontSize: 12, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    s.addShape(pptx.ShapeType.rect, { x: bx, y: y + rh * 0.22, w: Math.max(r.total / mx * bw, 0.02), h: rh * 0.56, fill: { color: C.blue } });
+    s.addText(H.kusd(r.total), { x: bx + bw + 0.05, y, w: lw - (bx - lx) - bw - 0.27, h: rh, fontFace: F, fontSize: 12, bold: true, color: C.navy, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+  });
+  // right: the two rates, stacked
+  const rx = 6.42, rw = 6.41, ch = (h - 0.12) / 2;
+  [[E, "WARRANTY ELR", v => "$" + Math.round(v), '"$"#,##0', 10], [G, "WARRANTY PARTS GP %", v => v.toFixed(1) + "%", '0"%"', 2]].forEach(([X, lab, fmt, axis, step], k) => {
+    const y0 = top + k * (ch + 0.12);
+    H.panel(pptx, s, { x: rx, y: y0, w: rw, h: ch, label: null });
+    s.addText([{ text: lab + "    ", options: { color: C.navy, bold: true, fontSize: sz(14, "twin head") } },
+               { text: "2025 ", options: { color: C.ink300, fontSize: sz(14, "twin label") } }, { text: fmt(X.y25) + "    ", options: { color: C.ink300, bold: true, fontSize: sz(16, "twin value") } },
+               { text: "2026 ", options: { color: C.blue, fontSize: sz(14, "twin label") } }, { text: fmt(X.y26), options: { color: C.blue, bold: true, fontSize: sz(16, "twin value") } }],
+      { x: rx + 0.2, y: y0 + 0.08, w: rw - 0.4, h: 0.36, fontFace: F, valign: "middle", isTextBox: true, margin: 0 });
     const all = [...X.p, ...X.c], lo = Math.floor(Math.min(...all) / step) * step - step, hi = Math.ceil(Math.max(...all) / step) * step + step;
     s.addChart(pptx.ChartType.line, [{ name: "2025", labels: MON, values: X.p }, { name: "2026", labels: MON, values: [...X.c, null, null, null] }], {
-      x: x + 0.1, y: top + 1.35, w: w - 0.2, h: h - 1.45, chartColors: [C.ink300, C.blue], lineSize: 3, lineDataSymbol: "circle", lineDataSymbolSize: 7,
-      showLegend: true, legendPos: "t", legendFontFace: "+mn-lt", legendFontSize: sz(14, "legend"), legendColor: C.ink,
+      x: rx + 0.05, y: y0 + 0.42, w: rw - 0.1, h: ch - 0.48, chartColors: [C.ink300, C.blue], lineSize: 2.5, lineDataSymbol: "circle", lineDataSymbolSize: 5,
+      showLegend: false,   // the header carries 2025 (gray) and 2026 (green)
       catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: sz(14, "cat axis"), catAxisLabelColor: C.ink,
       valAxisLabelFontFace: "+mn-lt", valAxisLabelFontSize: sz(14, "val axis"), valAxisLabelColor: C.ink600, valAxisLabelFormatCode: axis,
-      valAxisMinVal: lo, valAxisMaxVal: hi, valAxisMajorUnit: step, valGridLine: { color: C.rule, size: 0.75 }, catGridLine: { style: "none" }, valAxisLineShow: false,
+      valAxisMinVal: lo, valAxisMaxVal: hi, valAxisMajorUnit: step * 2, valGridLine: { color: C.rule, size: 0.75 }, catGridLine: { style: "none" }, valAxisLineShow: false,
     });
   });
   H.takeaway(pptx, s, tk, "n");
-  H.foot(pptx, s, "Qlik - Closed Repair Orders. Warranty pay type, by close month; 2025 shown January-December, 2026 January-September. Warranty ELR = warranty labor sale / warranty hours sold; parts margin = warranty parts gross / parts sale. Same-store, INEOS excluded; GMC Prescott body shop labor types excluded.");
-  s.addNotes("Talk track (Noah, Oct 24): the point is the direction. Rate increases are lifting both warranty ELR and warranty parts margin. The factory notices higher rates: more money in means more scrutiny, so documentation and process on every claim have to be right. Store detail for warranty ELR is no longer in the flow.");
+  H.foot(pptx, s, `Rate increases: YTD RWR Financials 2026 (warranty rate submission vendor), "YTD revenue secured" = added gross profit from approved increases (labor ${usd(T.labor)}, parts ${usd(T.parts)}); ${33 - W.rows.length} stores have no approval yet. Rates: Qlik - Closed Repair Orders, warranty pay type by close month; ELR = warranty labor sale / hours sold; parts margin = warranty parts gross / parts sale. 2025 January-December, 2026 January-September. Same-store.`);
+  s.addNotes(`Talk track (Noah, Oct 24-25): rate increases are new money on every warranty claim, and they show up as a higher warranty ELR and parts margin. The factory notices higher rates too: more money in means more scrutiny, so documentation and process on every claim is how we keep what we are owed.\n\nVendor store names: ${W.rows.map(r => `${r.src} = ${r.n}`).join("; ")}.`);
 }
 
 /* 1. what the auditor debits */
