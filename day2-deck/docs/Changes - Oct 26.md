@@ -81,3 +81,12 @@ Slides in `Changes - Oct 26 (round 6).pptx`; the services-count example is in `O
 | 137 | How We Measured It | Definition: "January through September 2026, year to date" (pay-period dates and tech-number matching moved to the notes). Who counts in three bullets: service and express technicians / service team leaders and shop foremen / everyone whose job is to produce sold hours |
 | 142 | Opportunity as a Share of Gross | Eyebrow shows the period: "Jan–Sep 2026, Monthly Average" |
 | Review | Variance from Benchmark + services | Signed "Services" column beside Rate (services a year above + / below − the benchmark), all four services |
+
+## Round 7 (Oct 26)
+Slides in `Changes - Oct 26 (round 7).pptx`; services example re-sent as `Op Code Variance with Services - Review.pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 88 | Basic Maintenance Service | "The value of the unknown" tile removed and sewn into the bullets: "On-demand maintenance appointments: get cars in quickly. A car we can't book is work we never see"; "A complete, comprehensive multi-point inspection on every visit: what it finds is worth far more than the maintenance the car is due for". New tile: 81.3% MPI completion (Jul–Sep, 12 of 33 at 90%; same figure as Tracking & Accountability) |
+| 128 | Pay Plans Are Work Instructions | "Service advisors: base versus bonus, a 50/50 ratio" |
+| Review | Variance from Benchmark | Column "Services" renamed "Opcodes" |

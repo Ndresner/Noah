@@ -91,9 +91,9 @@ await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
       eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
       rows: s.all.map(x => [x.n, x.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.1,
       extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) },
-              { label: "Services", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(x.svc)])) }],
+              { label: "Opcodes", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(x.svc)])) }],
       takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-top[0].miss)}.`,
-      tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %. Services = services a year above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold, x 12/9).`,
+      tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %. Opcodes = opcodes a year above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold, x 12/9).`,
     });
   });
   await rv.writeFile({ fileName: "Op Code Variance with Services - Review.pptx" });

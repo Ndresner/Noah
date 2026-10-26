@@ -98,15 +98,16 @@ T({ eyebrow: "Customer Pay", title: "The Goldilocks Margin", saidFrom: RT,
 
 // Oct 25 (Noah): was "Express Service". The point is capitalizing on the maintenance visits we already have.
 T({ eyebrow: "Opcodes", title: "Basic Maintenance Service", saidFrom: GM,
-  said: ["On-demand maintenance appointments: get cars in quickly",
-         "A complete, comprehensive multi-point inspection on every visit, with the right recommendations at that time",
+  // Oct 26 (Noah): "the value of the unknown" moved from the right column into these two bullets
+  said: ["On-demand maintenance appointments: get cars in quickly. A car we can't book is work we never see",
+         "A complete, comprehensive multi-point inspection on every visit: what it finds is worth far more than the maintenance the car is due for",
          "Experienced eyes on every car: entry-level staff alone won't know what to look for",
          "An oil change that misses worn brakes or a leaking water pump is a disservice to the customer",
          "More cars in the door is great, but first make the most of every car already in the shop",
          "Processes and policies that make it happen: every car, every time"],
   now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor across the group; repair 30.5%. Depending on work mix, maintenance runs 25% to 75% of a store's service.", tone: "n" },
-        // Noah, Oct 26: no dollar example, plain terms
-        { big: "The value of the unknown", label: "The work a complete multi-point inspection finds is worth far more than the maintenance the car is due for. Turn a car away, or miss the time the customer wants, and we lose all of it.", tone: "b" }],
+        // Oct 26: MPI completion replaces "The value of the unknown" (now in the bullets); same figure as Tracking & Accountability
+        { big: "81.3%", label: "MPI completion, July to September (store-reported). 12 of 33 stores at the 90% benchmark: every car skipped is unknown work left in the car.", tone: "b" }],
   ask: "capitalize on every maintenance visit: in quickly, inspected completely by someone who knows what to look for, and every finding recommended.",
   notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: maintenance visits and a complete MPI go hand in hand).\nTalk track (Noah, Oct 25): go to the dentist for a quick cleaning and they don't tell you something is starting to look like a cavity: that is a disservice. Get cars in quickly, perform a complete, comprehensive MPI, and make the proper recommendations at that time. This is critical, and it can't be left to entry-level employees alone: someone with experience who knows what to look for has to be looking at these cars. Depending on work mix, maintenance can be 25% to 75% of a store's service. Many stores focus on getting more cars in the door, which is great, and we want both, but they miss the opportunities they already have. Processes and policies make sure we capitalize on them: every car, every time.\nThe 52.5% customer-pay share of labor sale tile was dropped with the rewrite.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service), reworded." });
 
@@ -165,7 +166,7 @@ T({ eyebrow: "Fixed Ops Productivity", title: "Pay Plans Are Work Instructions",
          "Based on customer-pay performance: CP labor or gross per RO, hours per RO, maintenance penetration, total sales or gross",
          "Incentivize improvement in the metrics that make the biggest difference",
          "Move technicians to flat rate and away from hourly: it rewards productivity and makes proficiency easy to track",
-         "Base versus bonus: a 50/50 ratio",
+         "Service advisors: base versus bonus, a 50/50 ratio",
          "Every system is perfectly designed to get the results it gets"],
   now: [{ big: "$304", label: "CP labor per RO, the number the plans should pay on. Up $17.", tone: "g" },
         { big: "94.7%", label: "Technician proficiency, Jan-Sep: 20 of 33 stores at or above 85%. Flat-rate pay rewards what techs produce.", tone: "g" }],   // replaces ROs per advisor, now in Open Decisions (Noah, Oct 23)
