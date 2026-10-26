@@ -21,12 +21,12 @@ for (const k of ["calls", "bookable", "booked", "tr", "open"]) {
 const DAYS = 93;   // Jul 26 - Oct 26 inclusive
 const MIN = 300;   // rankings: locations with at least 300 calls, so a handful of calls can't top a list
 const fmt = v => Math.round(v).toLocaleString("en-US");
-const SEG = "The Phone";
+const SEG = "Voice AI · Flai";   // says what and whose data (Noah, Oct 26)
 const SRC = `Flai voice AI dashboard, Service view, standings export, Jul 26 - Oct 26, 2026 (${DAYS} days). Flai's location names (26 with calls). Pickup rate and resolution as Flai reports them. Flai's estimated savings, revenue and profit are not used.`;
 const notPicked = Math.round(G.tr * (1 - G.pick / 100));
 
 // 1. the group picture
-H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSize: 36, subSize: 14,
+H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Customer", bigSize: 36, subSize: 14,
   tiles: [
     { label: "Calls handled", big: fmt(G.calls), sub: `About ${fmt(G.calls / DAYS)} a day across ${S.length} locations, average call ${Math.floor(G.avg / 60)}:${String(G.avg % 60).padStart(2, "0")}.`, tone: "n" },
     // handled 100% by the AI (Noah, Oct 26): Flai's export has no such column, so it is calls not transferred
@@ -34,7 +34,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transferred calls were not picked up by a person.`, tone: "b" },
   ],
-  banner: "The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.",   // open-callback count off this slide (Noah, Oct 26)
+  banner: `Service calls answered by Flai, our voice AI, Jul 26 – Oct 26, 2026. The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.`,   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
   tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
 
@@ -49,7 +49,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
   const s = pptx.addSlide();
   const best = [...R2].sort((a, b) => b.pick - a.pick)[0], worst = [...R2].sort((a, b) => a.pick - b.pick)[0], cb = [...R2].sort((a, b) => b.open - a.open);
   const tk = `${best.n} picks up ${best.pick}% of transfers; ${worst.n} picks up ${worst.pick}%. ${cb[0].n} and ${cb[1].n} hold ${cb[0].open + cb[1].open} of the group's ${G.open} open callbacks.`;
-  H.page(pptx, s, { eyebrow: SEG, title: "Who Handles the Phone Well" });
+  H.page(pptx, s, { eyebrow: SEG, title: "Store Voice AI Metrics" });
   const top = H.BODY.top, h = H.bodyH(tk), W = (12.33 - 0.24) / 3;
   cols.forEach((c, k) => {
     const x = 0.5 + k * (W + 0.12);
