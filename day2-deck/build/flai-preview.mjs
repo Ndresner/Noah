@@ -44,7 +44,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
   const cols = [
     { head: "BOOKING RATE", sub: "booked ÷ bookable", key: "book", f: r => r.book.toFixed(1) + "%", up: true, g: G.book },
     { head: "TRANSFER PICKUP RATE", sub: "transfers picked up", key: "pick", f: r => r.pick.toFixed(1) + "%", up: true, g: G.pick },
-    { head: "CALLBACK RESOLUTION", sub: "callbacks closed", key: "res", f: r => r.res.toFixed(1) + "%", up: true, g: G.res, x: r => `${r.open} open` },
+    { head: "CALLBACK RESOLUTION", sub: "callbacks closed", key: "res", f: r => r.res.toFixed(1) + "%", up: true, g: G.res, x: r => String(r.open), xh: "Open" },
   ];
   const s = pptx.addSlide();
   const best = [...R2].sort((a, b) => b.pick - a.pick)[0], worst = [...R2].sort((a, b) => a.pick - b.pick)[0], cb = [...R2].sort((a, b) => b.open - a.open);
@@ -64,11 +64,14 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
     lists.forEach(([lab, L, ink, bar]) => {
       s.addShape(pptx.ShapeType.rect, { x: x + 0.18, y: y + 0.02, w: W - 0.36, h: 0.025, fill: { color: bar } });
       s.addText(lab, { x: x + 0.18, y: y + 0.05, w: 2, h: 0.24, fontFace: F, fontSize: sz(14, "list head"), bold: true, color: ink, isTextBox: true, margin: 0 });
+      // column heads on the TOP 5 / BOTTOM 5 line instead of "calls" / "open" on every row (Noah, Oct 26)
+      s.addText("Rate", { x: x + W - 2.0, y: y + 0.05, w: 0.8, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
+      s.addText(c.xh ?? "Calls", { x: x + W - 1.18, y: y + 0.05, w: 1.0, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
       y += 0.3;
       L.forEach(r => {
         s.addText(r.n, { x: x + 0.18, y, w: W - 2.2, h: rh, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.f(r), { x: x + W - 2.0, y, w: 0.8, h: rh, fontFace: F, fontSize: 13, bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-        s.addText(c.x ? c.x(r) : `${fmt(r.calls)} calls`, { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+        s.addText(c.x ? c.x(r) : fmt(r.calls), { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
         y += rh;
       });
     });
