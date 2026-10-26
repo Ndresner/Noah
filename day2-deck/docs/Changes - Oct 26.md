@@ -68,3 +68,16 @@ Slides in `Changes - Oct 26 (round 5).pptx` (18 slides, in deck order).
 | 144 | What a Tech Minute Is Worth (by store) | "A year" in whole dollars (was $K with one decimal); bars blue with the "A year" header (a code comment had been hiding both) |
 
 Not changed, check with Noah: slide 143's "$3.13" per minute keeps its cents (rounded it would read $3).
+
+## Round 6 (Oct 26)
+Slides in `Changes - Oct 26 (round 6).pptx`; the services-count example is in `Op Code Variance with Services - Review.pptx` (not in the deck).
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 88 | Basic Maintenance Service | Tile renamed "The value of the unknown"; $2,500 example removed: "The work a complete multi-point inspection finds is worth far more than the maintenance the car is due for. Turn a car away, or miss the time the customer wants, and we lose all of it." |
+| 98 | Balance % | No change: benchmark line stays (Noah) |
+| 127 | People | "Being short-handed limits scheduling, loses opportunities and leads to missed MPIs" (no question) |
+| 128 | Pay Plans Are Work Instructions | "Move technicians to flat rate and away from hourly: …" |
+| 137 | How We Measured It | Definition: "January through September 2026, year to date" (pay-period dates and tech-number matching moved to the notes). Who counts in three bullets: service and express technicians / service team leaders and shop foremen / everyone whose job is to produce sold hours |
+| 142 | Opportunity as a Share of Gross | Eyebrow shows the period: "Jan–Sep 2026, Monthly Average" |
+| Review | Variance from Benchmark + services | Signed "Services" column beside Rate (services a year above + / below − the benchmark), all four services |

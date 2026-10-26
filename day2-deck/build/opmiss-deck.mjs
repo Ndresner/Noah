@@ -18,7 +18,9 @@ const res = SV.map(([name, b], i) => {
   const rowsAll = R.map(r => { const D = r[1], n = r[2 + i], raw = n >= MIN ? r[6 + i] / n : groupGPJ, gpj = Math.min(raw, CAP * groupGPJ), capped = raw > CAP * groupGPJ, short = Math.max(0, b * D - n);
     return { n: r[0], rate: n / D, short: short * YR, gpj, raw, capped, own: n >= MIN, miss: short * gpj * YR,
       // signed gross a year against the benchmark: above = positive, below = negative (Noah, Oct 24: show every store)
-      vs: (n - b * D) * gpj * YR }; });
+      vs: (n - b * D) * gpj * YR,
+      // signed services a year against the benchmark (Oct 26 review: service counts back beside the rate)
+      svc: (n - b * D) * YR }; });
   const all = rowsAll, below = all.filter(x => x.rate < b);
   return { name, b, groupGPJ, all, rows: below, miss: below.reduce((t, x) => t + x.miss, 0), short: below.reduce((t, x) => t + x.short, 0) };
 });
@@ -78,5 +80,23 @@ res.forEach(s => {
   pptx._slides[pptx._slides.length - 1].addNotes("Near-zero stores are included on purpose (Noah, Oct 19 2026): some stores sell little of a service by OEM recommendation or local habit (e.g. Spokane customers swap seasonal tires, so fewer balances), but not every customer fits that pattern, so the opportunity is real. A store with a high RO count can show more opportunity than one selling at zero.\n" + [...s.all].sort((a, b) => a.vs - b.vs).map(x => `${x.n}: ${pc(x.rate)}, ${sgnK(x.vs)} a year at ${usd(x.gpj)}/service${x.own ? "" : " (group avg)"}${x.capped ? ` (capped; raw ${usd(x.raw)}/service)` : ""}`).join("\n"));
 });
 await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
+
+// REVIEW (Noah, Oct 26): the per-service slides with a signed services column beside the rate. Not in the deck.
+{
+  const rv = new PptxGenJS(); rv.layout = "LAYOUT_WIDE"; rv.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
+  const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
+  res.forEach(s => {
+    const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
+    H.amountRanker(rv, rv, {
+      eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
+      rows: s.all.map(x => [x.n, x.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.1,
+      extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) },
+              { label: "Services", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(x.svc)])) }],
+      takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-top[0].miss)}.`,
+      tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %. Services = services a year above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold, x 12/9).`,
+    });
+  });
+  await rv.writeFile({ fileName: "Op Code Variance with Services - Review.pptx" });
+}
 console.log("total", usd(total), res.map(s => `${s.name} ${s.rows.length} ${usd(s.miss)} ${int(s.short)} gpj ${usd(s.groupGPJ)}`).join(" | "));
 res.forEach(s => console.log(s.name, s.rows.filter(x => x.own).sort((a, b) => b.gpj - a.gpj).slice(0, 3).map(x => `${x.n} ${usd(x.gpj)}`).join(", ")));

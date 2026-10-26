@@ -74,7 +74,8 @@ H.amountRanker(pptx, pptx, {
 // ADDED 2026-10-16 (Noah): the same opportunity as a share of the gross each store's ROs generate
 const sh = [...OS].sort((a, b) => b.share - a.share), big = sh.filter(o => o.share >= 0.2);
 H.amountRanker(pptx, pptx, {
-  eyebrow: SEG, title: "Opportunity as a Share of Gross",
+  // period on the slide (Noah, Oct 26): monthly averages over Jan-Sep 2026
+  eyebrow: SEG + " \u00b7 Jan\u2013Sep 2026, Monthly Average", title: "Opportunity as a Share of Gross",
   rows: OS.map(o => [o.n, o.share]), fmt: v => (v * 100).toFixed(0) + "%", color: H.C.bad, ink: H.C.badInk, valLabel: "Share",
   extra: [{ label: "Missed", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(tot(o) / MO)])) },
           { label: "Gross", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(o.rog / MO)])) }],

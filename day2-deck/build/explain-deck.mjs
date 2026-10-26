@@ -185,9 +185,12 @@ X({ eyebrow: "Technician Proficiency", title: "What Is Technician Proficiency?",
 
 X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
   formula: ["Sold hours (Qlik)", "÷", "worked hours (ADP, regular + overtime)"], formulaSize: 22,
-  define: "Matched by tech number, all pay types, Dec 25, 2025 to Oct 9, 2026. Store = total sold hours / total worked hours.",
+  // Noah, Oct 26: label the period Jan-Sep 2026 YTD (pay periods run Dec 25, 2025 to Oct 9, 2026; in the notes)
+  define: "January through September 2026, year to date. Store = total sold hours / total worked hours.",
   whyHead: "WHO COUNTS", leverHead: "THE RULES",
-  why: ["Service technicians, express technicians, service team leaders and shop foremen: everyone whose job is to produce sold hours",
+  why: ["Service technicians and express technicians",
+        "Service team leaders and shop foremen",
+        "Everyone whose job is to produce sold hours",
         "Not counted: body shop, detail and tint"],
   levers: [["Shop foremen above 30%", "Below that, a foreman is mainly dispatching"],
            ["Techs above 10%", "Below that, they are not working as a line tech"],
@@ -196,7 +199,7 @@ X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
            ["Shared tech numbers", "Example: hours flagged to a shop code like 999, not a person"],
            ["Opportunity", "Each tech under 85% raised to 85% of their own worked hours"]],
   ours: "The rules keep non-tech time and data errors out of the numbers, and every store is measured the same way.",
-  tone: "n", notes: "PLACE: right after 'What Is Technician Proficiency?'.\nRules as applied on the proficiency slides (Oct 16 2026). Express techs at stores that pool express hours are mostly excluded by the 10% rule." });
+  tone: "n", notes: "PLACE: right after 'What Is Technician Proficiency?'.\nPeriod: pay periods Dec 25, 2025 to Oct 9, 2026, matched by tech number, all pay types; labelled Jan-Sep 2026 YTD on the slide (Noah, Oct 26: closest the pay periods allow).\nRules as applied on the proficiency slides (Oct 16 2026). Express techs at stores that pool express hours are mostly excluded by the 10% rule." });
 
 // 13. Gross section (Noah, Oct 22): how service and parts gross are built, in front of Total Gross Profit - Fixed Ops
 X({ eyebrow: "Fixed Ops Gross", title: "What Is Fixed Ops Gross?",
