@@ -48,6 +48,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `fge-deck.mjs` / `fge-gap-deck.mjs` | Fixed Gross per Employee 5 Pct / Gap - Review | `prod/fge26.txt` |
 | `prof-deck.mjs` | Technician Proficiency - House Style (8) | `prof/prof.json`, `prof/opp.json` (from `prof/compute.py`) |
 | `np-deck.mjs` | Fixed Absorption & Net Profit - House Style (7) | `abs.json`, `pulls/fixed_exp.json`, `ntgs.json`/`ntgp.json`, `pulls/net_by_dept.json` |
+| `flai-deck.mjs` | Voice AI - Flai (2): after The Front Door (Oct 26) | `flai/standings_*.csv` (Flai Service standings export, Jul 26 - Oct 26 2026; store rows reconcile to Flai's Group row). Flai location names, never beside P&L numbers; Flai $ estimates unused; "handled by the AI alone" = calls - transfers; pickup rate read as transfers picked up by a person (confirm with Flai); callback column lists every store at 100%; green / red bar = in more than one top / bottom list. |
 | `best-options.mjs` | Best Techs - Design Options (3) | prof data |
 | `tp-deck.mjs` | Talking Points - Day 2 (14) | typed from verified figures (see below) |
 | `explain-deck.mjs` | Metric Explainers - Review (12) | typed group figures |
@@ -191,7 +192,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 201 slides (159 in the meeting flow + 42 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 203 slides (161 in the meeting flow + 42 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here, the Fixed Ops Net Profit block (5), A Record Year, Record Months in 2026.
 2. **01 Gross**, with Service Is Sales 2.0.

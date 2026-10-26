@@ -18,6 +18,7 @@ SRC = {
     "TP": "Talking Points - Day 2.pptx",
     "NP": "Fixed Absorption & Net Profit - House Style.pptx",   # np-deck.mjs (Oct 24)
     "REC": "Store Records - Opening.pptx",   # records-open.mjs (Oct 25)
+    "PH": "Voice AI - Flai.pptx",   # flai-deck.mjs (Oct 26)
     "EX": "Metric Explainers - Review.pptx",
     "CPH": "CP Hours & RO a Day - Review.pptx",
     "HPRO": "Hours per RO Value - Review.pptx",
@@ -114,7 +115,7 @@ order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is
 # What Is Fixed Absorption? + What Is in Total Store Fixed Expenses? (NP 1-2) replace EX 8 (Oct 24)
 order += O(4) + X("NP", 1, 2) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
 # 03 Customer Pay (renamed from The CP Engine, Oct 22). Every metric block now ends with a top/bottom-five movers slide.
-order += O(5) + X("TP", 3, 4)
+order += O(5) + X("TP", 3, 4) + X("PH", 1, 2)   # Flai voice AI slides after The Front Door (Noah, Oct 26)
 # Oct 23 (Noah): One More CP RO a Day (CPH 5) sits after the CP RO change ranker, and What 0.1 Hour per RO Is Worth
 # (HPRO 1) after the hours-per-RO change ranker, each ahead of its movers slide. The Who's Moving Now line charts
 # (WMN 1-4, 6-10) move to Open Decisions. CP Parts $ per RO (EX 5, CP 24-27, WMN 5) is out of the deck: the link

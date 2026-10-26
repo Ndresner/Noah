@@ -1,4 +1,4 @@
-/* Phone handling preview (Noah, Oct 26): Flai voice AI, Service view, standings export Jul 26 - Oct 26, 2026
+/* Voice AI slides, in the deck after The Front Door (Noah, Oct 26): Flai voice AI, Service view, standings export Jul 26 - Oct 26, 2026
    (flai/standings_*.csv; store rows reconcile to Flai's Group row on every count). Flai's own location names and grain
    (26 locations, not the P&L's 33 stores): never on a slide with P&L numbers. Est. $ columns are Flai's model and are
    not used. Pickup rate and Resolution are read as Flai labels them; definitions to confirm with Noah. */
@@ -92,4 +92,4 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   H.foot(pptx, s, SRC + ` Green bar: the store is in more than one top list; red bar: in more than one bottom 5. Ranked among the ${R2.length} locations with ${MIN}+ calls (${S.filter(r => r.calls < MIN).map(r => r.n).join(", ")} have fewer). Honda Spokane shows no calls in the period.`);
   s.addNotes("Talk track: the voice AI answers every call, books what it can and hands the rest to the store. What happens next is ours: someone has to pick up the transfer, and every callback has to be closed. A store that doesn't pick up is sending a customer it already has to voicemail.\n\nDefinitions to confirm against Flai: pickup rate is read as the share of transferred calls a person picked up; resolution as the share of callback requests closed. Resolve time in the export runs to weeks at some locations and is not shown.");
 }
-await pptx.writeFile({ fileName: "../decks/Phone Handling - Preview.pptx" }); console.log("phone preview built");
+await pptx.writeFile({ fileName: "Voice AI - Flai.pptx" }); console.log("flai built");
