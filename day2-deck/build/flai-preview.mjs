@@ -57,6 +57,9 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   const topOf = c => c.key === "res" ? sortedOf(c).filter(r => r.res === 100) : sortedOf(c).slice(0, 5);
   const seen = {}; cols.forEach(c => topOf(c).forEach(r => { seen[r.n] = (seen[r.n] ?? 0) + 1; }));
   const multi = new Set(Object.keys(seen).filter(n => seen[n] > 1));
+  // red bar: in more than one bottom 5 (Noah, Oct 26)
+  const seenB = {}; cols.forEach(c => sortedOf(c).slice(-5).forEach(r => { seenB[r.n] = (seenB[r.n] ?? 0) + 1; }));
+  const multiB = new Set(Object.keys(seenB).filter(n => seenB[n] > 1));
   const maxTop = Math.max(...cols.map(c => topOf(c).length));
   cols.forEach((c, k) => {
     const x = 0.5 + k * (W + 0.12);
@@ -80,13 +83,13 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
         s.addText(r.n, { x: x + 0.18, y, w: W - 2.2, h: rh, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.f(r), { x: x + W - 2.0, y, w: 0.8, h: rh, fontFace: F, fontSize: 13, bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.x ? c.x(r) : fmt(r.calls), { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-        if (isTop && multi.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x + W - 0.13, y: y + 0.04, w: 0.06, h: rh - 0.08, fill: { color: C.good } });
+        if (isTop ? multi.has(r.n) : multiB.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x + W - 0.13, y: y + 0.04, w: 0.06, h: rh - 0.08, fill: { color: isTop ? C.good : C.bad } });
         y += rh;
       });
     });
   });
   H.takeaway(pptx, s, tk, "n");
-  H.foot(pptx, s, SRC + ` Green bar: the store is in more than one top list. Ranked among the ${R2.length} locations with ${MIN}+ calls (${S.filter(r => r.calls < MIN).map(r => r.n).join(", ")} have fewer). Honda Spokane shows no calls in the period.`);
+  H.foot(pptx, s, SRC + ` Green bar: the store is in more than one top list; red bar: in more than one bottom 5. Ranked among the ${R2.length} locations with ${MIN}+ calls (${S.filter(r => r.calls < MIN).map(r => r.n).join(", ")} have fewer). Honda Spokane shows no calls in the period.`);
   s.addNotes("Talk track: the voice AI answers every call, books what it can and hands the rest to the store. What happens next is ours: someone has to pick up the transfer, and every callback has to be closed. A store that doesn't pick up is sending a customer it already has to voicemail.\n\nDefinitions to confirm against Flai: pickup rate is read as the share of transferred calls a person picked up; resolution as the share of callback requests closed. Resolve time in the export runs to weeks at some locations and is not shown.");
 }
 await pptx.writeFile({ fileName: "../decks/Phone Handling - Preview.pptx" }); console.log("phone preview built");
