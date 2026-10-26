@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 26, 2026
 
 ## Current test deck
-- 203 slides: 161 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
+- 202 slides: 160 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -14,6 +14,7 @@ Updated: October 26, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 26)
+- Wording round (full list in "Changes - Oct 26", changed slides in "Changes - Oct 26.pptx"): Why We Are Here tile now 27 cents vs 7 cents; net profit "$7 in sales"; Record Year "Set a record, then reset it"; records ranker spacing; plainer movers labels; What Is Fixed Absorption? now shows what is and isn't in total store fixed expenses (breakdown slide folded in); Net to Gross, What Can You Control?, The Front Door, RO count, hours per RO, ELR, CP labor $ per RO, labor GP (target back to 78-80%) and parts GP explainers reworded; Pricing Strategy now ahead of Labor Sale by Pay Type; Flai 100% callback stores as a compact list.
 - Records: A Record Year now shows store records only (records set: 98, replacing the best-group-month tile) with the leaders named at the bottom. The month-by-month board is replaced by a ranker of stores by records set (option A, picked by Noah).
 - Slide 45 source line shortened: "Source: Flai service calls, last 90 days."
 - Voice AI (Flai), two slides after The Front Door (slides 45-46), last 90 days (Jul 26 - Oct 26, 2026):
