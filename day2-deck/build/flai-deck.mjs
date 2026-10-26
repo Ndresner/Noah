@@ -43,7 +43,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transfers missed. If half wanted an appointment, that is $${(missedVal / 1e6).toFixed(1)}M of gross profit.`, tone: "b" },
   ],
-  banner: `Service calls answered by Flai, our voice AI, over the last 90 days (Jul 26 – Oct 26, 2026). The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.`,   // open-callback count off this slide (Noah, Oct 26)
+  banner: `The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard. Source: Flai service calls, last 90 days.`,   // less is more (Noah, Oct 26)   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
   tone: "b", source: SRC + ` Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures. Value: half of the missed transfers x $${gpr.toFixed(2)} average gross per customer-pay or warranty RO (CP labor + parts gross $${((CP[3] + CP[5]) / 1e6).toFixed(1)}M, Qlik Closed ROs, plus warranty gross $${(WGR / 1e6).toFixed(1)}M, P&L, over ${fmt(CPW)} CP & W ROs, Jan-Sep 2026, same-store) = $${fmt(missedVal)}.` });
 
