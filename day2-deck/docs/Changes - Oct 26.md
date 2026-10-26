@@ -90,3 +90,4 @@ Slides in `Changes - Oct 26 (round 7).pptx`; services example re-sent as `Op Cod
 | 88 | Basic Maintenance Service | "The value of the unknown" tile removed and sewn into the bullets: "On-demand maintenance appointments: get cars in quickly. A car we can't book is work we never see"; "A complete, comprehensive multi-point inspection on every visit: what it finds is worth far more than the maintenance the car is due for". New tile: 81.3% MPI completion (Jul–Sep, 12 of 33 at 90%; same figure as Tracking & Accountability) |
 | 128 | Pay Plans Are Work Instructions | "Service advisors: base versus bonus, a 50/50 ratio" |
 | Review | Variance from Benchmark | Column "Services" renamed "Opcodes" |
+| Review | Variance from Benchmark | Rate moved to the right of Opcodes; green / red bar beside the top / bottom three stores by rate (same mark as the change rankers) |

@@ -84,16 +84,19 @@ await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
 // REVIEW (Noah, Oct 26): the per-service slides with a signed services column beside the rate. Not in the deck.
 {
   const rv = new PptxGenJS(); rv.layout = "LAYOUT_WIDE"; rv.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
+  const rateMarks = rows => { const by = [...rows].sort((p, q) => q.rate - p.rate);
+    return Object.fromEntries([...by.slice(0, 3).map(x => [x.n, "g"]), ...by.slice(-3).map(x => [x.n, "r"])]); };
   const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
   res.forEach(s => {
     const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
     H.amountRanker(rv, rv, {
       eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
       rows: s.all.map(x => [x.n, x.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.1,
-      extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) },
-              { label: "Opcodes", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(x.svc)])) }],
+      // Oct 26 (Noah): rate on the right, top / bottom three by rate marked
+      extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(x.svc)])) },
+              { label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])), marks: rateMarks(s.all) }],
       takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-top[0].miss)}.`,
-      tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %. Opcodes = opcodes a year above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold, x 12/9).`,
+      tone: "b", source: SRC + ` ${s.name}: every store, gross a year above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %; green / red bar = top / bottom three by rate. Opcodes = opcodes a year above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold, x 12/9).`,
     });
   });
   await rv.writeFile({ fileName: "Op Code Variance with Services - Review.pptx" });

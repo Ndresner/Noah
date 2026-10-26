@@ -2124,7 +2124,11 @@ export function amountRanker(pptx, deck, o) {
       color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     let ex = bx + BARW + 0.06 + VALW;
     EX.forEach(e => { s.addText(e.vals[r[0]] ?? "", { x: ex, y, w: e.w, h: rowH, fontFace: F, fontSize: 13,
-      color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 }); ex += e.w; });
+      color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      // e.marks = { NAME: "g" | "r" } (Noah, Oct 26): the same top / bottom three bar as the change rankers
+      const mk = e.marks?.[r[0]];
+      if (mk) s.addShape(pptx.ShapeType.rect, { x: ex + e.w + 0.06, y: y + 0.05, w: 0.06, h: rowH - 0.1, fill: { color: mk === "g" ? C.good : C.bad } });
+      ex += e.w; });
   });
   s.addShape(pptx.ShapeType.rect, { x: 6.655, y: TOP, w: 0.012, h: BOT - TOP, fill: { color: C.rule } });
   takeaway(pptx, s, o.takeaway, o.tone ?? "n");
