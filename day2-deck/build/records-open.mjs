@@ -22,42 +22,83 @@ const [bestM, bestV] = R.group.topMonths[0];
 const byMonth = MON.map(m => rec.filter(r => r.tot.includes(m)).length), busiest = byMonth.indexOf(Math.max(...byMonth));
 const again = rec.filter(r => r.svc.length > 1 || r.pts.length > 1 || r.tot.length > 1);
 
-// 1. headline
+// counts per store: every record set in 2026 (service, parts and combined count separately)
+const cnt = r => r.svc.length + r.pts.length + r.tot.length;
+const total = rec.reduce((t, r) => t + cnt(r), 0);
+const byCnt = [...rec].sort((a, b) => cnt(b) - cnt(a) || b.tot.length - a.tot.length || a.n.localeCompare(b.n));
+const mo = a => a.map(m => m.slice(0, 3)).join(", ");
+const what = r => [["Service", r.svc], ["Parts", r.pts], ["Combined", r.tot]].filter(([, a]) => a.length).map(([k, a]) => `${k}: ${mo(a)}`).join("  ·  ");
+const topLine = (() => { const t = byCnt.slice(0, 5); return list(t.map(r => `${nm(r.n)} ${cnt(r)}`)); })();
+
+// 1. headline (Oct 26, Noah: store records only, so the group-month tile is out; the band names the leaders)
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
   tiles: [
     { label: "Stores with an all-time record month", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
+    { label: "Records set", big: String(total), sub: `all-time monthly records across those stores: service, parts and combined counted separately.`, tone: "g" },
     { label: "Best January–September ever", big: String(ytdRec.length), sub: `stores had their best January–September ever in combined fixed gross.`, tone: "g" },
-    { label: "Best group month ever", big: bestM, sub: `${H.Mmixed(bestV)} of fixed gross across the group, the most in any month on file.`, tone: "g" },
     { label: "Broke it, then broke it again", big: String(again.length), sub: `stores set a record and then beat it again later in the year.`, tone: "g" },
   ],
+  banner: `Most records set this year: ${topLine}.`,
   takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records. Every one of these stores can tell the room what they changed.`,
   tone: "g", source: SRC });
 
-// 2. record board: one row per store, one column per month
+// 2. OPTION A: ranker of stores by records set, with the split
+H.amountRanker(pptx, pptx, { eyebrow: SEG, title: "Records Set in 2026",
+  rows: byCnt.map(r => [r.n, cnt(r)]), fmt: v => String(v), color: C.good, ink: C.goodInk, valLabel: "Records",
+  extra: [{ label: "Svc", w: 0.55, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.svc.length || "–")])) },
+          { label: "Parts", w: 0.6, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.pts.length || "–")])) },
+          { label: "Comb.", w: 0.65, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.tot.length || "–")])) }],
+  takeaway: `${rec.length} stores set ${total} all-time monthly records in 2026. ${nm(byCnt[0].n)} and ${nm(byCnt[1].n)} lead with ${cnt(byCnt[0])} each.`,
+  tone: "g", source: SRC + " Records = each month a store beat its best-ever service, parts or combined month; one month can count up to three." })
+  .addNotes("OPTION A. Records by store (month: service / parts / combined, with the record it beat):\n" + rec.map(r => `${nm(r.n)}: ` + ["svc", "pts", "tot"].flatMap(k => r.E[k].map(e => `${{ svc: "service", pts: "parts", tot: "combined" }[k]} ${e.m} ${H.kusd(e.v)} (beat ${H.kusd(e.prev)}, ${e.prevAt})`)).join("; ")).join("\n"));
+
+// 3. OPTION B: a plain list, two columns: store, how many, what they were
 {
-  const tk = `${list(again.slice(0, 3).map(r => nm(r.n)))} broke their records more than once this year. Ask them what they changed.`;
+  const tk = `${rec.length} stores set ${total} records. ${nm(byCnt[0].n)} and ${nm(byCnt[1].n)} set ${cnt(byCnt[0])} each.`;
   const s = pptx.addSlide();
-  H.page(pptx, s, { eyebrow: SEG, title: "Record Months in 2026" });
+  H.page(pptx, s, { eyebrow: SEG, title: "Who Set Records in 2026" });
   const top = H.BODY.top, h = H.bodyH(tk);
   H.panel(pptx, s, { x: 0.5, y: top, w: 12.33, h, label: null });
-  const NX = 0.72, NW = 2.45, MX = NX + NW + 0.05, CW = 0.98, HY = top + 0.1, RT = top + 0.62, rh = (h - 0.72) / rec.length;
-  s.addText("S = service record   P = parts record   green cell = best combined month ever", { x: NX, y: HY, w: 11.5, h: 0.24, fontFace: F, fontSize: sz(14, "legend"), color: C.ink600, isTextBox: true, margin: 0 });
-  MON.forEach((m, j) => s.addText(m.slice(0, 3).toUpperCase(), { x: MX + j * CW, y: HY + 0.26, w: CW, h: 0.26, fontFace: F, fontSize: sz(14, "column header"), bold: true, color: C.ink600, align: "center", isTextBox: true, margin: 0 }));
-  rec.forEach((r, i) => {
-    const y = RT + i * rh;
-    if (i % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: NX - 0.08, y, w: NW + 0.13 + 9 * CW, h: rh, fill: { color: C.zebra } });
-    s.addText(r.n, { x: NX, y, w: NW, h: rh, fontFace: F, fontSize: 12, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
-    MON.forEach((m, j) => {
-      const sv = r.svc.includes(m), pt = r.pts.includes(m), to = r.tot.includes(m);
-      if (!(sv || pt || to)) return;
-      const x = MX + j * CW;
-      if (to) s.addShape(pptx.ShapeType.rect, { x: x + 0.08, y: y + 0.015, w: CW - 0.16, h: rh - 0.03, fill: { color: C.goodBg }, line: { color: C.good, width: 0.75 } });
-      const t = [sv ? "S" : "", pt ? "P" : ""].filter(Boolean).join(" ") || "•";
-      s.addText(t, { x, y, w: CW, h: rh, fontFace: F, fontSize: 12, bold: true, color: to ? C.goodInk : C.navy, align: "center", valign: "middle", isTextBox: true, margin: 0 });
-    });
+  const per = Math.ceil(byCnt.length / 2), rh = (h - 0.25) / per;
+  byCnt.forEach((r, i) => {
+    const c = i < per ? 0 : 1, k = i - c * per, x = 0.72 + c * 6.1, y = top + 0.12 + k * rh;
+    if (k % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x - 0.08, y, w: 5.95, h: rh, fill: { color: C.zebra } });
+    s.addText(String(cnt(r)), { x, y, w: 0.4, h: rh, fontFace: F, fontSize: sz(14, "count"), bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(r.n, { x: x + 0.5, y, w: 1.95, h: rh, fontFace: F, fontSize: 12, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(what(r), { x: x + 2.45, y, w: 3.4, h: rh, fontFace: F, fontSize: 12, color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
   });
   H.takeaway(pptx, s, tk, "g");
-  H.foot(pptx, s, SRC + " A green cell with a dot only: the combined record came without a service or parts record that month.");
-  s.addNotes("Records by store (month: service / parts / combined, with the record it beat):\n" + rec.map(r => `${nm(r.n)}: ` + ["svc", "pts", "tot"].flatMap(k => r.E[k].map(e => `${{ svc: "service", pts: "parts", tot: "combined" }[k]} ${e.m} ${H.kusd(e.v)} (beat ${H.kusd(e.prev)}, ${e.prevAt})`)).join("; ")).join("\n"));
+  H.foot(pptx, s, SRC + " Count = every record set: service, parts and combined counted separately. Months listed are the months each record was set.");
+  s.addNotes("OPTION B: one line per store, how many records and which months.");
+}
+
+// 4. OPTION C: spotlight the leaders in words, everyone else on one line
+{
+  const lead = byCnt.slice(0, 6), rest = byCnt.slice(6);
+  const tk = `Ask ${list(lead.slice(0, 3).map(r => nm(r.n)))} what changed this year.`;
+  const s = pptx.addSlide();
+  H.page(pptx, s, { eyebrow: SEG, title: "Record Setters" });
+  const top = H.BODY.top, h = H.bodyH(tk), gap = 0.16, W = (12.33 - 0.44 - gap * 2) / 3, Ht = (h - 1.25 - gap) / 2;
+  H.panel(pptx, s, { x: 0.5, y: top, w: 12.33, h, label: null });
+  const say = r => {
+    const best = k => r.E[k].length ? r.E[k].at(-1) : null, parts = [];
+    if (r.tot.length) parts.push(`Best combined month ever ${r.tot.length === 1 ? "in " + mo(r.tot) : r.tot.length + " times (" + mo(r.tot) + ")"}, now ${H.kusd(best("tot").v)}.`);
+    if (r.svc.length) parts.push(`Service record ${r.svc.length === 1 ? "in " + mo(r.svc) : r.svc.length + " times"}.`);
+    if (r.pts.length) parts.push(`Parts record ${r.pts.length === 1 ? "in " + mo(r.pts) : r.pts.length + " times"}.`);
+    return parts.join(" ");
+  };
+  lead.forEach((r, i) => {
+    const x = 0.72 + (i % 3) * (W + gap), y = top + 0.18 + Math.floor(i / 3) * (Ht + gap);
+    s.addShape(pptx.ShapeType.rect, { x, y, w: W, h: Ht, fill: { color: C.zebra } });
+    s.addShape(pptx.ShapeType.rect, { x, y, w: 0.06, h: Ht, fill: { color: C.good } });
+    s.addText([{ text: nm(r.n) + "   ", options: { bold: true, color: C.ink, fontSize: sz(17, "card head") } }, { text: `${cnt(r)} records`, options: { bold: true, color: C.goodInk, fontSize: sz(15, "card count") } }],
+      { x: x + 0.2, y: y + 0.1, w: W - 0.3, h: 0.36, fontFace: F, isTextBox: true, margin: 0 });
+    s.addText(say(r), { x: x + 0.2, y: y + 0.5, w: W - 0.3, h: Ht - 0.6, fontFace: F, fontSize: sz(14, "card body"), color: C.ink600, valign: "top", isTextBox: true, margin: 0 });
+  });
+  s.addText([{ text: "Also set records: ", options: { bold: true, color: C.ink } }, { text: rest.map(r => `${nm(r.n)} (${cnt(r)})`).join(", "), options: { color: C.ink600 } }],
+    { x: 0.72, y: top + h - 0.86, w: 11.9, h: 0.78, fontFace: F, fontSize: sz(14, "rest"), valign: "middle", isTextBox: true, margin: 0 });
+  H.takeaway(pptx, s, tk, "g");
+  H.foot(pptx, s, SRC + " Records counted separately for service, parts and combined.");
+  s.addNotes("OPTION C: the six stores with the most records in words; everyone else on one line.");
 }
 await pptx.writeFile({ fileName: "Store Records - Opening.pptx" }); console.log("records opening built", rec.length, ytdRec.length, again.length);
