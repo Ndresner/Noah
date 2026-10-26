@@ -51,17 +51,25 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   const tk = `${best.n} picks up ${best.pick}% of transfers; ${worst.n} picks up ${worst.pick}%. ${cb[0].n} and ${cb[1].n} hold ${cb[0].open + cb[1].open} of the group's ${G.open} open callbacks.`;
   H.page(pptx, s, { eyebrow: SEG, title: "Store Voice AI Metrics" });
   const top = H.BODY.top, h = H.bodyH(tk), W = (12.33 - 0.24) / 3;
+  // Oct 26 (Noah): callback resolution lists every store at 100% instead of a top 5 (too many ties), and a green bar
+  // marks a store that shows up in more than one top list
+  const sortedOf = c => [...R2].sort((a, b) => b[c.key] - a[c.key] || a.open - b.open);
+  const topOf = c => c.key === "res" ? sortedOf(c).filter(r => r.res === 100) : sortedOf(c).slice(0, 5);
+  const seen = {}; cols.forEach(c => topOf(c).forEach(r => { seen[r.n] = (seen[r.n] ?? 0) + 1; }));
+  const multi = new Set(Object.keys(seen).filter(n => seen[n] > 1));
+  const maxTop = Math.max(...cols.map(c => topOf(c).length));
   cols.forEach((c, k) => {
     const x = 0.5 + k * (W + 0.12);
     H.panel(pptx, s, { x, y: top, w: W, h, label: null });
     s.addText(c.head, { x: x + 0.18, y: top + 0.1, w: W - 0.36, h: 0.3, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.navy, charSpacing: 1, isTextBox: true, margin: 0 });
     s.addText(`Group ${c.g}%`,   // header says what it is; just the group (Noah, Oct 26)
       { x: x + 0.18, y: top + 0.4, w: W - 0.36, h: 0.26, fontFace: F, fontSize: sz(14, "col sub"), color: C.ink600, isTextBox: true, margin: 0 });
-    const sorted = [...R2].sort((a, b) => b[c.key] - a[c.key] || a.open - b.open);
-    const lists = [["TOP 5", sorted.slice(0, 5), C.goodInk, C.good], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad]];
-    const rh = (h - 0.85 - 0.6) / 10;
+    const sorted = sortedOf(c), T = topOf(c);
+    const lists = [[c.key === "res" ? `AT 100% (${T.length})` : "TOP 5", T, C.goodInk, C.good, true], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad, false]];
+    const rh = (h - 0.85 - 0.6) / (maxTop + 5);
     let y = top + 0.75;
-    lists.forEach(([lab, L, ink, bar]) => {
+    lists.forEach(([lab, L, ink, bar, isTop]) => {
+      if (!isTop) y = top + 1.05 + maxTop * rh;   // BOTTOM 5 starts on the same line in all three columns
       s.addShape(pptx.ShapeType.rect, { x: x + 0.18, y: y + 0.02, w: W - 0.36, h: 0.025, fill: { color: bar } });
       s.addText(lab, { x: x + 0.18, y: y + 0.05, w: 2, h: 0.24, fontFace: F, fontSize: sz(14, "list head"), bold: true, color: ink, isTextBox: true, margin: 0 });
       // column heads on the TOP 5 / BOTTOM 5 line instead of "calls" / "open" on every row (Noah, Oct 26)
@@ -72,12 +80,13 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
         s.addText(r.n, { x: x + 0.18, y, w: W - 2.2, h: rh, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.f(r), { x: x + W - 2.0, y, w: 0.8, h: rh, fontFace: F, fontSize: 13, bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.x ? c.x(r) : fmt(r.calls), { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+        if (isTop && multi.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x + W - 0.13, y: y + 0.04, w: 0.06, h: rh - 0.08, fill: { color: C.good } });
         y += rh;
       });
     });
   });
   H.takeaway(pptx, s, tk, "n");
-  H.foot(pptx, s, SRC + ` Ranked among the ${R2.length} locations with ${MIN}+ calls (${S.filter(r => r.calls < MIN).map(r => r.n).join(", ")} have fewer). Honda Spokane shows no calls in the period.`);
+  H.foot(pptx, s, SRC + ` Green bar: the store is in more than one top list. Ranked among the ${R2.length} locations with ${MIN}+ calls (${S.filter(r => r.calls < MIN).map(r => r.n).join(", ")} have fewer). Honda Spokane shows no calls in the period.`);
   s.addNotes("Talk track: the voice AI answers every call, books what it can and hands the rest to the store. What happens next is ours: someone has to pick up the transfer, and every callback has to be closed. A store that doesn't pick up is sending a customer it already has to voicemail.\n\nDefinitions to confirm against Flai: pickup rate is read as the share of transferred calls a person picked up; resolution as the share of callback requests closed. Resolve time in the export runs to weeks at some locations and is not shown.");
 }
 await pptx.writeFile({ fileName: "../decks/Phone Handling - Preview.pptx" }); console.log("phone preview built");
