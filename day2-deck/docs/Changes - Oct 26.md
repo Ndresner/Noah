@@ -24,3 +24,13 @@ Deck: 202 slides (160 flow + 42 Open Decisions). Every slide below is also in `C
 | 81 | What Is Parts Gross Profit %? | Pricing matrix built out (setup, applied correctly, reviewed against goals), discounts and overrides with safeguards, stay competitive, warranty reimbursement. Full matrix talk track (your six points) in the speaker notes. |
 
 Still open from this round: none. Note: "express technician" stays only as an ADP job title on How We Measured It.
+
+## Round 2 (Oct 26)
+Slides in `Changes - Oct 26 (round 2).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 45 | Store Voice AI Metrics | Callback resolution is a normal TOP 5 again: the five busiest stores at 100% (Kia Las Vegas, VW Henderson, Lincoln, Subaru of Las Vegas, Land Rover Reno) with Rate and Calls; the sub line reads "Group 98.2% · 6 stores at 100%" (Acura, 376 calls, is the sixth). |
+| 56 | What Is Hours per RO? | Definition: "The labor hours we sell, on average, every time a customer-pay car comes through the drive." Lift point without numbers: "if labor sales per RO go up but hours per RO stay flat, we are charging more, not selling more." |
+| 76 | What Is Labor Gross Profit %? | "Too low means our labor price is too low for what we pay the tech, or tech cost is too high for what we charge." "Job" replaced by "work" ("matching the tech to the work", "Right tech, right work"). |
+| 81 | What Is Parts Gross Profit %? | Matrix lever: "make sure pricing follows the matrix setup". |

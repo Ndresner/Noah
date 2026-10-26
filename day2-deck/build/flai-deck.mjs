@@ -63,7 +63,9 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   // Oct 26 (Noah): callback resolution lists every store at 100% instead of a top 5 (too many ties), and a green bar
   // marks a store that shows up in more than one top list
   const sortedOf = c => [...R2].sort((a, b) => b[c.key] - a[c.key] || a.open - b.open);
-  const topOf = c => c.key === "res" ? sortedOf(c).filter(r => r.res === 100) : sortedOf(c).slice(0, 5);
+  // callback resolution: the five busiest of the stores at 100% (Noah, Oct 26: a top 5 like the others, the count of 100% stores in the sub line)
+const at100 = R2.filter(r => r.res === 100);
+  const topOf = c => c.key === "res" ? [...at100].sort((a, b) => b.calls - a.calls).slice(0, 5) : sortedOf(c).slice(0, 5);
   const seen = {}; cols.forEach(c => topOf(c).forEach(r => { seen[r.n] = (seen[r.n] ?? 0) + 1; }));
   const multi = new Set(Object.keys(seen).filter(n => seen[n] > 1));
   // red bar: in more than one bottom 5 (Noah, Oct 26)
@@ -74,10 +76,10 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
     const x = 0.5 + k * (W + 0.12);
     H.panel(pptx, s, { x, y: top, w: W, h, label: null });
     s.addText(c.head, { x: x + 0.18, y: top + 0.1, w: W - 0.36, h: 0.3, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.navy, charSpacing: 1, isTextBox: true, margin: 0 });
-    s.addText(`Group ${c.g}%`,   // header says what it is; just the group (Noah, Oct 26)
+    s.addText(`Group ${c.g}%` + (c.key === "res" ? ` · ${at100.length} stores at 100%` : ""),   // header says what it is; just the group (Noah, Oct 26)
       { x: x + 0.18, y: top + 0.4, w: W - 0.36, h: 0.26, fontFace: F, fontSize: sz(14, "col sub"), color: C.ink600, isTextBox: true, margin: 0 });
     const sorted = sortedOf(c), T = topOf(c);
-    const lists = [[c.key === "res" ? `AT 100% (${T.length})` : "TOP 5", T, C.goodInk, C.good, true], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad, false]];
+    const lists = [["TOP 5", T, C.goodInk, C.good, true], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad, false]];
     const rh = (h - 0.85 - 0.6) / (maxTop + 5);
     let y = top + 0.75;
     lists.forEach(([lab, L, ink, bar, isTop]) => {
@@ -85,18 +87,13 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
       s.addShape(pptx.ShapeType.rect, { x: x + 0.18, y: y + 0.02, w: W - 0.36, h: 0.025, fill: { color: bar } });
       s.addText(lab, { x: x + 0.18, y: y + 0.05, w: 2, h: 0.24, fontFace: F, fontSize: sz(14, "list head"), bold: true, color: ink, isTextBox: true, margin: 0 });
       // column heads on the TOP 5 / BOTTOM 5 line instead of "calls" / "open" on every row (Noah, Oct 26)
-      if (isTop && c.key === "res") {   // every store at 100% has 0 open: just the names, two to a row
-        y += 0.3;
-        L.forEach((r, i) => s.addText(r.n, { x: x + 0.18 + (i % 2) * (W - 0.36) / 2, y: y + Math.floor(i / 2) * rh, w: (W - 0.36) / 2 - 0.05, h: rh, fontFace: F, fontSize: 12, color: C.goodInk, bold: true, valign: "middle", isTextBox: true, margin: 0 }));
-        return;
-      }
       s.addText("Rate", { x: x + W - 2.0, y: y + 0.05, w: 0.8, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
-      s.addText(c.xh ?? "Calls", { x: x + W - 1.18, y: y + 0.05, w: 1.0, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
+      s.addText(isTop ? "Calls" : (c.xh ?? "Calls"), { x: x + W - 1.18, y: y + 0.05, w: 1.0, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
       y += 0.3;
       L.forEach(r => {
         s.addText(r.n, { x: x + 0.18, y, w: W - 2.2, h: rh, fontFace: F, fontSize: 13, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
         s.addText(c.f(r), { x: x + W - 2.0, y, w: 0.8, h: rh, fontFace: F, fontSize: 13, bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-        s.addText(c.x ? c.x(r) : fmt(r.calls), { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+        s.addText(!isTop && c.x ? c.x(r) : fmt(r.calls), { x: x + W - 1.18, y, w: 1.0, h: rh, fontFace: F, fontSize: 12, color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
         if (isTop ? multi.has(r.n) : multiB.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x + W - 0.13, y: y + 0.04, w: 0.06, h: rh - 0.08, fill: { color: isTop ? C.good : C.bad } });
         y += rh;
       });
