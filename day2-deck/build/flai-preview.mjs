@@ -30,12 +30,13 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
   tiles: [
     { label: "Calls handled", big: fmt(G.calls), sub: `About ${fmt(G.calls / DAYS)} a day across ${S.length} locations, average call ${Math.floor(G.avg / 60)}:${String(G.avg % 60).padStart(2, "0")}.`, tone: "n" },
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
-    { label: "Handed to a person", big: `${G.trr}%`, sub: `${fmt(G.tr)} calls transferred to the store.`, tone: "n" },
+    // handled 100% by the AI (Noah, Oct 26): Flai's export has no such column, so it is calls not transferred
+    { label: "Handled by the AI alone", big: fmt(G.calls - G.tr), sub: `${(100 - G.trr).toFixed(1)}% of calls, start to finish. The other ${fmt(G.tr)} (${G.trr}%) were transferred to the store.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transferred calls were not picked up by a person.`, tone: "b" },
   ],
   banner: `${G.open} callbacks still open. The AI books and routes the call; the store still has to answer the transfer and close the callback.`,
-  takeaway: `More than half of all calls come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
-  tone: "b", source: SRC + " Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
+  takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
+  tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
 
 // 2. top and bottom five on the three things a store controls
 {
@@ -54,7 +55,8 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSi
     const x = 0.5 + k * (W + 0.12);
     H.panel(pptx, s, { x, y: top, w: W, h, label: null });
     s.addText(c.head, { x: x + 0.18, y: top + 0.1, w: W - 0.36, h: 0.3, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.navy, charSpacing: 1, isTextBox: true, margin: 0 });
-    s.addText(`${c.sub} · group ${c.g}%`, { x: x + 0.18, y: top + 0.4, w: W - 0.36, h: 0.26, fontFace: F, fontSize: sz(14, "col sub"), color: C.ink600, isTextBox: true, margin: 0 });
+    s.addText(`Group ${c.g}%`,   // header says what it is; just the group (Noah, Oct 26)
+      { x: x + 0.18, y: top + 0.4, w: W - 0.36, h: 0.26, fontFace: F, fontSize: sz(14, "col sub"), color: C.ink600, isTextBox: true, margin: 0 });
     const sorted = [...R2].sort((a, b) => b[c.key] - a[c.key] || a.open - b.open);
     const lists = [["TOP 5", sorted.slice(0, 5), C.goodInk, C.good], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad]];
     const rh = (h - 0.85 - 0.6) / 10;
