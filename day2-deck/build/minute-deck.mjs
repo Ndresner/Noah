@@ -49,8 +49,10 @@ const SRC = "Value of a minute = each store's counted technicians' labor gross +
   const top = [...S].sort((a, b) => b.mo - a.mo)[0], hi = [...S].sort((a, b) => b.vpm - a.vpm)[0];
   H.amountRanker(pptx, pptx, {
     eyebrow: SEG, title: TITLE,
-    rows: S.map(s => [s.n, s.mo * 12]), fmt: v => H.kusd(v, 1),   // $K, one decimal: every store is under $50K (Noah, Oct 22) color: C.blue, ink: C.navy, valLabel: "A year",
-    extra: [{ label: "Techs", w: 0.62, vals: ex1 }, { label: "Per min", w: 0.82, vals: ex2 }],
+        // whole dollars, no decimal (Noah, Oct 26; was $K with one decimal)
+    rows: S.map(s => [s.n, s.mo * 12]), fmt: usd,
+    color: C.blue, ink: C.navy, valLabel: "A year", valW: 1.05,
+    extra: [{ label: "Techs", w: 0.8, vals: ex1 }, { label: "Per min", w: 0.82, vals: ex2 }],
     takeaway: `One minute a day per tech: ${top.n} ${usd(top.mo * 12)} a year. ${hi.n} techs are worth the most per minute at ${usd2(hi.vpm)}.`,
     source: SRC + " A year = one minute a day for every counted tech at the store, for a year. Per min = gross per tech minute.",
   });

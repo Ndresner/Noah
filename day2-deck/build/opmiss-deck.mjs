@@ -47,6 +47,8 @@ const total = res.reduce((t, s) => t + s.miss, 0);
 }
 
 // total by store (ADDED 2026-10-19; Oct 24, Noah: every store, signed gross against all four benchmarks added together)
+// the variance slides are Jan-Sep 2026 closing rates, stated as a year (x 12/9)
+const PER = "Opcodes \u00b7 Jan\u2013Sep 2026, Annualized";
 const sgnK = v => (v >= 0 ? "+" : "\u2212") + H.kusd(Math.abs(v));
 {
   const T = {};
@@ -54,7 +56,8 @@ const sgnK = v => (v >= 0 ? "+" : "\u2212") + H.kusd(Math.abs(v));
   const rows = Object.entries(T), srt = [...rows].sort((a, b) => a[1].vs - b[1].vs), all4 = rows.filter(([, t]) => t.k === 4).length;
   const above = rows.filter(([, t]) => t.vs >= 0).length;
   H.amountRanker(pptx, pptx, {
-    eyebrow: "Opcodes", title: "Total Variance from Benchmark by Store", signed: true,   // renamed (Noah, Oct 24): stores above benchmark show positive
+    // period on the slide (Noah, Oct 26)
+    eyebrow: PER, title: "Total Variance from Benchmark by Store", signed: true,   // renamed (Noah, Oct 24): stores above benchmark show positive
     rows: rows.map(([n, t]) => [n, t.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
     takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} a year; ${above} of 33 stores are ahead of benchmark across the four services. ${all4} stores are under all four.`,
     tone: "b", source: SRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross a year above (+) or below (-) the four benchmarks, at the store's own gross per service. Below-benchmark services count against above-benchmark ones here.",
@@ -66,7 +69,7 @@ const sgnK = v => (v >= 0 ? "+" : "\u2212") + H.kusd(Math.abs(v));
 res.forEach(s => {
   const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
   H.amountRanker(pptx, pptx, {
-    eyebrow: "Opcodes", title: `${s.name} Variance from Benchmark`, signed: true,
+    eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
     rows: s.all.map(x => [x.n, x.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
     extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) }],
     takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% leave ${usd(s.miss)} a year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-top[0].miss)}.`,

@@ -60,7 +60,8 @@ H.statTiles(pptx, pptx, {
   tone: "b", source: OSRC,
 });
 const ex1 = Object.fromEntries(OS.map(o => [o.n, `${o.under} of ${o.techs}`]));
-const ex2 = Object.fromEntries(OS.map(o => [o.n, pc(o.prof)]));
+// store % with no decimal, truncated (Noah, Oct 26)
+const ex2 = Object.fromEntries(OS.map(o => [o.n, Math.floor(o.prof * 100) + "%"]));
 const top6 = [...OS].sort((a, b) => tot(b) - tot(a)).slice(0, 6), t6 = top6.reduce((t, o) => t + tot(o), 0);
 const hidden = OS.filter(o => o.prof >= BEN && tot(o) / MO >= 50000);
 H.amountRanker(pptx, pptx, {
@@ -74,7 +75,7 @@ H.amountRanker(pptx, pptx, {
 const sh = [...OS].sort((a, b) => b.share - a.share), big = sh.filter(o => o.share >= 0.2);
 H.amountRanker(pptx, pptx, {
   eyebrow: SEG, title: "Opportunity as a Share of Gross",
-  rows: OS.map(o => [o.n, o.share]), fmt: v => (v * 100).toFixed(1) + "%", color: H.C.bad, ink: H.C.badInk, valLabel: "Share",
+  rows: OS.map(o => [o.n, o.share]), fmt: v => (v * 100).toFixed(0) + "%", color: H.C.bad, ink: H.C.badInk, valLabel: "Share",
   extra: [{ label: "Missed", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(tot(o) / MO)])) },
           { label: "Gross", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(o.rog / MO)])) }],
   takeaway: `Group-wide the gap is ${(OG.share * 100).toFixed(1)}% of RO gross. ${big.length} stores are missing a fifth or more, led by ${sh[0].n} at ${(sh[0].share * 100).toFixed(0)}% (${K(tot(sh[0]) / MO)} of ${K(sh[0].rog / MO)} a month).`,

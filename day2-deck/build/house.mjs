@@ -880,6 +880,18 @@ export function groupYoy(pptx, deck, o) {
     step = o.majorUnit ?? niceStep(span * 1.7);
     lo = Math.floor((dMin - span * 0.35) / step) * step;
     hi = Math.ceil((dMax + span * 0.35) / step) * step;
+    // o.tightBench (Noah, Oct 26): the benchmark line stretched the opcode axes and flattened the gain.
+    // Pad from the data's own span, and reach only just past the benchmark line.
+    if (o.tightBench && BL.length) {
+      const D = [...o.prior, ...o.current].map(U.to);
+      const sD = Math.max(Math.max(...D) - Math.min(...D), Math.abs(Math.max(...D)) * 0.05, 0.5);
+      const bl = BL.map(U.to);
+      const rLo = Math.min(Math.min(...D) - sD * 0.3, Math.min(...bl) - sD * 0.1);
+      const rHi = Math.max(Math.max(...D) + sD * 0.3, Math.max(...bl) + sD * 0.1);
+      step = o.majorUnit ?? niceStep(rHi - rLo);
+      lo = Math.floor(rLo / step) * step;
+      hi = Math.ceil(rHi / step) * step;
+    }
   }
   const baseFmt = o.axisFormat ?? U.axis;
   const axisFmt = baseFmt + (lo < 0 && dMin >= 0 ? (baseFmt.includes("$") ? ';;"$"0' : ";;0") : "");

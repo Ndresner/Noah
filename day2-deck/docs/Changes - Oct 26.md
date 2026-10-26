@@ -49,3 +49,22 @@ Slide in `Changes - Oct 26 (round 4).pptx`.
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 81 | What Is Parts Gross Profit %? | Why it matters opens with "Parts keeps about 37¢ of every gross dollar after its own expenses, the most of any department (service 22¢): margin goes almost straight to the bottom line." New lever "Tracking: monitor and actively manage your parts GP %: know where you stand and adjust as needed." Sources and the F&I caveat in the speaker notes. |
+
+## Round 5 (Oct 26)
+Slides in `Changes - Oct 26 (round 5).pptx` (18 slides, in deck order).
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 87 | Road To The Sale | "We produce hours. Every service or repair not recommended is hours a technician never gets the chance to earn" |
+| 88 | Basic Maintenance Service | Dentist bullet now automotive: "An oil change that misses worn brakes or a leaking water pump is a disservice to the customer". "More cars in the door is great, but first make the most of every car already in the shop". New right-column tile "Unknown hours": every maintenance service might come to $2,500; the work the inspection finds is worth far more, and we lose it all when we turn a car away or can't book the time the customer wants. ($2,500 is Noah's illustration, not a measured figure.) |
+| 94, 98, 102, 106 | Alignment, Balance, Brake Fluid, Fuel Service % charts | Vertical axis fitted to the data and reaching just past the benchmark line (alignment now 10-16%, fuel 3-8%, brake fluid 6-11%). Balance stays 4-16% because the 15% line sits far above the data. |
+| 96, 100, 104, 108, 110 | Variance from Benchmark (4 services + total) | Eyebrow shows the period: "Opcodes · Jan–Sep 2026, Annualized" |
+| 127 | People | "Grow your own techs, advisors and managers: apprentice programs, develop your bench, train your replacement"; new bullet "Always be teaching, training and educating". New tile: $28,600 = gross an average tech's bay produces a month (152 sold hours at $188); replaces the −2.3% CP & W RO tile. |
+| 128 | Pay Plans Are Work Instructions | Hours per RO added to customer-pay performance; "Incentivize improvement in the metrics that make the biggest difference"; new bullet "Move every technician to flat rate and away from hourly: it rewards productivity and makes proficiency easy to track" |
+| 135 | Technicians & Stalls | "Use scoreboarding and communicate to techs where they stand" |
+| 137 | How We Measured It | "everyone whose job is to produce sold hours"; rules as examples: "Keying errors: Example: 940 hours keyed on a single $0 line"; "Shared tech numbers: Example: hours flagged to a shop code like 999, not a person" |
+| 141 | Proficiency Opportunity by Store | Store % with no decimal (truncated) |
+| 142 | Opportunity as a Share of Gross | Share with no decimal |
+| 144 | What a Tech Minute Is Worth (by store) | "A year" in whole dollars (was $K with one decimal); bars blue with the "A year" header (a code comment had been hiding both) |
+
+Not changed, check with Noah: slide 143's "$3.13" per minute keeps its cents (rounded it would read $3).
