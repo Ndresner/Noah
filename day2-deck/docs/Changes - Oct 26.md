@@ -34,3 +34,11 @@ Slides in `Changes - Oct 26 (round 2).pptx`.
 | 56 | What Is Hours per RO? | Definition: "The labor hours we sell, on average, every time a customer-pay car comes through the drive." Lift point without numbers: "if labor sales per RO go up but hours per RO stay flat, we are charging more, not selling more." |
 | 76 | What Is Labor Gross Profit %? | "Too low means our labor price is too low for what we pay the tech, or tech cost is too high for what we charge." "Job" replaced by "work" ("matching the tech to the work", "Right tech, right work"). |
 | 81 | What Is Parts Gross Profit %? | Matrix lever: "make sure pricing follows the matrix setup". |
+
+## Round 3 (Oct 26)
+Slides in `Changes - Oct 26 (round 3).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 76 | What Is Labor Gross Profit %? | "Too high can mean techs are underpaid, which can cost us technicians and hurt retention." |
+| 81 | What Is Parts Gross Profit %? | Why it matters rebuilt from Noah's 5 reasons: more profit from the same parts sales; shows whether parts sell at the right price (matrix, markups, discounts); flags heavy discounting or cost increases not passed on; CP parts pricing supports the warranty parts rate. "Consistent pricing" line removed. All 5 reasons word for word in the speaker notes. |

@@ -93,7 +93,7 @@ X({ eyebrow: "Customer Pay", title: "What Is Labor Gross Profit %?",
   example: [["Sell 1 hour at", "$162"], ["Pay the tech", "$31"], ["We keep", "$131"], ["$131 ÷ $162", "81%"]], exampleLabel: "ONE HOUR SOLD",
   why: ["The target range is 78% to 80%: not too high, not too low. Hold it by matching the tech to the work, not by squeezing tech pay.",   // back to 78-80 (Noah, Oct 26)
         "Too low means our labor price is too low for what we pay the tech, or tech cost is too high for what we charge.",
-        "Too high can mean techs are underpaid on the work they do, which costs us techs."],
+        "Too high can mean techs are underpaid, which can cost us technicians and hurt retention."],
   levers: [["Effective labor rate", "Same tech cost, higher ELR = higher margin"],
            ["Tech pay rate", "Flat-rate pay per hour against the rate we sell"],
            ["Right tech, right work", "Skill-code costing: don't pay a master-tech rate on an oil change"],
@@ -107,8 +107,10 @@ X({ eyebrow: "Customer Pay", title: "What Is Parts Gross Profit %?",
   formula: ["Parts GP %", "=", "(CP parts sale", "−", "parts cost)", "÷", "CP parts sale"],
   define: "The share of each customer-pay parts dollar we keep after the cost of the part.",
   // Oct 26 (Noah): the pricing matrix is the biggest tool; full talk track in the notes
-  why: ["The pricing matrix raises gross without selling one more part.",
-        "Consistent pricing: the same part costs every customer the same.",
+  // Oct 26 (Noah): reasons from his "5 reasons parts GP % matters"; the full list is in the notes
+  why: ["More profit from the same parts sales: small gains add up over a year.",
+        "It shows whether parts sell at the right price: matrix, markups and discounts.",
+        "It flags heavy discounting, or cost increases we have not passed on.",
         "CP parts pricing supports the warranty parts reimbursement rate."],
   levers: [["Parts pricing matrix", "Know how it is set up, make sure pricing follows the matrix setup, and review it against your gross goals"],
            ["Discounts and overrides", "Monitor discounts and manual price changes; keep safeguards in place"],
@@ -117,7 +119,7 @@ X({ eyebrow: "Customer Pay", title: "What Is Parts Gross Profit %?",
            ["Menu pricing", "Bundled maintenance parts priced to protect margin"]],
   leverRows: [1.35, 1, 1],
   ours: "Group: 40.7% CP parts gross profit, up 1.2 pts and ahead of 2025 in all nine months.",
-  tone: "g", notes: "PLACE: CP Engine, in front of CP Parts Gross Profit %.\nWhy understand your parts pricing matrix (Noah, Oct 26): (1) Maximize gross profit: price parts to maximize profitability; find gross without more volume. (2) Consistent pricing: every customer charged the same for the same part; no incorrect prices from bad setups or manual overrides. (3) Stay competitive: avoid markups that make repairs too expensive; balance profit with price on higher-cost parts. (4) Check the matrix is applied: parts actually sell at matrix prices; find parts, labor types or transactions that bypass it. (5) Warranty reimbursement: customer-pay parts pricing drives the warranty parts reimbursement rate, so good pricing supports a higher rate and more warranty gross. (6) Control the strategy: know how your matrix is configured and review it against your gross profit goals. Takeaway: the matrix is one of the most effective tools for improving profit without more volume." });
+  tone: "g", notes: "PLACE: CP Engine, in front of CP Parts Gross Profit %.\nWhy understand your parts pricing matrix (Noah, Oct 26): (1) Maximize gross profit: price parts to maximize profitability; find gross without more volume. (2) Consistent pricing: every customer charged the same for the same part; no incorrect prices from bad setups or manual overrides. (3) Stay competitive: avoid markups that make repairs too expensive; balance profit with price on higher-cost parts. (4) Check the matrix is applied: parts actually sell at matrix prices; find parts, labor types or transactions that bypass it. (5) Warranty reimbursement: customer-pay parts pricing drives the warranty parts reimbursement rate, so good pricing supports a higher rate and more warranty gross. (6) Control the strategy: know how your matrix is configured and review it against your gross profit goals. Takeaway: the matrix is one of the most effective tools for improving profit without more volume.\n5 reasons parts gross profit % matters (Noah, Oct 26): (1) Maximizes profitability: higher GP % earns more from the same volume; small improvements add up over a year. (2) Measures pricing effectiveness: are parts sold at the right prices; where to improve matrices, discounts and markups. (3) Controls discounts and cost increases: shows when discounting cuts profit, and when rising parts costs are not reflected in selling prices. (4) Supports dealership profit: parts gross covers department expenses, adds to net profit and helps fixed ops absorb store overhead. (5) Identifies opportunities: compare against targets, history and other stores; find weak categories (customer pay, wholesale, warranty, internal). Takeaway: parts GP % measures how well we turn parts sales into profit; raising it is one of the most direct ways to grow profit without more volume." });
 
 X({ eyebrow: "Fixed Ops Profitability", title: "What Is Absorption?",
   formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
