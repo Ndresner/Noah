@@ -38,11 +38,14 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
   why: ["At 100%, the store covers its fixed costs before it sells a car.",
         "It protects the store when car sales slow.",
         "It is the clearest measure of fixed ops' value to the dealership."],
-  levers: [["Fixed ops gross", "Everything on the customer-pay slides: ROs, hours, ELR, margin"],
-           ["Store fixed expenses", "Every department's people, rent and systems, carried whether or not a car sells"],
-           ["Warranty and internal", "Gross from warranty and reconditioning counts too"],
-           ["Parts", "Counter and wholesale parts gross counts as well"]],
-  leverRows: [1.3, 1],
+  // Oct 26 (Noah): slides 27-28 combined. The lever box shows what is and isn't in total store fixed expenses
+  // (the old breakdown slide is out of the flow); no dollar detail, just what they are.
+  leverHead: "WHAT'S IN TOTAL STORE FIXED EXPENSES",
+  levers: [["Included: people", "Salaries and wages, payroll taxes, benefits, PTO: every department"],
+           ["Included: building", "Rent, depreciation, property taxes, utilities, insurance, repairs"],
+           ["Included: systems and other", "DMS and IT, outside services, phones, training, supplies"],
+           ["Not included", "Sales and F&I commissions, delivery, floorplan interest, new and used vehicle advertising"]],
+  leverRows: [1, 1.2],
   ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.`,
   tone: "g", notes: `PLACE: Profitability, in front of Fixed Ops Absorption %; the next slide breaks down the fixed expenses. The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
@@ -74,11 +77,11 @@ H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops N
   example: [["Gross", M(g26gross)], ["− Expenses", M(ex26)], ["= Net profit", M(v26)]], exampleLabel: "OUR NUMBERS",
   why: ["It is what fixed ops actually contributes to the store.",
         "Gross can grow while profit shrinks if expenses grow faster.",
-        `Every dollar of expense saved drops straight to the bottom line. Adding that same $1 through sales takes about $${per1.toFixed(2)} of service and parts sales.`],
-  levers: [["Gross", "Every lever in this deck: ROs, hours, ELR, margin"],
-           ["People", "The largest expense: staffing to the workload, pay plans tied to gross"],
+        `Every dollar of expense saved drops straight to the bottom line. Earning that $1 takes $${Math.round(per1)} in service and parts sales.`],   // rounded to $7 (Noah, Oct 26)
+  levers: [["Gross", "Car count, hours per RO, effective labor rate, parts and labor margin"],
+           ["People", "The largest expense: staffing to the workload, pay plans tied to performance"],
            ["Productivity", "More gross from the same team and the same stalls"],
-           ["Spending", "Supplies, outside services, policy and comebacks"]],
+           ["Spending", "Supplies, outside services, service policy, advertising, company vehicles"]],
   ours: `Group: ${M(v26)} fixed ops net profit, ${pcA(v26 / v25 - 1)}. Gross grew ${pcA(g26gross / g25gross - 1)}; department expenses ${pcA(ex26 / ex25 - 1)}.`,
   tone: "g", notes: `PLACE: opening, right after Why We Are Here (Noah, Oct 24): the high-level view of service and parts before the sections. Department profit as the P&L Detail statement reports it (DEPARTMENT PROFIT OR LOSS, Mechanical and P&A). Jan-Sep 2026 gross ${usd(g26gross)}, department expenses ${usd(ex26)}, profit ${usd(v26)}; 2025 ${usd(g25gross)} / ${usd(ex25)} / ${usd(v25)}. Store-level costs the P&L does not split by department (management fees, other income) sit outside it. Same basis as the service and parts net to gross slides. Revenue per $1 of net: service + parts net sales ${usd(sales26)} (P&L Detail NET SALES, Mechanical ${usd(SL.service)} + P&A ${usd(SL.parts)}) / net profit ${usd(v26)} = $${per1.toFixed(2)}; net profit is ${(v26 / sales26 * 100).toFixed(1)} cents of every sales dollar. Parts sales include parts sold to the service department.` });
 

@@ -20,13 +20,17 @@ H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 202
   eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: null,
   said: ["Foster collaboration, introduce ideas that drive operational excellence, and set a clear path to exceptional service performance",
          "Focus on profit-generating activities: the work that brings in incremental dollars, not just the work that fills the day",
-         "Work on the business, not just in it: step out of the daily fires long enough to fix the process behind them",
+         "Work on the business, not just in it: step out of the day-to-day long enough to fix the process behind the problems",
          "No risk of judgement: your success is our success",
          "Customer first, company second, team third",
          "You get what you tolerate",
          "Leverage the power in this room: collaboration"],
   now: [{ big: `${share("y26").toFixed(0)}%`, label: `of the group's net profit came from service and parts: ${M(fx("y26"))} of ${M(net("y26"))} (${share("y25").toFixed(0)}% in 2025).`, tone: "g" },
-        { big: M(fx("y26")), label: `Fixed ops department profit. New, used, F&I and the rest of the store together: ${M(net("y26") - fx("y26"))}.`, tone: "n" },
+        // Oct 26 (Noah): the $ tile is out; how much of each gross dollar each side keeps (Pay Yourself First data)
+        (() => { const K = JSON.parse(fs.readFileSync("./pulls/dept_keep.json", "utf8")), f = K.fixed, v = K.sales;
+          const fk = (f.profit_service + f.profit_parts) / (f.gross_service + f.gross_parts);
+          const vk = (v.profit_new + v.profit_used + v.gross_fi - v.fi_comp) / (v.gross_new + v.gross_used + v.gross_fi);
+          return { big: `${Math.round(fk * 100)}\u00a2 vs ${Math.round(vk * 100)}\u00a2`, label: "Of every gross dollar, what service and parts keep after their own expenses vs new, used and F&I.", tone: "g" }; })(),
         { big: "+" + usd(dFx), label: `More fixed ops profit than 2025, while group net profit ${dNet < 0 ? "fell" : "rose"} ${M(Math.abs(dNet))}.`, tone: "g" }],
   ask: "leave today with one or two things you will put in place before year end, and tell the room what they are.",
   notes: `PLACE: right after the agenda, before the Gross section. In the deck Oct 24 (Noah): group net profit view replaces the gross / absorption / net-to-gross tiles. Group-level view of fixed ops' weight in the dealership's profit, Jan-Sep. Fixed ops department profit ${usd(fx("y26"))} (2025 ${usd(fx("y25"))}); group net profit ${usd(net("y26"))} (2025 ${usd(net("y25"))}). On the P&L, F&I income, other income and store-level costs are not split by department, so 'the rest of the store' is the group net less fixed ops department profit. Group net = Net Profit Or Loss on the GM statement (P&L summary), all stores; INEOS (opened 2026) is in both lines. Body shop (GMC Prescott) department profit is left out of fixed ops, as everywhere in the deck.` });
@@ -36,7 +40,9 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
          "Drive visits: don't say no to dollars",
          "Generate throughput: max out hours",
          "Drive retention and sell cars",
-         "Sales sells the first car. Service sells the next six."],
+         "Sales sells the first car. Service sells the next six.",
+         "Every car, every time: follow the processes you have in place, consistently",
+         "Processes only work when they are actively managed"],   // Noah, Oct 26
   now: [{ big: "+$6,297,386", label: "Service gross, up 5.2%, ahead of 2025 in all nine months.", tone: "g" },
         { big: "+$1,171,181", label: "Parts gross, up 1.9%, ahead of 2025 in six of nine months.", tone: "g" },   // same pattern as service (Noah, Oct 24)
         { big: "$20.59M", label: "Fixed ops gross a month over the last twelve months.", tone: "g" }],
@@ -44,10 +50,13 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
   notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship).\nFor the GMs who come from sales (Noah, Oct 25): service and parts keep far more of every gross dollar than vehicle sales does. Jan-Sep 2026, after each department's own expenses, fixed ops kept 27 cents of every gross dollar; new, used and F&I together kept 7 cents (before doc fees, packs and factory money, which the P&L books outside the departments). People cost 45 cents of every fixed ops gross dollar and 62 cents of every vehicle sales gross dollar. That is why paying yourself first, on internal work, matters: see Pay Yourself First at the start of the Internal section." });
 
 T({ eyebrow: "Customer Pay", title: "What Can You Control?", saidFrom: RT,
-  said: ["Work it in order: ROs first, then hours per RO, the rate (ELR), the mix and the margin (GP%)",
-         "CP labor $ per RO represents how well you execute, store and individual",
-         "ELR plus hours per RO cannot be manipulated: true performance",
-         "Total dollars per RO matters more than any single measure. It's what we sell."],
+  // Oct 26 (Noah): same points, smoother order; track daily; take care of the customers we have
+  said: ["Take care of the customers we already have: how we treat them decides whether they come back",
+         "Repair order count: how many customers we serve",
+         "Dollars per repair order: how much we sell each one",
+         "The rates we charge, and how we decide what to charge",
+         "CP labor $ per RO is the best way to judge performance, store and individual",
+         "Track the metrics that matter most every day, talk about them, and train on them"],
   now: [{ big: "279,756 ROs", label: "Customer-pay RO count, up only 456. Volume is flat.", tone: "n" },
         { big: "1.87 hrs per RO", label: "Up 0.07, ahead in all nine months. Every 0.1 hour per RO is worth $4,543,691 of labor.", tone: "g" },
         { big: "$304 per RO", label: "CP labor per RO, up $17. The $4,899,376 labor gain came from selling more per visit.", tone: "g" }],
@@ -57,8 +66,7 @@ T({ eyebrow: "Customer Pay", title: "What Can You Control?", saidFrom: RT,
 T({ eyebrow: "Customer Pay", title: "The Front Door", saidFrom: GM,
   said: ["Open and available scheduler: same-day or next-day appointments, quick online scheduling",
          "Handle basic maintenance quickly and efficiently. Saturdays are what you choose to make them.",
-         "Every call is a sales opportunity. Mishandled calls cost millions.",
-         "Where do calls go after hours and Sundays?",
+         "Every call is a sales opportunity: a mishandled call costs us the customer",   // after-hours / Sundays point dropped (Noah, Oct 26)
          "No-show process; first appointment at time of sale; next appointment before the customer leaves",
          "Active retention tracking: work the Viz 'Close to Losing' and 'Unretained' lists"],
   now: [{ big: "+0.2%", label: "Customer-pay RO count. 13 of 33 stores had fewer CP ROs than last year.", tone: "n" },
@@ -66,7 +74,7 @@ T({ eyebrow: "Customer Pay", title: "The Front Door", saidFrom: GM,
   ask: "every customer leaves with the next appointment booked, and every call reaches someone who asks for it.",
   notes: "PLACE: CP Engine section, after the CP RO Count slides and before Hours per RO.\nSaid: Jan/May GM slides on Appointment Scheduling, Appointment Discipline, Phone Call Handling and Retention Management (Jan 2, 7, 9, 11; May 2, 4, 8, 9).\nOptional: the Flai voice AI service view (Jul 16-Aug 15 pull: 4,368 of 8,351 transfers rang out) fits here, but it is a different source and period; refresh it before use and keep it off any slide with a P&L number." });
 
-T({ eyebrow: "Customer Pay", title: "Pricing Strategy", saidFrom: BOTH,
+T({ eyebrow: "Customer Pay · Effective Labor Rate", title: "Pricing Strategy", saidFrom: BOTH,   // marks it as part of the ELR run (Noah, Oct 26)
   said: ["Do a comprehensive market labor study",
          "Calculate your ELR on every maintenance item; target ELR by work type",
          "Know your loss leader, and what the competition is charging",
@@ -98,7 +106,7 @@ T({ eyebrow: "Opcodes", title: "Basic Maintenance Service", saidFrom: GM,
          "Processes and policies that make it happen: every car, every time"],
   now: [{ big: "54.3%", label: "Maintenance share of customer-pay labor across the group; repair 30.5%. Depending on work mix, maintenance runs 25% to 75% of a store's service.", tone: "n" }],
   ask: "capitalize on every maintenance visit: in quickly, inspected completely by someone who knows what to look for, and every finding recommended.",
-  notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: express visits and a complete MPI go hand in hand).\nTalk track (Noah, Oct 25): go to the dentist for a quick cleaning and they don't tell you something is starting to look like a cavity: that is a disservice. Get cars in quickly, perform a complete, comprehensive MPI, and make the proper recommendations at that time. This is critical, and it can't be left to entry-level employees alone: someone with experience who knows what to look for has to be looking at these cars. Depending on work mix, maintenance can be 25% to 75% of a store's service. Many stores focus on getting more cars in the door, which is great, and we want both, but they miss the opportunities they already have. Processes and policies make sure we capitalize on them: every car, every time.\nThe 52.5% customer-pay share of labor sale tile was dropped with the rewrite.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service), reworded." });
+  notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: maintenance visits and a complete MPI go hand in hand).\nTalk track (Noah, Oct 25): go to the dentist for a quick cleaning and they don't tell you something is starting to look like a cavity: that is a disservice. Get cars in quickly, perform a complete, comprehensive MPI, and make the proper recommendations at that time. This is critical, and it can't be left to entry-level employees alone: someone with experience who knows what to look for has to be looking at these cars. Depending on work mix, maintenance can be 25% to 75% of a store's service. Many stores focus on getting more cars in the door, which is great, and we want both, but they miss the opportunities they already have. Processes and policies make sure we capitalize on them: every car, every time.\nThe 52.5% customer-pay share of labor sale tile was dropped with the rewrite.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service), reworded." });
 
 T({ eyebrow: "Opcodes", title: "Tracking & Accountability", saidFrom: BOTH,
   said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",

@@ -69,7 +69,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   // red bar: in more than one bottom 5 (Noah, Oct 26)
   const seenB = {}; cols.forEach(c => sortedOf(c).slice(-5).forEach(r => { seenB[r.n] = (seenB[r.n] ?? 0) + 1; }));
   const multiB = new Set(Object.keys(seenB).filter(n => seenB[n] > 1));
-  const maxTop = Math.max(...cols.map(c => topOf(c).length));
+  const maxTop = 5;   // the 100% list is drawn as a compact name grid, so every top list takes five rows (Noah, Oct 26)
   cols.forEach((c, k) => {
     const x = 0.5 + k * (W + 0.12);
     H.panel(pptx, s, { x, y: top, w: W, h, label: null });
@@ -85,6 +85,11 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
       s.addShape(pptx.ShapeType.rect, { x: x + 0.18, y: y + 0.02, w: W - 0.36, h: 0.025, fill: { color: bar } });
       s.addText(lab, { x: x + 0.18, y: y + 0.05, w: 2, h: 0.24, fontFace: F, fontSize: sz(14, "list head"), bold: true, color: ink, isTextBox: true, margin: 0 });
       // column heads on the TOP 5 / BOTTOM 5 line instead of "calls" / "open" on every row (Noah, Oct 26)
+      if (isTop && c.key === "res") {   // every store at 100% has 0 open: just the names, two to a row
+        y += 0.3;
+        L.forEach((r, i) => s.addText(r.n, { x: x + 0.18 + (i % 2) * (W - 0.36) / 2, y: y + Math.floor(i / 2) * rh, w: (W - 0.36) / 2 - 0.05, h: rh, fontFace: F, fontSize: 12, color: C.goodInk, bold: true, valign: "middle", isTextBox: true, margin: 0 }));
+        return;
+      }
       s.addText("Rate", { x: x + W - 2.0, y: y + 0.05, w: 0.8, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
       s.addText(c.xh ?? "Calls", { x: x + W - 1.18, y: y + 0.05, w: 1.0, h: 0.24, fontFace: F, fontSize: sz(14, "col head"), bold: true, color: C.ink600, align: "right", isTextBox: true, margin: 0 });
       y += 0.3;

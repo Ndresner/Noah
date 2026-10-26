@@ -113,7 +113,8 @@ order += X("REC", 1, 2)
 order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability
 # What Is Fixed Absorption? + What Is in Total Store Fixed Expenses? (NP 1-2) replace EX 8 (Oct 24)
-order += O(4) + X("NP", 1, 2) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
+# NP 2 (fixed expense breakdown) folded into NP 1 (Noah, Oct 26)
+order += O(4) + X("NP", 1) + X("PL", 2, 3, 4, 5) + X("EX", 9) + X("PL", *R(6, 13))
 # 03 Customer Pay (renamed from The CP Engine, Oct 22). Every metric block now ends with a top/bottom-five movers slide.
 order += O(5) + X("TP", 3, 4) + X("PH", 1, 2)   # Flai voice AI slides after The Front Door (Noah, Oct 26)
 # Oct 23 (Noah): One More CP RO a Day (CPH 5) sits after the CP RO change ranker, and What 0.1 Hour per RO Is Worth
@@ -128,7 +129,8 @@ order += X("EX", 2) + X("CP", 6, 7, 8) + X("HPRO", 1) + X("CP", 9)
 # pay type after the ELR explainer too (Oct 23)
 # Oct 23 (Noah): Express Service (TP 7) moves to Opcodes; Door Rate (CP 14) to Open Decisions; the two CP ELR % of
 # door rate slides (CP 16, 17) follow the ELR change ranker, ahead of its movers slide
-order += X("EX", 3) + X("LM", 2) + X("TP", 5) + X("LM", 6) + X("CP", 10, 11, 12, 17, 13)   # CP 16 (ELR % of door rate, bars only) to Open Decisions (Oct 24)
+# Pricing Strategy ahead of Labor Sale by Pay Type (Noah, Oct 26)
+order += X("EX", 3) + X("TP", 5) + X("LM", 2) + X("LM", 6) + X("CP", 10, 11, 12, 17, 13)   # CP 16 (ELR % of door rate, bars only) to Open Decisions (Oct 24)
 order += X("EX", 4) + X("CP", 20, 21, 22, 23)
 # The Goldilocks Margin (TP 6) folded into What Is Labor GP % (Oct 23)
 order += X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34, 35)

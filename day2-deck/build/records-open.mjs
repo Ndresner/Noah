@@ -36,7 +36,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
     { label: "Stores with an all-time record month", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
     { label: "Records set", big: String(total), sub: `all-time monthly records across those stores: service, parts and combined counted separately.`, tone: "g" },
     { label: "Best January–September ever", big: String(ytdRec.length), sub: `stores had their best January–September ever in combined fixed gross.`, tone: "g" },
-    { label: "Broke it, then broke it again", big: String(again.length), sub: `stores set a record and then beat it again later in the year.`, tone: "g" },
+    { label: "Set a record, then reset it", big: String(again.length), sub: `stores set a record and then topped it again later in the year.`, tone: "g" },   // Noah, Oct 26
   ],
   banner: `Most records set this year: ${topLine}.`,
   takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records. Every one of these stores can tell the room what they changed.`,
@@ -44,10 +44,10 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
 
 // 2. ranker of stores by records set, with the split (Noah picked option A, Oct 26; list and spotlight options retired)
 H.amountRanker(pptx, pptx, { eyebrow: SEG, title: "Records Set in 2026",
-  rows: byCnt.map(r => [r.n, cnt(r)]), fmt: v => String(v), color: C.good, ink: C.goodInk, valLabel: "Records",
-  extra: [{ label: "Svc", w: 0.55, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.svc.length || "–")])) },
-          { label: "Parts", w: 0.6, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.pts.length || "–")])) },
-          { label: "Comb.", w: 0.65, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.tot.length || "–")])) }],
+  rows: byCnt.map(r => [r.n, cnt(r)]), fmt: v => String(v), color: C.good, ink: C.goodInk, valLabel: "Total",   // shorter head, wider columns (Noah, Oct 26)
+  extra: [{ label: "Svc", w: 0.72, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.svc.length || "–")])) },
+          { label: "Parts", w: 0.78, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.pts.length || "–")])) },
+          { label: "Comb.", w: 0.8, vals: Object.fromEntries(byCnt.map(r => [r.n, String(r.tot.length || "–")])) }],
   takeaway: `${rec.length} stores set ${total} all-time monthly records in 2026. ${nm(byCnt[0].n)} and ${nm(byCnt[1].n)} lead with ${cnt(byCnt[0])} each.`,
   tone: "g", source: SRC + " Records = each month a store beat its best-ever service, parts or combined month; one month can count up to three." })
   .addNotes("Records by store (month: service / parts / combined, with the record it beat):\n" + rec.map(r => `${nm(r.n)}: ` + ["svc", "pts", "tot"].flatMap(k => r.E[k].map(e => `${{ svc: "service", pts: "parts", tot: "combined" }[k]} ${e.m} ${H.kusd(e.v)} (beat ${H.kusd(e.prev)}, ${e.prevAt})`)).join("; ")).join("\n"));

@@ -168,9 +168,9 @@ export function moversSlide(pptx, o) {
   return H.movers3(pptx, pptx, {
     eyebrow: o.seg, title: o.title, k: K, fmtD: o.fmtD, up, neutral: dir === "neutral",
     cols: [
-      { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep 2026 vs Jan–Sep 2025", rows: r.slice(0, K), tone: "good" },
-      { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep 2026 vs Jan–Sep 2025", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
-      { head: `TOP ${K} MOVING NOW`, sub: "Jul–Sep vs Jan–Mar 2026" + (o.perMonth ? ", per month" : ""), rows: nw, tone: "blue" },
+      { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(0, K), tone: "good" },
+      { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
+      { head: `TOP ${K} MOVING NOW`, sub: "Jul–Sep vs Jan–Mar this year", rows: nw, tone: "blue" },
     ],
     takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
     tone: "n",
