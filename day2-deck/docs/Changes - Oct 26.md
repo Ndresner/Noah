@@ -42,3 +42,10 @@ Slides in `Changes - Oct 26 (round 3).pptx`.
 |---|---|---|
 | 76 | What Is Labor Gross Profit %? | "Too high can mean techs are underpaid, which can cost us technicians and hurt retention." |
 | 81 | What Is Parts Gross Profit %? | Why it matters rebuilt from Noah's 5 reasons: more profit from the same parts sales; shows whether parts sell at the right price (matrix, markups, discounts); flags heavy discounting or cost increases not passed on; CP parts pricing supports the warranty parts rate. "Consistent pricing" line removed. All 5 reasons word for word in the speaker notes. |
+
+## Round 4 (Oct 26)
+Slide in `Changes - Oct 26 (round 4).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 81 | What Is Parts Gross Profit %? | Why it matters opens with "Parts keeps about 37¢ of every gross dollar after its own expenses, the most of any department (service 22¢): margin goes almost straight to the bottom line." New lever "Tracking: know your parts GP % every day, know where you stand, and adjust as needed." Sources and the F&I caveat in the speaker notes. |
