@@ -48,4 +48,4 @@ Slide in `Changes - Oct 26 (round 4).pptx`.
 
 | Deck slide | Slide | What changed |
 |---|---|---|
-| 81 | What Is Parts Gross Profit %? | Why it matters opens with "Parts keeps about 37¢ of every gross dollar after its own expenses, the most of any department (service 22¢): margin goes almost straight to the bottom line." New lever "Tracking: know your parts GP % every day, know where you stand, and adjust as needed." Sources and the F&I caveat in the speaker notes. |
+| 81 | What Is Parts Gross Profit %? | Why it matters opens with "Parts keeps about 37¢ of every gross dollar after its own expenses, the most of any department (service 22¢): margin goes almost straight to the bottom line." New lever "Tracking: monitor and actively manage your parts GP %: know where you stand and adjust as needed." Sources and the F&I caveat in the speaker notes. |
