@@ -24,6 +24,11 @@ const fmt = v => Math.round(v).toLocaleString("en-US");
 const SEG = "Voice AI · Flai · Last 90 Days";   // says what and whose data (Noah, Oct 26)
 const SRC = `Flai voice AI dashboard, Service view, standings export, Jul 26 - Oct 26, 2026 (${DAYS} days). Flai's location names (26 with calls). Pickup rate and resolution as Flai reports them. Flai's estimated savings, revenue and profit are not used.`;
 const notPicked = Math.round(G.tr * (1 - G.pick / 100));
+// value of the missed transfers (Noah, Oct 26): assume half wanted an appointment, each worth the group's average
+// customer-pay gross per RO (labor + parts gross / CP ROs, Qlik Closed RO, Jan-Sep 2026, m5.json). No show rate:
+// taking half is already the haircut. Group level only (Flai locations don't map to stores).
+const CP = JSON.parse(fs.readFileSync("./m5.json", "utf8")).m26.reduce((t, r) => t.map((v, i) => v + r[i]), [0, 0, 0, 0, 0, 0]);
+const gpr = (CP[3] + CP[5]) / CP[0], missedVal = notPicked / 2 * gpr;
 
 // 1. the group picture
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Customer", bigSize: 36, subSize: 14,
@@ -32,11 +37,11 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
     // handled 100% by the AI (Noah, Oct 26): Flai's export has no such column, so it is calls not transferred
     { label: "Handled by the AI alone", big: fmt(G.calls - G.tr), sub: `${(100 - G.trr).toFixed(1)}% of calls, start to finish. The other ${fmt(G.tr)} (${G.trr}%) were transferred to the store.`, tone: "g" },
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
-    { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transferred calls were not picked up by a person.`, tone: "b" },
+    { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transfers missed. If half wanted an appointment, that is $${(missedVal / 1e6).toFixed(1)}M of gross profit.`, tone: "b" },
   ],
   banner: `Service calls answered by Flai, our voice AI, over the last 90 days (Jul 26 – Oct 26, 2026). The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.`,   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
-  tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
+  tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures. Value: half of the missed transfers x $${gpr.toFixed(2)} average customer-pay gross per RO (Qlik - Closed Repair Orders, labor + parts gross, Jan-Sep 2026, same-store) = $${fmt(missedVal)}." });
 
 // 2. top and bottom five on the three things a store controls
 {
