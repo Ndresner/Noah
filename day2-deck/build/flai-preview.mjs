@@ -29,12 +29,12 @@ const notPicked = Math.round(G.tr * (1 - G.pick / 100));
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Every Call Is a Customer", bigSize: 36, subSize: 14,
   tiles: [
     { label: "Calls handled", big: fmt(G.calls), sub: `About ${fmt(G.calls / DAYS)} a day across ${S.length} locations, average call ${Math.floor(G.avg / 60)}:${String(G.avg % 60).padStart(2, "0")}.`, tone: "n" },
-    { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     // handled 100% by the AI (Noah, Oct 26): Flai's export has no such column, so it is calls not transferred
     { label: "Handled by the AI alone", big: fmt(G.calls - G.tr), sub: `${(100 - G.trr).toFixed(1)}% of calls, start to finish. The other ${fmt(G.tr)} (${G.trr}%) were transferred to the store.`, tone: "g" },
+    { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transferred calls were not picked up by a person.`, tone: "b" },
   ],
-  banner: `${G.open} callbacks still open. The AI books and routes the call; the store still has to answer the transfer and close the callback.`,
+  banner: "The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.",   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
   tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
 
