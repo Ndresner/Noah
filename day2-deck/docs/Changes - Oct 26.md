@@ -91,3 +91,12 @@ Slides in `Changes - Oct 26 (round 7).pptx`; services example re-sent as `Op Cod
 | 128 | Pay Plans Are Work Instructions | "Service advisors: base versus bonus, a 50/50 ratio" |
 | Review | Variance from Benchmark | Column "Services" renamed "Opcodes" |
 | Review | Variance from Benchmark | Rate moved to the right of Opcodes; green / red bar beside the top / bottom three stores by rate (same mark as the change rankers) |
+
+## Round 8 (Oct 26)
+Slides in `Changes - Oct 26 (round 8).pptx`; review re-sent as `Op Code Variance with Services - Review.pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 96, 100, 104, 108, 110 | Variance from Benchmark (4 services + total) | Jan–Sep 2026 year to date instead of annualized: eyebrow "Opcodes · Jan–Sep 2026 YTD", takeaways "so far this year" (e.g. alignment $771,957, Toyota Spokane total −$406K). Every Store at Benchmark (111) keeps "$4,895,199 a year". |
+| 128 | Pay Plans Are Work Instructions | "Service advisors: about half of pay earned on performance. If the base is 6% of gross, another 6% is there to earn by hitting the metrics" |
+| Review | Tire Balance Variance | Gray bar: Volvo, Audi Henderson, VW Henderson, Audi Reno (manufacturer doesn't call for balance); red bar = next three lowest (Lexus, VW St George, Toyota Spokane). All review slides now YTD. |
