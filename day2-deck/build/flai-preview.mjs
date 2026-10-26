@@ -21,7 +21,7 @@ for (const k of ["calls", "bookable", "booked", "tr", "open"]) {
 const DAYS = 93;   // Jul 26 - Oct 26 inclusive
 const MIN = 300;   // rankings: locations with at least 300 calls, so a handful of calls can't top a list
 const fmt = v => Math.round(v).toLocaleString("en-US");
-const SEG = "Voice AI · Flai";   // says what and whose data (Noah, Oct 26)
+const SEG = "Voice AI · Flai · Last 90 Days";   // says what and whose data (Noah, Oct 26)
 const SRC = `Flai voice AI dashboard, Service view, standings export, Jul 26 - Oct 26, 2026 (${DAYS} days). Flai's location names (26 with calls). Pickup rate and resolution as Flai reports them. Flai's estimated savings, revenue and profit are not used.`;
 const notPicked = Math.round(G.tr * (1 - G.pick / 100));
 
@@ -34,7 +34,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transferred calls were not picked up by a person.`, tone: "b" },
   ],
-  banner: `Service calls answered by Flai, our voice AI, Jul 26 – Oct 26, 2026. The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.`,   // open-callback count off this slide (Noah, Oct 26)
+  banner: `Service calls answered by Flai, our voice AI, over the last 90 days (Jul 26 – Oct 26, 2026). The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard.`,   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
   tone: "b", source: SRC + " Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures." });
 
