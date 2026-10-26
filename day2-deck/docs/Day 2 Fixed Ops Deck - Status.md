@@ -14,7 +14,7 @@ Updated: October 26, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 26)
-- Records: A Record Year now shows store records only (records set: 98, replacing the best-group-month tile) with the leaders named at the bottom. The month-by-month board is replaced by a ranker of stores by records set (option A). Options B (list with months) and C (spotlight cards) are in Store Records - Options.pptx for review.
+- Records: A Record Year now shows store records only (records set: 98, replacing the best-group-month tile) with the leaders named at the bottom. The month-by-month board is replaced by a ranker of stores by records set (option A, picked by Noah).
 - Slide 45 source line shortened: "Source: Flai service calls, last 90 days."
 - Voice AI (Flai), two slides after The Front Door (slides 45-46), last 90 days (Jul 26 - Oct 26, 2026):
   - Voice AI: Every Call Is a Customer: 48,964 calls; 22,749 (46.5%) handled by the AI alone; 10,841 appointments booked (72% of bookable calls); 47.7% of transfers picked up. About 13,710 transfers missed: if half wanted an appointment, that is $2.6M of gross profit (half x $384.67 average gross per customer-pay or warranty RO).
@@ -32,7 +32,6 @@ Updated: October 26, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Records: pick option A (in the deck), B or C.
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
