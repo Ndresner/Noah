@@ -52,6 +52,7 @@ Updated: October 27, 2026
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
+- Tracking & Accountability right column: pick from the suggested tiles (video completion, opcodes up in all four, $304 CP labor per RO, 15.2% unclassified, $4.9M).
 
 ## Still open
 - ELR benchmark: the deck uses 70% of door rate; Tommy's coaching recording uses 80%. Settle before the meeting (it also sets the Pricing Strategy opportunity figure).
