@@ -14,6 +14,7 @@ Updated: October 27, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 27)
+- Slide 137: tile status lines and bottom band removed; example box titled "Putting it together: one technician, one day".
 - Proficiency, Efficiency and Productivity (slide 137) rebuilt: "hours flagged" throughout, available hours vs hours clocked to repair orders, one labelled example (8 / 6 / 7.5 hours: 75% x 125% = 93.75%), takeaway band on the three distinctions.
 - New slide "Proficiency, Efficiency and Productivity" (definitions) after the Technician Proficiency explainer. Review file "Movers Turnaround Bar - Review.pptx": blue bar on stores in the bottom five vs last year that are top five moving now.
 - Bottom bands: store call-outs removed on every slide; the group-level part stays (e.g. "20 of 33 stores grew CP RO count. 13 declined."). Bands that were only store call-outs (store rankers, movers) are gone. Full original sentence in the speaker notes.

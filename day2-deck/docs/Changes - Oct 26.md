@@ -174,3 +174,10 @@ Slide in `Changes - Oct 27 (round 9) - revised.pptx` (the round 9 file is unchan
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 137 | Proficiency, Efficiency and Productivity | Rebuilt around Noah's definitions: productivity = hours clocked to repair orders ÷ available hours; efficiency = hours flagged ÷ hours clocked to repair orders; proficiency = hours flagged ÷ available hours, each with its plain question and its example result. Labelled illustrative example (8 available, 6 clocked to ROs, 7.5 flagged) with productivity × efficiency = proficiency (75% × 125% = 93.75%). Takeaway band spells out the three distinctions. Proficiency keeps 85% target and group 94.7%; productivity and efficiency marked "Not measured in our data". |
+
+## Oct 27, round 10
+Slide in `Changes - Oct 27 (round 10).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 137 | Proficiency, Efficiency and Productivity | "Not measured in our data" and "Target 85% · group 94.7%" removed from the tiles; "Illustrative example" renamed "Putting it together: one technician, one day"; bottom band removed (the slide body takes the room, text slightly larger). Speaker notes unchanged. |

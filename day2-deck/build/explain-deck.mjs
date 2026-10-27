@@ -224,33 +224,31 @@ X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross",
 // one labelled example (8 available, 6 clocked to ROs, 7.5 flagged).
 {
   const { C, F, sz } = H, s = pptx.addSlide();
-  const TAKE = "Productivity measures time spent on repair orders; efficiency measures hours flagged against time on repair orders; proficiency measures total hours flagged against available time.";
   H.page(pptx, s, { eyebrow: "Technician Proficiency", title: "Proficiency, Efficiency and Productivity" });
-  H.panel(pptx, s, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(TAKE), label: null });
+  H.panel(pptx, s, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(null), label: null });
   const t = (txt, o) => s.addText(H.words(txt, "definitions"), { fontFace: F, isTextBox: true, margin: 0, ...o });
+  // Oct 27 (Noah): no status lines under the tiles, no takeaway band; example box renamed
   const tiles = [
-    ["Productivity", "Hours clocked to repair orders ÷ available hours", "How much of the technician's available time was spent on repair orders?", "Example: 6 ÷ 8 = 75%", "Not measured in our data"],
-    ["Efficiency", "Hours flagged ÷ hours clocked to repair orders", "How many labor hours did the technician produce for each hour clocked to repair orders?", "Example: 7.5 ÷ 6 = 125%", "Not measured in our data"],
-    ["Proficiency", "Hours flagged ÷ available hours", "How many labor hours did the technician produce compared with their total available time?", "Example: 7.5 ÷ 8 = 93.75%", "Target 85% · group 94.7%"]];
-  const gap = 0.22, X0 = 0.78, W = (11.77 - gap * 2) / 3, Y = 1.55;
-  tiles.forEach(([lab, f, q, ex, st], i) => {
-    const x = X0 + i * (W + gap), mine = i === 2;
-    s.addShape(pptx.ShapeType.rect, { x, y: Y, w: W, h: 3.2, fill: { color: C.zebra } });
+    ["Productivity", "Hours clocked to repair orders ÷ available hours", "How much of the technician's available time was spent on repair orders?", "Example: 6 ÷ 8 = 75%"],
+    ["Efficiency", "Hours flagged ÷ hours clocked to repair orders", "How many labor hours did the technician produce for each hour clocked to repair orders?", "Example: 7.5 ÷ 6 = 125%"],
+    ["Proficiency", "Hours flagged ÷ available hours", "How many labor hours did the technician produce compared with their total available time?", "Example: 7.5 ÷ 8 = 93.75%"]];
+  const gap = 0.22, X0 = 0.78, W = (11.77 - gap * 2) / 3, Y = 1.6;
+  tiles.forEach(([lab, f, q, ex], i) => {
+    const x = X0 + i * (W + gap);
+    s.addShape(pptx.ShapeType.rect, { x, y: Y, w: W, h: 3.35, fill: { color: C.zebra } });
     s.addShape(pptx.ShapeType.rect, { x, y: Y, w: W, h: 0.07, fill: { color: C.blue } });
     t(lab.toUpperCase(), { x: x + 0.2, y: Y + 0.2, w: W - 0.4, h: 0.3, fontSize: sz(14, "tile label"), bold: true, color: C.ink600, charSpacing: 0.8 });
-    t(f, { x: x + 0.2, y: Y + 0.55, w: W - 0.4, h: 0.75, fontSize: sz(18, "definition formula"), bold: true, color: C.navy, valign: "top" });
-    t(q, { x: x + 0.2, y: Y + 1.38, w: W - 0.4, h: 0.95, fontSize: sz(15, "definition question"), color: C.ink, valign: "top" });
-    s.addShape(pptx.ShapeType.rect, { x: x + 0.2, y: Y + 2.37, w: W - 0.4, h: 0.012, fill: { color: C.rule } });
-    t(ex, { x: x + 0.2, y: Y + 2.45, w: W - 0.4, h: 0.34, fontSize: sz(16, "definition example"), bold: true, color: C.navy, valign: "middle" });
-    t(st, { x: x + 0.2, y: Y + 2.8, w: W - 0.4, h: 0.3, fontSize: sz(14, "definition status"), bold: mine, color: mine ? C.ink : C.ink600, valign: "middle" });
+    t(f, { x: x + 0.2, y: Y + 0.55, w: W - 0.4, h: 0.82, fontSize: sz(20, "definition formula"), bold: true, color: C.navy, valign: "top" });
+    t(q, { x: x + 0.2, y: Y + 1.47, w: W - 0.4, h: 1.05, fontSize: sz(16, "definition question"), color: C.ink, valign: "top" });
+    s.addShape(pptx.ShapeType.rect, { x: x + 0.2, y: Y + 2.62, w: W - 0.4, h: 0.012, fill: { color: C.rule } });
+    t(ex, { x: x + 0.2, y: Y + 2.72, w: W - 0.4, h: 0.45, fontSize: sz(18, "definition example"), bold: true, color: C.navy, valign: "middle" });
   });
-  // the one labelled example, and the identity that ties the three together
-  const EY = Y + 3.2 + 0.2;
-  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.2, fill: { color: C.blueTint } });
-  t("ILLUSTRATIVE EXAMPLE", { x: X0 + 0.2, y: EY + 0.14, w: 11.37, h: 0.28, fontSize: sz(14, "example label"), bold: true, color: C.ink600, charSpacing: 0.8 });
-  t("A technician has 8 available hours, clocks 6 hours to repair orders and flags 7.5 hours.", { x: X0 + 0.2, y: EY + 0.46, w: 11.37, h: 0.32, fontSize: sz(16, "example"), color: C.ink, valign: "middle" });
-  t("Productivity × efficiency = proficiency:  75% × 125% = 93.75%", { x: X0 + 0.2, y: EY + 0.8, w: 11.37, h: 0.32, fontSize: sz(16, "identity"), bold: true, color: C.navy, valign: "middle" });
-  H.takeaway(pptx, s, TAKE, "n");
+  // the example, and the identity that ties the three together
+  const EY = Y + 3.35 + 0.25;
+  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.38, fill: { color: C.blueTint } });
+  t("PUTTING IT TOGETHER: ONE TECHNICIAN, ONE DAY", { x: X0 + 0.2, y: EY + 0.16, w: 11.37, h: 0.28, fontSize: sz(14, "example label"), bold: true, color: C.ink600, charSpacing: 0.8 });
+  t("A technician has 8 available hours, clocks 6 hours to repair orders and flags 7.5 hours.", { x: X0 + 0.2, y: EY + 0.5, w: 11.37, h: 0.36, fontSize: sz(18, "example"), color: C.ink, valign: "middle" });
+  t("Productivity × efficiency = proficiency:  75% × 125% = 93.75%", { x: X0 + 0.2, y: EY + 0.9, w: 11.37, h: 0.36, fontSize: sz(18, "identity"), bold: true, color: C.navy, valign: "middle" });
   H.foot(pptx, s, "Standard service-department definitions. On the store slides, proficiency = Qlik hours flagged (sold hours) ÷ ADP regular + overtime hours, which stand in for available hours. Efficiency and productivity need DMS time clocked to repair orders, which this data does not include, so they are defined here but not measured. The example is illustrative, not a store or technician.");
   s.addNotes("PLACE: right after the Technician Proficiency explainer, before How We Measured It (Noah, Oct 27).\nTalk track: walk the example left to right. The tech was on repair orders 6 of 8 hours (75% productive) and flagged 7.5 hours in those 6 (125% efficient), so 7.5 flagged hours for 8 available (93.75% proficient). Proficiency is the one we measure: 85% target, group 94.7%. 'Productivity' here is the technician measure, not the Fixed Ops Productivity section (gross and ROs per employee).");
 }
