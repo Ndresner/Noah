@@ -117,7 +117,11 @@ T({ eyebrow: "Opcodes", title: "Tracking & Accountability", saidFrom: BOTH,
          "Tracked metrics improve performance; we are responsible for the knowing",
          "Scoreboard techs and advisors: CP $ per RO, ELR, MPI completion, closing %, key op codes"],
   // 15.2% group figure removed with the Unclassified Customer-Pay Labor slide (Noah, Oct 22); the range now explains itself
-  now: [{ big: "81.3%", label: "MPI completion, July to September (store-reported). 12 of 33 stores at the 90% benchmark.", tone: "b" }],
+  now: [{ big: "81.3%", label: "MPI completion, July to September (store-reported). 12 of 33 stores at the 90% benchmark.", tone: "b" },
+        // Oct 27 (Noah): review option, two more tiles; TRACK=1 builds it until Noah approves
+        ...(process.env.TRACK === "1" ? [
+        { big: "Up in all four", label: "Alignment, balance, brake fluid and fuel service closing %, each up 1.2-1.4 pts and ahead of 2025 every month.", tone: "g" },
+        { big: "$304", label: "CP labor per RO, up $17. The first number on every advisor scoreboard.", tone: "g" }] : [])],
   ask: "if it isn't described, it can't be tracked. Clean up op code descriptions so the reports show what you sell.",
   notes: "PLACE: Opcode Benchmarks, after MPI and Video Completion %, ahead of the op code closing % slides (moved out of Internal, Oct 23).\nSaid: Jan GM slide 19 / May GM slide 15 (Tracking & Accountability); Roundtable slide 16 (Performance Tracking)." });
 
