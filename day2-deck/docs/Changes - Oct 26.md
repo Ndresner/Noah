@@ -100,3 +100,12 @@ Slides in `Changes - Oct 26 (round 8).pptx`; review re-sent as `Op Code Variance
 | 96, 100, 104, 108, 110 | Variance from Benchmark (4 services + total) | Jan–Sep 2026 year to date instead of annualized: eyebrow "Opcodes · Jan–Sep 2026 YTD", takeaways "so far this year" (e.g. alignment $771,957, Toyota Spokane total −$406K). Every Store at Benchmark (111) keeps "$4,895,199 a year". |
 | 128 | Pay Plans Are Work Instructions | "Service advisors: about half of pay earned on performance. If the base is 6% of gross, another 6% is there to earn by hitting the metrics" |
 | Review | Tire Balance Variance | Gray bar: Volvo, Audi Henderson, VW Henderson, Audi Reno (manufacturer doesn't call for balance); red bar = next three lowest (Lexus, VW St George, Toyota Spokane). All review slides now YTD. |
+
+## Oct 27
+Slide in `Changes - Oct 27.pptx`; review re-sent.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 128 | Pay Plans Are Work Instructions | "Advisor pay: target a 50/50 split of base commission and performance bonus, with about half of earning potential tied to measurable metrics" (no 6% example; Noah's wording trimmed to fit the panel) |
+| Review | Fuel System Service Variance | Gray bar: Volvo, Audi Henderson, VW Henderson, Audi Reno; red = next three lowest (LR Henderson, Honda Flagstaff, Toyota Flagstaff) |
+| Review | Tire Balance Variance | Gray bar: Audi Henderson, Audi Reno only; red = Lexus, VW St George, Toyota Spokane |

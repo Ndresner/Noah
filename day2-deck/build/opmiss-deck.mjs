@@ -87,15 +87,17 @@ await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
 // REVIEW (Noah, Oct 26): the per-service slides with a signed opcodes column, rate on the right. Not in the deck.
 {
   const rv = new PptxGenJS(); rv.layout = "LAYOUT_WIDE"; rv.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
-  // Tire balance (Noah, Oct 26): gray bar = manufacturer doesn't call for tire balance; red = the next three lowest after them
-  const GRAY = { "Tire Balance": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
+  // gray bar = the manufacturer doesn't call for the service at that store; red = the next three lowest after them
+  // (Noah, Oct 26: Audi stores on tire balance; Oct 27: the four-store list belongs to fuel system service)
+  const GRAY = { "Tire Balance": ["AUDI HENDERSON", "AUDI RENO"],
+                 "Fuel System Service": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
   const rateMarks = (rows, name) => {
     const gray = GRAY[name] ?? [], by = [...rows].sort((p, q) => q.rate - p.rate), rest = by.filter(x => !gray.includes(x.n));
     return Object.fromEntries([...rest.slice(0, 3).map(x => [x.n, "g"]), ...rest.slice(-3).map(x => [x.n, "r"]), ...gray.map(n => [n, "n"])]); };
   const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
   res.forEach(s => {
     const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
-    const gray = GRAY[s.name] ? " Gray bar = the manufacturer doesn't call for tire balance at that store (" + GRAY[s.name].join(", ") + "); red = the three lowest after them." : "";
+    const gray = GRAY[s.name] ? ` Gray bar = the manufacturer doesn't call for ${s.name.toLowerCase()} at that store (${GRAY[s.name].join(", ")}); red = the three lowest after them.` : "";
     H.amountRanker(rv, rv, {
       eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
       rows: s.all.map(x => [x.n, ytd(x.vs)]), fmt: sgnK, valLabel: "Variance", valW: 1.1,

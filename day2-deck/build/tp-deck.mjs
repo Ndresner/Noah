@@ -166,7 +166,7 @@ T({ eyebrow: "Fixed Ops Productivity", title: "Pay Plans Are Work Instructions",
          "Based on customer-pay performance: CP labor or gross per RO, hours per RO, maintenance penetration, total sales or gross",
          "Incentivize improvement in the metrics that make the biggest difference",
          "Move technicians to flat rate and away from hourly: it rewards productivity and makes proficiency easy to track",
-         "Service advisors: about half of pay earned on performance. If the base is 6% of gross, another 6% is there to earn by hitting the metrics",
+         "Advisor pay: target a 50/50 split of base commission and performance bonus, with about half of earning potential tied to measurable metrics",
          "Every system is perfectly designed to get the results it gets"],
   now: [{ big: "$304", label: "CP labor per RO, the number the plans should pay on. Up $17.", tone: "g" },
         { big: "94.7%", label: "Technician proficiency, Jan-Sep: 20 of 33 stores at or above 85%. Flat-rate pay rewards what techs produce.", tone: "g" }],   // replaces ROs per advisor, now in Open Decisions (Noah, Oct 23)

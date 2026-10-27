@@ -2,7 +2,7 @@
 
 GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah Dresner. Reviewed with Tommy.
 
-Updated: October 26, 2026
+Updated: October 27, 2026
 
 ## Current test deck
 - 202 slides: 160 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
@@ -12,6 +12,9 @@ Updated: October 26, 2026
 ## BEFORE FINALIZING (on hold, Noah asked for a reminder)
 - Group totals with INEOS and the GMC Prescott body shop: group-level financial figures to include both; every individual store slide keeps them out. To settle: dollar totals only or rates and counts too; whether the group year-over-year change includes INEOS (no 2025) or stays same-store; whether store-slide strips show the 33-store total or the all-in group.
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
+
+## Recent changes (Oct 27)
+- Pay Plans advisor line: "Advisor pay: target a 50/50 split of base commission and performance bonus, with about half of earning potential tied to measurable metrics". Variance review: gray bars (manufacturer does not call for the service) on fuel system service for Volvo, Audi Henderson, VW Henderson, Audi Reno; on tire balance for the two Audi stores.
 
 ## Recent changes (Oct 26)
 - Round 8: Variance from Benchmark slides now Jan-Sep 2026 year to date (Every Store at Benchmark keeps its per-year total); Pay Plans advisor line explains the 50/50 (about half of pay earned on performance, e.g. 6% base + 6% on the metrics); tire balance review marks the stores whose manufacturer does not call for balance in gray.
