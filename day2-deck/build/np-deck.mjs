@@ -31,7 +31,7 @@ const ABS = J("./abs.json"), absG = sum(ABS.m26.map(r => r[0])), absE = sum(ABS.
 if (Math.abs(absE - fxTot) > 1) throw new Error(`fixed expenses ${fxTot} vs absorption denominator ${absE}`);
 const SRCA = "Qlik - Profit & Loss, GM statement. Jan-Sep 2026, same-store, INEOS excluded (opened 2026).";
 
-H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", title: "What Is Fixed Absorption?",
+H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", title: "Fixed Absorption",
   formula: ["Fixed absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
   // Noah, Oct 27
   define: "How much of the dealership's fixed expenses are covered by parts and service gross profit.",
@@ -50,7 +50,7 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
   ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.`,
   tone: "g", notes: `PLACE: Profitability, in front of Fixed Ops Absorption %; the next slide breaks down the fixed expenses. The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service, parts, body shop) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
-H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "What Is in Total Store Fixed Expenses?", bigSize: 36, subSize: 14,
+H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "Total Store Fixed Expenses", bigSize: 36, subSize: 14,
   tiles: CAT.map(x => ({ label: x.k, big: M1(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
   banner: `Not included: sales and F&I commissions, delivery, policy, floorplan interest and new and used vehicle advertising, the costs that rise and fall with each car sold.`,
   takeaway: `${M1(fxTot)} of fixed expenses Jan-Sep 2026; fixed ops gross of ${M1(absG)} covers ${(absG / absE * 100).toFixed(1)}% of it. People are ${(CAT[0].v / fxTot * 100).toFixed(0)}% of the total.`,
@@ -72,7 +72,7 @@ const ex25 = g25gross - v25, ex26 = g26gross - v26;
 // revenue needed per $1 of net (Noah, Oct 24): service + parts net sales / fixed ops net profit
 const SL = J("./pulls/net_by_dept.json").fx_sales_26, sales26 = SL.service + SL.parts, per1 = sales26 / v26;
 
-H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops Net Profit?",
+H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "Fixed Ops Net Profit",
   formula: ["Fixed ops net profit", "=", "service & parts gross", "−", "service & parts expenses"], formulaSize: 22,
   // Noah, Oct 27
   define: "The profit parts and service generate after their allocated expenses are covered.",

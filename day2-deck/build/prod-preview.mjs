@@ -5,7 +5,7 @@ import PptxGenJS from "pptxgenjs";
 import * as H from "./house.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 H.explainer(pptx, pptx, { source: "Gross and ROs: Qlik - Productivity app. Headcount: ADP Employee Master extract, month-end snapshots, Qlik's fixed-employee title list. Monthly averages, Jan-Sep 2026 vs 2025. Same-store, 33 stores.",
-  eyebrow: "Fixed Ops Productivity", title: "What Is Productivity?",
+  eyebrow: "Fixed Ops Productivity", title: "Productivity",
   formula: ["Productivity", "=", "gross and ROs produced", "÷", "the people producing them"], formulaSize: 22,
   define: "How much gross and work each person produces: gross per fixed employee and CP & W ROs per fixed employee.",
   example: [["Gross per employee", "$13,617 / mo"], ["ROs per employee", "26.8 / mo"], ["Fixed ops staff", "1,540"]], exampleLabel: "OUR NUMBERS",
