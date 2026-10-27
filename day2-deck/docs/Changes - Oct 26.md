@@ -215,3 +215,6 @@ General asks to the whole room ("The ask: …") stay (Noah). No band asks a sing
 
 ## Oct 27, round 14
 Slides in `Changes - Oct 27 (round 14).pptx`. Bottom bands removed (the next slides carry the figure): 46 CP RO Count explainer, 56 Hours per RO explainer, 62 Effective Labor Rate explainer, 66 CP ELR group chart. Nothing else in the deck changed (text diff against the previous build).
+
+## Oct 27, round 15
+Example slides in `Changes - Oct 27 (round 15).pptx` (8, 70). Every movers slide's "Top 5 moving now" column now reads "Q3 vs Q1, this year" (was "Jul–Sep vs Jan–Mar this year"), matching Two Ways to Read Improvement: 23 slides in the flow (8, 17, 21, 25, 31, 36, 40, 51, 55, 61, 70, 75, 80, 85, 97, 101, 105, 109, 117, 121, 125, 134, 154) and 3 in Open Decisions. Nothing else changed.
