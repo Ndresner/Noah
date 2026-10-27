@@ -159,3 +159,11 @@ Every bottom band (takeaway) that names a store is gone, whether it only named t
 
 ## Oct 27, round 8
 Full deck only. Bands now keep their group-level part and drop only the store call-outs (Noah: "19 of 33 stores are up" stays; who is up or down goes). Examples: "24 of 33 stores grew." (net profit change), "20 of 33 stores grew CP RO count. 13 declined.", "25 stores under 15% have left $771,957 so far this year; 8 are at or above it.", "20 of 33 stores at or above the 85% target and 12 above 100%. Group 94.7%." Bands that were only store call-outs stay off: store total rankers ("X leads at …"), movers ("Ask X, Y and Z …"), Voice AI store metrics, Tech Minute by store, Better Than Last Year / Who's Moving Now grids, and a few Open Decisions slides. The full original sentence is in each slide's speaker notes.
+
+## Oct 27, round 9
+Slide in `Changes - Oct 27 (round 9).pptx`; example in `Movers Turnaround Bar - Review.pptx` (not in the deck).
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 137 (new) | Proficiency, Efficiency and Productivity | Three definitions after the Technician Proficiency explainer: proficiency = sold hours ÷ hours worked; efficiency = sold hours ÷ hours on ROs; productivity = hours on ROs ÷ hours worked; proficiency = efficiency × productivity. Deck is now 203 slides (161 in the flow). |
+| Review | Movers, blue bar | Blue bar on a store in the bottom five vs last year that is also top five moving now (8 slides: net profit, absorption, service and parts net to gross, CP ELR, internal ELR, gross per employee, warranty gross). Built with `TURN=1`; off in the deck until Noah says. |

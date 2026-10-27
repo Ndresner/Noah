@@ -151,7 +151,7 @@ order += O(7) + X("TP", 15) + X("WI", 10, 11, 12, 13) + X("IGP", 1) + X("CVI", 1
 # Oct 23 (Noah): headcount (PROD 18-19) leads the data; ROs per advisor (PROD 6-9), ROs per manager (PROD 14-17), the
 # gross-per-employee gap (FGEG) and 5% more per employee (FGE5) move to Open Decisions
 order += O(8) + X("TP", 11, 12) + X("PROD", 18, 19) + X("PROD", 2, 3, 4, 5)   # ROs per fixed employee (PROD 10-13) to Open Decisions (Oct 24)
-order += X("TP", 13) + X("EX", 11, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23); PROF 7 Your Best Techs Prove It to Open Decisions (Oct 24)
+order += X("TP", 13) + X("EX", 11, 14, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)   # PROF 8 Is It the Work or the Workers? removed (Noah, Oct 23); PROF 7 Your Best Techs Prove It to Open Decisions (Oct 24)
 # 07 Warranty
 # warranty audits lead the section, warranty ELR moves up beside them (Noah, Oct 22); then warranty ROs, internal ELR
 # Oct 22: rate increases (the money) -> warranty ELR (where it shows) -> what gets debited -> keep the claim paid

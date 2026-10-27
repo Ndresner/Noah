@@ -219,4 +219,17 @@ X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross",
   ours: "Group: $188.80M fixed ops gross Jan–Sep 2026, up $7.47M (4.1%): service +$6.30M, parts +$1.17M.",
   tone: "g", notes: "PLACE: Gross section, after Service Is Sales 2.0 and in front of Total Gross Profit - Fixed Ops.\nSource: Qlik Profit & Loss, Total Gross Profit - Service and Total Gross Profit - Parts, same-store, INEOS excluded, GMC Prescott body shop gross excluded (as on the gross slides). Hourly technician pay, guarantees and bonuses paid off the RO post as unapplied labor: not charged on any repair order, a cost-of-sale adjustment that reduces service gross (Noah, Oct 23)." });
 
+// 14. Oct 27 (Noah): the three technician measures side by side, after the Technician Proficiency explainer
+H.statTiles(pptx, pptx, { eyebrow: "Technician Proficiency", title: "Proficiency, Efficiency and Productivity", bigSize: 26, subSize: 15,
+  tiles: [{ label: "Proficiency", big: "Sold hours ÷ hours worked", tone: "n",
+            sub: "How many hours a tech flags for every hour they are at work. The measure on these slides: 85% target, group 94.7%." },
+          { label: "Efficiency", big: "Sold hours ÷ hours on ROs", tone: "n",
+            sub: "How fast a tech does the work: hours flagged against the time actually clocked on repair orders. Over 100% beats book time." },
+          { label: "Productivity", big: "Hours on ROs ÷ hours worked", tone: "n",
+            sub: "How much of the day a tech spends on customer work instead of waiting on parts, dispatch or approvals." }],
+  banner: "Proficiency = efficiency × productivity. A fast tech with nothing to work on is efficient but not proficient: the fix is dispatch, parts and approvals, not the tech.",
+  source: "Standard service-department definitions. Proficiency on the store slides = Qlik sold hours ÷ ADP regular + overtime hours. Efficiency and productivity need DMS time clocked on ROs, which this data does not include, so they are defined here but not measured.",
+});
+pptx._slides[pptx._slides.length - 1].addNotes("PLACE: right after the Technician Proficiency explainer, before How We Measured It (Noah, Oct 27).\nTalk track: proficiency is the one we measure; efficiency and productivity explain why it is low. High efficiency with low proficiency means the tech is waiting. 'Productivity' here is the technician measure, not the Fixed Ops Productivity section (gross and ROs per employee).");
+
 await pptx.writeFile({ fileName: "Metric Explainers - Review.pptx" }); console.log("built", pptx._slides.length);

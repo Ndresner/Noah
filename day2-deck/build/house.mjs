@@ -2347,6 +2347,10 @@ export function movers3(pptx, deck, o) {
   // Oct 24 (Noah): a store on both the first list (top vs last year) and the last (moving now) gets a green bar down
   // the right edge of its row on both lists
   const both = new Set(o.cols[0].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n)));
+  // Oct 27 (Noah, example): a store in the bottom five vs last year AND the top five moving now (turning it around) gets a
+  // blue bar on both lists. Off unless TURN=1 while the example is reviewed.
+  const turn = process.env.TURN === "1" && o.cols.length > 2
+    ? new Set(o.cols[1].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n))) : new Set();
   o.cols.forEach((col, ci) => {
     const x0 = 0.72 + ci * (W + gap);
     const bar = { good: C.good, bad: C.bad, blue: C.blue }[col.tone], ink = { good: C.goodInk, bad: C.badInk, blue: C.navy }[col.tone];
@@ -2356,6 +2360,7 @@ export function movers3(pptx, deck, o) {
     col.rows.forEach((r, j) => {
       const y = TOP + j * rh, better = o.up === false ? r.d <= 0 : r.d >= 0, c = o.neutral ? C.navy : (better ? C.goodInk : C.badInk);
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x0, y, w: W, h: rh, fill: { color: C.zebra } });
+      if ((ci === 1 || ci === o.cols.length - 1) && turn.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x0 + W - 0.07, y: y + 0.04, w: 0.07, h: rh - 0.08, fill: { color: C.blue } });
       if ((ci === 0 || ci === o.cols.length - 1) && both.has(r.n)) s.addShape(pptx.ShapeType.rect, { x: x0 + W - 0.07, y: y + 0.04, w: 0.07, h: rh - 0.08, fill: { color: C.good } });
       s.addText(String(col.rank ? col.rank(j) : j + 1), { x: x0 + 0.1, y, w: 0.4, h: rh, fontFace: F, fontSize: sz(big ? 20 : 15, "movers rank"), bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
       s.addText([{ text: r.n, options: { bold: true, color: C.ink, fontSize: sz(big ? 17 : 14, "movers store"), breakLine: true } },

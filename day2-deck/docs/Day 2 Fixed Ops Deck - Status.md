@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 27, 2026
 
 ## Current test deck
-- 202 slides: 160 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
+- 203 slides: 161 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -14,6 +14,7 @@ Updated: October 27, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 27)
+- New slide "Proficiency, Efficiency and Productivity" (definitions) after the Technician Proficiency explainer. Review file "Movers Turnaround Bar - Review.pptx": blue bar on stores in the bottom five vs last year that are top five moving now.
 - Bottom bands: store call-outs removed on every slide; the group-level part stays (e.g. "20 of 33 stores grew CP RO count. 13 declined."). Bands that were only store call-outs (store rankers, movers) are gone. Full original sentence in the speaker notes.
 - Explainer titles: "What Is … ?" dropped on all of them (e.g. "Fixed Ops Net Profit", "Effective Labor Rate", "Technician Proficiency").
 - Before You Leave: $4.9M every-store-at-benchmark tile replaces the balances tile; "We will review your commitments at the next meeting" (keep a list of each store's commitments).
