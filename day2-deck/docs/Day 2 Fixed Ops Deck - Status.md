@@ -14,7 +14,7 @@ Updated: October 27, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 27)
-- Bottom bands that name a store are removed on every slide (114 slides); the sentence is in the speaker notes. Bands without a store name stay.
+- Bottom bands: store call-outs removed on every slide; the group-level part stays (e.g. "20 of 33 stores grew CP RO count. 13 declined."). Bands that were only store call-outs (store rankers, movers) are gone. Full original sentence in the speaker notes.
 - Explainer titles: "What Is … ?" dropped on all of them (e.g. "Fixed Ops Net Profit", "Effective Labor Rate", "Technician Proficiency").
 - Before You Leave: $4.9M every-store-at-benchmark tile replaces the balances tile; "We will review your commitments at the next meeting" (keep a list of each store's commitments).
 - Definitions reworded (fixed ops net profit, fixed absorption, parts GP %); Record Year tile heads simplified; Fixed Ops DOC added to the daily review; top / bottom three marks on Total Variance by Store; "about" dropped on Every Store at Benchmark; Before You Leave: recurring-meeting question removed, two commitment prompts added.

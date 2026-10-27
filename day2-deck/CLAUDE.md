@@ -160,7 +160,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - Both slides of a data pair share the title.
   - No period in the title.
 - **Takeaways:**
-  - **Oct 27 (Noah): no band names a store.** `house.mjs` `namesStore()` drops any takeaway mentioning a store (body takes the room, sentence goes to the speaker notes). Write group-level takeaways if a band is wanted.
+  - **Oct 27 (Noah): no band names a store.** `house.mjs` `stripStores()` removes every sentence / `;` part / `,` clause that names a store and keeps the group-level rest ("20 of 33 stores grew CP RO count. 13 declined."); a band left empty is dropped and the body takes the room. The full sentence goes to the speaker notes.
   - **Derived from the data, never typed:** counts, names and direction ("grew"/"fell") are computed.
   - One to two lines.
   - Every chart slide has one.

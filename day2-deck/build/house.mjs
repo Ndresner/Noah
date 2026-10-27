@@ -101,7 +101,8 @@ export const BODY = { top: 1.32, botFull: 6.95 };
    --------------------------------------------------------------------- */
 const BAND = { top: 6.70, w: 11.95, em: 0.54, pad: 0.14 };
 export function bandFit(t) {
-  if (!t || namesStore(t)) return null;
+  t = shown(t);
+  if (!t) return null;
   for (let lines = 1; lines <= 2; lines++) {
     for (let fs = 16; fs >= FLOOR; fs -= 0.5) {
       if (Math.ceil(t.length * BAND.em * fs / 72 / BAND.w) <= lines) return { fs, lines };
@@ -113,7 +114,7 @@ export function bandH(t) {
   const f = bandFit(t);
   return f ? f.lines * f.fs * 1.2 / 72 + BAND.pad : 0;
 }
-export const bodyBot = t => (t && !namesStore(t) ? BAND.top - 0.15 : BODY.botFull);
+export const bodyBot = t => (shown(t) ? BAND.top - 0.15 : BODY.botFull);
 export const bodyH   = t => bodyBot(t) - BODY.top;
 
 /* ---------- the metric registry ---------- */
@@ -246,6 +247,27 @@ export const proseNames = t => String(t).replace(STORE_RE, m => storeName(m));
 // The band is dropped, the body takes its room, and the sentence moves to the speaker notes.
 const NAMED_RE = new RegExp("\\b(" + [...STORES].sort((a, b) => b.length - a.length).join("|") + ")\\b", "i");
 export const namesStore = t => NAMED_RE.test(String(t));
+// Oct 27 (Noah, later): keep the group-level part of a takeaway ("19 of 33 stores grew"), drop only the
+// store call-outs. Sentence by sentence, then "; " parts, then ", " clauses: any piece naming a store goes.
+export const stripStores = t => {
+  const keep = String(t).split(/(?<=[.!?])\s+/).map(sen => {
+    const end = /[.!?]$/.test(sen) ? sen.slice(-1) : "";
+    const body = end ? sen.slice(0, -1) : sen;
+    const parts = body.split(/;\s+/).map(part => {
+      if (!namesStore(part)) return part;
+      const cl = part.split(/,\s+/), out = [];
+      for (const c of cl) { if (namesStore(c)) break; out.push(c); }
+      // a clause that only survives as a dangling lead-in ("13 declined") still reads; an empty one goes
+      return out.join(", ");
+    }).filter(x => x && x.trim());
+    if (!parts.length) return "";
+    const out = parts.join("; ") + (end || ".");
+    // "Ask what changed that month." means nothing once the store is gone
+    return /^Ask\b/.test(out) ? "" : out.charAt(0).toUpperCase() + out.slice(1);
+  }).filter(Boolean);
+  return keep.join(" ");
+};
+const shown = t => (t ? stripStores(t) : t);
 export const money = v => v === null ? "—"
   : (v < 0 ? "−" : "+") + "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 export const dollars = v => "$" + Math.round(v).toLocaleString("en-US");
@@ -329,7 +351,8 @@ export function measureStrip(pptx, s, measure, label, value, valueColor) {
    never flattery, never a scolding (Tommy, Oct 2026). */
 export function takeaway(pptx, s, text, tone = "n") {
   if (!text) return;
-  if (namesStore(text)) { s.addNotes(`Takeaway (off the slide): ${proseNames(text)}`); return; }
+  // Oct 27 (Noah): group-level part stays on the band, store call-outs go to the speaker notes
+  if (namesStore(text)) { s.addNotes(`Takeaway with the store call-outs (off the slide): ${proseNames(text)}`); text = stripStores(text); if (!text) return; }
   words(text, "takeaway");
   text = proseNames(text);
   const bg = tone === "g" ? C.goodBg : tone === "b" ? C.badBg : C.blueTint;
