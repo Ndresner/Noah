@@ -75,7 +75,8 @@ export function block(pptx, X, M) {
     fmt: total ? FM0.v : CS.fmt, dfmt: total ? FM0.d : CS.dfmt,
     chartLabel: `${M.title} by month, 2025 against 2026`,
     benchLines: M.chartBench, benchLabel: M.chartBenchLabel,   // dashed benchmark line(s) (Noah, Oct 24)
-    takeaway: `${rose ? "Up" : "Down"} ${FM0.d(g26 - g25).replace(/^[+−]/, "")} to ${FM0.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
+    // M.noYoyTake (Noah, Oct 27): no band on the group chart slide (CP ELR)
+    takeaway: M.noYoyTake ? null : `${rose ? "Up" : "Down"} ${FM0.d(g26 - g25).replace(/^[+−]/, "")} to ${FM0.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
     source: `${M.src} ${M.def} YTD from YTD totals, not the mean of months. Store rows reconcile to the group on every input, both years.${D.q4 ? " 2025 shown January-December; October-December pulled Oct 22 on the same basis (chart only)." : ""}`,
   });
 

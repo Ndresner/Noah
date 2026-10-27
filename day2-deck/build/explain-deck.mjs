@@ -21,7 +21,8 @@ X({ eyebrow: "Customer Pay", title: "CP RO Count",
            ["Quick maintenance", "Maintenance available on demand, done quickly and efficiently, keeps customers coming back"],   // no "express" in the deck (Noah, Oct 26)
            ["Marketing", "Fixed ops budget, keyword search, OEM and third-party reminders"]],
   leverRows: [1, 1.35, 1],   // the retention line runs four lines (Oct 23)
-  ours: "Group: 279,756 CP ROs, up 456 from 2025. Volume is flat.",
+  // Oct 27 (Noah): no bottom band; the next slides carry the group figure. Was: Group: 279,756 CP ROs, up 456 from 2025. Volume is flat.
+  ours: null,
   notes: "PLACE: CP Engine, in front of CP RO Count.\nDefinition is the data slides' own: distinct ROs with a customer-pay line, by close month. This includes the roughly 0.9% of CP ROs with no labor charged (parts-only sales such as additives, wipers and batteries, and blank CP lines); Qlik's hasLabor flag is set on every line, so it does not filter them, and the count is kept that way to match the numbers stores are used to. GMC Prescott body-shop-only ROs excluded." });
 
 X({ eyebrow: "Customer Pay", title: "Hours per RO",
@@ -38,7 +39,8 @@ X({ eyebrow: "Customer Pay", title: "Hours per RO",
            ["Declined work follow-up", "A defined process and a champion to bring it back"],
            ["Op code times", "Sell the hours the job pays; don't give time away"],
            ["Right tech, right car", "High-mileage and repair work to the techs who find it"]],
-  ours: "Group: 1.87 CP hours per RO, up 0.07 and ahead of 2025 in all nine months.",
+  // Oct 27 (Noah): no bottom band; the next slides carry the group figure. Was: Group: 1.87 CP hours per RO, up 0.07 and ahead of 2025 in all nine months.
+  ours: null,
   tone: "g", notes: "PLACE: CP Engine, in front of CP Hours per RO.\n$4,543,691 = 0.1 x 279,756 CP ROs (27,976 hours) x $162.42 CP ELR (on the Hours per RO data slide). Slide rounds to $162 and $4.5M so the room can follow it (Noah, Oct 23)." });
 
 X({ eyebrow: "Customer Pay", title: "Effective Labor Rate",
@@ -56,7 +58,8 @@ X({ eyebrow: "Customer Pay", title: "Effective Labor Rate",
            ["Discounts", "Every discount lowers ELR. Run them through ADC so we can see them."],
            ["Maintenance labor times", "The hours we set and pay the tech on menu jobs; repair times come from labor guides"]],
   leverRows: [1.25, 1, 1],
-  ours: "Group: $162.42 CP ELR, up $3.56. Jul-Sep it ran 74.7% of door rate; 25 of 33 stores at or above 70%.",
+  // Oct 27 (Noah): no bottom band; the next slides carry the group figure. Was: Group: $162.42 CP ELR, up $3.56. Jul-Sep it ran 74.7% of door rate; 25 of 33 stores at or above 70%.
+  ours: null,
   tone: "g", notes: "PLACE: Customer Pay, after CP Hours per RO and ahead of Labor Sale by Pay Type and the CP ELR slides.\nRoundtable worked example removed from the slide (Noah, Oct 21).\nTalk track (Noah, Oct 23): to understand your ELR you have to understand your work mix. A shop that does more repair than maintenance will run a higher ELR, because the repair rate is higher; a shop that is mostly maintenance will run lower. There is nothing wrong with that, but you need to know your mix to know why your ELR is what it is. Raising the repair rate may do less than raising the maintenance rate if most of your work is maintenance. Know your ELR for every labor operation." });
 
 X({ eyebrow: "Customer Pay", title: "CP Labor $ per RO",

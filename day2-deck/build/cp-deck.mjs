@@ -19,7 +19,7 @@ block(pptx, X, { ...base, title: "CP Hours per RO", metric: "hpro", fn: a => a[2
   extra: ({ G26 }) => `Each 0.1 hour per RO is worth ${F.usd.v(0.1 * G26[0] * ELR(G26))} of labor at the 2026 ELR.`,
   verb: "sold more hours per RO" });
 block(pptx, X, { ...base, title: "CP ELR", metric: "elr", fn: ELR, f: F.usd2, segment: true, pct: true, whole: true, absLabel: "$",   // % rank, whole dollars (Oct 24)
-  def: "Customer-pay labor sale / customer-pay sold hours.", verb: "raised CP ELR" });
+  def: "Customer-pay labor sale / customer-pay sold hours.", verb: "raised CP ELR", noYoyTake: true });
 /* CP ELR as % of door rate - door rates from Store_Door_Rate_Sheet.xlsx (uploaded Oct 15 2026; standard rate,
    premium/EV/diesel rates not used). ELR is JUL-SEP 2026 (last three months), not YTD: the sheet holds today's
    rates and several stores changed rates mid-year (Noah, Oct 15 2026). Group = group labor sale / hours-weighted

@@ -212,3 +212,6 @@ Slides in `Changes - Oct 27 (round 13).pptx`.
 | 9 | A Record Year | "Every one of these stores can tell the room what they changed" dropped; band reads "Jul alone brought 11 combined store records." |
 
 General asks to the whole room ("The ask: …") stay (Noah). No band asks a single store anything.
+
+## Oct 27, round 14
+Slides in `Changes - Oct 27 (round 14).pptx`. Bottom bands removed (the next slides carry the figure): 46 CP RO Count explainer, 56 Hours per RO explainer, 62 Effective Labor Rate explainer, 66 CP ELR group chart. Nothing else in the deck changed (text diff against the previous build).
