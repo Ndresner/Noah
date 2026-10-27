@@ -181,3 +181,16 @@ Slide in `Changes - Oct 27 (round 10).pptx`.
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 137 | Proficiency, Efficiency and Productivity | "Not measured in our data" and "Target 85% · group 94.7%" removed from the tiles; "Illustrative example" renamed "Putting it together: one technician, one day"; bottom band removed (the slide body takes the room, text slightly larger). Speaker notes unchanged. |
+
+## Oct 27, round 11
+Slides in `Changes - Oct 27 (round 11).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 8, 31, 36, 40, 70, 117, 134, 154 | Movers | Blue bar now in the deck: bottom five vs last year AND top five moving now |
+| 135 | Technicians & Stalls | Tile reads "(hours flagged / clocked hours)" |
+| 136 | Technician Proficiency | Proficiency = hours flagged ÷ clocked hours; example "Clocks 40 hours, flags 34" |
+| 137 | Proficiency, Efficiency and Productivity | "Clocked hours" replaces "available hours"; example "clocks in for 8 hours, clocks 6 of them to repair orders and flags 7.5"; "Clocked hours exclude vacation, paid time off and holiday pay." |
+| 138 | How We Measured It | Hours flagged ÷ clocked hours; vacation, PTO and holiday pay excluded; "flagged hours", "clocked hours" in the rules |
+
+Decided: INEOS and the body shop stay out of group totals. Productivity slides re-run from the ADP upload: identical.

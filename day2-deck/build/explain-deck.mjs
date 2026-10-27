@@ -167,9 +167,10 @@ X({ eyebrow: "Opcodes", title: "Tracked Opcode Closing %",   // was What Is an O
   notes: "PLACE: Opcodes, after the section break, in front of Alignment %.\nDenominator: CP ROs on the op code report basis (excluding ROs flagged out of the report)." });
 
 X({ eyebrow: "Technician Proficiency", title: "Technician Proficiency",
-  formula: ["Proficiency", "=", "hours sold (flagged)", "÷", "hours worked (clocked)"],
+  // Oct 27 (Noah): hours flagged ÷ clocked hours
+  formula: ["Proficiency", "=", "hours flagged", "÷", "clocked hours"],
   define: "How many hours a technician produces for every hour they are on the clock. 85% is on target; 100% or more is above.",
-  example: [["Works 40 hours", "sells 34"], ["Proficiency", "85%"], ["Sells 40", "100%"]], exampleLabel: "A 40-HOUR WEEK",
+  example: [["Clocks 40 hours", "flags 34"], ["Proficiency", "85%"], ["Flags 40", "100%"]], exampleLabel: "A 40-HOUR WEEK",
   // Oct 25 (Noah): service departments are production facilities; someone has to actively manage production
   why: ["A service department is a production facility. What we produce is hours.",
         "Any production floor knows what it made today and what each person made. So should we.",
@@ -179,25 +180,26 @@ X({ eyebrow: "Technician Proficiency", title: "Technician Proficiency",
            ["Parts staging", "Parts at the bay before the tech needs them"],
            ["Approvals", "Fast customer approval on the inspection"],
            ["Skill and training", "Tech level in line with job skill"],
-           ["Proficiency vs efficiency", "Efficiency divides by time clocked on ROs, not all hours worked"]],
+           ["Proficiency vs efficiency", "Efficiency divides by time clocked to ROs, not all clocked hours"]],
   ours: "Group: 94.7%. 20 of 33 stores at or above 85%; 262 of 583 counted techs below it.",
   tone: "n", notes: "PLACE: Technician Proficiency, after the section break, in front of the store ranker.\nProficiency uses ADP worked hours (regular + overtime), so it includes time not on an RO. Efficiency would use DMS time punched on jobs, which this data does not have." });
 
 X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
-  formula: ["Sold hours (Qlik)", "÷", "worked hours (ADP, regular + overtime)"], formulaSize: 22,
+  formula: ["Hours flagged (Qlik)", "÷", "clocked hours (ADP, regular + overtime)"], formulaSize: 22,
   // Noah, Oct 26: label the period Jan-Sep 2026 YTD (pay periods run Dec 25, 2025 to Oct 9, 2026; in the notes)
-  define: "January through September 2026, year to date. Store = total sold hours / total worked hours.",
+  // Oct 27 (Noah): vacation, PTO and holiday pay are not clocked hours
+  define: "January through September 2026, year to date. Vacation, paid time off and holiday pay are excluded from clocked hours. Store = total hours flagged ÷ total clocked hours.",
   whyHead: "WHO COUNTS", leverHead: "THE RULES",
   why: ["Service technicians and express technicians",
         "Service team leaders and shop foremen",
-        "Everyone whose job is to produce sold hours",
+        "Everyone whose job is to produce flagged hours",
         "Not counted: body shop, detail and tint"],
   levers: [["Shop foremen above 30%", "Below that, a foreman is mainly dispatching"],
            ["Techs above 10%", "Below that, they are not working as a line tech"],
-           ["Role changes", "Worked hours trimmed to the months a tech actually flagged"],
+           ["Role changes", "Clocked hours trimmed to the months a tech actually flagged"],
            ["Keying errors", "Example: 940 hours keyed on a single $0 line"],
            ["Shared tech numbers", "Example: hours flagged to a shop code like 999, not a person"],
-           ["Opportunity", "Each tech under 85% raised to 85% of their own worked hours"]],
+           ["Opportunity", "Each tech under 85% raised to 85% of their own clocked hours"]],
   ours: "The rules keep non-tech time and data errors out of the numbers, and every store is measured the same way.",
   tone: "n", notes: "PLACE: right after 'Technician Proficiency' (explainer).\nPeriod: pay periods Dec 25, 2025 to Oct 9, 2026, matched by tech number, all pay types; labelled Jan-Sep 2026 YTD on the slide (Noah, Oct 26: closest the pay periods allow).\nRules as applied on the proficiency slides (Oct 16 2026). Express techs at stores that pool express hours are mostly excluded by the 10% rule." });
 
@@ -229,9 +231,9 @@ X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross",
   const t = (txt, o) => s.addText(H.words(txt, "definitions"), { fontFace: F, isTextBox: true, margin: 0, ...o });
   // Oct 27 (Noah): no status lines under the tiles, no takeaway band; example box renamed
   const tiles = [
-    ["Productivity", "Hours clocked to repair orders ÷ available hours", "How much of the technician's available time was spent on repair orders?", "Example: 6 ÷ 8 = 75%"],
+    ["Productivity", "Hours clocked to repair orders ÷ clocked hours", "How much of the technician's clocked time was spent on repair orders?", "Example: 6 ÷ 8 = 75%"],
     ["Efficiency", "Hours flagged ÷ hours clocked to repair orders", "How many labor hours did the technician produce for each hour clocked to repair orders?", "Example: 7.5 ÷ 6 = 125%"],
-    ["Proficiency", "Hours flagged ÷ available hours", "How many labor hours did the technician produce compared with their total available time?", "Example: 7.5 ÷ 8 = 93.75%"]];
+    ["Proficiency", "Hours flagged ÷ clocked hours", "How many labor hours did the technician produce compared with their total clocked time?", "Example: 7.5 ÷ 8 = 93.75%"]];
   const gap = 0.22, X0 = 0.78, W = (11.77 - gap * 2) / 3, Y = 1.6;
   tiles.forEach(([lab, f, q, ex], i) => {
     const x = X0 + i * (W + gap);
@@ -244,13 +246,14 @@ X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross",
     t(ex, { x: x + 0.2, y: Y + 2.72, w: W - 0.4, h: 0.45, fontSize: sz(18, "definition example"), bold: true, color: C.navy, valign: "middle" });
   });
   // the example, and the identity that ties the three together
-  const EY = Y + 3.35 + 0.25;
-  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.38, fill: { color: C.blueTint } });
+  const EY = Y + 3.35 + 0.2;
+  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.72, fill: { color: C.blueTint } });
   t("PUTTING IT TOGETHER: ONE TECHNICIAN, ONE DAY", { x: X0 + 0.2, y: EY + 0.16, w: 11.37, h: 0.28, fontSize: sz(14, "example label"), bold: true, color: C.ink600, charSpacing: 0.8 });
-  t("A technician has 8 available hours, clocks 6 hours to repair orders and flags 7.5 hours.", { x: X0 + 0.2, y: EY + 0.5, w: 11.37, h: 0.36, fontSize: sz(18, "example"), color: C.ink, valign: "middle" });
+  t("A technician clocks in for 8 hours, clocks 6 of them to repair orders and flags 7.5 hours.", { x: X0 + 0.2, y: EY + 0.5, w: 11.37, h: 0.36, fontSize: sz(18, "example"), color: C.ink, valign: "middle" });
   t("Productivity × efficiency = proficiency:  75% × 125% = 93.75%", { x: X0 + 0.2, y: EY + 0.9, w: 11.37, h: 0.36, fontSize: sz(18, "identity"), bold: true, color: C.navy, valign: "middle" });
-  H.foot(pptx, s, "Standard service-department definitions. On the store slides, proficiency = Qlik hours flagged (sold hours) ÷ ADP regular + overtime hours, which stand in for available hours. Efficiency and productivity need DMS time clocked to repair orders, which this data does not include, so they are defined here but not measured. The example is illustrative, not a store or technician.");
-  s.addNotes("PLACE: right after the Technician Proficiency explainer, before How We Measured It (Noah, Oct 27).\nTalk track: walk the example left to right. The tech was on repair orders 6 of 8 hours (75% productive) and flagged 7.5 hours in those 6 (125% efficient), so 7.5 flagged hours for 8 available (93.75% proficient). Proficiency is the one we measure: 85% target, group 94.7%. 'Productivity' here is the technician measure, not the Fixed Ops Productivity section (gross and ROs per employee).");
+  t("Clocked hours exclude vacation, paid time off and holiday pay.", { x: X0 + 0.2, y: EY + 1.3, w: 11.37, h: 0.32, fontSize: sz(15, "exclusion"), color: C.ink600, valign: "middle" });
+  H.foot(pptx, s, "Standard service-department definitions. On the store slides, proficiency = Qlik hours flagged (sold hours) ÷ ADP regular + overtime hours, = clocked hours (vacation, PTO and holiday pay excluded). Efficiency and productivity need DMS time clocked to repair orders, which this data does not include, so they are defined here but not measured. The example is illustrative, not a store or technician.");
+  s.addNotes("PLACE: right after the Technician Proficiency explainer, before How We Measured It (Noah, Oct 27).\nTalk track: walk the example left to right. The tech was on repair orders 6 of 8 hours (75% productive) and flagged 7.5 hours in those 6 (125% efficient), so 7.5 flagged hours for 8 clocked (93.75% proficient). Proficiency is the one we measure: 85% target, group 94.7%. 'Productivity' here is the technician measure, not the Fixed Ops Productivity section (gross and ROs per employee).");
 }
 
 await pptx.writeFile({ fileName: "Metric Explainers - Review.pptx" }); console.log("built", pptx._slides.length);

@@ -2348,8 +2348,8 @@ export function movers3(pptx, deck, o) {
   // the right edge of its row on both lists
   const both = new Set(o.cols[0].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n)));
   // Oct 27 (Noah, example): a store in the bottom five vs last year AND the top five moving now (turning it around) gets a
-  // blue bar on both lists. Off unless TURN=1 while the example is reviewed.
-  const turn = process.env.TURN === "1" && o.cols.length > 2
+  // blue bar on both lists. In the deck (Noah, Oct 27); TURN=0 turns it off.
+  const turn = process.env.TURN !== "0" && o.cols.length > 2
     ? new Set(o.cols[1].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n))) : new Set();
   o.cols.forEach((col, ci) => {
     const x0 = 0.72 + ci * (W + gap);

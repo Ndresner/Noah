@@ -9,11 +9,11 @@ Updated: October 27, 2026
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
-## BEFORE FINALIZING (on hold, Noah asked for a reminder)
-- Group totals with INEOS and the GMC Prescott body shop: group-level financial figures to include both; every individual store slide keeps them out. To settle: dollar totals only or rates and counts too; whether the group year-over-year change includes INEOS (no 2025) or stays same-store; whether store-slide strips show the 33-store total or the all-in group.
-- Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
+## Decided
+- Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 27)
+- Proficiency = hours flagged / clocked hours on the explainer, slide 137 and How We Measured It; vacation, PTO and holiday pay excluded from clocked hours. Turnaround blue bar now in the deck on the movers slides. Productivity slides (headcount, gross and ROs per employee) re-run from the ADP upload: no change.
 - Slide 137: tile status lines and bottom band removed; example box titled "Putting it together: one technician, one day".
 - Proficiency, Efficiency and Productivity (slide 137) rebuilt: "hours flagged" throughout, available hours vs hours clocked to repair orders, one labelled example (8 / 6 / 7.5 hours: 75% x 125% = 93.75%), takeaway band on the three distinctions.
 - New slide "Proficiency, Efficiency and Productivity" (definitions) after the Technician Proficiency explainer. Review file "Movers Turnaround Bar - Review.pptx": blue bar on stores in the bottom five vs last year that are top five moving now.
