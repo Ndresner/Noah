@@ -192,13 +192,16 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
          // Oct 27 (Noah): "Do you want to do this again?" dropped, this is a recurring meeting
          "Pick the one number you will check every day, and name who owns it",
          "Call a store that leads where you trail: ask what they do differently",
-         "Reach this room in FMGSVCMGR"],
+         "Reach this room in FMGSVCMGR",
+         // Oct 27 (Noah): commitments get reviewed
+         "We will review your commitments at the next meeting"],
   nowLabel: "Where the money is",
   now: [{ big: "0.1 hr per RO", label: "Worth $4,543,691 of labor at today's ELR.", tone: "g" },
-        { big: "18,493 balances", label: "The largest benchmark gap, at 8.3% against 15%.", tone: "b" },
+        // Oct 27 (Noah): replaces the 18,493 balances tile; total from opmiss-deck.mjs (Every Store at Benchmark)
+        { big: "$4.9M a year", label: "Every store at all four opcode benchmarks: $4,895,199 in labor and parts gross.", tone: "b" },
         { big: "$1.65M a month", label: "Technician proficiency, lifting each tech under 85% to 85%.", tone: "b" }],
   ask: "name your one or two commitments out loud, with a number attached, before you leave the room.",
-  tone: "g", notes: "PLACE: the close, after the last Productivity / Proficiency slide.\nSaid: Roundtable slide 24 (Misc & Closing). Commitments tracking was dropped for this meeting, so this asks for commitments without a scorecard." });
+  tone: "g", notes: "PLACE: the close, after the last Productivity / Proficiency slide.\nSaid: Roundtable slide 24 (Misc & Closing). Commitments are reviewed at the next meeting (Noah, Oct 27): keep a list of what each store names." });
 
 // Pay Yourself First (Noah, Oct 25): opens the Internal section. Internal work isn't service making money off sales;
 // it keeps gross in the department that holds on to the most of it. Data: pulls/dept_keep.json (P&L Detail, Jan-Sep 2026).

@@ -137,3 +137,10 @@ Slides in `Changes - Oct 27 (round 4).pptx`.
 | 110 | Total Variance from Benchmark by Store | Green / red bar on the top / bottom three by opcodes |
 | 111 | Every Store at Benchmark | "about" removed: "$407,933 a month" |
 | 160 | Before You Leave | "Do you want to do this again?" removed; added "Pick the one number you will check every day, and name who owns it" and "Call a store that leads where you trail: ask what they do differently" |
+
+## Oct 27, round 5
+Slide in `Changes - Oct 27 (round 5).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 160 | Before You Leave | Balances tile replaced by "$4.9M a year: every store at all four opcode benchmarks"; new line "We will review your commitments at the next meeting" |
