@@ -13,6 +13,7 @@ Updated: October 27, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 27)
+- Tracking & Accountability now sits ahead of MPI, Video and Photo Completion % and shows all three inspection numbers (81.3% MPI, 57.8% video, 45.3% photo, Jul-Sep).
 - Proficiency = hours flagged / clocked hours on the explainer, slide 137 and How We Measured It; vacation, PTO and holiday pay excluded from clocked hours. Turnaround blue bar now in the deck on the movers slides. Productivity slides (headcount, gross and ROs per employee) re-run from the ADP upload: no change.
 - Slide 137: tile status lines and bottom band removed; example box titled "Putting it together: one technician, one day".
 - Proficiency, Efficiency and Productivity (slide 137) rebuilt: "hours flagged" throughout, available hours vs hours clocked to repair orders, one labelled example (8 / 6 / 7.5 hours: 75% x 125% = 93.75%), takeaway band on the three distinctions.
@@ -52,7 +53,6 @@ Updated: October 27, 2026
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
-- Tracking & Accountability right column: pick from the suggested tiles (video completion, opcodes up in all four, $304 CP labor per RO, 15.2% unclassified, $4.9M).
 
 ## Still open
 - ELR benchmark: the deck uses 70% of door rate; Tommy's coaching recording uses 80%. Settle before the meeting (it also sets the Pricing Strategy opportunity figure).

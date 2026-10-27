@@ -138,7 +138,7 @@ order += X("EX", 6) + X("CP", 28, 29, 30, 31) + X("EX", 7) + X("CP", 32, 33, 34,
 # MPI and video completion (store-reported, Jul-Sep) right after Road to the Sale (Noah, Oct 22)
 # Oct 23 (Noah): Express Service ahead of MPI, Tracking & Accountability after MPI and video; each measure's missed
 # opportunity slide sits inside its block, ahead of the top/bottom slide; the two totals close the section
-order += O(6) + X("TP", 9) + X("TP", 7) + X("MPI", 1, 2, 3) + X("TP", 8) + X("EX", 10)
+order += O(6) + X("TP", 9) + X("TP", 7) + X("TP", 8) + X("MPI", 1, 2, 3) + X("EX", 10)   # Tracking & Accountability ahead of the inspection slides (Noah, Oct 27, option A)
 for (a, b, c), op in zip([(2, 3, 4), (5, 6, 7), (8, 9, 10), (11, 12, 13)], (3, 4, 5, 6)):
     order += X("OPC", a, b) + X("OP", op) + X("OPC", c)
 order += X("OP", 2, 1)

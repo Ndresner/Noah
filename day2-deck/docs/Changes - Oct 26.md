@@ -194,3 +194,10 @@ Slides in `Changes - Oct 27 (round 11).pptx`.
 | 138 | How We Measured It | Hours flagged ÷ clocked hours; vacation, PTO and holiday pay excluded; "flagged hours", "clocked hours" in the rules |
 
 Decided: INEOS and the body shop stay out of group totals. Productivity slides re-run from the ADP upload: identical.
+
+## Oct 27, round 12
+Slide in `Changes - Oct 27 (round 12).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 89 | Tracking & Accountability | Moved ahead of MPI, Video and Photo Completion % (was after them). Right column: 81.3% MPI completion (12 of 33 at 90%), 57.8% video completion (17 of 33 at or above the group), 45.3% photo completion (11 of the 28 reporting stores at or above the group), all Jul–Sep store-reported. Opcode / $304 option dropped (option A). |
