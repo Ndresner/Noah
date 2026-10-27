@@ -116,3 +116,10 @@ Slides in `Changes - Oct 27 (round 2).pptx`.
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 96, 100, 104, 108 | Alignment, Tire Balance, Brake Fluid, Fuel System Service Variance from Benchmark | The opcodes version is in the deck: signed Opcodes column (Jan–Sep), Rate on the right, green / red bar on the top / bottom three by rate; gray bar where the manufacturer doesn't call for the service (tire balance: Audi Henderson, Audi Reno; fuel: Volvo, Audi Henderson, VW Henderson, Audi Reno), red then on the next three lowest. Review file retired. |
+
+## Oct 27, round 3
+Slide in `Changes - Oct 27 (round 3).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 110 | Total Variance from Benchmark by Store | Opcodes column added: the four services' opcodes above (+) / below (−) benchmark, Jan–Sep, added together (e.g. Toyota Spokane −5,191 = −1,867 alignment −2,520 balance −513 brake fluid −290 fuel, rounding) |
