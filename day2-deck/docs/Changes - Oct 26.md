@@ -109,3 +109,10 @@ Slide in `Changes - Oct 27.pptx`; review re-sent.
 | 128 | Pay Plans Are Work Instructions | "Advisor pay: target a 50/50 split of base commission and performance bonus, with about half of earning potential tied to measurable metrics" (no 6% example; Noah's wording trimmed to fit the panel) |
 | Review | Fuel System Service Variance | Gray bar: Volvo, Audi Henderson, VW Henderson, Audi Reno; red = next three lowest (LR Henderson, Honda Flagstaff, Toyota Flagstaff) |
 | Review | Tire Balance Variance | Gray bar: Audi Henderson, Audi Reno only; red = Lexus, VW St George, Toyota Spokane |
+
+## Oct 27, round 2
+Slides in `Changes - Oct 27 (round 2).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 96, 100, 104, 108 | Alignment, Tire Balance, Brake Fluid, Fuel System Service Variance from Benchmark | The opcodes version is in the deck: signed Opcodes column (Jan–Sep), Rate on the right, green / red bar on the top / bottom three by rate; gray bar where the manufacturer doesn't call for the service (tire balance: Audi Henderson, Audi Reno; fuel: Volvo, Audi Henderson, VW Henderson, Audi Reno), red then on the next three lowest. Review file retired. |

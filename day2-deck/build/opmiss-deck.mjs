@@ -70,45 +70,29 @@ const YSRC = SRC.replace(" A year = Jan-Sep x 12 / 9.", "").replace(" Stores at 
   pptx._slides[pptx._slides.length - 1].addNotes(srt.map(([n, t]) => `${n}: ${sgnK(t.vs)} Jan-Sep against the four benchmarks; under ${t.k} of 4`).join("\n"));
 }
 
-// one ranker per service (Oct 24, Noah: every store, signed gross against the benchmark, rate only)
+// one ranker per service (Oct 24, Noah: every store, signed gross against the benchmark)
+// Oct 27 (Noah): the opcodes version is in the deck: signed Opcodes column, Rate on the right, top / bottom three by rate marked
+// gray bar = the manufacturer doesn't call for the service at that store; red = the next three lowest after them
+// (Noah, Oct 26: Audi stores on tire balance; Oct 27: the four-store list belongs to fuel system service)
+const GRAY = { "Tire Balance": ["AUDI HENDERSON", "AUDI RENO"],
+               "Fuel System Service": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
+const rateMarks = (rows, name) => {
+  const gray = GRAY[name] ?? [], by = [...rows].sort((p, q) => q.rate - p.rate), rest = by.filter(x => !gray.includes(x.n));
+  return Object.fromEntries([...rest.slice(0, 3).map(x => [x.n, "g"]), ...rest.slice(-3).map(x => [x.n, "r"]), ...gray.map(n => [n, "n"])]); };
+const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
 res.forEach(s => {
   const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
+  const gray = GRAY[s.name] ? ` Gray bar = the manufacturer doesn't call for ${s.name.toLowerCase()} at that store (${GRAY[s.name].join(", ")}); red = the three lowest after them.` : "";
   H.amountRanker(pptx, pptx, {
     eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
-    rows: s.all.map(x => [x.n, ytd(x.vs)]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
-    extra: [{ label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])) }],
+    rows: s.all.map(x => [x.n, ytd(x.vs)]), fmt: sgnK, valLabel: "Variance", valW: 1.1,
+    extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(ytd(x.svc))])) },
+            { label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])), marks: rateMarks(s.all, s.name) }],
     takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% have left ${usd(ytd(s.miss))} so far this year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-ytd(top[0].miss))}.`,
-    tone: "b", source: YSRC + ` ${s.name}: every store, gross Jan-Sep 2026 above (+) or below (-) the benchmark at the store's own gross per service; group gross per service ${usd(s.groupGPJ)}. Rate = Jan-Sep closing %.`,
+    tone: "b", source: YSRC + ` ${s.name}: every store, gross Jan-Sep 2026 above (+) or below (-) the benchmark at the store's own gross per service; group gross per service ${usd(s.groupGPJ)}. Rate = Jan-Sep closing %; green / red bar = top / bottom three by rate.${gray} Opcodes = opcodes Jan-Sep above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold).`,
   });
-  pptx._slides[pptx._slides.length - 1].addNotes("Near-zero stores are included on purpose (Noah, Oct 19 2026): some stores sell little of a service by OEM recommendation or local habit (e.g. Spokane customers swap seasonal tires, so fewer balances), but not every customer fits that pattern, so the opportunity is real. A store with a high RO count can show more opportunity than one selling at zero.\n" + [...s.all].sort((a, b) => a.vs - b.vs).map(x => `${x.n}: ${pc(x.rate)}, ${sgnK(ytd(x.vs))} Jan-Sep at ${usd(x.gpj)}/service${x.own ? "" : " (group avg)"}${x.capped ? ` (capped; raw ${usd(x.raw)}/service)` : ""}`).join("\n"));
+  pptx._slides[pptx._slides.length - 1].addNotes("Near-zero stores are included on purpose (Noah, Oct 19 2026): some stores sell little of a service by OEM recommendation or local habit (e.g. Spokane customers swap seasonal tires, so fewer balances), but not every customer fits that pattern, so the opportunity is real. A store with a high RO count can show more opportunity than one selling at zero.\n" + [...s.all].sort((a, b) => a.vs - b.vs).map(x => `${x.n}: ${pc(x.rate)}, ${sgnN(ytd(x.svc))} opcodes, ${sgnK(ytd(x.vs))} Jan-Sep at ${usd(x.gpj)}/service${x.own ? "" : " (group avg)"}${x.capped ? ` (capped; raw ${usd(x.raw)}/service)` : ""}`).join("\n"));
 });
 await pptx.writeFile({ fileName: "Op Code Missed Opportunity - Review.pptx" });
-
-// REVIEW (Noah, Oct 26): the per-service slides with a signed opcodes column, rate on the right. Not in the deck.
-{
-  const rv = new PptxGenJS(); rv.layout = "LAYOUT_WIDE"; rv.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
-  // gray bar = the manufacturer doesn't call for the service at that store; red = the next three lowest after them
-  // (Noah, Oct 26: Audi stores on tire balance; Oct 27: the four-store list belongs to fuel system service)
-  const GRAY = { "Tire Balance": ["AUDI HENDERSON", "AUDI RENO"],
-                 "Fuel System Service": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
-  const rateMarks = (rows, name) => {
-    const gray = GRAY[name] ?? [], by = [...rows].sort((p, q) => q.rate - p.rate), rest = by.filter(x => !gray.includes(x.n));
-    return Object.fromEntries([...rest.slice(0, 3).map(x => [x.n, "g"]), ...rest.slice(-3).map(x => [x.n, "r"]), ...gray.map(n => [n, "n"])]); };
-  const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
-  res.forEach(s => {
-    const top = [...s.rows].sort((a, b) => b.miss - a.miss), above = s.all.filter(x => x.rate >= s.b).length;
-    const gray = GRAY[s.name] ? ` Gray bar = the manufacturer doesn't call for ${s.name.toLowerCase()} at that store (${GRAY[s.name].join(", ")}); red = the three lowest after them.` : "";
-    H.amountRanker(rv, rv, {
-      eyebrow: PER, title: `${s.name} Variance from Benchmark`, signed: true,
-      rows: s.all.map(x => [x.n, ytd(x.vs)]), fmt: sgnK, valLabel: "Variance", valW: 1.1,
-      // Oct 26 (Noah): rate on the right, top / bottom three by rate marked
-      extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(s.all.map(x => [x.n, sgnN(ytd(x.svc))])) },
-              { label: "Rate", w: 0.7, vals: Object.fromEntries(s.all.map(x => [x.n, pc(x.rate)])), marks: rateMarks(s.all, s.name) }],
-      takeaway: `${s.rows.length} stores under ${(s.b * 100).toFixed(s.b === 0.075 ? 1 : 0)}% have left ${usd(ytd(s.miss))} so far this year; ${above} are at or above it. ${top[0].n} is furthest below at ${sgnK(-ytd(top[0].miss))}.`,
-      tone: "b", source: YSRC + ` ${s.name}: every store, gross Jan-Sep 2026 above (+) or below (-) the benchmark at the store's own gross per service. Rate = Jan-Sep closing %; green / red bar = top / bottom three by rate.${gray} Opcodes = opcodes Jan-Sep above (+) or below (-) the benchmark (benchmark x CP ROs vs services sold).`,
-    });
-  });
-  await rv.writeFile({ fileName: "Op Code Variance with Services - Review.pptx" });
-}
 console.log("total", usd(total), res.map(s => `${s.name} ${s.rows.length} ${usd(s.miss)} ${int(s.short)} gpj ${usd(s.groupGPJ)}`).join(" | "));
 res.forEach(s => console.log(s.name, s.rows.filter(x => x.own).sort((a, b) => b.gpj - a.gpj).slice(0, 3).map(x => `${x.n} ${usd(x.gpj)}`).join(", ")));
