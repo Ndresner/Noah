@@ -39,7 +39,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
     { label: "Stores who set a record and then reset it", big: String(again.length), sub: `stores set a record and then topped it again later in the year.`, tone: "g" },   // Noah, Oct 26
   ],
   banner: `Most records set this year: ${topLine}.`,
-  takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records. Every one of these stores can tell the room what they changed.`,
+  takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records.`,   // "tell the room" line dropped (Noah, Oct 27)
   tone: "g", source: SRC });
 
 // 2. ranker of stores by records set, with the split (Noah picked option A, Oct 26; list and spotlight options retired)

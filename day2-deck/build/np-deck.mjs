@@ -98,7 +98,8 @@ H.groupYoy(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Op
 const loss = S.filter(r => r[2] < 0).length;
 H.totalRanker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit", rows: S.map(r => [r[0], r[2]]), expect: v26,
   groupLabel: "SEPTEMBER 2026 YTD",
-  takeaway: (() => { const t = [...S].sort((p, q) => q[2] - p[2]); return `${H.storeName(t[0][0])} leads at ${H.Mmixed(t[0][2])} of the group's ${H.Mmixed(v26)}. ${loss ? `${loss} ${loss === 1 ? "store is" : "stores are"} losing money in fixed ops, ${H.storeName(t.at(-1)[0])} the most at ${H.Mmixed(t.at(-1)[2])}.` : ""}`; })(),
+  // Oct 27 (Noah): no band - the losing-money count is plain from the bars, and the store call-outs are off every band
+  takeaway: null,
   tone: "n", source: `${SRC} Jan-Sep 2026.` });
 
 // $ change ranks (some 2025 bases are losses, so a percent change does not read); % alongside only where 2025 made money
@@ -122,7 +123,7 @@ const lst = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and "
 const nmL = a => lst(a.map(r => H.storeName(r[0])));
 const ba = r => `${H.storeName(r[0])} ${H.kusd(r[1])} to ${H.kusd(r[2])}`;
 chg(pptx, { shade: Object.fromEntries([...toP.map(r => [r[0], "g"]), ...toL.map(r => [r[0], "r"])]), tone: "n",
-  takeaway: `${nmL(toP)} turned a 2025 loss into a profit (green rows)${toL.length ? `; ${nmL(toL)} went from a profit to a loss (red row)` : ""}. ${grew} of 33 stores grew.`,
+  takeaway: `${nmL(toP)} turned a 2025 loss into a profit (green rows)${toL.length ? `; ${nmL(toL)} went from a profit to a loss (red row)` : ""}. ${grew} of 33 stores grew fixed ops net profit, January through September year to date.`,   // Noah, Oct 27
   notes: `Green band: lost money in fixed ops in 2025, made money in 2026 (${lst(toP.map(ba))}). Red band: made money in 2025, lost money in 2026 (${lst(toL.map(ba))}).` });
 
 const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));

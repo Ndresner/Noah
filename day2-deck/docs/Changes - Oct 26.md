@@ -201,3 +201,14 @@ Slide in `Changes - Oct 27 (round 12).pptx`.
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 89 | Tracking & Accountability | Moved ahead of MPI, Video and Photo Completion % (was after them). Right column: 81.3% MPI completion (12 of 33 at 90%), 57.8% video completion (17 of 33 at or above the group), 45.3% photo completion (11 of the 28 reporting stores at or above the group), all Jul–Sep store-reported. Opcode / $304 option dropped (option A). |
+
+## Oct 27, round 13
+Slides in `Changes - Oct 27 (round 13).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 6 | Fixed Ops Net Profit (store totals) | Band removed ("2 stores are losing money" was plain from the bars) |
+| 7 | Fixed Ops Net Profit (change) | "24 of 33 stores grew fixed ops net profit, January through September year to date." |
+| 9 | A Record Year | "Every one of these stores can tell the room what they changed" dropped; band reads "Jul alone brought 11 combined store records." |
+
+General asks to the whole room ("The ask: …") stay (Noah). No band asks a single store anything.

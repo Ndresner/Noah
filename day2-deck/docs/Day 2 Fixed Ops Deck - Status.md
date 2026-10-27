@@ -13,6 +13,7 @@ Updated: October 27, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 27)
+- Net profit bands: store totals band removed; change band "24 of 33 stores grew fixed ops net profit, January through September year to date." A Record Year band no longer asks stores to tell the room. Room-wide asks stay; no band asks a single store.
 - Store Prescriptions now at the end of Close (slides 162-195): How to Read plus one slide per store. Handout or not: still open.
 - Store Prescriptions (Day 2) built as a review file, 35 slides: cover, How to Read, one slide per store. Not in the deck.
 - Tracking & Accountability now sits ahead of MPI, Video and Photo Completion % and shows all three inspection numbers (81.3% MPI, 57.8% video, 45.3% photo, Jul-Sep).
