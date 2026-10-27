@@ -151,3 +151,8 @@ Slides in `Changes - Oct 27 (round 6).pptx` (12 explainers).
 | Deck slide | What changed |
 |---|---|
 | 4, 13, 27, 32, 46, 56, 62, 71, 76, 81, 136 | "What Is … ?" dropped from every explainer title: Fixed Ops Net Profit, Fixed Ops Gross, Fixed Absorption, Net to Gross, CP RO Count, Hours per RO, Effective Labor Rate, CP Labor $ per RO, Labor Gross Profit %, Parts Gross Profit %, Technician Proficiency. (93 Tracked Opcode Closing % was already in this form; included for reference.) |
+
+## Oct 27, round 7
+Full deck only (114 slides touched, too many for a changes file).
+
+Every bottom band (takeaway) that names a store is gone, whether it only named the top / bottom store or also carried a group figure. The slide body takes the freed room; the sentence moves to the speaker notes as "Takeaway (off the slide): …". Bands with no store name stay. Slides touched: 6–8, 10, 15–17, 19–21, 23–25, 29–31, 34–36, 38–40, 45, 48–49, 51, 53–55, 59–61, 64, 68–70, 74–75, 78–80, 83–85, 89–91, 95–97, 99–101, 103–105, 107–110, 115–117, 119–121, 123–125, 130, 132–134, 138, 141–142, 144, 151–153, 155–157, 163, 168–169, 172–173, 176–177 and the Open Decisions slides 179–202. Text check against the previous deck: only those bands were removed, nothing else changed.

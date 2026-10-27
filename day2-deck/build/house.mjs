@@ -101,7 +101,7 @@ export const BODY = { top: 1.32, botFull: 6.95 };
    --------------------------------------------------------------------- */
 const BAND = { top: 6.70, w: 11.95, em: 0.54, pad: 0.14 };
 export function bandFit(t) {
-  if (!t) return null;
+  if (!t || namesStore(t)) return null;
   for (let lines = 1; lines <= 2; lines++) {
     for (let fs = 16; fs >= FLOOR; fs -= 0.5) {
       if (Math.ceil(t.length * BAND.em * fs / 72 / BAND.w) <= lines) return { fs, lines };
@@ -113,7 +113,7 @@ export function bandH(t) {
   const f = bandFit(t);
   return f ? f.lines * f.fs * 1.2 / 72 + BAND.pad : 0;
 }
-export const bodyBot = t => (t ? BAND.top - 0.15 : BODY.botFull);
+export const bodyBot = t => (t && !namesStore(t) ? BAND.top - 0.15 : BODY.botFull);
 export const bodyH   = t => bodyBot(t) - BODY.top;
 
 /* ---------- the metric registry ---------- */
@@ -242,6 +242,10 @@ export const STORES = ["TOYOTA HENDERSON","HONDA HENDERSON","CHEVY LV","AUDI HEN
   "GMC PRESCOTT","HONDA FLAGSTAFF","HYUNDAI PRESCOTT","VW ST GEORGE","INEOS"];
 const STORE_RE = new RegExp("\\b(" + [...STORES].sort((a, b) => b.length - a.length).join("|") + ")\\b", "g");
 export const proseNames = t => String(t).replace(STORE_RE, m => storeName(m));
+// Oct 27 (Noah): no takeaway band that names a store (who's on top or bottom is on the slide already).
+// The band is dropped, the body takes its room, and the sentence moves to the speaker notes.
+const NAMED_RE = new RegExp("\\b(" + [...STORES].sort((a, b) => b.length - a.length).join("|") + ")\\b", "i");
+export const namesStore = t => NAMED_RE.test(String(t));
 export const money = v => v === null ? "—"
   : (v < 0 ? "−" : "+") + "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 export const dollars = v => "$" + Math.round(v).toLocaleString("en-US");
@@ -325,6 +329,7 @@ export function measureStrip(pptx, s, measure, label, value, valueColor) {
    never flattery, never a scolding (Tommy, Oct 2026). */
 export function takeaway(pptx, s, text, tone = "n") {
   if (!text) return;
+  if (namesStore(text)) { s.addNotes(`Takeaway (off the slide): ${proseNames(text)}`); return; }
   words(text, "takeaway");
   text = proseNames(text);
   const bg = tone === "g" ? C.goodBg : tone === "b" ? C.badBg : C.blueTint;
