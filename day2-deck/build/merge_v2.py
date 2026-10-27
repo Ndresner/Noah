@@ -44,6 +44,7 @@ SRC = {
     "IGP": "Internal Gross Profit - Review.pptx",
     "CVI": "CP vs Internal GP - Review.pptx",
     "MI1": "Most Improved - Review.pptx",
+    "RX": "Store Prescriptions - Day 2 Review.pptx",   # store-rx.mjs (Oct 27); slide 1 is the handout cover, not used in the deck
     "MI2": "Most Improved v2 - Review.pptx",  # 1 Better Than Last Year 2 Who's Moving Now grid 9 Two Ways 10 What Changed?  # 1 gross 2 ros 3 hpro 4 elr 5 parts$/RO 6 parts GP 7 align 8 bal 9 brake fluid 10 fuel
 }
 srcp = {k: Presentation(D + v) for k, v in SRC.items()}
@@ -160,6 +161,8 @@ order += X("TP", 13) + X("EX", 11, 14, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)
 order += O(9) + X("TP", 10) + X("WA", 1) + X("WA", 2, 3) + X("WI", 2, 3, 4, 5)
 # 08 Close
 order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
+# Store Prescriptions at the end of Close (Noah, Oct 27): How to Read + one slide per store; the handout cover stays out
+order += X("RX", *R(2, len(srcp["RX"].slides)))
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
 # slides already in it, and slides not yet in or out. Nothing here moves into the deck by default. Grouped in deck
 # order. Each eyebrow is rewritten to OPEN DECISIONS · <TOPIC> · <OPTION>; None keeps no option label.

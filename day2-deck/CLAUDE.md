@@ -63,7 +63,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `gross-trend-review.mjs` | **Gross Trend - Review (11)**: Jan–Sep 2026 vs 2025 two-line options | `gross/monthly.json` (Qlik P&L, pulled Oct 20, reconciles to verified totals), `prod/trend.json` |
 | `records-deck.mjs` | **Store Records - Review (6)**: Record Year, Record Board, two Spotlights, records ranker, ranker by category | `records/records.json` from `records/compute.py` (reads `inputs/September_2026_Fixed_Ops_Gross_Records.xlsx`) |
 | `internal-gp-deck.mjs` | **Internal Gross Profit - Review (6)**: internal labor and parts GP%, YOY card, level ranker, change ranker | `internal/internal.json` (Qlik Closed RO, internal pay type, pulled Oct 21) |
-| `store-rx.mjs` | **Store Prescriptions - Day 2 Review (35)**: cover, How to Read, one slide per store (Oct 27; review only, NOT in the deck until Noah says). Day 1 handout ported (vault store-prescriptions.mjs + build guide); Noah approved the picks Oct 27 (method in the script header); Toyota stores stay on the non-luxury peer average for hours and labor $ per RO (Noah, Oct 27: "leave it as is"; the gap is hours per RO, not ELR, and the Honda stores run ~2.0 hrs at a similar maintenance mix) | m5, abs, ntgs/ntgp, elr_q3 + doorinfo, prof/opp, mpi, prod/fge, prof/op_raw; ties to the verified group figures |
+| `store-rx.mjs` | **Store Prescriptions - Day 2 Review (35)**: cover, How to Read, one slide per store (Oct 27; **in the deck at the end of Close since Oct 27**: merge key RX, slides 2-35, the handout cover stays out; handout or not still open). Day 1 handout ported (vault store-prescriptions.mjs + build guide); Noah approved the picks Oct 27 (method in the script header); Toyota stores stay on the non-luxury peer average for hours and labor $ per RO (Noah, Oct 27: "leave it as is"; the gap is hours per RO, not ELR, and the Honda stores run ~2.0 hrs at a similar maintenance mix) | m5, abs, ntgs/ntgp, elr_q3 + doorinfo, prof/opp, mpi, prod/fge, prof/op_raw; ties to the verified group figures |
 | `cp-vs-internal-deck.mjs` | **CP vs Internal GP - Review (4)**: CP vs internal labor and parts GP% with the gap, option A (gap bars) and B (dumbbell) | `internal/cp_vs_internal.json` (Qlik Closed RO, Jan–Sep 2026) |
 
 **Rebuilt Oct 21 (v2).** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks now build from re-pulled Qlik data (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`):
@@ -201,7 +201,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 203 slides (161 in the meeting flow + 42 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 237 slides (195 in the meeting flow + 42 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
 1. Cover, Agenda, Why We Are Here, the Fixed Ops Net Profit block (5), A Record Year, Records Set in 2026.
 2. **01 Gross**, with Service Is Sales 2.0.

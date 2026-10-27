@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 27, 2026
 
 ## Current test deck
-- 203 slides: 161 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
+- 237 slides: 195 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -13,6 +13,7 @@ Updated: October 27, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 27)
+- Store Prescriptions now at the end of Close (slides 162-195): How to Read plus one slide per store. Handout or not: still open.
 - Store Prescriptions (Day 2) built as a review file, 35 slides: cover, How to Read, one slide per store. Not in the deck.
 - Tracking & Accountability now sits ahead of MPI, Video and Photo Completion % and shows all three inspection numbers (81.3% MPI, 57.8% video, 45.3% photo, Jul-Sep).
 - Proficiency = hours flagged / clocked hours on the explainer, slide 137 and How We Measured It; vacation, PTO and holiday pay excluded from clocked hours. Turnaround blue bar now in the deck on the movers slides. Productivity slides (headcount, gross and ROs per employee) re-run from the ADP upload: no change.
@@ -54,7 +55,7 @@ Updated: October 27, 2026
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
-- Store Prescriptions review: wording, lines, and where it goes (handout, end of Close, or both).
+- Store Prescriptions: also a separate handout file, or only in the deck? Wording is Tommy's to edit.
 
 ## Still open
 - ELR benchmark: the deck uses 70% of door rate; Tommy's coaching recording uses 80%. Settle before the meeting (it also sets the Pricing Strategy opportunity figure).
