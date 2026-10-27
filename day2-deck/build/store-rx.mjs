@@ -280,7 +280,8 @@ function leadsTag(pptx, sl, s, all) {
   let lead = leadsOf(s, all);
   const LABEL = lead.every(p => p.rank <= 3) ? "WHERE YOU LEAD" : "YOUR BEST PLACES", SEP = "   ·   ", R = 12.83, PAD = 0.14;
   const titleEnd = 0.5 + name(s.n).length * 0.55 * 28 / 72 + 0.3;
-  const widthOf = items => Math.max(LABEL.length * 0.68 * 14 / 72, items.map(p => p.text).join(SEP).length * EM_REG * 14 / 72) + 2 * PAD;
+  // the label is bold caps with 0.8pt letter spacing: measured with both, plus slack, so a one-place tag never wraps it (Noah, Oct 27: Lincoln, Subaru LV)
+  const widthOf = items => Math.max(LABEL.length * (0.72 * 14 + 0.8) / 72 + 0.15, items.map(p => p.text).join(SEP).length * EM_REG * 14 / 72 + 0.1) + 2 * PAD;
   while (lead.length > 1 && R - widthOf(lead) < titleEnd) lead = lead.slice(0, -1);
   if (!lead.length || R - widthOf(lead) < titleEnd) return [];
   const w = widthOf(lead), x = R - w, y = 0.72, h = 0.52;
