@@ -167,3 +167,10 @@ Slide in `Changes - Oct 27 (round 9).pptx`; example in `Movers Turnaround Bar - 
 |---|---|---|
 | 137 (new) | Proficiency, Efficiency and Productivity | Three definitions after the Technician Proficiency explainer: proficiency = sold hours ÷ hours worked; efficiency = sold hours ÷ hours on ROs; productivity = hours on ROs ÷ hours worked; proficiency = efficiency × productivity. Deck is now 203 slides (161 in the flow). |
 | Review | Movers, blue bar | Blue bar on a store in the bottom five vs last year that is also top five moving now (8 slides: net profit, absorption, service and parts net to gross, CP ELR, internal ELR, gross per employee, warranty gross). Built with `TURN=1`; off in the deck until Noah says. |
+
+## Oct 27, round 9 revised
+Slide in `Changes - Oct 27 (round 9) - revised.pptx` (the round 9 file is unchanged).
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 137 | Proficiency, Efficiency and Productivity | Rebuilt around Noah's definitions: productivity = hours clocked to repair orders ÷ available hours; efficiency = hours flagged ÷ hours clocked to repair orders; proficiency = hours flagged ÷ available hours, each with its plain question and its example result. Labelled illustrative example (8 available, 6 clocked to ROs, 7.5 flagged) with productivity × efficiency = proficiency (75% × 125% = 93.75%). Takeaway band spells out the three distinctions. Proficiency keeps 85% target and group 94.7%; productivity and efficiency marked "Not measured in our data". |
