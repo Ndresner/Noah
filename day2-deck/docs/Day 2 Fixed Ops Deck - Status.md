@@ -14,6 +14,7 @@ Updated: October 27, 2026
 - Related: Why We Are Here shows fixed ops at $50.19M (all stores); the net profit block right after shows $50.45M (33 stores).
 
 ## Recent changes (Oct 27)
+- Definitions reworded (fixed ops net profit, fixed absorption, parts GP %); Record Year tile heads simplified; Fixed Ops DOC added to the daily review; top / bottom three marks on Total Variance by Store; "about" dropped on Every Store at Benchmark; Before You Leave: recurring-meeting question removed, two commitment prompts added.
 - Total Variance from Benchmark by Store: Opcodes column added (the four services added together, Jan-Sep).
 - The four Variance from Benchmark slides now carry the Opcodes column (above / below benchmark, Jan-Sep), Rate on the right, top / bottom three marks and the gray manufacturer marks (in the deck; review file retired).
 - Pay Plans advisor line: "Advisor pay: target a 50/50 split of base commission and performance bonus, with about half of earning potential tied to measurable metrics". Variance review: gray bars (manufacturer does not call for the service) on fuel system service for Volvo, Audi Henderson, VW Henderson, Audi Reno; on tire balance for the two Audi stores.

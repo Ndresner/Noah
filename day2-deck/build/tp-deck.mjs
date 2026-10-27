@@ -112,7 +112,7 @@ T({ eyebrow: "Opcodes", title: "Basic Maintenance Service", saidFrom: GM,
   notes: "PLACE: Opcode Benchmarks, after Road to the Sale and ahead of MPI Completion % (Noah, Oct 23: maintenance visits and a complete MPI go hand in hand).\nTalk track (Noah, Oct 25): go to the dentist for a quick cleaning and they don't tell you something is starting to look like a cavity: that is a disservice. Get cars in quickly, perform a complete, comprehensive MPI, and make the proper recommendations at that time. This is critical, and it can't be left to entry-level employees alone: someone with experience who knows what to look for has to be looking at these cars. Depending on work mix, maintenance can be 25% to 75% of a store's service. Many stores focus on getting more cars in the door, which is great, and we want both, but they miss the opportunities they already have. Processes and policies make sure we capitalize on them: every car, every time.\nThe 52.5% customer-pay share of labor sale tile was dropped with the rewrite.\nSaid: Jan GM slide 8 / May GM slide 7 (Express Service), reworded." });
 
 T({ eyebrow: "Opcodes", title: "Tracking & Accountability", saidFrom: BOTH,
-  said: ["Daily review of the Viz 'Op Code' and 'Performance Report'",
+  said: ["Daily review of the Viz 'Op Code' and 'Performance Report' and the Fixed Ops DOC",
          "Give feedback quickly and often. Trends start early: don't wait until the 15th.",
          "Tracked metrics improve performance; we are responsible for the knowing",
          "Scoreboard techs and advisors: CP $ per RO, ELR, MPI completion, closing %, key op codes"],
@@ -189,7 +189,9 @@ T({ eyebrow: "Technician Proficiency", title: "Technicians & Stalls", saidFrom: 
 T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
   said: ["What did you learn today?",
          "Give us one or two things you are going to act on and implement",
-         "Do you want to do this again?",
+         // Oct 27 (Noah): "Do you want to do this again?" dropped, this is a recurring meeting
+         "Pick the one number you will check every day, and name who owns it",
+         "Call a store that leads where you trail: ask what they do differently",
          "Reach this room in FMGSVCMGR"],
   nowLabel: "Where the money is",
   now: [{ big: "0.1 hr per RO", label: "Worth $4,543,691 of labor at today's ELR.", tone: "g" },

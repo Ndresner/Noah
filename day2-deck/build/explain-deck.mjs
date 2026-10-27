@@ -105,7 +105,7 @@ X({ eyebrow: "Customer Pay", title: "What Is Labor Gross Profit %?",
 
 X({ eyebrow: "Customer Pay", title: "What Is Parts Gross Profit %?",
   formula: ["Parts GP %", "=", "(CP parts sale", "−", "parts cost)", "÷", "CP parts sale"],
-  define: "The share of each customer-pay parts dollar we keep after the cost of the part.",
+  define: "The share of each customer-pay parts dollar we keep, less the cost of the part.",
   // Oct 26 (Noah): the pricing matrix is the biggest tool; full talk track in the notes
   // Oct 26 (Noah): reasons from his "5 reasons parts GP % matters"; the full list is in the notes
   why: ["Parts keeps about 37¢ of every gross dollar after its own expenses, the most of any department (service 22¢): margin goes almost straight to the bottom line.",   // Noah, Oct 26

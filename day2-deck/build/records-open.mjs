@@ -33,10 +33,10 @@ const topLine = (() => { const t = byCnt.slice(0, 5); return list(t.map(r => `${
 // 1. headline (Oct 26, Noah: store records only, so the group-month tile is out; the band names the leaders)
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
   tiles: [
-    { label: "Stores with an all-time record month", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
-    { label: "Records set", big: String(total), sub: `all-time monthly records across those stores: service, parts and combined counted separately.`, tone: "g" },
+    { label: "Stores with all-time record months", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
+    { label: "Store records set", big: String(total), sub: `all-time monthly records across those stores: service, parts and combined counted separately.`, tone: "g" },
     { label: "Best January–September ever", big: String(ytdRec.length), sub: `stores had their best January–September ever in combined fixed gross.`, tone: "g" },
-    { label: "Set a record, then reset it", big: String(again.length), sub: `stores set a record and then topped it again later in the year.`, tone: "g" },   // Noah, Oct 26
+    { label: "Stores who set a record and then reset it", big: String(again.length), sub: `stores set a record and then topped it again later in the year.`, tone: "g" },   // Noah, Oct 26
   ],
   banner: `Most records set this year: ${topLine}.`,
   takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records. Every one of these stores can tell the room what they changed.`,

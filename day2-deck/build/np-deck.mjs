@@ -33,7 +33,8 @@ const SRCA = "Qlik - Profit & Loss, GM statement. Jan-Sep 2026, same-store, INEO
 
 H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", title: "What Is Fixed Absorption?",
   formula: ["Fixed absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
-  define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
+  // Noah, Oct 27
+  define: "How much of the dealership's fixed expenses are covered by parts and service gross profit.",
   example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", (absG / absE * 100).toFixed(1) + "%"]], exampleLabel: "READING IT",
   why: ["At 100%, the store covers its fixed costs before it sells a car.",
         "It protects the store when car sales slow.",
@@ -73,7 +74,8 @@ const SL = J("./pulls/net_by_dept.json").fx_sales_26, sales26 = SL.service + SL.
 
 H.explainer(pptx, pptx, { source: SRC, eyebrow: SEG, title: "What Is Fixed Ops Net Profit?",
   formula: ["Fixed ops net profit", "=", "service & parts gross", "−", "service & parts expenses"], formulaSize: 22,
-  define: "What service and parts keep after paying their own people, building, systems and supplies.",
+  // Noah, Oct 27
+  define: "The profit parts and service generate after their allocated expenses are covered.",
   example: [["Gross", M(g26gross)], ["− Expenses", M(ex26)], ["= Net profit", M(v26)]], exampleLabel: "OUR NUMBERS",
   why: ["It is what fixed ops actually contributes to the store.",
         "Gross can grow while profit shrinks if expenses grow faster.",

@@ -123,3 +123,17 @@ Slide in `Changes - Oct 27 (round 3).pptx`.
 | Deck slide | Slide | What changed |
 |---|---|---|
 | 110 | Total Variance from Benchmark by Store | Opcodes column added: the four services' opcodes above (+) / below (−) benchmark, Jan–Sep, added together (e.g. Toyota Spokane −5,191 = −1,867 alignment −2,520 balance −513 brake fluid −290 fuel, rounding) |
+
+## Oct 27, round 4
+Slides in `Changes - Oct 27 (round 4).pptx`.
+
+| Deck slide | Slide | What changed |
+|---|---|---|
+| 4 | What Is Fixed Ops Net Profit? | "The profit parts and service generate after their allocated expenses are covered." |
+| 9 | A Record Year | Tile heads: "Stores with all-time record months", "Store records set", "Stores who set a record and then reset it" |
+| 27 | What Is Fixed Absorption? | "How much of the dealership's fixed expenses are covered by parts and service gross profit." |
+| 81 | What Is Parts Gross Profit %? | "The share of each customer-pay parts dollar we keep, less the cost of the part." |
+| 92 | Tracking & Accountability | Daily review adds "the Fixed Ops DOC" |
+| 110 | Total Variance from Benchmark by Store | Green / red bar on the top / bottom three by opcodes |
+| 111 | Every Store at Benchmark | "about" removed: "$407,933 a month" |
+| 160 | Before You Leave | "Do you want to do this again?" removed; added "Pick the one number you will check every day, and name who owns it" and "Call a store that leads where you trail: ask what they do differently" |
