@@ -218,3 +218,9 @@ Slides in `Changes - Oct 27 (round 14).pptx`. Bottom bands removed (the next sli
 
 ## Oct 27, round 15
 Example slides in `Changes - Oct 27 (round 15).pptx` (8, 70). Every movers slide's "Top 5 moving now" column now reads "Q3 vs Q1, this year" (was "Jul–Sep vs Jan–Mar this year"), matching Two Ways to Read Improvement: 23 slides in the flow (8, 17, 21, 25, 31, 36, 40, 51, 55, 61, 70, 75, 80, 85, 97, 101, 105, 109, 117, 121, 125, 134, 154) and 3 in Open Decisions. Nothing else changed.
+
+## Oct 27, round 16
+Slides in `Changes - Oct 27 (round 16).pptx` (Close: Most Improved four, Where the Money Is, and Before You Leave from Open Decisions).
+- Where the Money Is: last lever is "Ten minutes a day saved for every tech" ($4,443,804, the Tech Minute slide's 10-minute row; was one minute). WHO OWNS IT column removed: every lever is the GM's and the service manager's. HOW column widened.
+- Before You Leave: out of the flow, now in Open Decisions (OPEN DECISIONS · CLOSE · BEFORE YOU LEAVE). "and name who owns it" dropped from the daily-number bullet.
+- Close now ends Where the Money Is, then Store Prescriptions. Deck: 194 in the flow, 43 in Open Decisions (237 total).

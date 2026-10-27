@@ -193,7 +193,7 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
   said: ["What did you learn today?",
          "Give us one or two things you are going to act on and implement",
          // Oct 27 (Noah): "Do you want to do this again?" dropped, this is a recurring meeting
-         "Pick the one number you will check every day, and name who owns it",
+         "Pick the one number you will check every day",
          "Call a store that leads where you trail: ask what they do differently",
          "Reach this room in FMGSVCMGR",
          // Oct 27 (Noah): commitments get reviewed

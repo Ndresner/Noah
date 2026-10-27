@@ -160,7 +160,7 @@ order += X("TP", 13) + X("EX", 11, 14, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)
 # Oct 25 (Noah): rate increases and rising rates on one slide (WA 1); warranty RO count replaced by warranty gross profit (WI 2-5)
 order += O(9) + X("TP", 10) + X("WA", 1) + X("WA", 2, 3) + X("WI", 2, 3, 4, 5)
 # 08 Close
-order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1) + X("TP", 14)
+order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1)   # Before You Leave (TP 14) moved to Open Decisions (Noah, Oct 27)
 # Store Prescriptions at the end of Close (Noah, Oct 27): How to Read + one slide per store; the handout cover stays out
 order += X("RX", *R(2, len(srcp["RX"].slides)))
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
@@ -182,6 +182,7 @@ OPEN = [
     # parts GP %, CP gross, then the four opcodes. The parts $ per RO one (WMN 5) left with its section.
     ("WHO'S MOVING NOW", X("WMN", 2, 3, 4, 6, 1, 7, 8, 9, 10), L(*["LINE CHART"] * 9)),
     ("MOST IMPROVED", X("MI1", *R(1, 9)), L(*["V1, SUPERSEDED BY V2"] * 9)),
+    ("CLOSE", X("TP", 14), L("BEFORE YOU LEAVE")),   # out of the flow (Noah, Oct 27)
 ]
 for topic, slides, opts in OPEN:
     assert len(slides) == len(opts), topic

@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 27, 2026
 
 ## Current test deck
-- 237 slides: 195 in the meeting flow, 42 in Open Decisions (not presented; delete before the meeting).
+- 237 slides: 194 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -13,10 +13,11 @@ Updated: October 27, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 27)
+- Where the Money Is: "Ten minutes a day saved for every tech" ($4.44M a year); WHO OWNS IT column removed (every lever is the GM's and the service manager's). Before You Leave moved to Open Decisions; Close now ends with Where the Money Is, then Store Prescriptions (slides 161-194).
 - Movers slides: "Top 5 moving now" column now reads "Q3 vs Q1, this year" (all 26).
 - Bottom bands removed on slides 46, 56, 62 (CP RO count, hours per RO, ELR explainers) and 66 (CP ELR chart).
 - Net profit bands: store totals band removed; change band "24 of 33 stores grew fixed ops net profit, January through September year to date." A Record Year band no longer asks stores to tell the room. Room-wide asks stay; no band asks a single store.
-- Store Prescriptions now at the end of Close (slides 162-195): How to Read plus one slide per store. Handout or not: still open.
+- Store Prescriptions now at the end of Close: How to Read plus one slide per store. Handout or not: still open.
 - Store Prescriptions (Day 2) built as a review file, 35 slides: cover, How to Read, one slide per store. Not in the deck.
 - Tracking & Accountability now sits ahead of MPI, Video and Photo Completion % and shows all three inspection numbers (81.3% MPI, 57.8% video, 45.3% photo, Jul-Sep).
 - Proficiency = hours flagged / clocked hours on the explainer, slide 137 and How We Measured It; vacation, PTO and holiday pay excluded from clocked hours. Turnaround blue bar now in the deck on the movers slides. Productivity slides (headcount, gross and ROs per employee) re-run from the ADP upload: no change.
