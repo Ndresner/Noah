@@ -75,12 +75,12 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Movers slides: the small gray second line (change in the metric's own unit, today only on the slides ranked by % change: CP hours per RO, CP ELR, CP labor $ per RO, internal ELR) - add it to the other movers slides too?
-- Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - What Is Productivity? explainer preview: on hold.
+- Optional: a "raise to 100%" column on Opportunity as a Share of Gross (needs the tech-level proficiency file re-uploaded).
 
 ## Still open
 - Items in Open Decisions: bring back or drop.
+- Inter installed on the presenting PC.
 
 ## Where things live
 - Build source (scripts, data, history): GitHub ndresner/noah, branch claude/serene-mendel-6jr9ef, folder day2-deck.
