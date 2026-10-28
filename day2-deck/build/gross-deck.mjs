@@ -28,7 +28,9 @@ const SP = process.env.SPARK === "1" ? { 25: SM(25), 26: SM(26) } : null;
 const spark = k => SP && ((n, ci) => { const pick = y => k === "fx" ? SP[y][n][0].map((v, i) => v + SP[y][n][1][i]) : SP[y][n][k === "sv" ? 0 : 1];
   // moving now (Oct 28, Noah, two options): SPARKNOW=overlay -> Q1 2026 (gray) over Q3 2026 (colour), month 1-2-3 of each quarter;
   // otherwise one Jan-Sep 2026 line, Q1 gray, Q2 a faint connector, Q3 in colour
-  if (ci === 2) return process.env.SPARKNOW === "overlay" ? { prior: pick(26).slice(0, 3), cur: pick(26).slice(6, 9) } : { cur: pick(26), split: true };
+  // Noah picked (Oct 28): the plain Jan-Sep 2026 line in colour (SPARKNOW=split / overlay rebuild the other two options)
+  if (ci === 2) return process.env.SPARKNOW === "overlay" ? { prior: pick(26).slice(0, 3), cur: pick(26).slice(6, 9) }
+    : process.env.SPARKNOW === "split" ? { cur: pick(26), split: true } : { cur: pick(26) };
   return { prior: pick(25), cur: pick(26) }; });
 const M = v => "$" + (v / 1e6).toFixed(2) + "M";
 const usd = v => (v >= 0 ? "+" : "\u2212") + "$" + Math.abs(Math.round(v)).toLocaleString("en-US");
