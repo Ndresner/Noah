@@ -164,7 +164,7 @@ function twoViews() {
   const A = tops("yoy", 5).slice(0, 6), B = tops("mom", 5).slice(0, 6);
   // green bar down the right edge of a store on both lists, as on the movers slides (Noah, Oct 28)
   const onBoth = new Set(A.map(e => e[0]).filter(n => B.some(e => e[0] === n)));
-  [[A, 0.5, "Better than last year", "Jan–Sep 2026 vs Jan–Sep 2025"], [B, 6.75, "Moving now", "Q3 vs Q1, this year"]].forEach(([rows, x, head, sub]) => {
+  [[A, 0.5, "Vs last year", "Jan–Sep 2026 vs Jan–Sep 2025"], [B, 6.75, "Moving now", "Q3 vs Q1, this year"]].forEach(([rows, x, head, sub]) => {
     const w = 6.08;
     H.panel(pptx, s, { x, y: 1.32, w, h: 5.08, label: `${head} · ${sub}` });
     s.addText(`Top-5 finishes, of ${NUMW[GRID.length]} measures`, { x: x + 0.25, y: 1.96, w: w - 0.5, h: 0.3, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
@@ -222,18 +222,15 @@ function whatChanged() {
   s.addNotes(`\n\n${opStore}'s August opcode increase was confirmed with the store as a real change (Noah, Oct 19 2026).`);
 }
 
-if (process.env.BTLY === "1") {
-  // review file (Noah, Oct 28): Better Than Last Year as two slides
-  const SUBY = "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025";
-  grid("yoy", { title: "Better Than Last Year: Customer Pay", sub: SUBY, groupLabel: "Group", src: SRC_Y + " CP labor $ per RO = CP labor sale / CP ROs.",
-    keys: ["gross", "ros", "hpro", "elr", "lpr"] });
-  grid("yoy", { title: "Better Than Last Year: Profit and Process", sub: SUBY, groupLabel: "Group",
-    src: "Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit (% change = $ change / |2025 profit|). Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. Points for absorption, parts GP % and opcodes.",
-    keys: ["np", "abs", "pgp", "opc"] });
-  await pptx.writeFile({ fileName: "./Better Than Last Year - Review.pptx" }); console.log("btly"); process.exit(0);
-}
-grid("yoy", { title: "Better Than Last Year", sub: "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025", groupLabel: "Group", src: SRC_Y });
-grid("mom", { title: "Who's Moving Now", sub: "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
+// Oct 28 (Noah): Biggest Movers vs Last Year on two slides (was one "Better Than Last Year" slide); bottom 3 kept
+const SUBY = "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025";
+grid("yoy", { title: "Biggest Movers vs Last Year: Customer Pay", sub: SUBY, groupLabel: "Group", src: SRC_Y + " CP labor $ per RO = CP labor sale / CP ROs.",
+  keys: ["gross", "ros", "hpro", "elr", "lpr"] });
+grid("yoy", { title: "Biggest Movers vs Last Year: Profit and Process", sub: SUBY, groupLabel: "Group",
+  src: "Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit (% change = $ change / |2025 profit|). Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. Points for absorption, parts GP % and opcodes.",
+  keys: ["np", "abs", "pgp", "opc"] });
+grid("mom", { title: "Biggest Movers This Year",   // renamed with Biggest Movers vs Last Year (Noah, Oct 28)
+   sub: "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
 ORDER.forEach(moving);
 twoViews();
 whatChanged();

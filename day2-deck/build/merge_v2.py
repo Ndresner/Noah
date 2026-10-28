@@ -45,7 +45,7 @@ SRC = {
     "CVI": "CP vs Internal GP - Review.pptx",
     "MI1": "Most Improved - Review.pptx",
     "RX": "Store Prescriptions - Day 2 Review.pptx",   # store-rx.mjs (Oct 27); slide 1 is the handout cover, not used in the deck
-    "MI2": "Most Improved v2 - Review.pptx",  # 1 Better Than Last Year 2 Who's Moving Now grid 9 Two Ways 10 What Changed?  # 1 gross 2 ros 3 hpro 4 elr 5 parts$/RO 6 parts GP 7 align 8 bal 9 brake fluid 10 fuel
+    "MI2": "Most Improved v2 - Review.pptx",  # 1-2 Biggest Movers vs Last Year (Customer Pay, Profit and Process) 3 Biggest Movers This Year 10 Two Ways 11 What Changed? (Oct 28)  # 1 gross 2 ros 3 hpro 4 elr 5 parts$/RO 6 parts GP 7 align 8 bal 9 brake fluid 10 fuel
 }
 srcp = {k: Presentation(D + v) for k, v in SRC.items()}
 moved = set()
@@ -160,7 +160,7 @@ order += X("TP", 13) + X("EX", 11, 14, 12) + X("PROF", *R(2, 6)) + X("TM", 1, 2)
 # Oct 25 (Noah): rate increases and rising rates on one slide (WA 1); warranty RO count replaced by warranty gross profit (WI 2-5)
 order += O(9) + X("TP", 10) + X("WA", 1) + X("WA", 2, 3) + X("WI", 2, 3, 4, 5)
 # 08 Close
-order += O(10) + X("MI2", 1, 2, 9, 10) + X("WM", 1)   # Before You Leave (TP 14) moved to Open Decisions (Noah, Oct 27)
+order += O(10) + X("MI2", 1, 2, 3, 10, 11) + X("WM", 1)   # Before You Leave (TP 14) moved to Open Decisions (Noah, Oct 27)
 # Store Prescriptions at the end of Close (Noah, Oct 27): How to Read + one slide per store; the handout cover stays out
 order += X("RX", *R(2, len(srcp["RX"].slides)))
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
@@ -177,7 +177,7 @@ OPEN = [
     ("PRODUCTIVITY", X("FGEG", 1) + X("FGE5", 1) + X("PROD", 6, 7, 8, 9, 14, 15, 16, 17, 10, 11, 12, 13),
      L("GROSS PER EMPLOYEE GAP", "5% MORE PER EMPLOYEE", *["ROS PER ADVISOR"] * 4, *["ROS PER MANAGER"] * 4, *["ROS PER EMPLOYEE"] * 4)),
     ("TECHNICIAN PROFICIENCY", X("PROF", 7), L("YOUR BEST TECHS PROVE IT")),   # out of the flow (Noah, Oct 24)
-    ("WHO'S MOVING NOW", X("MI2", *R(3, 8)), L(*["ALTERNATE VERSION"] * 6)),
+    ("WHO'S MOVING NOW", X("MI2", *R(4, 9)), L(*["ALTERNATE VERSION"] * 6)),
     # the line-chart Who's Moving Now slides, moved out of the flow (Noah, Oct 23): CP ROs, hours per RO, ELR,
     # parts GP %, CP gross, then the four opcodes. The parts $ per RO one (WMN 5) left with its section.
     ("WHO'S MOVING NOW", X("WMN", 2, 3, 4, 6, 1, 7, 8, 9, 10), L(*["LINE CHART"] * 9)),
