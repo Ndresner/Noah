@@ -2390,9 +2390,12 @@ export function movers3(pptx, deck, o) {
           { x: x0 + 0.48, y: y + rh * 0.05, w: W - 0.58, h: rh * 0.52, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
         const all = [...(sp.prior ?? []), ...sp.cur], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || 1;
         const lab = sp.cur.map((_, i) => String(i + 1)), SX = x0 + 0.48, SW = x0 + W - CW - 0.2 - SX;   // own row under the values
-        const ser = [...(sp.prior ? [{ name: "prior", labels: lab, values: sp.prior }] : []), { name: "cur", labels: lab, values: sp.cur }];
-        s.addChart(pptx.ChartType.line, ser, { x: SX, y: y + rh * 0.6, w: SW, h: rh * 0.34,
-          chartColors: [...(sp.prior ? ["A6A6A6"] : []), c], lineSize: 1.75, lineDataSymbol: "none",
+        // sp.split: one line, Q1 gray, Q2 a faint connector, Q3 in colour (blanks are gaps)
+        const seg = (a, b) => sp.cur.map((v, i) => i >= a && i <= b ? v : null);
+        const ser = sp.split ? [{ name: "q1", labels: lab, values: seg(0, 2) }, { name: "q2", labels: lab, values: seg(2, 6) }, { name: "q3", labels: lab, values: seg(6, 8) }]
+          : [...(sp.prior ? [{ name: "prior", labels: lab, values: sp.prior }] : []), { name: "cur", labels: lab, values: sp.cur }];
+        s.addChart(pptx.ChartType.line, ser, { x: SX, y: y + rh * 0.6, w: SW, h: rh * 0.34, displayBlanksAs: "gap",
+          chartColors: sp.split ? ["A6A6A6", "E3E3E3", c] : [...(sp.prior ? ["A6A6A6"] : []), c], lineSize: 1.75, lineDataSymbol: "none",
           showLegend: false, catAxisHidden: true, valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" },
           valAxisMinVal: lo - pad, valAxisMaxVal: hi + pad, layout: { x: 0, y: 0, w: 1, h: 1 } });
       } else if (sp) {
