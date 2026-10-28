@@ -179,7 +179,7 @@ export function moversSlide(pptx, o) {
     cols: [
       { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(0, K), tone: "good" },
       { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
-      { head: `TOP ${K} MOVING NOW`, sub: "Q3 vs Q1, this year", rows: nw, tone: "blue" },
+      { head: `TOP ${K} MOVING NOW`, sub: "Q3 vs Q1, this year", rows: nw, tone: "blue", yrs: ["Q1", "Q3"] },
     ],
     takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
     tone: "n",

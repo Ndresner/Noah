@@ -307,3 +307,4 @@ Slide in `Changes - Oct 28 (round 28).pptx` (110).
 Slide in `Changes - Oct 28 (round 29).pptx` (110).
 - 110 Total Variance from Benchmark by Store: Missed column now sits before Opcodes (Variance, Missed, Opcodes).
 - Review only, not in the deck: `Movers Sparklines - Review.pptx`, the three gross movers slides with a small Jan-Sep line per store (gray 2025, coloured 2026; moving-now column 2026 only). 2025 store months pulled from the P&L (`pulls/gross_m25_store.json`), tie to the group months to the dollar. `SPARK=1 node gross-deck.mjs` builds it; the deck build is unchanged.
+- Sparkline review reworked to the Day 1 sales-slide layout (Noah, Oct 28, photo of the Day 1 slide): name on its own line, the two values stacked under it with their year labels coloured as the lines (gray 2025 / blue 2026; Q1 / Q3 on the moving-now column), a wider line in the middle, change on the right. Still 5 stores per column. Review only.
