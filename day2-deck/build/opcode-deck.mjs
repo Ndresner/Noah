@@ -23,6 +23,7 @@ const fmt = {
   p: (d, a) => (d >= 0 ? "+" : "\u2212") + Math.abs(d / a * 100).toFixed(1) + "%",
 };
 const pt = v => (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%";   // truncated, matches the benchmark rankers
+const tr = v => Math.floor(v * 1000 + 1e-9) / 10;   // the truncated rate in points
 const NUM = ["zero","one","two","three","four","five","six","seven","eight","nine"];
 
 H.section(pptx, pptx, {
@@ -46,8 +47,9 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
     chartLabel: `${title} by month, 2025 against 2026`,
     // dashed benchmark line (Noah, Oct 24); axis fitted to the data, not stretched by the line (Oct 26)
     benchLines: [bench * 100], benchLabel: `Benchmark ${B}`, tightBench: true,
-    takeaway: `Up ${(Math.abs(y26 - y25) * 100).toFixed(1)} pts to ${fmt.v(y26)}, ahead of 2025 in ${up === 9 ? "all nine" : NUM[up] + " of nine"} months, `
-            + (y26 >= bench ? `and above the ${B} benchmark.` : `but ${((bench - y26) * 100).toFixed(1)} pts under the ${B} benchmark \u2014 ${gap.toLocaleString()} ${nouns} short.`),
+    // Oct 28 audit: points from the shown (truncated) rates, so 11.9% -> 13.2% reads +1.3 and the gap is off the shown 13.2%
+    takeaway: `Up ${(tr(y26) - tr(y25)).toFixed(1)} pts to ${fmt.v(y26)}, ahead of 2025 in ${up === 9 ? "all nine" : NUM[up] + " of nine"} months, `
+            + (y26 >= bench ? `and above the ${B} benchmark.` : `but ${(bench * 100 - tr(y26)).toFixed(1)} pts under the ${B} benchmark \u2014 ${gap.toLocaleString()} ${nouns} short.`),
     source: `${SRC} ${measure} = ${noun} ROs \u00f7 customer-pay ROs on the op-code report basis. YTD from YTD totals, not the mean of months.`,
   });
 
@@ -57,7 +59,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
   const zero = rows.filter(r => r[1] < 0.005).map(r => r[0]);
   const jump = rows.filter(r => r[2] < 0.005 && r[1] >= 0.02).map(r => r[0]);
   let dq = "";
-  if (zero.length) dq += ` CHECK OP-CODE MAPPING - under 0.5%: ${zero.join(", ")}.`;
+  // Oct 28 (Noah): Lexus balance near zero is real, not a mapping problem - no CHECK line
   if (jump.length) dq += ` Near zero in 2025, so year-over-year gain may be mapping: ${jump.join(", ")}.`;
 
   H.levelRanker(pptx, pptx, {
@@ -66,7 +68,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
     group: y26, bench, fmt: pt, measure, groupLabel: "SEPTEMBER 2026 YTD",   // truncated so just-under-benchmark never reads as the benchmark
         takeaway: `${at} of 33 stores at or above ${B}, led by ${lead[0]} at ${pt(lead[1])}. The group sits at ${pt(y26)}.`,
     source: `${SRC} Jan-Sep 2026 YTD; green at or above the ${B} benchmark, red below.${dq}\n`
-          + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${p1(r[1])} (2025 ${p1(r[2])})`).join("\n"),
+          + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${pt(r[1])} (2025 ${pt(r[2])})`).join("\n"),   // notes match the slide (Oct 28 audit)
   });
   // top and bottom five by change in points (Noah, Oct 22)
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d,

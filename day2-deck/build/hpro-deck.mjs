@@ -13,7 +13,7 @@ const R = JSON.parse(fs.readFileSync("./prof/hpro.json", "utf8")).map(([n, ro, s
 const usd = v => "$" + Math.round(v).toLocaleString("en-US");
 const S = k => R.reduce((t, r) => t + r[k], 0);
 const top = [...R].sort((a, b) => b.totYr - a.totYr);
-const SRC = "Qlik - Closed Repair Orders. Customer pay, all CP ROs, Jan-Sep 2026 by close date. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded. Each store: 0.1 x its CP RO count x its own customer-pay labor gross and parts gross per sold hour; a year = Jan-Sep x 12 / 9. Gross, not sale, so it will not match the $4,543,691 labor sale on the Hours per RO slide.";
+const SRC = "Qlik - Closed Repair Orders. Customer pay, all CP ROs, Jan-Sep 2026 by close date. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded. Each store: 0.1 x its CP RO count x its own customer-pay labor gross and parts gross per sold hour; a year = Jan-Sep x 12 / 9.";
 H.amountRanker(pptx, pptx, {
   eyebrow: "Customer Pay", title: "What 0.1 Hour per RO Is Worth",
   // one column, gross a year (Noah, Oct 24: the labor / parts split is in the notes)

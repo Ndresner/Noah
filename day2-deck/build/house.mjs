@@ -224,6 +224,16 @@ export const Dint = v => sign(v) + Math.round(Math.abs(v)).toLocaleString("en-US
    points - "−0.8 pts" - because "−0.8%" reads as a relative change. Its own
    zero test: sign() rounds to whole units and would drop the sign on 0.3. */
 export const Pct  = v => (v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "%";
+/* Oct 28 audit (Noah): one rule for points - when a slide shows both ends of a rate, the change it prints is
+   the shown end minus the shown start (rates may be truncated, so rounding the raw change can disagree by 0.1).
+   a / b are the printed rates ("13.2%"); returns the change in the same unit as raw, or raw when not a % pair. */
+export const pctOf = s => { const m = String(s).replace(/\u2212/g, "-").match(/^\s*(-?\d+(?:\.\d+)?)%\s*$/); return m ? parseFloat(m[1]) : null; };
+export function shownDiff(a, b, dfmt, raw) {
+  const x = pctOf(a), y = pctOf(b);
+  if (x == null || y == null || !raw || !/pts/.test(dfmt(raw))) return raw;
+  const k = parseFloat(dfmt(1).replace(/[^\d.]/g, ""));   // the formatter's scale: 1 (points in) or 100 (fraction in)
+  return Math.round((y - x) * 10) / 10 / k;
+}
 export const Dpts = v => (Math.abs(v) < 0.05 ? "" : v < 0 ? "−" : "+") + Math.abs(v).toFixed(1) + " pts";
 
 /* Store names run ALL CAPS in ranker rows and chart data, and Title Case in
@@ -869,7 +879,7 @@ export function groupYoy(pptx, deck, o) {
   [
     [o.priorName + " YTD",   fmt(a),    C.ink],
     [o.currentName + " YTD", fmt(b),    C.ink],
-    ["VARIANCE",             dfmt(v),   neu ? C.navy : (up ? C.goodInk : C.badInk)],
+    ["VARIANCE",             dfmt(shownDiff(fmt(a), fmt(b), dfmt, v)),   neu ? C.navy : (up ? C.goodInk : C.badInk)],
     ["VAR %",                pct(v, a), neu ? C.navy : (up ? C.goodInk : C.badInk)],
   ].forEach(([l, val, col], i) => {
     const x = 0.75 + i * 3.05;

@@ -165,7 +165,7 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
   - **Derived from the data, never typed:** counts, names and direction ("grew"/"fell") are computed.
   - One to two lines.
   - Every chart slide has one.
-- **Number formats:** percentages **truncated**, not rounded, on the improvement slides.
+- **Number formats (Oct 28 audit, Noah):** one rule for changes. Changes round everywhere (the Close no longer truncates). A points change is the shown end minus the shown start (`H.shownDiff`, used by `groupYoy`, `blocks` change rankers / movers / bands, `moving-deck.mjs`, the opcode bands), so printed figures always subtract. Levels compared to a benchmark stay **truncated** (opcode closing %, proficiency, ELR % of door), including on Store Prescriptions. Grew / declined counts use the exact change.
 - **Speaker notes:** source and footnotes go in the notes, not on the slide (Tommy, Oct 2026).
 - **Rulings, Oct 21 (Noah):**
   - Talking-point slides show no "What we said · <prior meeting>" header; the source stays in `saidFrom` and the notes.
@@ -231,7 +231,7 @@ Not in the test deck at all: the door rate options deck (`Door Rate - Options (J
 - **Door rate design:** pick one of the five options in Open Decisions (A–E). The CP Engine section also still carries the door rate slides (52–57); trim those to the pick.
 - **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
 - **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
-- **Smaller rulings:** Acura's segment; whether the GMC body shop counts in absorption; provisional directions in the metric registry.
+- **Smaller rulings:** Acura's segment; provisional directions in the metric registry. **DECIDED Oct 28 (Noah): the GMC Prescott body shop is out of absorption too** (gross and its line-258 BODY fixed expenses; group 77.9%, GMC Prescott 61.6%; `pulls/gmc_body_abs.json`). Lexus tire balance near 0% is real, not mapping, and is not gray.
 - **Logistics:** venue and logo; Inter installed on the presenting PC.
 - **Possible slides:** MPI, retention, discounting and capacity. Parked dollar slides: ELR to 70%, $1 of ELR, absorption, net to gross, parts margin.
 - **Fix the Qlik headcount load** at the source (CSV in `decks/`).

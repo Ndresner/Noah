@@ -18,14 +18,22 @@ const GRID = ORDER.filter(k => k !== "pro");   // grids drop parts $ per RO (Noa
 const MON = ["J", "F", "M", "A", "M", "J", "J", "A", "S"];
 const SHORT = { gross: "CP gross", ros: "CP ROs", hpro: "hours/RO", elr: "ELR", pro: "parts $/RO", pgp: "parts GP%" };
 const sg = v => v >= 0 ? "+" : "−";
-const tr1 = v => (Math.trunc(Math.abs(v) * 10) / 10).toFixed(1);
-const chg = (k, v) => { const t = tr1(v * 100), z = Number(t) === 0 ? "" : sg(v); return PTS.has(k) ? `${z}${t} pts` : `${z}${t}%`; };
+/* Oct 28 audit (Noah): one rule with the rest of the deck - changes round (were truncated, so the Close read 0.1 under
+   the same store on the earlier slides), and a points change is the shown end minus the shown start */
+const chg = (k, v, v0, v1) => {
+  let d = v * 100;
+  if (PTS.has(k) && v0 != null && v1 != null) { const a = H.pctOf(val(k, v0)), b = H.pctOf(val(k, v1)); if (a != null && b != null) d = b - a; }
+  const t = Math.abs(d).toFixed(1), z = Number(t) === 0 ? "" : sg(d);
+  return PTS.has(k) ? `${z}${t} pts` : `${z}${t}%`;
+};
 const PTS = new Set(["pgp", "align", "bal", "bf", "fuel"]);
 const val = (k, v) => ({
   gross: v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : "$" + Math.round(v / 1e3) + "K",
   ros: Math.round(v).toLocaleString("en-US"), hpro: v.toFixed(2), elr: "$" + v.toFixed(2),
   pro: "$" + Math.round(v), pgp: (v * 100).toFixed(1) + "%",
-  align: (v * 100).toFixed(1) + "%", bal: (v * 100).toFixed(1) + "%", bf: (v * 100).toFixed(1) + "%", fuel: (v * 100).toFixed(1) + "%" }[k]);
+  // opcode rates truncated, as on the opcode slides (Oct 28 audit)
+  align: tr(v), bal: tr(v), bf: tr(v), fuel: tr(v) }[k]);
+function tr(v) { return (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%"; }
 const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
 const NUMW = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 const cap = w => w[0].toUpperCase() + w.slice(1);
@@ -70,14 +78,14 @@ function grid(view, { title, sub, groupLabel, src }) {
     s.addShape(pptx.ShapeType.rect, { x: x + 0.06, y: HY, w: CW - 0.12, h: 0.05, fill: { color: C.good } });
     s.addText(M.label.replace(" per Month", "").toUpperCase(), { x: x + 0.08, y: HY + 0.09, w: CW - 0.16, h: 0.26, fontFace: F, fontSize: 13, bold: true,
       color: C.ink600, charSpacing: 0.3, isTextBox: true, margin: 0, fit: "shrink" });
-    s.addText(`${groupLabel} ${chg(k, M.group[2])}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
+    s.addText(`${groupLabel} ${chg(k, M.group[2], M.group[0], M.group[1])}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
       color: C.ink600, isTextBox: true, margin: 0 });
     const cell = (r, y, top) => {
       // Title Case, not caps (Noah, Oct 22): PowerPoint does not shrink-to-fit until a box is edited, so caps names
       // like HYUNDAI ST GEORGE wrapped onto the change line below them
       s.addText(H.storeName(r.n), { x: x + 0.08, y: y + 0.05, w: CW - 0.1, h: 0.24, fontFace: F, fontSize: 13, bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
-      s.addText(chg(k, r.chg), { x: x + 0.08, y: y + 0.29, w: CW - 0.12, h: 0.25, fontFace: F, fontSize: 16, bold: true, valign: "middle",
-        color: /^[0.]+/.test(chg(k, r.chg)) ? C.ink600 : r.chg > 0 ? C.goodInk : C.badInk, isTextBox: true, margin: 0 });
+      s.addText(chg(k, r.chg, r.v0, r.v1), { x: x + 0.08, y: y + 0.29, w: CW - 0.12, h: 0.25, fontFace: F, fontSize: 16, bold: true, valign: "middle",
+        color: /^[0.]+/.test(chg(k, r.chg, r.v0, r.v1)) ? C.ink600 : r.chg > 0 ? C.goodInk : C.badInk, isTextBox: true, margin: 0 });
     };
     const top = M.rows.slice(0, K), bot = M.rows.slice(-K);
     top.forEach((r, j) => cell(r, TOPS + j * rh, true));
@@ -100,7 +108,7 @@ function moving(k) {
   const M = MO[k], s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title: `Who's Moving Now: ${M.label}` });
   H.panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
-  s.addText(`Q1 → Q3 2026. Group ${val(k, M.group[0])} → ${val(k, M.group[1])}, ${chg(k, M.group[2])}: that is the season. ${M.beat} of ${M.rows.length} stores beat it.`,
+  s.addText(`Q1 → Q3 2026. Group ${val(k, M.group[0])} → ${val(k, M.group[1])}, ${chg(k, M.group[2], M.group[0], M.group[1])}: that is the season. ${M.beat} of ${M.rows.length} stores beat it.`,
     { x: 0.78, y: 1.42, w: 11.77, h: 0.34, fontFace: F, fontSize: 14, color: C.ink600, isTextBox: true, margin: 0 });
   const X = { rk: 0.82, name: 1.2, vals: 4.0, line: 5.85, step: 8.95, chg: 11.15 }, TOP = 2.18, rh = 0.418;
   [["Q1 → Q3", X.vals, 1.7, "left"], ["Jan – Sep 2026, by month", X.line, 2.9, "left"], ["Stepped up in", X.step, 1.9, "left"],
@@ -119,7 +127,7 @@ function moving(k) {
       valAxisMinVal: lo - pad, valAxisMaxVal: hi + pad, chartColors: [C.good], lineSize: 2, lineDataSymbol: "circle",
       lineDataSymbolSize: 3, plotArea: { fill: { color: j % 2 === 0 ? C.zebra : C.panel } } });
     s.addText(r.step, { x: X.step, y, w: 1.9, h: rh, fontFace: F, fontSize: 14, bold: true, color: C.navy, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(chg(k, r.chg), { x: X.chg, y, w: 1.5, h: rh, fontFace: F, fontSize: 16, bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(chg(k, r.chg, r.v0, r.v1), { x: X.chg, y, w: 1.5, h: rh, fontFace: F, fontSize: 16, bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
   });
   const t = M.rows[0];
   H.takeaway(pptx, s, `${t.n} went ${val(k, t.v0)} to ${val(k, t.v1)}, stepping up in ${t.step}. Ask what changed that month.`, "g");
@@ -174,7 +182,7 @@ function whatChanged() {
     const y = TOP + j * rh;
     if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: 0.68, y, w: 11.97, h: rh, fill: { color: C.zebra } });
     [[r.n, X.n, 2.9, true, C.ink], [lab, X.m, 2.3, false, C.ink], [`${val(k, r.v0)} → ${val(k, r.v1)}`, X.v, 2.2, false, C.ink],
-     [r.step, X.st, 1.7, true, C.navy], [chg(k, r.chg), X.q, 1.4, true, C.goodInk]].forEach(([t, x, w, b, col]) =>
+     [r.step, X.st, 1.7, true, C.navy], [chg(k, r.chg, r.v0, r.v1), X.q, 1.4, true, C.goodInk]].forEach(([t, x, w, b, col]) =>
       s.addText(t, { x, y, w, h: rh, fontFace: F, fontSize: 15, bold: b, color: col, valign: "middle", isTextBox: true, margin: 0 }));
   });
   const stores = [...new Set(rows.map(r => r[1].n))];

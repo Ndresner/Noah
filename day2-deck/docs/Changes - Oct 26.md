@@ -245,3 +245,12 @@ Slide in `Changes - Oct 28 (round 19).pptx` (160, Where the Money Is). HOW: 0.1 
 
 ## Oct 28, round 20
 Store Prescriptions (162-194, all 33 store slides, in `Changes - Oct 28 (round 20).pptx`): thin green / red mark after the absorption value, above / below the group's 78.1%, as on the movers slides. `ABSMARK=0` turns it off. Review file `Absorption Mark - Review.pptx` retired.
+
+## Oct 28, round 21 (data audit fixes 1-4, GMC Prescott absorption, Lexus)
+Changed slides (67, in the flow) in `Changes - Oct 28 (round 21, audit fixes).pptx`.
+1. Slide 142: band now "20 stores at or above 85% still leave $818K a month" (was "6 stores ... $537K", which counted only the $50K+ stores).
+2. Slides 42, 56, 57 (and 237 in Open Decisions): the 0.1-hour-per-RO value is $6.6M a year in labor and parts gross everywhere (was $4,543,691, a Jan-Sep labor sale). Explainer example: 0.1 hour on every RO = 37,301 hours a year x each store's gross per hour = $6.6M a year.
+3-4. One rule for changes: a points change is the shown end minus the shown start (group cards, bands, change rankers, movers, Close), and changes round everywhere (the Close no longer truncates). Opcode rates stay truncated on every slide, Store Prescriptions included. Examples: alignment 11.9% -> 13.2% now +1.3 pts, 1.8 pts under 15%; brake fluid 0.8 pts under 10%; CP RO count +0.2% on the Close as on slide 47; Lexus tire balance 0.0% on both slide 99 and its prescription.
+5. GMC Prescott absorption excludes the body shop (Noah): its body shop gross ($868,202 / $868,925) and its body shop fixed expenses ($465,001 / $489,656) come out of the store and the group. GMC Prescott 75.6% -> 61.6% (2025 56.1%, +5.5 pts, rank 28). Group absorption 78.1% -> 77.9% (2025 76.0% -> 75.8%, still +2.1 pts); fixed expenses +1.4% (was 1.3%); 15 of 33 stores at or above the group, 23 raised. Total store fixed expenses $242,385,781. Data: pulls/gmc_body_abs.json (Qlik P&L, pulled Oct 28), abs.json and pulls/fixed_exp.json adjusted; absorption gross now equals the verified fixed gross both years.
+6. Lexus tire balance: not a mapping problem (Noah); it stays red and valued, no gray. The "CHECK OP-CODE MAPPING" note is gone.
+Open Decisions: the old Most Improved v1 / Who's Moving Now alternates still show endpoints that differ from the change by 0.1 (not presented).

@@ -50,6 +50,7 @@ const YEAR = 12 / 9, QUARTER = 4, MIN = 10000;
 const K = v => (v < 0 ? "−" : "") + (Math.abs(v) >= 1e6 ? "$" + (Math.abs(v) / 1e6).toFixed(2) + "M" : "$" + Math.round(Math.abs(v) / 1e3) + "K");
 const DK = v => (v < 0 ? "−" : "+") + K(Math.abs(v)).replace("−", "");
 const P = v => H.Pct(v);                       // v in percent
+const PT = v => (Math.floor(v * 10 + 1e-9) / 10).toFixed(1) + "%";   // opcode closing %, truncated like the opcode slides (Oct 28 audit)
 const Pb = v => (Math.round(v * 10) / 10).toString().replace(/\.0$/, "") + "%";   // a benchmark as set: "15%", "7.5%"
 const D1 = v => v.toFixed(1), D2 = v => v.toFixed(2);
 const ord = n => n + (["th", "st", "nd", "rd"][(n % 100 - n % 10 != 10) * n % 10] || "th");
@@ -71,12 +72,12 @@ if (Object.keys(Q3).sort().join("|") !== NAMES) throw new Error("Rx: the Jul-Sep
 const row = (rows, n) => rows.find(r => r[0] === n);
 tie("CP ROs 2026", sum(M5.map(r => r[7])), 279756, 0);
 tie("CP ROs 2025", sum(M5.map(r => r[1])), 279300, 0);
-// fixed gross = service + parts gross (body shop out); abs.json's gross keeps GMC Prescott body shop for absorption, as the absorption slides do
+// fixed gross = service + parts gross (body shop out); abs.json has the body shop out too since Oct 28 (Noah), so every store ties
 tie("fixed gross 2026", sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4])), 188799724, 2);
 tie("fixed gross 2025", sum(NS.map(r => r[2])) + sum(NPp.map(r => r[2])), 181331157, 2);
-tie("absorption gross less the body shop", sum(ABS.map(r => r[3])) - (sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4]))), 868202, 2);
+tie("absorption gross = fixed gross", sum(ABS.map(r => r[3])) - (sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4]))), 0, 2);
 tie("fixed ops net profit 2026", sum(NS.map(r => r[3])) + sum(NPp.map(r => r[3])), 50449895, 2);
-STORES.filter(n => n !== "GMC PRESCOTT").forEach(n => tie(`${n} gross = service + parts`, row(NS, n)[4] + row(NPp, n)[4], row(ABS, n)[3], 2));
+STORES.forEach(n => tie(`${n} gross = service + parts`, row(NS, n)[4] + row(NPp, n)[4], row(ABS, n)[3], 2));
 
 /* ---------- the group, the segments, the two prices ---------- */
 const g26 = k => sum(M5.map(r => r[7 + k]));
@@ -86,7 +87,7 @@ const RO_PRICE = (g26(3) + g26(5)) / g26(0), HR_PRICE = (g26(3) + g26(5)) / g26(
 tie("price of a missed RO", Math.round(RO_PRICE), 342, 0);
 tie("price of an hour", Math.round(HR_PRICE), 183, 0);
 const ABS_G = sum(ABS.map(r => r[3])) / sum(ABS.map(r => r[4])) * 100;
-tie("group absorption vs the slide's 78.1%", Math.round(ABS_G * 10), 781, 0);
+tie("group absorption vs the slide's 77.9%", Math.round(ABS_G * 10), 779, 0);   // GMC Prescott body shop out (Oct 28)
 const seg = n => LUX.has(n) ? 0 : 1, SEGNAME = ["luxury", "non-luxury"];
 const segSum = (i, k) => sum(M5.filter(r => seg(r[0]) === i).map(r => r[7 + k]));
 const PEER = [0, 1].map(i => ({
@@ -138,9 +139,9 @@ function gapsOf(s) {
   OPC.forEach(({ area, key, b, rows }) => {
     if ((GRAY[key] ?? []).includes(n)) return;
     const r = rows[n]; if (r.rate >= b * 100) return;
-    add({ key, area, yours: P(r.rate), bar: Pb(b * 100), barNote: "benchmark", same: P(r.rate) === P(b * 100),
+    add({ key, area, yours: PT(r.rate), bar: Pb(b * 100), barNote: "benchmark", same: PT(r.rate) === P(b * 100),
       worth: r.short * r.val, rx: `Recommend it on every visit: ${H.Int(r.short)} more a year.`,
-      calc: `${area} ${P(r.rate)} vs ${Pb(b * 100)}: ${H.Int(r.short)} more a year (Jan–Sep x 12/9) x ${H.dollars(r.val)} gross a service.` });
+      calc: `${area} ${PT(r.rate)} vs ${Pb(b * 100)}: ${H.Int(r.short)} more a year (Jan–Sep x 12/9) x ${H.dollars(r.val)} gross a service.` });
   });
 
   // technician proficiency - the opportunity slide's own figure: techs under 85% raised to 85%
@@ -219,7 +220,7 @@ const LEADS = [
   { label: "MPI", v: s => s.mpi, f: P },
   { label: "Video", v: s => s.vid, f: P },
   { label: "Gross/head", v: s => s.fge[1], f: H.dollars },
-  ...OPC.map(o => ({ label: o.area, v: s => o.rows[s.n].rate, f: P })),
+  ...OPC.map(o => ({ label: o.area, v: s => o.rows[s.n].rate, f: PT })),
   { label: "Fixed gross", v: s => s.gross[1] - s.gross[0], f: DK, ok: ok.up },
   { label: "Net profit", v: s => s.np[1] - s.np[0], f: DK, ok: ok.up },
   { label: "CP ROs", v: s => s.ros[1] - s.ros[0], f: H.Dint, ok: ok.up },

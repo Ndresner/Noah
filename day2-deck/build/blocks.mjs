@@ -76,7 +76,7 @@ export function block(pptx, X, M) {
     chartLabel: `${M.title} by month, 2025 against 2026`,
     benchLines: M.chartBench, benchLabel: M.chartBenchLabel,   // dashed benchmark line(s) (Noah, Oct 24)
     // M.noYoyTake (Noah, Oct 27): no band on the group chart slide (CP ELR)
-    takeaway: M.noYoyTake ? null : `${rose ? "Up" : "Down"} ${FM0.d(g26 - g25).replace(/^[+−]/, "")} to ${FM0.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
+    takeaway: M.noYoyTake ? null : `${rose ? "Up" : "Down"} ${FM0.d(H.shownDiff(FM0.v(g25), FM0.v(g26), FM0.d, g26 - g25)).replace(/^[+−]/, "")} to ${FM0.v(g26)}, ${rose ? "ahead of" : "behind"} 2025 in ${months} months.${M.extra ? " " + M.extra(X) : ""}`,
     source: `${M.src} ${M.def} YTD from YTD totals, not the mean of months. Store rows reconcile to the group on every input, both years.${D.q4 ? " 2025 shown January-December; October-December pulled Oct 22 on the same basis (chart only)." : ""}`,
   });
 
@@ -124,17 +124,21 @@ export function block(pptx, X, M) {
   const ch = M.pct ? ((a, b) => f(b) / f(a) - 1) : (M.chg ?? ((a, b) => f(b) - f(a)));
   const CF = M.pct ? F.pctc.d : (M.cf ?? FM.d);
   const absD = (a, b) => FM.d(f(b) - f(a));
-  const deltas = st.map(x => [x.n, ch(x.a25, x.a26)]);
-  const grew = deltas.filter(r => r[1] > 0).sort((p, q) => q[1] - p[1]);
-  const fell = deltas.filter(r => r[1] < 0).sort((p, q) => p[1] - q[1]);
+  // Oct 28 audit: a points change prints as the shown 2026 rate minus the shown 2025 rate, the same figure the movers
+  // slide shows; the grew / declined counts stay on the exact change
+  const shownD = (a, b) => H.shownDiff(FM.v(f(a)), FM.v(f(b)), CF, ch(a, b));
+  const deltas = st.map(x => [x.n, shownD(x.a25, x.a26)]);
+  const raw = st.map(x => [x.n, ch(x.a25, x.a26)]);
+  const grew = raw.filter(r => r[1] > 0).sort((p, q) => q[1] - p[1]);
+  const fell = raw.filter(r => r[1] < 0).sort((p, q) => p[1] - q[1]);
   const lead = st.find(x => x.n === grew[0][0]);
   H.ranker(pptx, pptx, {
-    eyebrow: M.seg, title: M.title, metric: M.metric, measure, deltas, groupD: ch(G25, G26), fmtD: CF,
+    eyebrow: M.seg, title: M.title, metric: M.metric, measure, deltas, groupD: shownD(G25, G26), fmtD: CF,
     ...(M.pct ? { valLabel: "Change", stripValue: `${CF(ch(G25, G26))}  ·  ${absD(G25, G26)}`,
                   extra: [{ label: M.absLabel ?? "Change", w: 0.95, vals: Object.fromEntries(st.map(x => [x.n, absD(x.a25, x.a26)])) }] } : {}),
     groupLabel: LABEL.change,
-    takeaway: `${grew.length} of 33 stores ${M.verb}, led by ${nm(grew[0][0])} at ${CF(grew[0][1])}${M.pct ? ` (${absD(lead.a25, lead.a26)})` : ""} to ${FM.v(f(lead.a26))}. `
-            + (fell.length ? `${fell.length} declined; ${nm(fell[0][0])} fell most at ${CF(fell[0][1])}.` : "None declined."),
+    takeaway: `${grew.length} of 33 stores ${M.verb}, led by ${nm(grew[0][0])} at ${CF(shownD(lead.a25, lead.a26))}${M.pct ? ` (${absD(lead.a25, lead.a26)})` : ""} to ${FM.v(f(lead.a26))}. `
+            + (fell.length ? `${fell.length} declined; ${nm(fell[0][0])} fell most at ${CF((x => shownD(x.a25, x.a26))(st.find(y => y.n === fell[0][0])))}.` : "None declined."),
     source: `${M.src} Change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025, best first.${M.pct ? " Ranked by percent change; the change in the measure's own unit alongside." : ""}`,
   });
 
@@ -157,7 +161,9 @@ export function block(pptx, X, M) {
 export function moversSlide(pptx, o) {
   const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
   const dir = H.dirOf(o.metric), up = dir !== "down", K = 5;
-  const srt = rs => [...rs].sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
+  // Oct 28 audit: a points change is the shown end minus the shown start, and rows rank on what they show
+  const fix = x => ({ ...x, d: H.shownDiff(x.v0, x.v1, o.fmtD, x.d) });
+  const srt = rs => [...rs].map(fix).sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
   const r = srt(o.rows);
   const top = r.slice(0, 3).map(x => x.n), bot = r.slice(-3).reverse().map(x => x.n);
   const notes = "Conversation starter: each top store says one thing they started doing; each bottom store says what got in the way and what they would try. The room trades ideas.";

@@ -28,7 +28,8 @@ X({ eyebrow: "Customer Pay", title: "CP RO Count",
 X({ eyebrow: "Customer Pay", title: "Hours per RO",
   formula: ["Hours per RO", "=", "CP hours sold", "÷", "CP RO count"],
   define: "The labor hours we sell, on average, every time a customer-pay car comes through the drive.",
-  example: [["0.1 hour more on every RO", "= 27,976 more hours"], ["× $162 an hour (our ELR)", "= $4.5M more labor"]], exampleLabel: "0.1 HOUR",
+  // Oct 28 audit (Noah): the same $6.6M a year gross as What 0.1 Hour per RO Is Worth and Where the Money Is (was $4.5M Jan-Sep labor sale)
+  example: [["0.1 hour more on every RO", "= 37,301 hours a year"], ["× each store's gross per hour", "= $6.6M a year"]], exampleLabel: "0.1 HOUR",
   // Oct 26 (Noah): "the work we sell"; it shows where a lift came from (price or more work)
   why: ["It cannot be manipulated: it is the work we sell.",
         "It shows where the lift came from: if labor sales per RO go up but hours per RO stay flat, we are charging more, not selling more.",
@@ -41,7 +42,7 @@ X({ eyebrow: "Customer Pay", title: "Hours per RO",
            ["Right tech, right car", "High-mileage and repair work to the techs who find it"]],
   // Oct 27 (Noah): no bottom band; the next slides carry the group figure. Was: Group: 1.87 CP hours per RO, up 0.07 and ahead of 2025 in all nine months.
   ours: null,
-  tone: "g", notes: "PLACE: CP Engine, in front of CP Hours per RO.\n$4,543,691 = 0.1 x 279,756 CP ROs (27,976 hours) x $162.42 CP ELR (on the Hours per RO data slide). Slide rounds to $162 and $4.5M so the room can follow it (Noah, Oct 23)." });
+  tone: "g", notes: "PLACE: CP Engine, in front of CP Hours per RO.\n$6,602,564 a year = 0.1 x each store's CP RO count x its own CP labor + parts gross per sold hour, Jan-Sep x 12/9 (279,756 CP ROs: 27,976 hours Jan-Sep, 37,301 a year; about $177 an hour on that mix). Same figure as What 0.1 Hour per RO Is Worth and Where the Money Is (Oct 28 audit; was $4,543,691 Jan-Sep labor sale)." });
 
 X({ eyebrow: "Customer Pay", title: "Effective Labor Rate",
   formula: ["Effective labor rate", "=", "CP labor sale", "÷", "CP hours sold"],
@@ -128,7 +129,7 @@ X({ eyebrow: "Customer Pay", title: "Parts Gross Profit %",
 X({ eyebrow: "Fixed Ops Profitability", title: "Absorption",
   formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
   define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
-  example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "78.1%"]], exampleLabel: "READING IT",
+  example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "77.9%"]], exampleLabel: "READING IT",
   why: ["At 100%, the store covers its fixed costs before it sells a car.",
         "It protects the store when car sales slow.",
         "It is the clearest measure of fixed ops' value to the dealership."],
@@ -136,8 +137,8 @@ X({ eyebrow: "Fixed Ops Profitability", title: "Absorption",
            ["Store fixed expenses", "The whole store's rent, facility and other fixed costs"],
            ["Warranty and internal", "Gross from warranty and reconditioning counts too"],
            ["Parts", "Counter and wholesale parts gross counts as well"]],
-  ours: "Group: 78.1% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.",
-  tone: "g", notes: "PLACE: Profitability, in front of Fixed Ops Absorption %.\nP&L definition: line 254 Total Gross Profit - Fixed Ops / line 258 Fixed Expenses (the stored line 257 returns a dollar value, so the slide derives it). GMC Prescott includes its body shop, as on the P&L." });
+  ours: "Group: 77.9% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.4%.",   // GMC Prescott body shop out (Oct 28)
+  tone: "g", notes: "PLACE: Profitability, in front of Fixed Ops Absorption %.\nP&L definition: line 254 Total Gross Profit - Fixed Ops / line 258 Fixed Expenses (the stored line 257 returns a dollar value, so the slide derives it). GMC Prescott body shop taken out (its gross and its body shop fixed expenses), as everywhere in the deck (Noah, Oct 28)." });
 
 X({ eyebrow: "Fixed Ops Profitability", title: "Net to Gross",
   formula: ["Net to gross", "=", "department profit", "÷", "department gross"],

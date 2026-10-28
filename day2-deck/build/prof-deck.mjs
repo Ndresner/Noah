@@ -63,7 +63,8 @@ const ex1 = Object.fromEntries(OS.map(o => [o.n, `${o.under} of ${o.techs}`]));
 // store % with no decimal, truncated (Noah, Oct 26)
 const ex2 = Object.fromEntries(OS.map(o => [o.n, Math.floor(o.prof * 100) + "%"]));
 const top6 = [...OS].sort((a, b) => tot(b) - tot(a)).slice(0, 6), t6 = top6.reduce((t, o) => t + tot(o), 0);
-const hidden = OS.filter(o => o.prof >= BEN && tot(o) / MO >= 50000);
+// Oct 28 audit (Noah): every store at or above 85%, not only the $50K+ ones (was "6 stores ... $537K")
+const hidden = OS.filter(o => o.prof >= BEN);
 H.amountRanker(pptx, pptx, {
   eyebrow: SEG, title: "Proficiency Opportunity by Store",
   rows: OS.map(o => [o.n, tot(o) / MO]), fmt: K, color: H.C.bad, ink: H.C.badInk, valLabel: "Per mo",

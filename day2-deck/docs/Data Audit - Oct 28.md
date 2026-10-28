@@ -5,6 +5,8 @@ Scope: the 194 meeting-flow slides of the 237-slide test deck (Open Decisions no
 Result: no wrong source data. The issues are display rounding, a few labels/periods, and stale notes.
 
 ## Fix (visible on a slide)
+Status Oct 28: 1-4 fixed (round 21). GMC Prescott body shop out of absorption and Lexus (not gray) done. 5-9 and the judgment calls below proposed to Noah.
+
 | # | Slide(s) | Issue | Fix |
 |---|---|---|---|
 | 1 | 142 | Band: "6 stores at or above 85% still leave $537K a month". 20 stores are at or above 85% and leave $817,537 a month; the 6 are those leaving $50K+ each. | "20 stores at or above 85% still leave $818K a month" |

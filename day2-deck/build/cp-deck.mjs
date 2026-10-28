@@ -8,6 +8,8 @@ const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFo
 const X = load("./m5.json"), SEG = "Customer Pay";
 const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep by close month. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor types excluded.";
 const ELR = a => a[1] / a[2];
+// 0.1 hr x each store's CP ROs x its own CP labor + parts gross per sold hour, Jan-Sep x 12/9 (hpro-deck.mjs)
+const HPRO_YR = JSON.parse(fs.readFileSync("./prof/hpro.json", "utf8")).reduce((t, [n, ro, sale, hrs, g, pg]) => t + 0.1 * ro * (g + pg) / hrs, 0) * 12 / 9;
 H.section(pptx, pptx, { kicker: "Fixed Ops", title: SEG, chips: ["ROs", "Hours per RO", "ELR", "$ per RO", "Margin"] });
 const base = { seg: SEG, src: SRC };
 block(pptx, X, { ...base, title: "CP RO Count", metric: "ro count", fn: a => a[0], f: F.int, level: false,
@@ -16,7 +18,8 @@ block(pptx, X, { ...base, title: "CP RO Count", metric: "ro count", fn: a => a[0
   chg: (a, b) => b[0] / a[0] - 1, cf: F.pctc.d, verb: "grew CP RO count", chgDesc: "CP RO count (percent, so store size does not drive the ranking)" });
 block(pptx, X, { ...base, title: "CP Hours per RO", metric: "hpro", fn: a => a[2] / a[0], f: F.dec2, segment: true, pct: true, absLabel: "Hours", absUnit: " hrs",   // % rank (Noah, Oct 24)
   def: "Customer-pay sold hours / all customer-pay ROs.",
-  extra: ({ G26 }) => `Each 0.1 hour per RO is worth ${F.usd.v(0.1 * G26[0] * ELR(G26))} of labor at the 2026 ELR.`,
+  // Oct 28 audit (Noah): the same $6.6M a year gross as What 0.1 Hour per RO Is Worth (was Jan-Sep labor sale at the ELR)
+  extra: () => `Each 0.1 hour per RO is worth $${(HPRO_YR / 1e6).toFixed(1)}M a year in gross.`,
   verb: "sold more hours per RO" });
 block(pptx, X, { ...base, title: "CP ELR", metric: "elr", fn: ELR, f: F.usd2, segment: true, pct: true, whole: true, absLabel: "$",   // % rank, whole dollars (Oct 24)
   def: "Customer-pay labor sale / customer-pay sold hours.", verb: "raised CP ELR", noYoyTake: true });
