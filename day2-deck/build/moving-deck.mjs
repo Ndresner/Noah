@@ -20,7 +20,9 @@ const SHORT = { gross: "CP gross", ros: "CP ROs", hpro: "hours/RO", elr: "ELR", 
 const sg = v => v >= 0 ? "+" : "−";
 /* Oct 28 audit (Noah): one rule with the rest of the deck - changes round (were truncated, so the Close read 0.1 under
    the same store on the earlier slides), and a points change is the shown end minus the shown start */
+const usdK = v => (v < 0 ? "\u2212" : "+") + (Math.abs(v) >= 1e6 ? "$" + (Math.abs(v) / 1e6).toFixed(2) + "M" : "$" + Math.round(Math.abs(v) / 1e3) + "K");
 const chg = (k, v, v0, v1) => {
+  if (k === "np") return usdK(v);   // net profit moves in dollars (Oct 28)
   let d = v * 100;
   if (PTS.has(k) && v0 != null && v1 != null) { const a = H.pctOf(val(k, v0)), b = H.pctOf(val(k, v1)); if (a != null && b != null) d = b - a; }
   const t = Math.abs(d).toFixed(1), z = Number(t) === 0 ? "" : sg(d);
@@ -61,11 +63,20 @@ const mk = (label, rows, g0, g1, pct) => {
 };
 VIEW.yoy.lpr = mk("CP Labor $ per RO", M5.map(r => [r[0], r[2] / r[1], r[8] / r[7]]), sumS(M5, 2) / sumS(M5, 1), sumS(M5, 8) / sumS(M5, 7), true);
 VIEW.yoy.np = mk("Fixed Ops Net Profit", NS.map(r => { const p = NP.find(x => x[0] === r[0]); return [r[0], r[1] + p[1], r[3] + p[3]]; }),
-  sumS(NS, 1) + sumS(NP, 1), sumS(NS, 3) + sumS(NP, 3), true);
+  sumS(NS, 1) + sumS(NP, 1), sumS(NS, 3) + sumS(NP, 3), false);   // dollar change, as the net profit movers slide (a % off a small or negative base runs to thousands)
 VIEW.yoy.abs = mk("Fixed Absorption", AB.map(r => [r[0], r[1] / r[2], r[3] / r[4]]), sumS(AB, 1) / sumS(AB, 2), sumS(AB, 3) / sumS(AB, 4), false);
 const opc = AL.align.S.map(r => { const n = r[0], rr = OPK4.map(k => AL[k].S.find(x => x[0] === n));
   return [n, rr.reduce((t, x) => t + x[1], 0) / r[2], rr.reduce((t, x) => t + x[3], 0) / r[4]]; });
 VIEW.yoy.opc = mk("Opcodes, Four Combined", opc, OPK4.reduce((t, k) => t + sumS(AL[k].S, 1), 0) / sumS(AL.align.S, 2), OPK4.reduce((t, k) => t + sumS(AL[k].S, 3), 0) / sumS(AL.align.S, 4), false);
+// the same four measures Q3 vs Q1 2026 for Biggest Movers This Year (Noah, Oct 28); net profit as monthly averages
+const M5N = J("./m5.json").mn, NSN = J("./ntgs.json").mn, NPN = J("./ntgp.json").mn, ABN = J("./abs.json").mn;
+VIEW.mom.lpr = mk("CP Labor $ per RO", M5N.map(r => [r[0], r[2] / r[1], r[8] / r[7]]), sumS(M5N, 2) / sumS(M5N, 1), sumS(M5N, 8) / sumS(M5N, 7), true);
+VIEW.mom.np = mk("Fixed Ops Net Profit per Month", NSN.map(r => { const p = NPN.find(x => x[0] === r[0]); return [r[0], (r[1] + p[1]) / 3, (r[3] + p[3]) / 3]; }),
+  (sumS(NSN, 1) + sumS(NPN, 1)) / 3, (sumS(NSN, 3) + sumS(NPN, 3)) / 3, false);
+VIEW.mom.abs = mk("Fixed Absorption", ABN.map(r => [r[0], r[1] / r[2], r[3] / r[4]]), sumS(ABN, 1) / sumS(ABN, 2), sumS(ABN, 3) / sumS(ABN, 4), false);
+const opcN = AL.align.mn.map(r => { const n = r[0], rr = OPK4.map(k => AL[k].mn.find(x => x[0] === n));
+  return [n, rr.reduce((t, x) => t + x[1], 0) / r[2], rr.reduce((t, x) => t + x[3], 0) / r[4]]; });
+VIEW.mom.opc = mk("Opcodes, Four Combined", opcN, OPK4.reduce((t, k) => t + sumS(AL[k].mn, 1), 0) / sumS(AL.align.mn, 2), OPK4.reduce((t, k) => t + sumS(AL[k].mn, 3), 0) / sumS(AL.align.mn, 4), false);
 
 function tops(view, n = 3) {
   const c = {};
@@ -227,10 +238,15 @@ const SUBY = "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan
 grid("yoy", { title: "Biggest Movers vs Last Year: Customer Pay", sub: SUBY, groupLabel: "Group", src: SRC_Y + " CP labor $ per RO = CP labor sale / CP ROs.",
   keys: ["gross", "ros", "hpro", "elr", "lpr"] });
 grid("yoy", { title: "Biggest Movers vs Last Year: Profit and Process", sub: SUBY, groupLabel: "Group",
-  src: "Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit (% change = $ change / |2025 profit|). Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. Points for absorption, parts GP % and opcodes.",
+  src: "Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit, change in dollars (several stores lost money in 2025, so a percent change misleads). Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. Points for absorption, parts GP % and opcodes.",
   keys: ["np", "abs", "pgp", "opc"] });
-grid("mom", { title: "Biggest Movers This Year",   // renamed with Biggest Movers vs Last Year (Noah, Oct 28)
-   sub: "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
+// Oct 28 (Noah): split the same way as vs Last Year
+const SUBM = "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026. Group change = the season.";
+grid("mom", { title: "Biggest Movers This Year: Customer Pay", sub: SUBM, groupLabel: "Group", src: SRC_M + " CP labor $ per RO = CP labor sale / CP ROs.",
+  keys: ["gross", "ros", "hpro", "elr", "lpr"] });
+grid("mom", { title: "Biggest Movers This Year: Profit and Process", sub: SUBM, groupLabel: "Group",
+  src: "Q3 2026 (Jul-Sep) vs Q1 2026 (Jan-Mar), each store against itself. Gross, ROs and net profit per month. Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit, change in dollars per month. Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. The group's own move is the season.",
+  keys: ["np", "abs", "pgp", "opc"] });
 ORDER.forEach(moving);
 twoViews();
 whatChanged();

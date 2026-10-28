@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 28, 2026
 
 ## Current test deck
-- 238 slides: 195 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
+- 239 slides: 196 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -16,6 +16,7 @@ Updated: October 28, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- Biggest Movers This Year split into Customer Pay and Profit and Process; net profit moves in dollars on the four grids. Gray second line added on the CP RO count, gross (fixed ops, service, parts, warranty) and net profit movers.
 - Close: Biggest Movers vs Last Year on two slides (Customer Pay; Profit and Process = fixed ops net profit, absorption, CP parts GP %, opcodes combined), bottom 3 kept; Who's Moving Now renamed Biggest Movers This Year.
 - GMC Prescott body shop back in absorption (group 78.1%, GMC Prescott 75.6%); approved section dividers in the deck (agenda Warranty "Rates, margins and compliance: protecting the money.", Warranty chips with "Claim process: protect the money", Close chips with "Store prescriptions").
 - Service Is Sales 2.0: +$829,841 more fixed ops gross than 2025 on average every month (replaces $20.98M). Flai back to "last 90 days" and the five busiest 100% callback stores. People: "Don't overlook opportunities to teach, train and educate"; pay plans line adds "and hold people accountable to them". What Changed lists all four opcodes (five stores).
@@ -70,7 +71,6 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Biggest Movers This Year: same two-slide split as vs Last Year?
 - Points-change slides (absorption, net to gross, GP %, opcodes): add the percent change alongside the points?
 - Movers slides: the small gray second line (change in the metric's own unit, today only on the slides ranked by % change: CP hours per RO, CP ELR, CP labor $ per RO, internal ELR) - add it to the other movers slides too?
 - Work mix: Noah has extra data to check the opcode-description classification.

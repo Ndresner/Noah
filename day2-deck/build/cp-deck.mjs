@@ -15,7 +15,9 @@ const base = { seg: SEG, src: SRC };
 block(pptx, X, { ...base, title: "CP RO Count", metric: "ro count", fn: a => a[0], f: F.int, level: false,
   def: "Distinct customer-pay ROs: every RO with a customer-pay line, whether or not labor was charged (governed RO Count).",
   extra: () => "Volume is flat, so every gain here comes from selling more per RO.",
-  chg: (a, b) => b[0] / a[0] - 1, cf: F.pctc.d, verb: "grew CP RO count", chgDesc: "CP RO count (percent, so store size does not drive the ranking)" });
+  chg: (a, b) => b[0] / a[0] - 1, cf: F.pctc.d, verb: "grew CP RO count",
+  // gray second line on the movers: the RO change (Noah, Oct 28)
+  d2: (a, b) => (b[0] >= a[0] ? "+" : "\u2212") + Math.round(Math.abs(b[0] - a[0])).toLocaleString("en-US") + " ROs", chgDesc: "CP RO count (percent, so store size does not drive the ranking)" });
 block(pptx, X, { ...base, title: "CP Hours per RO", metric: "hpro", fn: a => a[2] / a[0], f: F.dec2, segment: true, pct: true, absLabel: "Hours", absUnit: " hrs",   // % rank (Noah, Oct 24)
   def: "Customer-pay sold hours / all customer-pay ROs.",
   // Oct 28 audit (Noah): the same $6.6M a year gross as What 0.1 Hour per RO Is Worth (was Jan-Sep labor sale at the ELR)

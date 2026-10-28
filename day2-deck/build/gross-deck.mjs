@@ -67,8 +67,9 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
   });
   // top and bottom five for all three (Noah, Oct 22: replaces the fixed ops "who moved it" chain, for continuity)
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA,
-    rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1 })),
-    now: S.map(([n]) => ({ n, v0: H.kusd(mn[n][0]), v1: H.kusd(mn[n][1]), d: mn[n][1] / mn[n][0] - 1 })),
+    // gray second line = the dollar change (Noah, Oct 28)
+    rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1, d2: kd(b - a) })),
+    now: S.map(([n]) => ({ n, v0: H.kusd(mn[n][0]), v1: H.kusd(mn[n][1]), d: mn[n][1] / mn[n][0] - 1, d2: kd(mn[n][1] - mn[n][0]) })),
     nowGroup: pcA(sum(S.map(([n]) => mn[n][1])) / sum(S.map(([n]) => mn[n][0])) - 1), perMonth: true,
     src: `${SRC} Top and bottom five stores by percent change in ${title.replace("Total Gross Profit - ", "").toLowerCase()} gross, Jan-Sep 2026 vs 2025.` });
   if (false && chain) {   // retired Oct 22: the group bridge repeated the YOY card

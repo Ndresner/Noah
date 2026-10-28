@@ -147,8 +147,9 @@ export function block(pptx, X, M) {
   const nw = st.filter(x => x.q1);
   if (M.movers !== false) moversSlide(pptx, {
     seg: M.seg, title: M.title, metric: M.metric, fmtD: CF,
-    rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26), d2: M.pct ? absD(x.a25, x.a26) + (M.absUnit ?? "") : undefined })),
-    now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3), d2: M.pct ? absD(pm(x.q1), pm(x.q3)) + (M.absUnit ?? "") : undefined })) : undefined,
+    // M.d2 (Noah, Oct 28): a gray second line on a block that is not ranked by percent (CP RO count: the RO change)
+    rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26), d2: M.pct ? absD(x.a25, x.a26) + (M.absUnit ?? "") : M.d2 ? M.d2(x.a25, x.a26) : undefined })),
+    now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3), d2: M.pct ? absD(pm(x.q1), pm(x.q3)) + (M.absUnit ?? "") : M.d2 ? M.d2(pm(x.q1), pm(x.q3)) : undefined })) : undefined,
     nowGroup: nw.length ? CF(ch(tot(nw.map(x => x.q1)), tot(nw.map(x => x.q3)))) : undefined,
     perMonth: total || M.chgDesc !== undefined,
     src: `${M.src} ${M.def ?? ""} Top and bottom five stores by change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025.`,

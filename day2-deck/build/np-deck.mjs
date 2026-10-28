@@ -130,8 +130,9 @@ chg(pptx, { shade: Object.fromEntries([...toP.map(r => [r[0], "g"]), ...toL.map(
 
 const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));
 moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
-  rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b - a })),
-  now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] - MN[n][0] })),
+  // gray second line = the percent change, over the size of the starting profit (Noah, Oct 28)
+  rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b - a, d2: pcA((b - a) / Math.abs(a)) })),
+  now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] - MN[n][0], d2: pcA((MN[n][1] - MN[n][0]) / Math.abs(MN[n][0])) })),
   nowGroup: kd(nowG) + " a month", perMonth: true,
   src: `${SRC} Top and bottom five stores by dollar change in fixed ops net profit, Jan-Sep 2026 vs 2025 (dollars, not percent: several stores lost money in 2025).` });
 

@@ -284,3 +284,8 @@ Slides in `Changes - Oct 28 (round 24).pptx` (41).
 
 ## Oct 28, round 25
 Slides in `Changes - Oct 28 (round 25).pptx` (156-159). Better Than Last Year is now two slides, **Biggest Movers vs Last Year: Customer Pay** (CP gross, CP RO count, CP hours per RO, CP ELR, CP labor $ per RO) and **Biggest Movers vs Last Year: Profit and Process** (fixed ops net profit, fixed absorption, CP parts GP %, the four opcodes combined); bottom 3 kept (Noah). Who's Moving Now renamed **Biggest Movers This Year** (one slide, same five measures). Two Ways panel reads "Vs last year". Deck 238 slides (195 in the flow).
+
+## Oct 28, round 26
+Slides in `Changes - Oct 28 (round 26).pptx`.
+- Biggest Movers This Year split like vs Last Year: Customer Pay (CP gross, ROs, hours per RO, ELR, labor $ per RO) and Profit and Process (fixed ops net profit, absorption, CP parts GP %, opcodes combined), Q3 vs Q1. Net profit moves in dollars on all four grids (as the net profit movers slide; a percent off a small or negative base ran to +2,451%). Deck 239 slides (196 in the flow).
+- Gray second line on movers: CP RO count (+N ROs), Total Gross Profit - Fixed Ops / Service / Parts and Warranty Gross Profit ($ change), Fixed Ops Net Profit (% change over the size of the starting profit).

@@ -40,8 +40,9 @@ const base = { seg: SEG, src: SRC };
     takeaway: `${grew} of 33 stores grew warranty gross. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)} (${pcA(bd[0].p)}); ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)} (${pcA(bd.at(-1).p)}).`,
     source: `${WSRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, the top three and bottom three by percent marked. Warranty volume follows campaigns and recalls as well as store effort.` });
   moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: pcA,
-    rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1 })),
-    now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] / MN[n][0] - 1 })),
+    // gray second line = the dollar change (Noah, Oct 28)
+    rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1, d2: kd(b - a) })),
+    now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] / MN[n][0] - 1, d2: kd(MN[n][1] - MN[n][0]) })),
     nowGroup: pcA(sum(S.map(([n]) => MN[n][1])) / sum(S.map(([n]) => MN[n][0])) - 1), perMonth: true,
     src: `${WSRC} Top and bottom five stores by percent change in warranty gross, Jan-Sep 2026 vs 2025.` });
 }
