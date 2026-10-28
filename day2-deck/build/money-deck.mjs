@@ -10,11 +10,12 @@ const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFo
 const usd = v => "$" + Math.round(v).toLocaleString("en-US");
 const O = JSON.parse(fs.readFileSync("./prof/opp.json", "utf8")).G;
 const prof = (O.lab + O.parts) / O.months * 12;
+// Oct 28 (Noah): more context on each how (managing proficiency, tracking and asking on opcodes, availability and outreach on ROs)
 const L = [
-  { name: "Every tech under 85% reaches 85%", v: prof, how: "Dispatch, parts staging, approvals, coaching", own: ["Service manager", "GM"], src: "Technician Proficiency" },
+  { name: "Every tech under 85% reaches 85%", v: prof, how: "Manage it daily: dispatch, parts staging, approvals, coaching", own: ["Service manager", "GM"], src: "Technician Proficiency" },
   { name: "0.1 more hours on every CP RO", v: 6602564, how: "MPI on every car, the menu, Road to the Sale", own: ["Service manager"], src: "Hours per RO" },
-  { name: "Every store at the four op code benchmarks", v: 4895199, how: "Alignment, balance, brake fluid, fuel service", own: ["Service manager"], src: "Op Codes" },
-  { name: "One more customer-pay RO a day", v: 4473284, how: "Phones, scheduler, retention, marketing", own: ["GM", "Service manager"], src: "CP RO count" },
+  { name: "Every store at the four op code benchmarks", v: 4895199, how: "Track where you are, ask for the sale on every car, every time, hold people accountable", own: ["Service manager"], src: "Op Codes" },
+  { name: "One more customer-pay RO a day", v: 4473284, how: "Be available when they call; proactive outreach to lapsed and inactive customers", own: ["GM", "Service manager"], src: "CP RO count" },
   // Oct 27 (Noah): ten minutes, not one - the Tech Minute slide's 10-minute row
   { name: "Ten minutes a day saved for every tech", v: 4443804, how: "Parts to the bay, tools and keys in place", own: ["Service manager", "GM"], src: "Tech Minute" },
 ];
@@ -31,7 +32,7 @@ L.forEach((l, i) => {
   s.addShape(pptx.ShapeType.rect, { x: 0.6, y, w: 0.07, h: RH - 0.08, fill: { color: C.good } });
   t(l.name, { x: 0.82, y, w: 4.3, h: RH - 0.08, fontSize: sz(17, "lever"), bold: true, color: C.ink });
   t(usd(l.v), { x: 5.2, y, w: 2.3, h: RH - 0.08, fontSize: sz(24, "lever $"), bold: true, color: C.goodInk, align: "right" });
-  t(l.how, { x: 7.85, y, w: 4.8, h: RH - 0.08, fontSize: sz(16, "how"), color: C.ink600 });
+  t(l.how, { x: 7.85, y, w: 4.8, h: RH - 0.08, fontSize: sz(15, "how"), color: C.ink600 });
 });
 H.takeaway(pptx, s, "Other than one more RO a day, every number here comes from customers already coming in for service.", "g");
 H.foot(pptx, s, "Labor + parts gross a year, each from its own slide: Technician Proficiency (each tech under 85% raised to 85%, monthly x 12), Hours per RO (0.1 hr x CP ROs at each store's gross per hour), Op Codes (stores under each benchmark brought to it), One More CP RO a Day (307 open days), Tech Minute (ten minutes per tech per day). Jan-Sep 2026, same-store, 33 stores. The levers overlap - op code services are part of hours per RO, and selling more hours needs tech time - so they are not added together.");

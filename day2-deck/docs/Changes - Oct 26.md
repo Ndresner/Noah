@@ -231,3 +231,8 @@ Slides in `Changes - Oct 28 (round 17).pptx` (148, 156, 157, 158, 160).
 - Two Ways to Read Improvement (158): green bar at the right of a store on both lists (Kia St George), as on the movers slides. Band now counts stores on both shown lists ("One store is on both lists (green bar)"); it used to say eight, counting any top-5 finish.
 - Warranty Rates Are Rising (148): title kept; band "$3,788,200 added by rate increases at 19 stores this year. Protect it: higher rates draw more audits, so document every claim to hold up." (ELR and parts margin moves left to the charts.)
 - Where the Money Is (160): band "Other than one more RO a day, every number here comes from customers already coming in for service." Overlap note dropped from the band (still in the source line).
+
+## Oct 28, round 18
+Slides in `Changes - Oct 28 (round 18).pptx` (148, 160).
+- Where the Money Is, HOW column (15pt, two lines where needed): proficiency "Manage it daily: dispatch, parts staging, approvals, coaching"; opcodes "Track where you are, ask for the sale on every car, every time, hold people accountable" (was the list of the four services); one more RO "Be available when they call; proactive outreach to lapsed and inactive customers" (was phones, scheduler, retention, marketing). 0.1 hours per RO unchanged pending Noah's word for "the menu".
+- Warranty Rates Are Rising: dollar figure out of the band (the panel shows it): "Protect that money: higher rates draw more audits, so document every claim to hold up." Title unchanged.

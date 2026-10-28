@@ -37,7 +37,8 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   const E = { p: [...Wd.m25, ...Wd.q4].map(elr), c: Wd.m26.map(elr), y25: ytd(Wd.m25, 1, 2), y26: ytd(Wd.m26, 1, 2) };
   const G = { p: P.m25.map(gp), c: P.m26.map(gp), y25: ytd(P.m25.slice(0, 9), 1, 0) * 100, y26: ytd(P.m26, 1, 0) * 100 };
   // Oct 28 (Noah): keep the title, add protecting the money, keep it simple; the ELR and parts margin moves stay on the charts
-  const tk = `${usd(T.total)} added by rate increases at ${W.rows.length} stores this year. Protect it: higher rates draw more audits, so document every claim to hold up.`;
+  // Oct 28 (Noah): no dollar figure in the band (the panel already shows it)
+  const tk = "Protect that money: higher rates draw more audits, so document every claim to hold up.";
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: SEG, title: "Warranty Rates Are Rising" });
   const top = H.BODY.top, h = H.bodyH(tk);
