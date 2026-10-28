@@ -10,6 +10,7 @@ Updated: October 28, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 28: Tommy-Gary transcript dropped (not needed).
 - Oct 28: no percent change added on the points-change slides. Work mix rebuilt from Qlik per Noah's prompt: every store and group figure matches the slide; raw data saved.
 - Oct 28: Flai pickup rate = transfers picked up (confirmed). Warranty audit slides approved as drafted.
 - Oct 28 (final): GMC Prescott body shop stays IN absorption, as on the P&L (group 78.1%, GMC Prescott 75.6%). ELR benchmark 70% of door. Store Prescriptions in the deck only, no date range on the vitals. Section dividers approved.
@@ -74,7 +75,6 @@ Updated: October 28, 2026
 ## Awaiting Noah
 - Movers slides: the small gray second line (change in the metric's own unit, today only on the slides ranked by % change: CP hours per RO, CP ELR, CP labor $ per RO, internal ELR) - add it to the other movers slides too?
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
-- Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
 
 ## Still open
