@@ -173,7 +173,8 @@ function whatChanged() {
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title: "What Changed?" });
   H.panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
-  const X = { n: 0.82, m: 3.85, v: 6.2, st: 8.45, q: 10.2 }, rh = 0.6, TOP = 1.94;
+  // Oct 28 (Noah): all four opcodes listed, so nine rows at 14pt (was six at 15pt)
+  const X = { n: 0.82, m: 3.85, v: 6.2, st: 8.45, q: 10.2 }, rh = 0.48, TOP = 1.92;
   [["Store", X.n], ["Moved on", X.m], ["Q1 → Q3", X.v], ["Stepped up in", X.st], ["Change", X.q]].forEach(([t, x]) =>
     s.addText(t, { x, y: 1.5, w: 2.2, h: 0.32, fontFace: F, fontSize: 14, bold: true, color: C.ink600, isTextBox: true, margin: 0 }));
   const rows = GRID.map(k => [k, MO[k].rows[0], MO[k].label]);   // parts $ per RO out (Noah, Oct 23)
@@ -183,19 +184,19 @@ function whatChanged() {
   const opStore = Object.entries(tally).sort((a, b) => b[1] - a[1])[0][0];
   // Oct 28 audit (Noah): the row keeps the slide's rule - an opcode the store is the top mover on (was its biggest move,
   // alignment, where Audi Henderson is the top mover)
-  const opBest = OPK.filter(k => MO[k].rows[0].n === opStore).map(k => [k, MO[k].rows[0]]).sort((a, b) => b[1].chg - a[1].chg)[0];
-  const opLabel = { align: "Alignment", bal: "Balance", bf: "Brake fluid", fuel: "Fuel service" }[opBest[0]];
-  rows.push([opBest[0], { ...opBest[1], v0: opBest[1].v0, v1: opBest[1].v1 }, `Opcodes \u00b7 ${opLabel.toLowerCase()}`]);
+  // Oct 28 (Noah): every opcode gets its own row, each with its top Q1-to-Q3 mover
+  const OPL = { align: "Alignment", bal: "Balance", bf: "Brake fluid", fuel: "Fuel service" };
+  OPK.forEach(k => rows.push([k, MO[k].rows[0], `Opcodes \u00b7 ${OPL[k].toLowerCase()}`]));
   rows.forEach(([k, r, lab], j) => {
     const y = TOP + j * rh;
     if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: 0.68, y, w: 11.97, h: rh, fill: { color: C.zebra } });
     [[r.n, X.n, 2.9, true, C.ink], [lab, X.m, 2.3, false, C.ink], [`${val(k, r.v0)} → ${val(k, r.v1)}`, X.v, 2.2, false, C.ink],
      [r.step, X.st, 1.7, true, C.navy], [chg(k, r.chg, r.v0, r.v1), X.q, 1.4, true, C.goodInk]].forEach(([t, x, w, b, col]) =>
-      s.addText(t, { x, y, w, h: rh, fontFace: F, fontSize: 15, bold: b, color: col, valign: "middle", isTextBox: true, margin: 0 }));
+      s.addText(t, { x, y, w, h: rh, fontFace: F, fontSize: 14, bold: b, color: col, valign: "middle", isTextBox: true, margin: 0 }));
   });
   const stores = [...new Set(rows.map(r => r[1].n))];
   H.takeaway(pptx, s, `${cap(NUMW[stores.length])} stores, one question each: what did you start doing that month? One sentence, before you leave.`, "n");
-  H.foot(pptx, s, SRC_M + ` Each row is the top Q1-to-Q3 mover on that measure. Opcode row: ${opStore} tops ${tally[opStore]} of the four opcode lists; the biggest of those moves is shown. Opcode closing % = ROs with the service \u00f7 customer-pay ROs on the op-code report basis.`);
+  H.foot(pptx, s, SRC_M + ` Each row is the top Q1-to-Q3 mover on that measure, the four opcodes included. Opcode closing % = ROs with the service \u00f7 customer-pay ROs on the op-code report basis.`);
   s.addNotes(`\n\n${opStore}'s August opcode increase was confirmed with the store as a real change (Noah, Oct 19 2026).`);
 }
 

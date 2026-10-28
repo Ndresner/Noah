@@ -268,3 +268,10 @@ Visible changes in `Changes - Oct 28 (round 22).pptx` (14 slides):
 Notes only (33 slides): slide 3 source says the 27-cent tile is same-store; 13, 32 (and the absorption explainer) carry a P&L source; 27 breakdown note; 43 Flai note; 69 "OPTION A" dropped; 92 photo weighting (28 stores, 109,881 ROs); 97-107 opcode QA lines gone; 147 "Warranty Rates Are Rising"; every movers slide's source explains the blue turnaround bar; "-0.0 pts" no longer printed.
 Slide 65 work mix: re-pulled from Qlik Oct 28; LR Reno and Hyundai Prescott genuinely share 56.8 / 23.9 / 19.3; every store matches; no change.
 Option 8 (section dividers): review file `Section Dividers - Review.pptx` (agenda, Warranty, Close); not in the deck until Noah approves.
+
+## Oct 28, round 23
+Slides in `Changes - Oct 28 (round 23).pptx` (12, 44, 45, 127, 159).
+- 12 Service Is Sales 2.0: third tile is now +$829,841, "More fixed ops gross than 2025, on average, every month January through September" ($7,468,567 / 9; replaces the $20.98M monthly level).
+- 44-45 Flai: back to "Last 90 Days" (eyebrow and source); callback column back to TOP 5, the five busiest of the six stores at 100% (Acura off), "6 stores at 100%" in the sub line.
+- 127 People: new bullet "Don't overlook opportunities to teach, train and educate"; last bullet "Clear pay plans, job descriptions and expectations, and hold people accountable to them".
+- 159 What Changed?: all four opcodes listed, each with its top Q1-to-Q3 mover (Audi Henderson alignment +10.7 pts; Mazda balance +9.2, brake fluid +9.0, fuel service +8.1); nine rows at 14pt; band "Five stores, one question each".

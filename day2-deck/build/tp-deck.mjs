@@ -45,8 +45,8 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
          "Processes only work when they are actively managed"],   // Noah, Oct 26
   now: [{ big: "+$6,297,386", label: "Service gross, up 5.2%, ahead of 2025 in all nine months.", tone: "g" },
         { big: "+$1,171,181", label: "Parts gross, up 1.9%, ahead of 2025 in six of nine months.", tone: "g" },   // same pattern as service (Noah, Oct 24)
-        // Oct 28 audit (Noah): Jan-Sep monthly average under the Jan-Sep header ($188,799,724 / 9); was the trailing-twelve $20.59M
-        { big: "$20.98M", label: "Fixed ops gross a month, January through September 2026.", tone: "g" }],
+        // Oct 28 (Noah): the average monthly increase, more meaningful than the monthly level ($7,468,567 / 9 = $829,841)
+        { big: "+$829,841", label: "More fixed ops gross than 2025, on average, every month January through September.", tone: "g" }],
   ask: "run service like a sales department: every visit is a chance to sell the next hour and the next car.",
   notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship).\nFor the GMs who come from sales (Noah, Oct 25): service and parts keep far more of every gross dollar than vehicle sales does. Jan-Sep 2026, after each department's own expenses, fixed ops kept 27 cents of every gross dollar; new, used and F&I together kept 7 cents (before doc fees, packs and factory money, which the P&L books outside the departments). People cost 45 cents of every fixed ops gross dollar and 62 cents of every vehicle sales gross dollar. That is why paying yourself first, on internal work, matters: see Pay Yourself First at the start of the Internal section." });
 
@@ -156,8 +156,9 @@ T({ eyebrow: "Fixed Ops Productivity", title: "People", saidFrom: BOTH,
          "Invest in training and a defined career path. Be the best place to work.",
          "Grow your own techs, advisors and managers: apprentice programs, develop your bench, train your replacement",
          "Always be teaching, training and educating",
+         "Don't overlook opportunities to teach, train and educate",   // Noah, Oct 28
          "Being short-handed limits scheduling, loses opportunities and leads to missed MPIs",
-         "Clear pay plans, job descriptions and expectations"],
+         "Clear pay plans, job descriptions and expectations, and hold people accountable to them"],   // accountability added (Noah, Oct 28)
   now: [{ big: "−76", label: "Fixed ops staff, September to September, to 1,540 (−4.7%): technicians −17, advisors −7, managers −3.", tone: "n" },
         { big: "$13,617", label: "Fixed gross per fixed employee a month, up $1,207. Gross grew 4.1% with 5.1% fewer people on average.", tone: "g" },
         // Noah, Oct 26: what an empty bay misses. prof/opp.json: 841,721 sold hrs / 583 counted techs / 9.49 months x $187.98 gross per sold hour
