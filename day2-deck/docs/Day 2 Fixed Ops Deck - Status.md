@@ -10,11 +10,12 @@ Updated: October 28, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 28: GMC Prescott body shop out of absorption too. Lexus tire balance near 0% is real (not a mapping problem) and stays red.
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
 - Data audit (full list in docs/Data Audit - Oct 28.md): no wrong source data; CP group totals re-pulled live from Qlik and match. Fixed: slide 142 band (20 stores at or above 85% leave $818K a month); 0.1 hour per RO = $6.6M a year in gross everywhere; one rule for changes (shown end minus shown start, rounding everywhere, opcode rates truncated incl. Store Prescriptions). GMC Prescott body shop out of absorption: group 77.9% (was 78.1%), GMC Prescott 61.6%. Lexus tire balance stays red (not a mapping problem). Proposals pending: What Changed opcode row, share column on slide 143, Two Ways tie, section chips, callback count on 45, wording items.
-- Store Prescriptions: green / red mark after each store's absorption (above / below the group's 78.1%), all 33 store slides.
+- Store Prescriptions: green / red mark after each store's absorption (above / below the group, now 77.9%), all 33 store slides.
 - Where the Money Is: 0.1 hours per RO "Be consistent: MPI and Road to the Sale on every car"; ten minutes a day "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place".
 - Where the Money Is: HOW column reworded with more context (manage proficiency daily; track, ask every car every time, hold people accountable; be available, proactive outreach to lapsed and inactive customers). Warranty Rates Are Rising band: "Protect that money: higher rates draw more audits, so document every claim to hold up."
 - Column rules on Better Than Last Year and Who's Moving Now; green both-lists bar on Two Ways to Read Improvement; Warranty Rates Are Rising band adds "Protect it"; Where the Money Is band: "Other than one more RO a day, every number here comes from customers already coming in for service."
@@ -63,6 +64,8 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
+- Data audit proposals: What Changed opcode row, slide 143 share column, Two Ways tie, section chips, slide 45 callback count, wording items, speaker-note cleanup.
+- Most Improved: add one metric (opcode closing % recommended)?
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
