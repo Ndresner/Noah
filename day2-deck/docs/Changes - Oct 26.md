@@ -239,3 +239,6 @@ Slides in `Changes - Oct 28 (round 18).pptx` (148, 160).
 
 ## Oct 28, round 19
 Slide in `Changes - Oct 28 (round 19).pptx` (160, Where the Money Is). HOW: 0.1 hours per RO "Be consistent: MPI and Road to the Sale on every car" (the menu dropped); ten minutes a day "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place".
+
+## Oct 28, review file (not in the deck)
+`Absorption Mark - Review.pptx`: Store Prescriptions with a thin green / red mark after the absorption value (above / below the group's 78.1%), as on the movers slides. Two stores: Chevy LV (below, red) and Honda Spokane (above, green). Built with `ABSMARK=1 EXAMPLE="HONDA SPOKANE|CHEVY LV" node store-rx.mjs`; the deck build is unchanged until Noah approves.

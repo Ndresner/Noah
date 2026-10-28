@@ -261,7 +261,9 @@ function vitals(pptx, sl, s) {
   [
     { label: "Fixed Ops Gross", value: H.Mmixed(s.gross[1]), note: chg(s.gross[1] - s.gross[0], DK) },
     { label: "Fixed Ops Net Profit", value: H.Mmixed(s.np[1]), neg: s.np[1] < 0, note: chg(s.np[1] - s.np[0], DK) },
-    { label: "Absorption", value: P(s.abs[1]), note: { text: `group ${P(ABS_G)}`, color: C.ink600 } },
+    // Oct 28 (Noah, preview): a thin green / red mark after the value, above / below the group, as on the movers slides. ABSMARK=1.
+    { label: "Absorption", value: P(s.abs[1]), note: { text: `group ${P(ABS_G)}`, color: C.ink600 },
+      mark: process.env.ABSMARK === "1" ? (s.abs[1] >= ABS_G ? C.good : C.bad) : null },
     { label: "CP ROs", value: H.Int(s.ros[1]), note: chg(s.ros[1] - s.ros[0], H.Dint) },
   ].forEach((v, i) => {
     const x = 0.75 + i * 3.02, w = 2.9;
@@ -271,8 +273,9 @@ function vitals(pptx, sl, s) {
     if (v.value.length * EM_BOLD * 22 / 72 + (v.note.text.length + 2) * EM_REG * 14 / 72 > w) throw new Error(`Rx: ${s.n} vital ${v.label} will not hold one line`);
     sl.addText([
       { text: v.value, options: { fontSize: sz(22, "vital value"), bold: true, color: v.neg ? C.badInk : C.navy } },
-      { text: "  " + v.note.text, options: { fontSize: sz(14, "vital change"), bold: !!v.note.bold, color: v.note.color } },
+      { text: (v.mark ? "       " : "  ") + v.note.text, options: { fontSize: sz(14, "vital change"), bold: !!v.note.bold, color: v.note.color } },
     ], { x, y: VIT.y + 0.34, w, h: 0.38, fontFace: F, valign: "middle", isTextBox: true, margin: 0 });
+    if (v.mark) sl.addShape(pptx.ShapeType.rect, { x: x + v.value.length * EM_BOLD * 22 / 72 + 0.17, y: VIT.y + 0.39, w: 0.07, h: 0.28, fill: { color: v.mark } });
   });
 }
 
@@ -368,8 +371,10 @@ const ALL = STORES.map(storeOf);
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 H.cover(pptx, pptx, { title: "Store\nPrescriptions", subtitle: "Day 2 Fixed Operations  ·  October 29, 2026", meta: ["January–September 2026 against 2025", "South Point, Las Vegas"], logo: LOGO });
 howTo(pptx);
-ALL.forEach(s => rxSlides(pptx, s, ALL));
-await pptx.writeFile({ fileName: "Store Prescriptions - Day 2 Review.pptx" });
+// ABSMARK=1 EXAMPLE="A|B" builds only those stores into a preview file (Oct 28)
+const EX = process.env.EXAMPLE ? process.env.EXAMPLE.split("|") : null;
+(EX ? ALL.filter(s => EX.includes(s.n)) : ALL).forEach(s => rxSlides(pptx, s, ALL));
+await pptx.writeFile({ fileName: EX ? "Absorption Mark - Review.pptx" : "Store Prescriptions - Day 2 Review.pptx" });
 console.log(`${pptx._slides.length} slides; RO ${H.dollars(RO_PRICE)}, hour ${H.dollars(HR_PRICE)}, video ${P(VID_G)}`);
 PEER.forEach((p, i) => console.log(SEGNAME[i], D2(p.hpro), H.dollars(p.lpr), P(p.pgp), H.dollars(p.fge)));
 ALL.forEach(s => console.log(`  ${s.n.padEnd(19)} ${String(s.gaps.length).padStart(2)}  ` + s.gaps.map(g => `${g.key} ${g.worth == null ? "#" + H.Int(g.count) : K(g.worth)}`).join(" · ")));
