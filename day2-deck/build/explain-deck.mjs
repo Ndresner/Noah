@@ -194,7 +194,7 @@ X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
   formula: ["Hours flagged (Qlik)", "÷", "clocked hours (ADP, regular + overtime)"], formulaSize: 22,
   // Noah, Oct 26: label the period Jan-Sep 2026 YTD (pay periods run Dec 25, 2025 to Oct 9, 2026; in the notes)
   // Oct 27 (Noah): vacation, PTO and holiday pay are not clocked hours
-  define: "January through September 2026, year to date. Vacation, paid time off and holiday pay are excluded from clocked hours. Store = total hours flagged ÷ total clocked hours.",
+  define: "January through September 2026, year to date. Clocked hours exclude vacation, paid time off and holiday pay. Store = total hours flagged ÷ total clocked hours.",   // the line from the definitions slide (Noah, Oct 28)
   whyHead: "WHO COUNTS", leverHead: "THE RULES",
   why: ["Service technicians and express technicians",
         "Service team leaders and shop foremen",
@@ -253,11 +253,11 @@ X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross", source: SRC_PL,
   });
   // the example, and the identity that ties the three together
   const EY = Y + 3.35 + 0.2;
-  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.72, fill: { color: C.blueTint } });
+  s.addShape(pptx.ShapeType.rect, { x: X0, y: EY, w: 11.77, h: 1.38, fill: { color: C.blueTint } });
   t("PUTTING IT TOGETHER: ONE TECHNICIAN, ONE DAY", { x: X0 + 0.2, y: EY + 0.16, w: 11.37, h: 0.28, fontSize: sz(14, "example label"), bold: true, color: C.ink600, charSpacing: 0.8 });
   t("A technician clocks in for 8 hours, clocks 6 of them to repair orders and flags 7.5 hours.", { x: X0 + 0.2, y: EY + 0.5, w: 11.37, h: 0.36, fontSize: sz(18, "example"), color: C.ink, valign: "middle" });
   t("Productivity × efficiency = proficiency:  75% × 125% = 93.75%", { x: X0 + 0.2, y: EY + 0.9, w: 11.37, h: 0.36, fontSize: sz(18, "identity"), bold: true, color: C.navy, valign: "middle" });
-  t("Clocked hours exclude vacation, paid time off and holiday pay.", { x: X0 + 0.2, y: EY + 1.3, w: 11.37, h: 0.32, fontSize: sz(15, "exclusion"), color: C.ink600, valign: "middle" });
+  // Oct 28 (Noah): the clocked-hours exclusion lives on How We Measured It, not here
   H.foot(pptx, s, "Standard service-department definitions. On the store slides, proficiency = Qlik hours flagged (sold hours) ÷ ADP regular + overtime hours, = clocked hours (vacation, PTO and holiday pay excluded). Efficiency and productivity need DMS time clocked to repair orders, which this data does not include, so they are defined here but not measured. The example is illustrative, not a store or technician.");
   s.addNotes("PLACE: right after the Technician Proficiency explainer, before How We Measured It (Noah, Oct 27).\nTalk track: walk the example left to right. The tech was on repair orders 6 of 8 hours (75% productive) and flagged 7.5 hours in those 6 (125% efficient), so 7.5 flagged hours for 8 clocked (93.75% proficient). Proficiency is the one we measure: 85% target, group 94.7%. 'Productivity' here is the technician measure, not the Fixed Ops Productivity section (gross and ROs per employee).");
 }

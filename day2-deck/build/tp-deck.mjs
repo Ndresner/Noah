@@ -208,7 +208,7 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
   ask: "name your one or two commitments out loud, with a number attached, before you leave the room.",
   tone: "g", notes: "PLACE: the close, after the last Productivity / Proficiency slide.\nSaid: Roundtable slide 24 (Misc & Closing). Commitments are reviewed at the next meeting (Noah, Oct 27): keep a list of what each store names." });
 
-// Pay Yourself First (Noah, Oct 25): opens the Internal section. Internal work isn't service making money off sales;
+// Pay Yourself First (Noah, Oct 25): opens the Internal section. Internal work is protected gross on our own vehicles (Oct 28 wording);
 // it keeps gross in the department that holds on to the most of it. Data: pulls/dept_keep.json (P&L Detail, Jan-Sep 2026).
 {
   const D = JSON.parse(fs.readFileSync("./pulls/dept_keep.json", "utf8")), f = D.fixed, s = D.sales;
@@ -217,7 +217,7 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
   const spe = s.personnel_new + s.personnel_used + s.slsp_comp_new + s.slsp_comp_used + s.fi_comp;
   const c = v => Math.round(v * 100) + "\u00a2", M = v => "$" + (v / 1e6).toFixed(1) + "M";
   T({ eyebrow: "Internal", title: "Pay Yourself First", saidFrom: null,
-    said: ["Internal work isn't service making money off sales: it is gross the store earns on its own cars",
+    said: ["Internal work is protected gross generated on our own vehicles",   // Noah, Oct 28
            "Sales prices a car off what it costs, within reason. A fair internal charge is part of that cost",
            "Service and parts keep far more of every gross dollar than vehicle sales does",
            "Every gross dollar in sales carries commissions, pay and expense that fixed ops doesn't",
@@ -227,7 +227,7 @@ T({ eyebrow: "Fixed Ops", title: "Before You Leave", saidFrom: RT,
           { big: `${c(fpe / fg)} vs ${c(spe / sg)}`, label: "Of every gross dollar spent on people and commissions: fixed ops vs vehicle sales.", tone: "n" }],
     ask: "hold internal labor and parts margins to customer pay. Every internal dollar is gross in the department that keeps the most of it.",
     source: "Qlik - Profit & Loss, Detail statement, Jan-Sep 2026, same-store. Kept = department gross less the department's own expenses. Vehicle sales = new + used departments plus F&I income and F&I compensation. Other income not assigned to a department (doc fees, packs, factory money, holdback: $87.2M net) and management fees are left out of both.",
-    notes: `PLACE: Internal section, after the section break and before Internal ELR (Noah, Oct 25).\nTalk track: a lot of stores see internal as service making money off sales. It isn't: sales prices a car off its cost, within reason, so a fair internal charge is part of the deal, and the gross lands in the department that keeps the most of it. Example: if sales makes $500 of gross on a car, the commissions, pay and expense that come out of it leave far less than the same $500 of internal gross keeps in service and parts.\nNumbers (P&L Detail, Jan-Sep 2026, same-store): fixed ops gross ${M(fg)}, department profit ${M(fp)} (${c(fp / fg)}); people ${M(fpe)} (${c(fpe / fg)}). Vehicle sales gross (new ${M(s.gross_new)}, used ${M(s.gross_used)}, F&I ${M(s.gross_fi)}) ${M(sg)}; new and used department results ${M(s.profit_new)} and ${M(s.profit_used)}, less F&I compensation ${M(s.fi_comp)}: ${M(sp)} kept (${c(sp / sg)}); people and commissions ${M(spe)} (${c(spe / sg)}). Caveat: $87.2M of net other income (doc fees, packs, factory money, holdback, interest) is booked outside the departments and most of it comes with vehicle sales; with it, vehicle sales keeps much more. The comparison is department against department, as the P&L reports them.` });
+    notes: `PLACE: Internal section, after the section break and before Internal ELR (Noah, Oct 25).\nTalk track: internal work is protected gross generated on our own vehicles. Sales prices a car off its cost, within reason, so a fair internal charge is part of the deal, and the gross lands in the department that keeps the most of it. Example: if sales makes $500 of gross on a car, the commissions, pay and expense that come out of it leave far less than the same $500 of internal gross keeps in service and parts.\nNumbers (P&L Detail, Jan-Sep 2026, same-store): fixed ops gross ${M(fg)}, department profit ${M(fp)} (${c(fp / fg)}); people ${M(fpe)} (${c(fpe / fg)}). Vehicle sales gross (new ${M(s.gross_new)}, used ${M(s.gross_used)}, F&I ${M(s.gross_fi)}) ${M(sg)}; new and used department results ${M(s.profit_new)} and ${M(s.profit_used)}, less F&I compensation ${M(s.fi_comp)}: ${M(sp)} kept (${c(sp / sg)}); people and commissions ${M(spe)} (${c(spe / sg)}). Caveat: $87.2M of net other income (doc fees, packs, factory money, holdback, interest) is booked outside the departments and most of it comes with vehicle sales; with it, vehicle sales keeps much more. The comparison is department against department, as the P&L reports them.` });
 }
 
 await pptx.writeFile({ fileName: "Talking Points - Day 2.pptx" }); console.log("tp built", pptx._slides.length);

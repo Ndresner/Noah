@@ -292,3 +292,9 @@ Slides in `Changes - Oct 28 (round 26).pptx`.
 
 ## Oct 28, work mix rebuild (no slide change)
 Per Noah's work-mix rebuild prompt: re-pulled CP labor sale by store for 2025 and 2026 with the rules in `build/work-mix-rules.py`. Every check passes: 2026 group 54.3 / 30.5 / 15.2, 2025 unclassified 19.0%, all 33 stores' 2026 M / R / U match to one decimal, totals tie to the verified CP labor sale both years. Saved `inputs/qlik/work_mix_by_store.json`, `build/wm.json`, `build/wm.csv`, `docs/work-mix-method.md`. Decided (Noah): no percent change added on the points-change slides.
+
+## Oct 28, round 27
+Slides in `Changes - Oct 28 (round 27).pptx` (113, 137, 138).
+- 113 Pay Yourself First: first bullet "Internal work is protected gross generated on our own vehicles" (was "isn't service making money off sales: it is gross the store earns on its own cars"); talk track in the notes reworded to match.
+- 137 Proficiency, Efficiency and Productivity: "Clocked hours exclude vacation, paid time off and holiday pay." moved off this slide (example box shortened).
+- 138 How We Measured It: the definition line now reads "...Clocked hours exclude vacation, paid time off and holiday pay..." (same sentence as on 137).
