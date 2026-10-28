@@ -2382,8 +2382,9 @@ export function movers3(pptx, deck, o) {
       // their year labels coloured as the lines (gray = last year / Q1, blue = this year / Q3), the line in the middle
       const sp = o.spark?.(r.key ?? r.n, ci);
       if (sp && o.sparkStyle === "line") {
-        // Oct 28 (Noah): the old row (name, then last year -> this year) with the line on the values line
-        s.addText([{ text: r.n, options: { bold: true, color: C.ink, fontSize: sz(14, "movers store"), breakLine: true } },
+        // Oct 28 (Noah): the old row (name, then last year -> this year) with the line on its own row under it; name in caps
+        // as on the rankers and the Day 1 slide (CAPS=0 keeps Title Case)
+        s.addText([{ text: process.env.CAPS === "0" ? r.n : String(r.n).toUpperCase(), options: { bold: true, color: C.ink, fontSize: sz(14, "movers store"), breakLine: true } },
                    { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(12, "movers values") } },
                    { text: r.v1, options: { color: c, bold: true, fontSize: sz(12, "movers values") } }],
           { x: x0 + 0.48, y: y + rh * 0.05, w: W - 0.58, h: rh * 0.52, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
