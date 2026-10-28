@@ -20,13 +20,20 @@ const NM = Object.fromEntries(N.mn.map(r => [r[0], [r[2] / 3, r[4] / 3]])), PM =
 const MN = { sv: NM, pt: PM, fx: Object.fromEntries(Object.keys(NM).map(n => [n, [NM[n][0] + PM[n][0], NM[n][1] + PM[n][1]]])) };
 const fxS = svS.map((r, i) => [r[0], r[1] + ptS[i][1], r[2] + ptS[i][2]]);
 const sum = a => a.reduce((t, x) => t + x, 0);
+// SPARK=1 (Oct 28 review, Noah asked if sparklines fit on the movers slides): store months Jan-Sep, 2025 (pulls/gross_m25_store.json,
+// reconciled to gross/monthly.json to the dollar) and 2026 (pulls/gross_m26_store.json)
+const SM = y => Object.fromEntries(JSON.parse(fs.readFileSync(`./pulls/gross_m${y}_store.json`, "utf8")).rows.filter(r => r[0] !== "INEOS")
+  .map(r => [r[0], r.slice(1, 3).map(c => (Array.isArray(c) ? c : c.split("|")).map(v => -Number(v)))]));
+const SP = process.env.SPARK === "1" ? { 25: SM(25), 26: SM(26) } : null;
+const spark = k => SP && ((n, ci) => { const pick = y => k === "fx" ? SP[y][n][0].map((v, i) => v + SP[y][n][1][i]) : SP[y][n][k === "sv" ? 0 : 1];
+  return ci === 2 ? { cur: pick(26) } : { prior: pick(25), cur: pick(26) }; });
 const M = v => "$" + (v / 1e6).toFixed(2) + "M";
 const usd = v => (v >= 0 ? "+" : "\u2212") + "$" + Math.abs(Math.round(v)).toLocaleString("en-US");
 const MLAB = ["Oct '25","Nov '25","Dec '25","Jan '26","Feb '26","Mar '26","Apr '26","May '26","Jun '26","Jul '26","Aug '26","Sep '26"];
 
 H.section(pptx, pptx, { kicker: "Fixed Ops", title: "Gross", chips: ["Fixed ops", "Service", "Parts"] });
 
-function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
+function grossBlock(title, metric, m25, m26, q4, S, chain, mn, sk) {
   const t12 = [...q4, ...m26];
   const v25 = sum(m25), v26 = sum(m26), d = v26 - v25;
   const yo = m26.map((v, i) => v / m25[i] - 1);
@@ -66,7 +73,7 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
     source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, the top three and bottom three by percent marked.`,
   });
   // top and bottom five for all three (Noah, Oct 22: replaces the fixed ops "who moved it" chain, for continuity)
-  moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA,
+  moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA, spark: spark(sk),
     // gray second line = the dollar change (Noah, Oct 28)
     rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1, d2: kd(b - a) })),
     now: S.map(([n]) => ({ n, v0: H.kusd(mn[n][0]), v1: H.kusd(mn[n][1]), d: mn[n][1] / mn[n][0] - 1, d2: kd(mn[n][1] - mn[n][0]) })),
@@ -84,7 +91,7 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
   }
 }
 grossBlock("Total Gross Profit - Fixed Ops", "fixed ops gross", sv25.map((v, i) => v + pt25[i]), sv26.map((v, i) => v + pt26[i]),
-  Q4.sv.map((v, i) => v + Q4.pt[i]), fxS, true, MN.fx);
-grossBlock("Total Gross Profit - Service", "service gross", sv25, sv26, Q4.sv, svS, false, MN.sv);
-grossBlock("Total Gross Profit - Parts", "parts gross", pt25, pt26, Q4.pt, ptS, false, MN.pt);
-await pptx.writeFile({ fileName: "Fixed Ops Gross - House Style.pptx" }); console.log("gross built");
+  Q4.sv.map((v, i) => v + Q4.pt[i]), fxS, true, MN.fx, "fx");
+grossBlock("Total Gross Profit - Service", "service gross", sv25, sv26, Q4.sv, svS, false, MN.sv, "sv");
+grossBlock("Total Gross Profit - Parts", "parts gross", pt25, pt26, Q4.pt, ptS, false, MN.pt, "pt");
+await pptx.writeFile({ fileName: SP ? "spark.pptx" : "Fixed Ops Gross - House Style.pptx" }); console.log("gross built");

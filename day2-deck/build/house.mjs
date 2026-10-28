@@ -2354,7 +2354,7 @@ export function movers3(pptx, deck, o) {
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
   const K = o.k, gap = 0.22, W = (12.33 - 0.44 - gap * 2) / 3, HEAD = 1.5, TOP = 2.3, BOT = bodyBot(o.takeaway) - 0.12, rh = (BOT - TOP) / K;
-  const big = K <= 3;
+  const big = K <= 3, SPW = 0.55, CW = o.spark ? 0.98 : 1.22;   // spark rows: narrower change column
   // Oct 24 (Noah): a store on both the first list (top vs last year) and the last (moving now) gets a green bar down
   // the right edge of its row on both lists
   const both = new Set(o.cols[0].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n)));
@@ -2378,10 +2378,22 @@ export function movers3(pptx, deck, o) {
                  { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(big ? 14 : 12, "movers values") } },
                  { text: r.v1, options: { color: c, bold: true, fontSize: sz(big ? 14 : 12, "movers values") } }],
         { x: x0 + (big ? 0.55 : 0.48), y, w: W - (big ? 1.72 : 1.82), h: rh, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
+      // o.spark (Oct 28 review, Noah): a small line per row on the values line, left of the change; gray = last year,
+      // coloured = this year (moving now: this year only)
+      const sp = o.spark?.(r.key ?? r.n, ci);
+      if (sp) {
+        const all = [...(sp.prior ?? []), ...sp.cur], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || 1;
+        const lab = sp.cur.map((_, i) => String(i + 1));
+        const ser = [...(sp.prior ? [{ name: "prior", labels: lab, values: sp.prior }] : []), { name: "cur", labels: lab, values: sp.cur }];
+        s.addChart(pptx.ChartType.line, ser, { x: x0 + W - CW - 0.14 - SPW, y: y + rh * 0.2, w: SPW, h: rh * 0.6,
+          chartColors: [...(sp.prior ? ["A6A6A6"] : []), c], lineSize: 1.5, lineDataSymbol: "none",
+          showLegend: false, catAxisHidden: true, valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" },
+          valAxisMinVal: lo - pad, valAxisMaxVal: hi + pad, layout: { x: 0, y: 0, w: 1, h: 1 } });
+      }
       // r.d2 (Oct 24): a smaller second change under the main one, e.g. +0.30 hrs under +17.4%
       if (r.d2 != null) {
-        s.addText(o.fmtD(r.d), { x: x0 + W - 1.32, y: y + rh * 0.12, w: 1.22, h: rh * 0.5, fontFace: F, fontSize: sz(16, "movers change"), bold: true, color: c, align: "right", valign: "bottom", isTextBox: true, margin: 0 });
-        s.addText(r.d2, { x: x0 + W - 1.32, y: y + rh * 0.58, w: 1.22, h: rh * 0.32, fontFace: F, fontSize: sz(13, "movers change sub"), color: C.ink600, align: "right", valign: "top", isTextBox: true, margin: 0 });
+        s.addText(o.fmtD(r.d), { x: x0 + W - CW - 0.1, y: y + rh * 0.12, w: CW, h: rh * 0.5, fontFace: F, fontSize: sz(16, "movers change"), bold: true, color: c, align: "right", valign: "bottom", isTextBox: true, margin: 0 });
+        s.addText(r.d2, { x: x0 + W - CW - 0.1, y: y + rh * 0.58, w: CW, h: rh * 0.32, fontFace: F, fontSize: sz(13, "movers change sub"), color: C.ink600, align: "right", valign: "top", isTextBox: true, margin: 0 });
       } else
       s.addText(o.fmtD(r.d), { x: x0 + W - (big ? 1.12 : 1.32), y, w: big ? 1.02 : 1.22, h: rh, fontFace: F, fontSize: sz(big ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     });

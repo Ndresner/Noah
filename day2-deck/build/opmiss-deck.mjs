@@ -74,10 +74,11 @@ const YSRC = SRC.replace(" A year = Jan-Sep x 12 / 9.", "").replace(" Stores at 
     rows: rows.map(([n, t]) => [n, t.vs]), fmt: sgnK, valLabel: "Variance", valW: 1.2,
     // Oct 27 (Noah): opcodes above / below the four benchmarks added together, like the dollars
     // Oct 27 (Noah): top / bottom three by opcodes marked, as on the service slides
-    extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(rows.map(([n, t]) => [n, sgnN(t.op)])),
+    // Oct 28 (Noah): Missed ahead of Opcodes
+    extra: [{ label: "Missed", w: 0.85, vals: Object.fromEntries(rows.map(([n, t]) => [n, `${t.k} of ${t.of}`])) },
+            { label: "Opcodes", w: 0.95, vals: Object.fromEntries(rows.map(([n, t]) => [n, sgnN(t.op)])),
               marks: (() => { const by = [...rows].sort((a, b) => b[1].op - a[1].op);
-                return Object.fromEntries([...by.slice(0, 3).map(([n]) => [n, "g"]), ...by.slice(-3).map(([n]) => [n, "r"])]); })() },
-            { label: "Missed", w: 0.85, vals: Object.fromEntries(rows.map(([n, t]) => [n, `${t.k} of ${t.of}`])) }],
+                return Object.fromEntries([...by.slice(0, 3).map(([n]) => [n, "g"]), ...by.slice(-3).map(([n]) => [n, "r"])]); })() }],
     takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} so far this year; ${above} of 33 stores are ahead of benchmark on net across the four services. ${all4} stores miss every benchmark that applies to them; ${none === 1 ? "1 store misses" : `${none} stores miss`} none.`,
     tone: "b", source: YSRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross Jan-Sep 2026 above (+) or below (-) the four benchmarks, at the store's own gross per service. Opcodes = the four services' opcodes above (+) or below (-) their benchmarks, added together; green / red bar = top / bottom three by opcodes. Missed = services under benchmark out of those the manufacturer calls for at the store (tire balance at the Audi stores and fuel system service at Volvo, Audi Henderson, VW Henderson and Audi Reno are left out). Below-benchmark services count against above-benchmark ones here.",
   });

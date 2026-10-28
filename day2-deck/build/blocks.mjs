@@ -164,7 +164,7 @@ export function moversSlide(pptx, o) {
   const dir = H.dirOf(o.metric), up = dir !== "down", K = 5;
   // Oct 28 audit: a points change is the shown end minus the shown start, and rows rank on what they show
   const fix = x => ({ ...x, d: H.shownDiff(x.v0, x.v1, o.fmtD, x.d) });
-  const srt = rs => [...rs].map(fix).sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, n: nm(x.n) }));
+  const srt = rs => [...rs].map(fix).sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, key: x.n, n: nm(x.n) }));
   const r = srt(o.rows);
   const top = r.slice(0, 3).map(x => x.n), bot = r.slice(-3).reverse().map(x => x.n);
   const notes = "Conversation starter: each top store says one thing they started doing; each bottom store says what got in the way and what they would try. The room trades ideas.";
@@ -175,6 +175,7 @@ export function moversSlide(pptx, o) {
   const nw = srt(o.now).slice(0, K);
   return H.movers3(pptx, pptx, {
     eyebrow: o.seg, title: o.title, k: K, fmtD: o.fmtD, up, neutral: dir === "neutral",
+    spark: o.spark,   // Oct 28 review: (store key, column) -> { prior, cur } monthly series for a sparkline per row
     cols: [
       { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(0, K), tone: "good" },
       { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },

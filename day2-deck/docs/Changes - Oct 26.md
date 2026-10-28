@@ -302,3 +302,8 @@ Slides in `Changes - Oct 28 (round 27).pptx` (113, 137, 138).
 ## Oct 28, round 28
 Slide in `Changes - Oct 28 (round 28).pptx` (110).
 - 110 Total Variance from Benchmark by Store: "Missed" column back, e.g. "3 of 4" = services under benchmark out of those the manufacturer calls for at the store. Gray services are left out of the count and the total (Audi Henderson and Audi Reno: tire balance and fuel; Volvo and VW Henderson: fuel), so Audi Reno reads "2 of 2". Band: "15 stores miss every benchmark that applies to them; 1 store misses none." (Honda Henderson). Definition in the source line, per-store counts in the notes.
+
+## Oct 28, round 29
+Slide in `Changes - Oct 28 (round 29).pptx` (110).
+- 110 Total Variance from Benchmark by Store: Missed column now sits before Opcodes (Variance, Missed, Opcodes).
+- Review only, not in the deck: `Movers Sparklines - Review.pptx`, the three gross movers slides with a small Jan-Sep line per store (gray 2025, coloured 2026; moving-now column 2026 only). 2025 store months pulled from the P&L (`pulls/gross_m25_store.json`), tie to the group months to the dollar. `SPARK=1 node gross-deck.mjs` builds it; the deck build is unchanged.
