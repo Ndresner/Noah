@@ -289,3 +289,6 @@ Slides in `Changes - Oct 28 (round 25).pptx` (156-159). Better Than Last Year is
 Slides in `Changes - Oct 28 (round 26).pptx`.
 - Biggest Movers This Year split like vs Last Year: Customer Pay (CP gross, ROs, hours per RO, ELR, labor $ per RO) and Profit and Process (fixed ops net profit, absorption, CP parts GP %, opcodes combined), Q3 vs Q1. Net profit moves in dollars on all four grids (as the net profit movers slide; a percent off a small or negative base ran to +2,451%). Deck 239 slides (196 in the flow).
 - Gray second line on movers: CP RO count (+N ROs), Total Gross Profit - Fixed Ops / Service / Parts and Warranty Gross Profit ($ change), Fixed Ops Net Profit (% change over the size of the starting profit).
+
+## Oct 28, work mix rebuild (no slide change)
+Per Noah's work-mix rebuild prompt: re-pulled CP labor sale by store for 2025 and 2026 with the rules in `build/work-mix-rules.py`. Every check passes: 2026 group 54.3 / 30.5 / 15.2, 2025 unclassified 19.0%, all 33 stores' 2026 M / R / U match to one decimal, totals tie to the verified CP labor sale both years. Saved `inputs/qlik/work_mix_by_store.json`, `build/wm.json`, `build/wm.csv`, `docs/work-mix-method.md`. Decided (Noah): no percent change added on the points-change slides.
