@@ -13,6 +13,7 @@ Updated: October 28, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- Store Prescriptions: green / red mark after each store's absorption (above / below the group's 78.1%), all 33 store slides.
 - Where the Money Is: 0.1 hours per RO "Be consistent: MPI and Road to the Sale on every car"; ten minutes a day "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place".
 - Where the Money Is: HOW column reworded with more context (manage proficiency daily; track, ask every car every time, hold people accountable; be available, proactive outreach to lapsed and inactive customers). Warranty Rates Are Rising band: "Protect that money: higher rates draw more audits, so document every claim to hold up."
 - Column rules on Better Than Last Year and Who's Moving Now; green both-lists bar on Two Ways to Read Improvement; Warranty Rates Are Rising band adds "Protect it"; Where the Money Is band: "Other than one more RO a day, every number here comes from customers already coming in for service."

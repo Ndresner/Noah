@@ -242,3 +242,6 @@ Slide in `Changes - Oct 28 (round 19).pptx` (160, Where the Money Is). HOW: 0.1 
 
 ## Oct 28, review file (not in the deck)
 `Absorption Mark - Review.pptx`: Store Prescriptions with a thin green / red mark after the absorption value (above / below the group's 78.1%), as on the movers slides. Two stores: Chevy LV (below, red) and Honda Spokane (above, green). Built with `ABSMARK=1 EXAMPLE="HONDA SPOKANE|CHEVY LV" node store-rx.mjs`; the deck build is unchanged until Noah approves.
+
+## Oct 28, round 20
+Store Prescriptions (162-194, all 33 store slides, in `Changes - Oct 28 (round 20).pptx`): thin green / red mark after the absorption value, above / below the group's 78.1%, as on the movers slides. `ABSMARK=0` turns it off. Review file `Absorption Mark - Review.pptx` retired.

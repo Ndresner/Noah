@@ -261,21 +261,28 @@ function vitals(pptx, sl, s) {
   [
     { label: "Fixed Ops Gross", value: H.Mmixed(s.gross[1]), note: chg(s.gross[1] - s.gross[0], DK) },
     { label: "Fixed Ops Net Profit", value: H.Mmixed(s.np[1]), neg: s.np[1] < 0, note: chg(s.np[1] - s.np[0], DK) },
-    // Oct 28 (Noah, preview): a thin green / red mark after the value, above / below the group, as on the movers slides. ABSMARK=1.
+    // Oct 28 (Noah): a thin green / red mark after the value, above / below the group, as on the movers slides. In the deck; ABSMARK=0 turns it off.
     { label: "Absorption", value: P(s.abs[1]), note: { text: `group ${P(ABS_G)}`, color: C.ink600 },
-      mark: process.env.ABSMARK === "1" ? (s.abs[1] >= ABS_G ? C.good : C.bad) : null },
+      mark: process.env.ABSMARK !== "0" ? (s.abs[1] >= ABS_G ? C.good : C.bad) : null },
     { label: "CP ROs", value: H.Int(s.ros[1]), note: chg(s.ros[1] - s.ros[0], H.Dint) },
   ].forEach((v, i) => {
     const x = 0.75 + i * 3.02, w = 2.9;
     if (i) sl.addShape(pptx.ShapeType.rect, { x: x - 0.1, y: VIT.y + 0.12, w: 0.012, h: VIT.h - 0.24, fill: { color: C.rule } });
     sl.addText(v.label.toUpperCase(), { x, y: VIT.y + 0.08, w, h: 0.26, fontFace: F, fontSize: sz(14, "vital label"), bold: true,
       color: C.ink600, charSpacing: 0.8, isTextBox: true, margin: 0 });
-    if (v.value.length * EM_BOLD * 22 / 72 + (v.note.text.length + 2) * EM_REG * 14 / 72 > w) throw new Error(`Rx: ${s.n} vital ${v.label} will not hold one line`);
-    sl.addText([
-      { text: v.value, options: { fontSize: sz(22, "vital value"), bold: true, color: v.neg ? C.badInk : C.navy } },
-      { text: (v.mark ? "       " : "  ") + v.note.text, options: { fontSize: sz(14, "vital change"), bold: !!v.note.bold, color: v.note.color } },
+    if ((v.mark ? v.value.length * 0.66 * 22 / 72 + 0.23 + v.note.text.length * EM_REG * 14 / 72 : v.value.length * EM_BOLD * 22 / 72 + (v.note.text.length + 2) * EM_REG * 14 / 72) > w) throw new Error(`Rx: ${s.n} vital ${v.label} will not hold one line`);
+    const valOpt = { fontSize: sz(22, "vital value"), bold: true, color: v.neg ? C.badInk : C.navy };
+    const noteOpt = { fontSize: sz(14, "vital change"), bold: !!v.note.bold, color: v.note.color };
+    if (v.mark) {
+      // value, mark and note as their own boxes so the mark sits just past the value (bold 22pt digits run ~0.66 em)
+      const mx = x + v.value.length * 0.66 * 22 / 72 + 0.06;
+      sl.addText(v.value, { x, y: VIT.y + 0.34, w: mx - x, h: 0.38, fontFace: F, valign: "middle", isTextBox: true, margin: 0, ...valOpt });
+      sl.addShape(pptx.ShapeType.rect, { x: mx, y: VIT.y + 0.39, w: 0.07, h: 0.28, fill: { color: v.mark } });
+      sl.addText(v.note.text, { x: mx + 0.17, y: VIT.y + 0.34, w: x + w - mx - 0.17, h: 0.38, fontFace: F, valign: "middle", isTextBox: true, margin: 0, ...noteOpt });
+    } else sl.addText([
+      { text: v.value, options: valOpt },
+      { text: "  " + v.note.text, options: noteOpt },
     ], { x, y: VIT.y + 0.34, w, h: 0.38, fontFace: F, valign: "middle", isTextBox: true, margin: 0 });
-    if (v.mark) sl.addShape(pptx.ShapeType.rect, { x: x + v.value.length * EM_BOLD * 22 / 72 + 0.17, y: VIT.y + 0.39, w: 0.07, h: 0.28, fill: { color: v.mark } });
   });
 }
 
