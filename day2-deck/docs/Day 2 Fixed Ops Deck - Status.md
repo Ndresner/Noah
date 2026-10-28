@@ -68,8 +68,10 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
+- Better Than Last Year / Who's Moving Now: which measures to add (recommended: two slides, adding fixed ops net profit, absorption, CP labor $ per RO and opcode closing %), and whether to keep the bottom 3.
+- Points-change slides (absorption, net to gross, GP %, opcodes): add the percent change alongside the points?
+- Movers slides: the small gray second line (change in the metric's own unit, today only on the slides ranked by % change: CP hours per RO, CP ELR, CP labor $ per RO, internal ELR) - add it to the other movers slides too?
 - Work mix: Noah has extra data to check the opcode-description classification.
-- Most Improved: add one metric (opcode closing % recommended)?
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
