@@ -146,7 +146,7 @@ export function block(pptx, X, M) {
   const pm = a => a.map(v => v / 3);   // a quarter's inputs as a monthly average: totals read per month, rates unchanged
   const nw = st.filter(x => x.q1);
   if (M.movers !== false) moversSlide(pptx, {
-    seg: M.seg, title: M.title, metric: M.metric, fmtD: CF,
+    seg: M.seg, title: M.title, metric: M.metric, fmtD: CF, spark: sparkFrom(D.sm, f),
     // M.d2 (Noah, Oct 28): a gray second line on a block that is not ranked by percent (CP RO count: the RO change)
     rows: st.map(x => ({ n: x.n, v0: FM.v(f(x.a25)), v1: FM.v(f(x.a26)), d: ch(x.a25, x.a26), d2: M.pct ? absD(x.a25, x.a26) + (M.absUnit ?? "") : M.d2 ? M.d2(x.a25, x.a26) : undefined })),
     now: nw.length ? nw.map(x => ({ n: x.n, v0: FM.v(f(pm(x.q1))), v1: FM.v(f(pm(x.q3))), d: ch(x.q1, x.q3), d2: M.pct ? absD(pm(x.q1), pm(x.q3)) + (M.absUnit ?? "") : M.d2 ? M.d2(pm(x.q1), pm(x.q3)) : undefined })) : undefined,
@@ -155,6 +155,17 @@ export function block(pptx, X, M) {
     src: `${M.src} ${M.def ?? ""} Top and bottom five stores by change in ${M.chgDesc ?? M.title}, Jan-Sep 2026 vs 2025.`,
   });
 }
+
+/* sparkFrom (Oct 28, Noah: every movers slide in the caps / line style): sm = { STORE: [2025 months, 2026 months] }, each month
+   the block's inputs; the line is the metric month by month (gray last year, coloured this year; moving now = this year only).
+   SPARK=0 builds the slides without the lines. */
+export const SPARK = process.env.SPARK === "1";   // review build; flips to on once Noah approves
+export const sparkFrom = (sm, f) => SPARK && sm ? ((key, ci) => {
+  const s = sm[key]; if (!s) return null;
+  const ln = yi => s[yi].map(a => { const v = f(a); return Number.isFinite(v) ? v : null; });
+  const r = ci === 2 ? { cur: ln(1) } : { prior: ln(0), cur: ln(1) };
+  return r.cur.some(v => v != null) ? r : null;   // no line where a block does not carry that input monthly
+}) : undefined;
 
 /* the top-and-bottom-five slide for any metric (also used by the gross and opcode decks). With o.now (Oct 23, Noah: every
    top/bottom slide) it is three columns: top five and bottom five year over year, then top five moving now, Jul-Sep vs

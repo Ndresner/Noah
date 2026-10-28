@@ -1,7 +1,7 @@
 import PptxGenJS from "pptxgenjs";
 import * as H from "./house.mjs";
 import fs from "fs";
-import { load, block, F, moversSlide } from "./blocks.mjs";
+import { load, block, F, moversSlide, sparkFrom } from "./blocks.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 /* Qlik Closed Repair Orders app c3efc739, pulled 2026-10-15. a = [W ROs, W labor sale, W hours, I labor sale, I hours].
    Same-store (INEOS excluded), GMC Prescott body shop labor types excluded. Store rows reconcile on all five fields. */
@@ -39,7 +39,7 @@ const base = { seg: SEG, src: SRC };
     groupLabel: "2026 VS 2025 YTD · **YEAR-OVER-YEAR CHANGE**",
     takeaway: `${grew} of 33 stores grew warranty gross. ${H.storeName(bd[0].n)} added the most at ${kd(bd[0].d)} (${pcA(bd[0].p)}); ${H.storeName(bd.at(-1).n)} fell most at ${kd(bd.at(-1).d)} (${pcA(bd.at(-1).p)}).`,
     source: `${WSRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, the top three and bottom three by percent marked. Warranty volume follows campaigns and recalls as well as store effort.` });
-  moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: pcA,
+  moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: pcA, spark: sparkFrom(WG.sm, a => a[0]),
     // gray second line = the dollar change (Noah, Oct 28)
     rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1, d2: kd(b - a) })),
     now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] / MN[n][0] - 1, d2: kd(MN[n][1] - MN[n][0]) })),

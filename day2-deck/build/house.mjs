@@ -2381,14 +2381,14 @@ export function movers3(pptx, deck, o) {
       // o.spark (Oct 28 review, Noah, from the Day 1 sales slide): name on its own line, the two values stacked under it with
       // their year labels coloured as the lines (gray = last year / Q1, blue = this year / Q3), the line in the middle
       const sp = o.spark?.(r.key ?? r.n, ci);
-      if (sp && o.sparkStyle === "line") {
+      if (sp && o.sparkStyle !== "stacked") {
         // Oct 28 (Noah): the old row (name, then last year -> this year) with the line on its own row under it; name in caps
         // as on the rankers and the Day 1 slide (CAPS=0 keeps Title Case)
         s.addText([{ text: process.env.CAPS === "0" ? r.n : String(r.n).toUpperCase(), options: { bold: true, color: C.ink, fontSize: sz(14, "movers store"), breakLine: true } },
                    { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(12, "movers values") } },
                    { text: r.v1, options: { color: c, bold: true, fontSize: sz(12, "movers values") } }],
           { x: x0 + 0.48, y: y + rh * 0.05, w: W - 0.58, h: rh * 0.52, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
-        const all = [...(sp.prior ?? []), ...sp.cur], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || 1;
+        const all = [...(sp.prior ?? []), ...sp.cur].filter(Number.isFinite), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.05 || 1;
         const lab = sp.cur.map((_, i) => String(i + 1)), SX = x0 + 0.48, SW = x0 + W - CW - 0.2 - SX;   // own row under the values
         // sp.split: one line, Q1 gray, Q2 a faint connector, Q3 in colour (blanks are gaps)
         const seg = (a, b) => sp.cur.map((v, i) => i >= a && i <= b ? v : null);
@@ -2404,7 +2404,7 @@ export function movers3(pptx, deck, o) {
         [[yl[0], r.v0, "8C8C8C", false], [yl[1], r.v1, C.blue, true]].forEach(([lab, v, lc, bold], k) =>
           s.addText([{ text: lab + "  ", options: { color: lc, bold: true } }, { text: v, options: { color: bold ? C.ink : C.ink600, bold } }],
             { x: LX, y: y + rh * (0.4 + k * 0.27), w: VW, h: rh * 0.27, fontFace: F, fontSize: sz(12, "movers values"), valign: "middle", isTextBox: true, margin: 0 }));
-        const all = [...(sp.prior ?? []), ...sp.cur], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || 1;
+        const all = [...(sp.prior ?? []), ...sp.cur].filter(Number.isFinite), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.05 || 1;
         const lab = sp.cur.map((_, i) => String(i + 1)), SX = LX + VW + 0.06, SW = x0 + W - CW - 0.18 - SX;
         const ser = [...(sp.prior ? [{ name: "prior", labels: lab, values: sp.prior }] : []), { name: "cur", labels: lab, values: sp.cur }];
         s.addChart(pptx.ChartType.line, ser, { x: SX, y: y + rh * 0.42, w: SW, h: rh * 0.5,

@@ -4,7 +4,7 @@
 import PptxGenJS from "pptxgenjs";
 import fs from "fs";
 import * as H from "./house.mjs";
-import { moversSlide } from "./blocks.mjs";
+import { moversSlide, sparkFrom } from "./blocks.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 const J = f => JSON.parse(fs.readFileSync(f, "utf8"));
 const sum = a => a.reduce((t, x) => t + x, 0);
@@ -129,7 +129,9 @@ chg(pptx, { shade: Object.fromEntries([...toP.map(r => [r[0], "g"]), ...toL.map(
   notes: `Green band: lost money in fixed ops in 2025, made money in 2026 (${lst(toP.map(ba))}). Red band: made money in 2025, lost money in 2026 (${lst(toL.map(ba))}).` });
 
 const nowG = sum(Object.values(MN).map(x => x[1])) - sum(Object.values(MN).map(x => x[0]));
-moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd,
+// sparkline (Oct 28): department profit, service + parts, month by month (ntgs / ntgp sm)
+const NPSM = N.sm && Object.fromEntries(Object.keys(N.sm).map(n => [n, [0, 1].map(yi => N.sm[n][yi].map((a, m) => [a[0] + P.sm[n][yi][m][0]]))]));
+moversSlide(pptx, { seg: SEG, title: T, metric: MET, fmtD: kd, spark: sparkFrom(NPSM, a => a[0]),
   // gray second line = the percent change, over the size of the starting profit (Noah, Oct 28)
   rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b - a, d2: pcA((b - a) / Math.abs(a)) })),
   now: S.map(([n]) => ({ n, v0: H.kusd(MN[n][0]), v1: H.kusd(MN[n][1]), d: MN[n][1] - MN[n][0], d2: pcA((MN[n][1] - MN[n][0]) / Math.abs(MN[n][0])) })),

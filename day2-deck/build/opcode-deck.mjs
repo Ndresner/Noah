@@ -1,7 +1,7 @@
 import PptxGenJS from "pptxgenjs";
 import fs from "fs";
 import * as H from "./house.mjs";
-import { moversSlide } from "./blocks.mjs";
+import { moversSlide, sparkFrom } from "./blocks.mjs";
 
 const pptx = new PptxGenJS();
 pptx.layout = "LAYOUT_WIDE";
@@ -71,7 +71,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
           + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${pt(r[1])} (2025 ${pt(r[2])})`).join("\n"),   // notes match the slide (Oct 28 audit)
   });
   // top and bottom five by change in points (Noah, Oct 22)
-  moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d,
+  moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d, spark: sparkFrom(M.sm, a => a[0] / a[1]),
     rows: rows.map(r => ({ n: r[0], v0: pt(r[2]), v1: pt(r[1]), d: r[1] - r[2] })),
     // moving now (Oct 23): Jul-Sep vs Jan-Mar 2026 closing %, from all.json mn = [store, num_q1, den_q1, num_q3, den_q3]
     now: M.mn.map(([n, a, b, c, d]) => ({ n, v0: pt(a / b), v1: pt(c / d), d: c / d - a / b })),

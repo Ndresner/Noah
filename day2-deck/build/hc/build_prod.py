@@ -65,7 +65,9 @@ def pack(num_i, den_key):
     # mn: Jan-Mar and Jul-Sep 2026 per store (moving-now column on the movers slides, Oct 23)
     q=lambda s,ms:[sum(NUM[(s,2026,m)][num_i] for m in ms), sum(H[(2026,m)][s][den_key] for m in ms)]
     mn=[[s]+q(s,(1,2,3))+q(s,(7,8,9)) for s in stores]
-    return {"m25":m25,"m26":m26,"S":S,"mn":mn}
+    # sm (Oct 28, movers sparklines): each store's monthly inputs, [2025 Jan-Sep, 2026 Jan-Sep]
+    sm={s:[[[NUM[(s,y,m)][num_i], H[(y,m)][s][den_key]] for m in range(1,10)] for y in (2025,2026)] for s in stores}
+    return {"m25":m25,"m26":m26,"S":S,"mn":mn,"sm":sm}
 out={"fge":pack(0,"fe"),"rpa":pack(1,"sa"),"rpe":pack(1,"fe"),"rpm":pack(1,"mgr")}
 for k,v in out.items():   # keep keys added after this script (q4)
     f=os.path.join(ROOT,"build","prod",f"{k}.json"); old=json.load(open(f)) if os.path.exists(f) else {}

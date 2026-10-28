@@ -24,7 +24,7 @@ const sum = a => a.reduce((t, x) => t + x, 0);
 // reconciled to gross/monthly.json to the dollar) and 2026 (pulls/gross_m26_store.json)
 const SM = y => Object.fromEntries(JSON.parse(fs.readFileSync(`./pulls/gross_m${y}_store.json`, "utf8")).rows.filter(r => r[0] !== "INEOS")
   .map(r => [r[0], r.slice(1, 3).map(c => (Array.isArray(c) ? c : c.split("|")).map(v => -Number(v)))]));
-const SP = process.env.SPARK === "1" ? { 25: SM(25), 26: SM(26) } : null;
+const SP = process.env.SPARK === "1" ? { 25: SM(25), 26: SM(26) } : null;   // review build; flips to on once Noah approves
 const spark = k => SP && ((n, ci) => { const pick = y => k === "fx" ? SP[y][n][0].map((v, i) => v + SP[y][n][1][i]) : SP[y][n][k === "sv" ? 0 : 1];
   // moving now (Oct 28, Noah, two options): SPARKNOW=overlay -> Q1 2026 (gray) over Q3 2026 (colour), month 1-2-3 of each quarter;
   // otherwise one Jan-Sep 2026 line, Q1 gray, Q2 a faint connector, Q3 in colour
@@ -99,4 +99,4 @@ grossBlock("Total Gross Profit - Fixed Ops", "fixed ops gross", sv25.map((v, i) 
   Q4.sv.map((v, i) => v + Q4.pt[i]), fxS, true, MN.fx, "fx");
 grossBlock("Total Gross Profit - Service", "service gross", sv25, sv26, Q4.sv, svS, false, MN.sv, "sv");
 grossBlock("Total Gross Profit - Parts", "parts gross", pt25, pt26, Q4.pt, ptS, false, MN.pt, "pt");
-await pptx.writeFile({ fileName: SP ? "spark.pptx" : "Fixed Ops Gross - House Style.pptx" }); console.log("gross built");
+await pptx.writeFile({ fileName: "Fixed Ops Gross - House Style.pptx" }); console.log("gross built");

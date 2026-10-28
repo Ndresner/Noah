@@ -18,6 +18,7 @@ Updated: October 28, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- Round 30 (review, not in the deck): all 26 movers slides with a month-by-month line per store, caps names, timeframes at the top ("Movers Sparklines - All Slides - Review.pptx"). Store-by-month data re-pulled from Qlik and ADP; every input ties to the store's Jan-Sep total.
 - Round 29: Total Variance from Benchmark by Store columns now Variance, Missed, Opcodes. Review file "Movers Sparklines - Review.pptx" (not in the deck): a small Jan-Sep line per store on the three gross movers slides, to judge whether it is too crowded.
 - Round 28 (slide 110 in "Changes - Oct 28 (round 28).pptx"): Total Variance from Benchmark by Store has a "Missed" column again (e.g. 3 of 4), counting only services the manufacturer calls for at the store. 15 stores miss every benchmark that applies to them; Honda Henderson misses none.
 - Pay Yourself First: "Internal work is protected gross generated on our own vehicles." The clocked-hours exclusion line moved from the proficiency definitions slide to How We Measured It.
@@ -76,7 +77,7 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Sparklines on the movers slides: keep, gross slides only, or drop (other metrics need new store-by-month pulls).
+- Approve the line style on all 26 movers slides (review file) to put it in the deck.
 - What Is Productivity? explainer preview: on hold.
 - Optional: a "raise to 100%" column on Opportunity as a Share of Gross (needs the tech-level proficiency file re-uploaded).
 
