@@ -175,11 +175,11 @@ export function moversSlide(pptx, o) {
   const nw = srt(o.now).slice(0, K);
   return H.movers3(pptx, pptx, {
     eyebrow: o.seg, title: o.title, k: K, fmtD: o.fmtD, up, neutral: dir === "neutral",
-    spark: o.spark,   // Oct 28 review: (store key, column) -> { prior, cur } monthly series for a sparkline per row
+    spark: o.spark, sparkStyle: o.sparkStyle,   // Oct 28 review: (store key, column) -> { prior, cur } monthly series for a sparkline per row
     cols: [
-      { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(0, K), tone: "good" },
-      { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
-      { head: `TOP ${K} MOVING NOW`, sub: "Q3 vs Q1, this year", rows: nw, tone: "blue", yrs: ["Q1", "Q3"] },
+      { head: `TOP ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", short: "Jan–Sep", rows: r.slice(0, K), tone: "good" },
+      { head: `BOTTOM ${K} VS LAST YEAR`, sub: "Jan–Sep, this year vs last", short: "Jan–Sep", rows: r.slice(-K).reverse(), tone: "bad", rank: j => r.length - j },
+      { head: `TOP ${K} MOVING NOW`, sub: "Q3 vs Q1, this year", rows: nw, tone: "blue", yrs: ["Q1", "Q3"], short: "Q3 vs Q1" },
     ],
     takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
     tone: "n",

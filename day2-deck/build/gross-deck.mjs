@@ -73,7 +73,7 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn, sk) {
     source: `${SRC} Ranked by dollar change, Jan-Sep 2026 vs Jan-Sep 2025; percent change alongside, the top three and bottom three by percent marked.`,
   });
   // top and bottom five for all three (Noah, Oct 22: replaces the fixed ops "who moved it" chain, for continuity)
-  moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA, spark: spark(sk),
+  moversSlide(pptx, { seg: SEG, title, metric, fmtD: pcA, spark: spark(sk), sparkStyle: process.env.SPARKSTYLE,
     // gray second line = the dollar change (Noah, Oct 28)
     rows: S.map(([n, a, b]) => ({ n, v0: H.kusd(a), v1: H.kusd(b), d: b / a - 1, d2: kd(b - a) })),
     now: S.map(([n]) => ({ n, v0: H.kusd(mn[n][0]), v1: H.kusd(mn[n][1]), d: mn[n][1] / mn[n][0] - 1, d2: kd(mn[n][1] - mn[n][0]) })),

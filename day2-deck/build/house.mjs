@@ -2353,7 +2353,7 @@ export function movers3(pptx, deck, o) {
   const s = deck.addSlide();
   page(pptx, s, { eyebrow: o.eyebrow, title: o.title });
   panel(pptx, s, { x: 0.5, y: BODY.top, w: 12.33, h: bodyH(o.takeaway), label: null });
-  const K = o.k, gap = 0.22, W = (12.33 - 0.44 - gap * 2) / 3, HEAD = 1.5, TOP = 2.3, BOT = bodyBot(o.takeaway) - 0.12, rh = (BOT - TOP) / K;
+  const K = o.k, gap = 0.22, W = (12.33 - 0.44 - gap * 2) / 3, HEAD = 1.5, TOP = o.spark ? 1.98 : 2.3, BOT = bodyBot(o.takeaway) - 0.12, rh = (BOT - TOP) / K;   // spark: timeframe on the head line, rows taller
   const big = K <= 3, SPW = 0.55, CW = o.spark ? 0.98 : 1.22;   // spark rows: narrower change column
   // Oct 24 (Noah): a store on both the first list (top vs last year) and the last (moving now) gets a green bar down
   // the right edge of its row on both lists
@@ -2362,12 +2362,16 @@ export function movers3(pptx, deck, o) {
   // blue bar on both lists. In the deck (Noah, Oct 27); TURN=0 turns it off.
   const turn = process.env.TURN !== "0" && o.cols.length > 2
     ? new Set(o.cols[1].rows.map(r => r.n).filter(n => o.cols[o.cols.length - 1].rows.some(r => r.n === n))) : new Set();
+  // spark (Oct 28, Noah): the timeframes move to one line at the top right of the slide, so the rows get the room
+  if (o.spark) s.addText(o.cols.map(c => `${c.head.replace(/^(TOP|BOTTOM) \d+ /, "").replace("VS LAST YEAR", "Vs last year").replace("MOVING NOW", "Moving now")}: ${c.short ?? c.sub}`)
+      .filter((t, i, a) => a.indexOf(t) === i).join("   ·   "),
+    { x: 6.8, y: 0.88, w: 6.03, h: 0.4, fontFace: F, fontSize: sz(14, "movers timeframe"), color: C.ink600, align: "right", valign: "middle", isTextBox: true, margin: 0 });
   o.cols.forEach((col, ci) => {
     const x0 = 0.72 + ci * (W + gap);
     const bar = { good: C.good, bad: C.bad, blue: C.blue }[col.tone], ink = { good: C.goodInk, bad: C.badInk, blue: C.navy }[col.tone];
     s.addShape(pptx.ShapeType.rect, { x: x0, y: HEAD, w: W, h: 0.05, fill: { color: bar } });
     s.addText(col.head, { x: x0 + 0.1, y: HEAD + 0.08, w: W - 0.2, h: 0.3, fontFace: F, fontSize: sz(15, "movers head"), bold: true, color: ink, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(col.sub, { x: x0 + 0.1, y: HEAD + 0.4, w: W - 0.2, h: 0.3, fontFace: F, fontSize: sz(12, "movers col sub"), color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
+    if (!o.spark) s.addText(col.sub, { x: x0 + 0.1, y: HEAD + 0.4, w: W - 0.2, h: 0.3, fontFace: F, fontSize: sz(12, "movers col sub"), color: C.ink600, valign: "middle", isTextBox: true, margin: 0 });
     col.rows.forEach((r, j) => {
       const y = TOP + j * rh, better = o.up === false ? r.d <= 0 : r.d >= 0, c = o.neutral ? C.navy : (better ? C.goodInk : C.badInk);
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x0, y, w: W, h: rh, fill: { color: C.zebra } });
@@ -2377,7 +2381,20 @@ export function movers3(pptx, deck, o) {
       // o.spark (Oct 28 review, Noah, from the Day 1 sales slide): name on its own line, the two values stacked under it with
       // their year labels coloured as the lines (gray = last year / Q1, blue = this year / Q3), the line in the middle
       const sp = o.spark?.(r.key ?? r.n, ci);
-      if (sp) {
+      if (sp && o.sparkStyle === "line") {
+        // Oct 28 (Noah): the old row (name, then last year -> this year) with the line on the values line
+        s.addText([{ text: r.n, options: { bold: true, color: C.ink, fontSize: sz(14, "movers store"), breakLine: true } },
+                   { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(12, "movers values") } },
+                   { text: r.v1, options: { color: c, bold: true, fontSize: sz(12, "movers values") } }],
+          { x: x0 + 0.48, y: y + rh * 0.05, w: W - 0.58, h: rh * 0.52, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
+        const all = [...(sp.prior ?? []), ...sp.cur], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || 1;
+        const lab = sp.cur.map((_, i) => String(i + 1)), SX = x0 + 0.48, SW = x0 + W - CW - 0.2 - SX;   // own row under the values
+        const ser = [...(sp.prior ? [{ name: "prior", labels: lab, values: sp.prior }] : []), { name: "cur", labels: lab, values: sp.cur }];
+        s.addChart(pptx.ChartType.line, ser, { x: SX, y: y + rh * 0.6, w: SW, h: rh * 0.34,
+          chartColors: [...(sp.prior ? ["A6A6A6"] : []), c], lineSize: 1.75, lineDataSymbol: "none",
+          showLegend: false, catAxisHidden: true, valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" },
+          valAxisMinVal: lo - pad, valAxisMaxVal: hi + pad, layout: { x: 0, y: 0, w: 1, h: 1 } });
+      } else if (sp) {
         const yl = col.yrs ?? ["2025", "2026"], LX = x0 + 0.48, VW = 1.34;
         s.addText(r.n, { x: LX, y: y + rh * 0.06, w: W - 0.58, h: rh * 0.34, fontFace: F, fontSize: sz(14, "movers store"), bold: true, color: C.ink, valign: "middle", isTextBox: true, margin: 0 });
         [[yl[0], r.v0, "8C8C8C", false], [yl[1], r.v1, C.blue, true]].forEach(([lab, v, lc, bold], k) =>
