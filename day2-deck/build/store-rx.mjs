@@ -72,12 +72,12 @@ if (Object.keys(Q3).sort().join("|") !== NAMES) throw new Error("Rx: the Jul-Sep
 const row = (rows, n) => rows.find(r => r[0] === n);
 tie("CP ROs 2026", sum(M5.map(r => r[7])), 279756, 0);
 tie("CP ROs 2025", sum(M5.map(r => r[1])), 279300, 0);
-// fixed gross = service + parts gross (body shop out); abs.json has the body shop out too since Oct 28 (Noah), so every store ties
+// fixed gross = service + parts gross (body shop out); abs.json keeps GMC Prescott body shop for absorption, as the absorption slides do (Noah, Oct 28: back in)
 tie("fixed gross 2026", sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4])), 188799724, 2);
 tie("fixed gross 2025", sum(NS.map(r => r[2])) + sum(NPp.map(r => r[2])), 181331157, 2);
-tie("absorption gross = fixed gross", sum(ABS.map(r => r[3])) - (sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4]))), 0, 2);
+tie("absorption gross less the body shop", sum(ABS.map(r => r[3])) - (sum(NS.map(r => r[4])) + sum(NPp.map(r => r[4]))), 868202, 2);
 tie("fixed ops net profit 2026", sum(NS.map(r => r[3])) + sum(NPp.map(r => r[3])), 50449895, 2);
-STORES.forEach(n => tie(`${n} gross = service + parts`, row(NS, n)[4] + row(NPp, n)[4], row(ABS, n)[3], 2));
+STORES.filter(n => n !== "GMC PRESCOTT").forEach(n => tie(`${n} gross = service + parts`, row(NS, n)[4] + row(NPp, n)[4], row(ABS, n)[3], 2));
 
 /* ---------- the group, the segments, the two prices ---------- */
 const g26 = k => sum(M5.map(r => r[7 + k]));
@@ -87,7 +87,7 @@ const RO_PRICE = (g26(3) + g26(5)) / g26(0), HR_PRICE = (g26(3) + g26(5)) / g26(
 tie("price of a missed RO", Math.round(RO_PRICE), 342, 0);
 tie("price of an hour", Math.round(HR_PRICE), 183, 0);
 const ABS_G = sum(ABS.map(r => r[3])) / sum(ABS.map(r => r[4])) * 100;
-tie("group absorption vs the slide's 77.9%", Math.round(ABS_G * 10), 779, 0);   // GMC Prescott body shop out (Oct 28)
+tie("group absorption vs the slide's 78.1%", Math.round(ABS_G * 10), 781, 0);   // GMC Prescott body shop in (Noah, Oct 28)
 const seg = n => LUX.has(n) ? 0 : 1, SEGNAME = ["luxury", "non-luxury"];
 const segSum = (i, k) => sum(M5.filter(r => seg(r[0]) === i).map(r => r[7 + k]));
 const PEER = [0, 1].map(i => ({

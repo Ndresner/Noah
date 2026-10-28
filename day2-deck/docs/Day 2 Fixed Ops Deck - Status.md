@@ -10,10 +10,12 @@ Updated: October 28, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
-- Oct 28: GMC Prescott body shop out of absorption too. Lexus tire balance near 0% is real (not a mapping problem) and stays red.
+- Oct 28 (final): GMC Prescott body shop stays IN absorption, as on the P&L (group 78.1%, GMC Prescott 75.6%). ELR benchmark 70% of door. Store Prescriptions in the deck only, no date range on the vitals. Section dividers approved.
+- Oct 28: Lexus tire balance near 0% is real (not a mapping problem) and stays red.
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- GMC Prescott body shop back in absorption (group 78.1%, GMC Prescott 75.6%); approved section dividers in the deck (agenda Warranty "Rates, margins and compliance: protecting the money.", Warranty chips with "Claim process: protect the money", Close chips with "Store prescriptions").
 - Service Is Sales 2.0: +$829,841 more fixed ops gross than 2025 on average every month (replaces $20.98M). Flai back to "last 90 days" and the five busiest 100% callback stores. People: "Don't overlook opportunities to teach, train and educate"; pay plans line adds "and hold people accountable to them". What Changed lists all four opcodes (five stores).
 - Audit proposals done: "largest gain in September" wording; $20.98M a month (Jan-Sep) on Service Is Sales 2.0; "ahead on net"; headcount September to September; 7 stores show 20% or more (slide 143); Nissan tie named on Two Ways; What Changed opcode row = Mazda balance; speaker-note cleanup. Work mix re-pulled: data confirmed. Section dividers (Warranty, Close) in review: Section Dividers - Review.pptx.
 - Data audit (full list in docs/Data Audit - Oct 28.md): no wrong source data; CP group totals re-pulled live from Qlik and match. Fixed: slide 142 band (20 stores at or above 85% leave $818K a month); 0.1 hour per RO = $6.6M a year in gross everywhere; one rule for changes (shown end minus shown start, rounding everywhere, opcode rates truncated incl. Store Prescriptions). GMC Prescott body shop out of absorption: group 77.9% (was 78.1%), GMC Prescott 61.6%. Lexus tire balance stays red (not a mapping problem).
@@ -66,16 +68,13 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Section dividers (Warranty, Close chips and agenda wording): review file, approve to put in.
 - Work mix: Noah has extra data to check the opcode-description classification.
 - Most Improved: add one metric (opcode closing % recommended)?
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.
 - What Is Productivity? explainer preview: on hold.
-- Store Prescriptions: also a separate handout file, or only in the deck? Wording is Tommy's to edit.
 
 ## Still open
-- ELR benchmark: the deck uses 70% of door rate; Tommy's coaching recording uses 80%. Settle before the meeting (it also sets the Pricing Strategy opportunity figure).
 - Items in Open Decisions: bring back or drop.
 - Warranty audit slides: confirm the drafted descriptions against OEM policy.
 

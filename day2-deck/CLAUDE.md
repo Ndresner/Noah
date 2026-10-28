@@ -231,7 +231,7 @@ Not in the test deck at all: the door rate options deck (`Door Rate - Options (J
 - **Door rate design:** pick one of the five options in Open Decisions (A–E). The CP Engine section also still carries the door rate slides (52–57); trim those to the pick.
 - **Best Techs Prove It:** dumbbell (current), or option A, B or C. Noah leans C.
 - **Labor GP%:** how to colour it (the 78–80% band) and whether it belongs on the "most improved" slides. It's left off for now.
-- **Smaller rulings:** Acura's segment; provisional directions in the metric registry. **DECIDED Oct 28 (Noah): the GMC Prescott body shop is out of absorption too** (gross and its line-258 BODY fixed expenses; group 77.9%, GMC Prescott 61.6%; `pulls/gmc_body_abs.json`). Lexus tire balance near 0% is real, not mapping, and is not gray.
+- **Smaller rulings:** Acura's segment; provisional directions in the metric registry. **DECIDED Oct 28 (Noah, final): the GMC Prescott body shop stays IN absorption, as on the P&L** (group 78.1%, GMC Prescott 75.6%). It was taken out earlier on Oct 28 (77.9% / 61.6%; the pull is kept in `pulls/gmc_body_abs.json`) and put back the same day. ELR benchmark stays 70% of door (Oct 28). Store Prescriptions: in the deck only, no date range on the vitals (Oct 28). Section dividers approved Oct 28 (`opening-deck.mjs`; `CHIPS8=0` restores the old wording). Lexus tire balance near 0% is real, not mapping, and is not gray.
 - **Logistics:** venue and logo; Inter installed on the presenting PC.
 - **Possible slides:** MPI, retention, discounting and capacity. Parked dollar slides: ELR to 70%, $1 of ELR, absorption, net to gross, parts margin.
 - **Fix the Qlik headcount load** at the source (CSV in `decks/`).

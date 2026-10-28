@@ -275,3 +275,9 @@ Slides in `Changes - Oct 28 (round 23).pptx` (12, 44, 45, 127, 159).
 - 44-45 Flai: back to "Last 90 Days" (eyebrow and source); callback column back to TOP 5, the five busiest of the six stores at 100% (Acura off), "6 stores at 100%" in the sub line.
 - 127 People: new bullet "Don't overlook opportunities to teach, train and educate"; last bullet "Clear pay plans, job descriptions and expectations, and hold people accountable to them".
 - 159 What Changed?: all four opcodes listed, each with its top Q1-to-Q3 mover (Audi Henderson alignment +10.7 pts; Mazda balance +9.2, brake fluid +9.0, fuel service +8.1); nine rows at 14pt; band "Five stores, one question each".
+
+## Oct 28, round 24 (Noah's decisions)
+Slides in `Changes - Oct 28 (round 24).pptx` (41).
+- GMC Prescott body shop back IN absorption (as on the P&L): GMC Prescott 75.6% (rank 17), group 76.0% -> 78.1%, +2.1 pts, fixed expenses +1.3%; 15 of 33 at or above, 23 raised. abs.json and pulls/fixed_exp.json restored to their pre-audit versions; pulls/gmc_body_abs.json kept for the record. Store Prescriptions show "group 78.1%". `Fixed Absorption - Group Slides.pptx` rebuilt to match.
+- Section dividers approved and in the deck: agenda Warranty "Rates, margins and compliance: protecting the money."; Close "What changed, where the money is, and each store's prescription."; Warranty section chips "Rates rising · Warranty gross profit · Claim process: protect the money"; Close chips "Most improved · Where the money is · Store prescriptions".
+- Decided, no change: ELR benchmark 70% of door; Store Prescriptions in the deck only, no date range added to the vitals.

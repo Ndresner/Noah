@@ -7,7 +7,7 @@ const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFo
 const SRC = "Definitions match the data slides: Qlik - Closed Repair Orders (all customer-pay ROs, by close month), Profit & Loss and Productivity apps, Jan-Sep 2026 vs 2025, same-store, 33 stores. Worked example: Service Manager Roundtable, Nov 15, 2024, slide 21.";
 const X = (o) => H.explainer(pptx, pptx, { source: SRC, ...o });
 // P&L explainers carry their own source (Oct 28 audit: the Closed RO / Roundtable line did not apply to them)
-const SRC_PL = "Definitions match the data slides: Qlik - Profit & Loss (GM and Detail statements), Jan-Sep 2026 vs 2025, same-store, 33 stores, GMC Prescott body shop out.";
+const SRC_PL = "Definitions match the data slides: Qlik - Profit & Loss (GM and Detail statements), Jan-Sep 2026 vs 2025, same-store, 33 stores. Absorption includes the GMC Prescott body shop, as on the P&L; gross and net to gross exclude it.";
 const RT = "Roundtable example";
 
 X({ eyebrow: "Customer Pay", title: "CP RO Count",
@@ -131,7 +131,7 @@ X({ eyebrow: "Customer Pay", title: "Parts Gross Profit %",
 X({ eyebrow: "Fixed Ops Profitability", title: "Absorption", source: SRC_PL,
   formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
   define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
-  example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "77.9%"]], exampleLabel: "READING IT",
+  example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "78.1%"]], exampleLabel: "READING IT",
   why: ["At 100%, the store covers its fixed costs before it sells a car.",
         "It protects the store when car sales slow.",
         "It is the clearest measure of fixed ops' value to the dealership."],
@@ -139,8 +139,8 @@ X({ eyebrow: "Fixed Ops Profitability", title: "Absorption", source: SRC_PL,
            ["Store fixed expenses", "The whole store's rent, facility and other fixed costs"],
            ["Warranty and internal", "Gross from warranty and reconditioning counts too"],
            ["Parts", "Counter and wholesale parts gross counts as well"]],
-  ours: "Group: 77.9% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.4%.",   // GMC Prescott body shop out (Oct 28)
-  tone: "g", notes: "PLACE: Profitability, in front of Fixed Ops Absorption %.\nP&L definition: line 254 Total Gross Profit - Fixed Ops / line 258 Fixed Expenses (the stored line 257 returns a dollar value, so the slide derives it). GMC Prescott body shop taken out (its gross and its body shop fixed expenses), as everywhere in the deck (Noah, Oct 28)." });
+  ours: "Group: 78.1% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.3%.",   // GMC Prescott body shop in (Noah, Oct 28)
+  tone: "g", notes: "PLACE: Profitability, in front of Fixed Ops Absorption %.\nP&L definition: line 254 Total Gross Profit - Fixed Ops / line 258 Fixed Expenses (the stored line 257 returns a dollar value, so the slide derives it). GMC Prescott includes its body shop, as on the P&L (Noah, Oct 28)." });
 
 X({ eyebrow: "Fixed Ops Profitability", title: "Net to Gross", source: SRC_PL,
   formula: ["Net to gross", "=", "department profit", "÷", "department gross"],

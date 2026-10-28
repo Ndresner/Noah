@@ -14,7 +14,7 @@ H.section(pptx, pptx, { kicker: "Fixed Ops", title: "Profitability", chips: ["Ab
 const base = { seg: SEG, src: SRC };
 const pc = v => (v * 100).toFixed(1) + "%";
 block(pptx, load("./abs.json"), { ...base, title: "Fixed Ops Absorption %", metric: "fixed ops absorption %", fn: R, f: F.pct, floor: 0.3,
-  def: "P&L line Fixed Ops Absorption % = Total Gross Profit - Fixed Ops / Fixed Expenses. GMC Prescott body shop taken out (its gross and its body shop fixed expenses), as everywhere in the deck (Noah, Oct 28).",
+  def: "P&L line Fixed Ops Absorption % = Total Gross Profit - Fixed Ops / Fixed Expenses. GMC Prescott includes its body shop, as on the P&L (Noah, Oct 28: kept in).",
   extra: ({ G25, G26 }) => `Fixed gross grew ${pc(G26[0] / G25[0] - 1)}; fixed expenses ${pc(G26[1] / G25[1] - 1)}.`,
   verb: "raised absorption" });
 block(pptx, load("./ntgs.json"), { ...base, title: "Service Net to Gross %", metric: "service net to gross %", fn: R, f: F.pct, floor: -0.45,
