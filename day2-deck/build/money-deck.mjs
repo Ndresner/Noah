@@ -13,11 +13,11 @@ const prof = (O.lab + O.parts) / O.months * 12;
 // Oct 28 (Noah): more context on each how (managing proficiency, tracking and asking on opcodes, availability and outreach on ROs)
 const L = [
   { name: "Every tech under 85% reaches 85%", v: prof, how: "Manage it daily: dispatch, parts staging, approvals, coaching", own: ["Service manager", "GM"], src: "Technician Proficiency" },
-  { name: "0.1 more hours on every CP RO", v: 6602564, how: "MPI on every car, the menu, Road to the Sale", own: ["Service manager"], src: "Hours per RO" },
+  { name: "0.1 more hours on every CP RO", v: 6602564, how: "Be consistent: MPI and Road to the Sale on every car", own: ["Service manager"], src: "Hours per RO" },
   { name: "Every store at the four op code benchmarks", v: 4895199, how: "Track where you are, ask for the sale on every car, every time, hold people accountable", own: ["Service manager"], src: "Op Codes" },
   { name: "One more customer-pay RO a day", v: 4473284, how: "Be available when they call; proactive outreach to lapsed and inactive customers", own: ["GM", "Service manager"], src: "CP RO count" },
   // Oct 27 (Noah): ten minutes, not one - the Tech Minute slide's 10-minute row
-  { name: "Ten minutes a day saved for every tech", v: 4443804, how: "Parts to the bay, tools and keys in place", own: ["Service manager", "GM"], src: "Tech Minute" },
+  { name: "Ten minutes a day saved for every tech", v: 4443804, how: "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place", own: ["Service manager", "GM"], src: "Tech Minute" },
 ];
 const s = pptx.addSlide(); H.page(pptx, s, { eyebrow: "Fixed Ops", title: "Where the Money Is" });
 H.panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });

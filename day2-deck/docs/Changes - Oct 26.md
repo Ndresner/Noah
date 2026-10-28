@@ -236,3 +236,6 @@ Slides in `Changes - Oct 28 (round 17).pptx` (148, 156, 157, 158, 160).
 Slides in `Changes - Oct 28 (round 18).pptx` (148, 160).
 - Where the Money Is, HOW column (15pt, two lines where needed): proficiency "Manage it daily: dispatch, parts staging, approvals, coaching"; opcodes "Track where you are, ask for the sale on every car, every time, hold people accountable" (was the list of the four services); one more RO "Be available when they call; proactive outreach to lapsed and inactive customers" (was phones, scheduler, retention, marketing). 0.1 hours per RO unchanged pending Noah's word for "the menu".
 - Warranty Rates Are Rising: dollar figure out of the band (the panel shows it): "Protect that money: higher rates draw more audits, so document every claim to hold up." Title unchanged.
+
+## Oct 28, round 19
+Slide in `Changes - Oct 28 (round 19).pptx` (160, Where the Money Is). HOW: 0.1 hours per RO "Be consistent: MPI and Road to the Sale on every car" (the menu dropped); ten minutes a day "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place".
