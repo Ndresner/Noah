@@ -26,13 +26,14 @@ const chg = (k, v, v0, v1) => {
   const t = Math.abs(d).toFixed(1), z = Number(t) === 0 ? "" : sg(d);
   return PTS.has(k) ? `${z}${t} pts` : `${z}${t}%`;
 };
-const PTS = new Set(["pgp", "align", "bal", "bf", "fuel"]);
+const PTS = new Set(["pgp", "align", "bal", "bf", "fuel", "abs", "opc"]);
 const val = (k, v) => ({
   gross: v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : "$" + Math.round(v / 1e3) + "K",
   ros: Math.round(v).toLocaleString("en-US"), hpro: v.toFixed(2), elr: "$" + v.toFixed(2),
   pro: "$" + Math.round(v), pgp: (v * 100).toFixed(1) + "%",
   // opcode rates truncated, as on the opcode slides (Oct 28 audit)
-  align: tr(v), bal: tr(v), bf: tr(v), fuel: tr(v) }[k]);
+  align: tr(v), bal: tr(v), bf: tr(v), fuel: tr(v), opc: tr(v),
+  lpr: "$" + Math.round(v), np: (v < 0 ? "\u2212" : "") + "$" + (Math.abs(v) >= 1e6 ? (Math.abs(v) / 1e6).toFixed(2) + "M" : Math.round(Math.abs(v) / 1e3) + "K"), abs: (v * 100).toFixed(1) + "%" }[k]);
 function tr(v) { return (Math.floor(v * 1000 + 1e-9) / 10).toFixed(1) + "%"; }
 const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
 const NUMW = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
@@ -46,6 +47,26 @@ const VIEW = {
   mom: Object.fromEntries(ORDER.map(k => [k, MO[k]])),
 };
 
+/* Oct 28 (Noah): Better Than Last Year on two slides. Extra Jan-Sep 2026 vs 2025 measures, same store basis as the deck:
+   CP labor $ per RO (m5.json), fixed ops net profit (ntgs + ntgp department profit; % = $ change / |2025 profit|, as the
+   net profit change slide), fixed absorption (abs.json, GMC Prescott body shop in, as on the P&L; points) and the four
+   opcodes combined (all.json: alignment + balance + brake fluid + fuel services / op-code-report CP ROs; points). */
+const J = f => JSON.parse(fs.readFileSync(f, "utf8"));
+const M5 = J("./m5.json").S, NS = J("./ntgs.json").S, NP = J("./ntgp.json").S, AB = J("./abs.json").S, AL = J("./all.json");
+const OPK4 = ["align", "bal", "bf", "fuel"];
+const sumS = (S, i) => S.reduce((t, r) => t + r[i], 0);
+const mk = (label, rows, g0, g1, pct) => {
+  const ch = (a, b) => pct ? (b - a) / Math.abs(a) : b - a;
+  return { label, group: [g0, g1, ch(g0, g1)], rows: rows.map(([n, a, b]) => ({ n, v0: a, v1: b, chg: ch(a, b) })).sort((p, q) => q.chg - p.chg) };
+};
+VIEW.yoy.lpr = mk("CP Labor $ per RO", M5.map(r => [r[0], r[2] / r[1], r[8] / r[7]]), sumS(M5, 2) / sumS(M5, 1), sumS(M5, 8) / sumS(M5, 7), true);
+VIEW.yoy.np = mk("Fixed Ops Net Profit", NS.map(r => { const p = NP.find(x => x[0] === r[0]); return [r[0], r[1] + p[1], r[3] + p[3]]; }),
+  sumS(NS, 1) + sumS(NP, 1), sumS(NS, 3) + sumS(NP, 3), true);
+VIEW.yoy.abs = mk("Fixed Absorption", AB.map(r => [r[0], r[1] / r[2], r[3] / r[4]]), sumS(AB, 1) / sumS(AB, 2), sumS(AB, 3) / sumS(AB, 4), false);
+const opc = AL.align.S.map(r => { const n = r[0], rr = OPK4.map(k => AL[k].S.find(x => x[0] === n));
+  return [n, rr.reduce((t, x) => t + x[1], 0) / r[2], rr.reduce((t, x) => t + x[3], 0) / r[4]]; });
+VIEW.yoy.opc = mk("Opcodes, Four Combined", opc, OPK4.reduce((t, k) => t + sumS(AL[k].S, 1), 0) / sumS(AL.align.S, 2), OPK4.reduce((t, k) => t + sumS(AL[k].S, 3), 0) / sumS(AL.align.S, 4), false);
+
 function tops(view, n = 3) {
   const c = {};
   GRID.forEach(k => VIEW[view][k].rows.slice(0, n).forEach(r => (c[r.n] ??= []).push(k)));
@@ -53,7 +74,8 @@ function tops(view, n = 3) {
 }
 
 /* ---- grids: five measures (parts $ per RO dropped Oct 23), top 3 and bottom 3 each (was 5 and 5; cut Oct 21, Noah: too crowded to read) ---- */
-function grid(view, { title, sub, groupLabel, src }) {
+function grid(view, { title, sub, groupLabel, src, keys = GRID }) {
+  const GRID = keys;   // Oct 28 (Noah): Better Than Last Year runs on two slides, each with its own measures
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title });
   H.panel(pptx, s, { x: 0.5, y: 1.32, w: 12.33, h: 5.08, label: null });
@@ -200,6 +222,16 @@ function whatChanged() {
   s.addNotes(`\n\n${opStore}'s August opcode increase was confirmed with the store as a real change (Noah, Oct 19 2026).`);
 }
 
+if (process.env.BTLY === "1") {
+  // review file (Noah, Oct 28): Better Than Last Year as two slides
+  const SUBY = "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025";
+  grid("yoy", { title: "Better Than Last Year: Customer Pay", sub: SUBY, groupLabel: "Group", src: SRC_Y + " CP labor $ per RO = CP labor sale / CP ROs.",
+    keys: ["gross", "ros", "hpro", "elr", "lpr"] });
+  grid("yoy", { title: "Better Than Last Year: Profit and Process", sub: SUBY, groupLabel: "Group",
+    src: "Fixed ops net profit: Qlik - Profit & Loss, service + parts department profit (% change = $ change / |2025 profit|). Fixed absorption: P&L, fixed ops gross / total store fixed expenses, GMC Prescott body shop in, as on the P&L. CP parts GP %: Qlik - Closed Repair Orders. Opcodes: alignment + balance + brake fluid + fuel services / customer-pay ROs on the op-code report basis. Same-store, 33 stores. Points for absorption, parts GP % and opcodes.",
+    keys: ["np", "abs", "pgp", "opc"] });
+  await pptx.writeFile({ fileName: "./Better Than Last Year - Review.pptx" }); console.log("btly"); process.exit(0);
+}
 grid("yoy", { title: "Better Than Last Year", sub: "Top and bottom three stores on each measure, Jan–Sep 2026 vs Jan–Sep 2025", groupLabel: "Group", src: SRC_Y });
 grid("mom", { title: "Who's Moving Now", sub: "Top and bottom three stores on each measure, Q3 2026 vs Q1 2026 (gross and ROs per month). Group change = the season.", groupLabel: "Group", src: SRC_M });
 ORDER.forEach(moving);

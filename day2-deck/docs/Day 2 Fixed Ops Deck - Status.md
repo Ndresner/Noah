@@ -10,6 +10,7 @@ Updated: October 28, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 28: Flai pickup rate = transfers picked up (confirmed). Warranty audit slides approved as drafted.
 - Oct 28 (final): GMC Prescott body shop stays IN absorption, as on the P&L (group 78.1%, GMC Prescott 75.6%). ELR benchmark 70% of door. Store Prescriptions in the deck only, no date range on the vitals. Section dividers approved.
 - Oct 28: Lexus tire balance near 0% is real (not a mapping problem) and stays red.
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
@@ -68,7 +69,7 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Better Than Last Year / Who's Moving Now: which measures to add (recommended: two slides, adding fixed ops net profit, absorption, CP labor $ per RO and opcode closing %), and whether to keep the bottom 3.
+- Better Than Last Year as two slides (Customer Pay: + CP labor $ per RO; Profit and Process: fixed ops net profit, absorption, CP parts GP %, opcodes combined): review file Better Than Last Year - Review.pptx; approve to put in (and whether Who's Moving Now gets the same split). Keep the bottom 3: open.
 - Points-change slides (absorption, net to gross, GP %, opcodes): add the percent change alongside the points?
 - Movers slides: the small gray second line (change in the metric's own unit, today only on the slides ranked by % change: CP hours per RO, CP ELR, CP labor $ per RO, internal ELR) - add it to the other movers slides too?
 - Work mix: Noah has extra data to check the opcode-description classification.
@@ -78,7 +79,6 @@ Updated: October 28, 2026
 
 ## Still open
 - Items in Open Decisions: bring back or drop.
-- Warranty audit slides: confirm the drafted descriptions against OEM policy.
 
 ## Where things live
 - Build source (scripts, data, history): GitHub ndresner/noah, branch claude/serene-mendel-6jr9ef, folder day2-deck.
