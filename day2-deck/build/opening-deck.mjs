@@ -30,7 +30,8 @@ export const SECTIONS = [
 // Oct 28 audit, option 8 (review only until Noah approves): CHIPS8=1 builds the proposed Warranty and Close wording
 // into "Section Dividers - Review.pptx"; the deck build is unchanged
 if (process.env.CHIPS8 === "1") {
-  Object.assign(SECTIONS[6], { detail: "Warranty rates, gross profit and compliance.", chips: ["Rates rising", "Warranty gross profit", "Warranty audits"] });
+  // Oct 28 (Noah): the old agenda line plus protecting the money; "Warranty audits" chip reworded
+  Object.assign(SECTIONS[6], { detail: "Warranty rates, margins and compliance: protecting the money.", chips: ["Rates rising", "Warranty gross profit", "Claim process: protect the money"] });
   Object.assign(SECTIONS[7], { detail: "What changed, where the money is, and each store's prescription.", chips: ["Most improved", "Where the money is", "Store prescriptions"] });
 }
 const TRACKER = SECTIONS.map(s => s.short);
