@@ -45,7 +45,7 @@ H.groupYoy(pptx, pptx, {
   fmt: v => Math.round(v).toLocaleString("en-US"), dfmt: v => sg(Math.round(v)),
   chartLabel: "Fixed employees at month end, 2025 against 2026",
   takeaway: (() => { const g = rpe.G25[0], h = rpe.G26[0];
-    return `Fixed ops headcount ${d(T.fe) >= 0 ? "rose" : "fell"} ${Math.abs(d(T.fe))} to ${T.fe[i26].toLocaleString("en-US")} (${sg(d(T.fe)).replace(/\d.*/, "")}${pc(d(T.fe) / T.fe[i25])}), Sep to Sep; CP & W ROs ${h >= g ? "rose" : "fell"} ${pc(h / g - 1)} year to date.`; })(),
+    return `Fixed ops headcount ${d(T.fe) >= 0 ? "rose" : "fell"} ${Math.abs(d(T.fe))} to ${T.fe[i26].toLocaleString("en-US")} (${sg(d(T.fe)).replace(/\d.*/, "")}${pc(d(T.fe) / T.fe[i25])}) September to September; the card is the Jan–Sep average month-end. CP & W ROs ${h >= g ? "rose" : "fell"} ${pc(h / g - 1)} year to date.`; })(),
   source: `${SRC} YTD = average month-end fixed headcount, Jan-Sep. Fixed employees include managers; technicians = service, express, foreman and team-leader titles. 2025 shown January-December.\n`
         + T.months.map((m, i) => `${m}: ${T.fe[i]} fixed, ${T.tech[i]} techs, ${T.sa[i]} advisors, ${T.mgr[i]} managers`).join("\n"),
 });

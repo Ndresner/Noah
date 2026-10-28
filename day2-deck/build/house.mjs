@@ -359,10 +359,11 @@ export function measureStrip(pptx, s, measure, label, value, valueColor) {
 /* A band only when there is something worth saying. No text, no band.
    The band names where the opportunity is, with the figure attached -
    never flattery, never a scolding (Tommy, Oct 2026). */
-export function takeaway(pptx, s, text, tone = "n") {
+export function takeaway(pptx, s, text, tone = "n", opt = {}) {
   if (!text) return;
   // Oct 27 (Noah): group-level part stays on the band, store call-outs go to the speaker notes
-  if (namesStore(text)) { s.addNotes(`Takeaway with the store call-outs (off the slide): ${proseNames(text)}`); text = stripStores(text); if (!text) return; }
+  // opt.keep: a store name Noah asked for on the band (Oct 28: tied stores on Two Ways to Read Improvement)
+  if (!opt.keep && namesStore(text)) { s.addNotes(`Takeaway with the store call-outs (off the slide): ${proseNames(text)}`); text = stripStores(text); if (!text) return; }
   words(text, "takeaway");
   text = proseNames(text);
   const bg = tone === "g" ? C.goodBg : tone === "b" ? C.badBg : C.blueTint;

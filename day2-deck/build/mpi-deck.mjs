@@ -34,6 +34,6 @@ rank("vid", "vt", { title: "Video Completion %", metric: "video completion %", m
   notes: `Video is what turns an inspection into a sale the customer can see. MPI at 80% or more but video under 45%, so the inspection is done and not shown: ${D.filter(x => x.mpi >= 0.8 && x.vid < 0.45).map(x => `${nm(x.n)} (${pct(x.mpi)} MPI, ${pct(x.vid)} video)`).join("; ")}.` });
 rank("med", "vt", { title: "Photo Completion %", metric: "photo completion %", measure: "Photo Completion %", valLabel: "Rate",
   def: "Photo % (optional on the form) = CP+W ROs with at least one technician photo on the MPI / CP+W ROs closed. Scored against the group.",
-  notes: "Optional measure: five stores do not report it, so it is a review slide, not a meeting slide." });
+  notes: "Five stores do not report photo completion, so the group here is weighted on the 28 stores that do (109,881 CP + warranty ROs, not the 128,726 used for MPI and video)." });
 
 await pptx.writeFile({ fileName: "MPI & Video Completion - Review.pptx" }); console.log("mpi built", pct(wavg("mpi")), pct(wavg("vid")), pct(wavg("med")));

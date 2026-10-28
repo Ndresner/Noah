@@ -40,7 +40,7 @@ function grossBlock(title, metric, m25, m26, q4, S, chain, mn) {
     eyebrow: SEG, title, metric, measure: title.replace("Total Gross Profit - ", "") + " Gross",
     prior: full25, current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line",   // Noah, Oct 22: no bar charts
     chartLabel: `${title.replace("Total Gross Profit - ", "")} gross by month, 2025 against 2026 ($M)`,
-    takeaway: `${usd(d)} (${(d / v25 * 100).toFixed(1)}%) year to date; ${up} of nine months ahead of 2025, best ${FULL[m26.map((v, i) => v - m25[i]).indexOf(Math.max(...m26.map((v, i) => v - m25[i])))]} at ${usd(Math.max(...m26.map((v, i) => v - m25[i])))}.`,
+    takeaway: `${usd(d)} (${(d / v25 * 100).toFixed(1)}%) year to date; ${up} of nine months ahead of 2025, largest gain in ${FULL[m26.map((v, i) => v - m25[i]).indexOf(Math.max(...m26.map((v, i) => v - m25[i])))]}, ${usd(Math.max(...m26.map((v, i) => v - m25[i])))}.`,
     source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December.`,
   });
   H.totalRanker(pptx, pptx, {

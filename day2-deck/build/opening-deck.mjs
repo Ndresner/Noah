@@ -27,6 +27,12 @@ export const SECTIONS = [
   { short: "Warranty",            detail: "Warranty rates, margins and compliance.", chips: ["Rate increases", "Warranty ELR", "Parts margin", "Warranty audits"] },
   { short: "Close",               detail: "What changed, where the money is, and what we commit to.",         chips: ["Most improved", "Where the money is", "Before you leave"] },
 ];
+// Oct 28 audit, option 8 (review only until Noah approves): CHIPS8=1 builds the proposed Warranty and Close wording
+// into "Section Dividers - Review.pptx"; the deck build is unchanged
+if (process.env.CHIPS8 === "1") {
+  Object.assign(SECTIONS[6], { detail: "Warranty rates, gross profit and compliance.", chips: ["Rates rising", "Warranty gross profit", "Warranty audits"] });
+  Object.assign(SECTIONS[7], { detail: "What changed, where the money is, and each store's prescription.", chips: ["Most improved", "Where the money is", "Store prescriptions"] });
+}
 const TRACKER = SECTIONS.map(s => s.short);
 
 H.cover(pptx, pptx, { title: MEETING.title, subtitle: MEETING.subtitle, meta: [MEETING.venue], logo: LOGO });
@@ -40,4 +46,4 @@ SECTIONS.forEach((sec, i) => H.section(pptx, pptx, {
 H.section(pptx, pptx, { kicker: "Not presented · for review", title: "Open Decisions", chips: ["Store records", "Door rate", "CP vs internal", "Photo %", "Productivity", "Who's moving now", "Most improved"], logo: LOGO })
   .addNotes("For review with Tommy, not for the room. Every slide built but not placed in the deck: alternate versions of slides already in it, and slides not yet decided on. In deck order: Store Records (five designs), Door Rate option A, CP vs Internal GP % option A, Photo completion % (optional measure), Productivity slides taken out of the flow (gross per employee gap, 5% more per employee, ROs per advisor, ROs per manager; Oct 23), Who's Moving Now alternate versions and the line-chart versions taken out of the flow (Oct 23), Most Improved v1. Pick what moves into the deck, then delete this section before the meeting.");
 
-await pptx.writeFile({ fileName: "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);
+await pptx.writeFile({ fileName: process.env.CHIPS8 === "1" ? "Section Dividers - Review.pptx" : "Day 2 Opening - Day 1 Style.pptx" }); console.log("opening built", 2 + SECTIONS.length + 1);

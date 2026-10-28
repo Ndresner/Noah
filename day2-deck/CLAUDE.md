@@ -48,7 +48,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 | `fge-deck.mjs` / `fge-gap-deck.mjs` | Fixed Gross per Employee 5 Pct / Gap - Review | `prod/fge26.txt` |
 | `prof-deck.mjs` | Technician Proficiency - House Style (8) | `prof/prof.json`, `prof/opp.json` (from `prof/compute.py`) |
 | `np-deck.mjs` | Fixed Absorption & Net Profit - House Style (7) | `abs.json`, `pulls/fixed_exp.json`, `ntgs.json`/`ntgp.json`, `pulls/net_by_dept.json` |
-| `flai-deck.mjs` | Voice AI - Flai (2): after The Front Door (Oct 26) | `flai/standings_*.csv` (Flai Service standings export, Jul 26 - Oct 26 2026; store rows reconcile to Flai's Group row). Flai location names, never beside P&L numbers; Flai $ estimates unused; "handled by the AI alone" = calls - transfers; pickup rate read as transfers picked up by a person (confirm with Flai); missed-transfer value on slide 1 = half the missed transfers x average gross per CP or warranty RO ((CP labor + parts gross `m5.json` + warranty gross `wg.json`) / CP & W ROs `prod/rpe.json` = $384.67) = ~$2.64M, no show rate; average call time dropped (Noah, Oct 26: taking half is the haircut); callback column lists every store at 100%; green / red bar = in more than one top / bottom list. |
+| `flai-deck.mjs` | Voice AI - Flai (2): after The Front Door (Oct 26) | `flai/standings_*.csv` (Flai Service standings export, Jul 26 - Oct 26 2026; store rows reconcile to Flai's Group row). Flai location names, never beside P&L numbers; Flai $ estimates unused; "handled by the AI alone" = calls - transfers; pickup rate read as transfers picked up by a person (confirm with Flai); missed-transfer value on slide 1 = half the missed transfers x average gross per CP or warranty RO ((CP labor + parts gross `m5.json` + warranty gross `wg.json`) / CP & W ROs `prod/rpe.json` = $384.67) = ~$2.64M, no show rate; average call time dropped (Noah, Oct 26: taking half is the haircut); callback column lists every store at 100% under "AT 100%" (Oct 28: all six); eyebrow and source carry the dates Jul 26 – Oct 26, 2026 (not "last 90 days"); green / red bar = in more than one top / bottom list. |
 | `best-options.mjs` | Best Techs - Design Options (3) | prof data |
 | `tp-deck.mjs` | Talking Points - Day 2 (14) | typed from verified figures (see below) |
 | `explain-deck.mjs` | Metric Explainers - Review (12) | typed group figures |
@@ -69,7 +69,7 @@ pip install -r requirements.txt --break-system-packages   # python-pptx 1.0.2, o
 **Rebuilt Oct 21 (v2).** The Gross, Profitability, CP Engine, Labor Mix, Opcode Benchmarks and Warranty & Internal decks now build from re-pulled Qlik data (`gross-deck.mjs`, `pl-deck.mjs`, `cp-deck.mjs`, `labormix-deck.mjs`, `opcode-deck.mjs`, `wi-deck.mjs`, `door-slides.mjs`):
 - Closed RO (set identifier `1`; every pull reconciles store rows to the group): `m5.json` (CP), `wi.json` (warranty/internal), `elr_q3.json` (Jul–Sep ELR), `all.json` (opcodes). Parser: `pulls/to_block.py`.
 - P&L: `abs.json` (absorption), `ntgs.json` / `ntgp.json` (service / parts net to gross).
-- Recovered from the v1 speaker notes because the raw input was lost: `door.json`, `doorinfo.json` (door rates, grid/no-grid), `wm_shares.json` (work-type shares).
+- Recovered from the v1 speaker notes because the raw input was lost: `door.json`, `doorinfo.json` (door rates, grid/no-grid), `wm_shares.json` (work-type shares; re-pulled and verified Oct 28, raw in its `raw_2026_oct28` key).
 
 **v2 build:** run each `*-deck.mjs`, then `node opening-deck.mjs`, then `python3 merge_v2.py`.
 

@@ -16,7 +16,7 @@ const D = JSON.parse(fs.readFileSync("./pulls/net_by_dept.json", "utf8")).all_st
 const fx = y => -(D[y].service + D[y].parts), net = y => -D[y].net_gm;
 const M = v => "$" + (v / 1e6).toFixed(2) + "M", usd = v => "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 const share = y => fx(y) / net(y) * 100, dFx = fx("y26") - fx("y25"), dNet = net("y26") - net("y25");
-H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 2025, all stores (INEOS included, to match the group P&L). Fixed ops = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses. Group net = Net Profit Or Loss on the GM statement.",
+H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 2025, all stores (INEOS included, to match the group P&L), except the 27 cents vs 7 cents tile, which is same-store (INEOS excluded; 27 cents either way). Fixed ops = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses. Group net = Net Profit Or Loss on the GM statement.",
   eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: null,
   said: ["Foster collaboration, introduce ideas that drive operational excellence, and set a clear path to exceptional service performance",
          "Focus on profit-generating activities: the work that brings in incremental dollars, not just the work that fills the day",
@@ -45,7 +45,8 @@ T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
          "Processes only work when they are actively managed"],   // Noah, Oct 26
   now: [{ big: "+$6,297,386", label: "Service gross, up 5.2%, ahead of 2025 in all nine months.", tone: "g" },
         { big: "+$1,171,181", label: "Parts gross, up 1.9%, ahead of 2025 in six of nine months.", tone: "g" },   // same pattern as service (Noah, Oct 24)
-        { big: "$20.59M", label: "Fixed ops gross a month over the last twelve months.", tone: "g" }],
+        // Oct 28 audit (Noah): Jan-Sep monthly average under the Jan-Sep header ($188,799,724 / 9); was the trailing-twelve $20.59M
+        { big: "$20.98M", label: "Fixed ops gross a month, January through September 2026.", tone: "g" }],
   ask: "run service like a sales department: every visit is a chance to sell the next hour and the next car.",
   notes: "PLACE: Gross section, after the section break and before Total Gross Profit - Fixed Ops.\nSaid: Roundtable slide 9 ('Service Department?'); Jan GM slide 58 (Sales and Service Relationship).\nFor the GMs who come from sales (Noah, Oct 25): service and parts keep far more of every gross dollar than vehicle sales does. Jan-Sep 2026, after each department's own expenses, fixed ops kept 27 cents of every gross dollar; new, used and F&I together kept 7 cents (before doc fees, packs and factory money, which the P&L books outside the departments). People cost 45 cents of every fixed ops gross dollar and 62 cents of every vehicle sales gross dollar. That is why paying yourself first, on internal work, matters: see Pay Yourself First at the start of the Internal section." });
 
@@ -72,7 +73,7 @@ T({ eyebrow: "Customer Pay", title: "The Front Door", saidFrom: GM,
   now: [{ big: "+0.2%", label: "Customer-pay RO count. 13 of 33 stores had fewer CP ROs than last year.", tone: "n" },
         { big: "$4,473,284", label: "A year in labor and parts gross from one more customer-pay RO a day at every store.", tone: "n" }],   // ROs per advisor moved to Open Decisions (Oct 24)
   ask: "every customer leaves with the next appointment booked, and every call reaches someone who asks for it.",
-  notes: "PLACE: CP Engine section, after the CP RO Count slides and before Hours per RO.\nSaid: Jan/May GM slides on Appointment Scheduling, Appointment Discipline, Phone Call Handling and Retention Management (Jan 2, 7, 9, 11; May 2, 4, 8, 9).\nOptional: the Flai voice AI service view (Jul 16-Aug 15 pull: 4,368 of 8,351 transfers rang out) fits here, but it is a different source and period; refresh it before use and keep it off any slide with a P&L number." });
+  notes: "PLACE: CP Engine section, after the CP RO Count slides and before Hours per RO.\nSaid: Jan/May GM slides on Appointment Scheduling, Appointment Discipline, Phone Call Handling and Retention Management (Jan 2, 7, 9, 11; May 2, 4, 8, 9).\nThe two Flai voice AI slides (Jul 26 - Oct 26, 2026) follow this one; keep Flai figures off any slide with a P&L number." });
 
 T({ eyebrow: "Customer Pay · Effective Labor Rate", title: "Pricing Strategy", saidFrom: BOTH,   // marks it as part of the ELR run (Noah, Oct 26)
   said: ["Do a comprehensive market labor study",
@@ -148,7 +149,7 @@ T({ eyebrow: "Warranty", title: "Warranty Compliance", saidFrom: JAN,
         { big: "$197.17", label: "Warranty ELR, up $16.93; 30 of 33 stores raised it.", tone: "g" },
         { big: "44.7%", label: "Warranty parts gross profit, up 2.1 pts and ahead of 2025 in all nine months.", tone: "g" }],
   ask: "a higher warranty rate brings more scrutiny. Self-audit before the factory does.",
-  notes: "PLACE: Warranty section, after the section break, ahead of Warranty Rate Increases (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
+  notes: "PLACE: Warranty section, after the section break, ahead of Warranty Rates Are Rising (Oct 22: $3,788,200 added gross profit from the YTD RWR Financials vendor report replaced the warranty RO count here).\nSaid: Jan GM slides 13-14 (audit chargebacks; Warranty Compliance). The Jan slide named six stores' chargebacks; kept to the $400,000 total here, in line with no store call-outs from the podium." });
 
 T({ eyebrow: "Fixed Ops Productivity", title: "People", saidFrom: BOTH,
   said: ["Our most valuable asset: this is what separates us",
@@ -157,8 +158,8 @@ T({ eyebrow: "Fixed Ops Productivity", title: "People", saidFrom: BOTH,
          "Always be teaching, training and educating",
          "Being short-handed limits scheduling, loses opportunities and leads to missed MPIs",
          "Clear pay plans, job descriptions and expectations"],
-  now: [{ big: "−76", label: "Fixed ops staff, Sep to Sep, to 1,540 (−4.7%): technicians −17, advisors −7, managers −3.", tone: "n" },
-        { big: "$13,617", label: "Fixed gross per fixed employee a month, up $1,207. Gross grew 4.1% with 5.1% fewer people.", tone: "g" },
+  now: [{ big: "−76", label: "Fixed ops staff, September to September, to 1,540 (−4.7%): technicians −17, advisors −7, managers −3.", tone: "n" },
+        { big: "$13,617", label: "Fixed gross per fixed employee a month, up $1,207. Gross grew 4.1% with 5.1% fewer people on average.", tone: "g" },
         // Noah, Oct 26: what an empty bay misses. prof/opp.json: 841,721 sold hrs / 583 counted techs / 9.49 months x $187.98 gross per sold hour
         { big: "$28,600", label: "Gross an average tech's bay produces a month: 152 sold hours at $188 each. An empty or idle bay misses all of it.", tone: "b" }],
   ask: "keep every seat filled with someone who adds hours. Being short-handed costs appointments, MPIs and sold hours.",

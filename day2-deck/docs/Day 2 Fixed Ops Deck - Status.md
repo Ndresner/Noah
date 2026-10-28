@@ -14,6 +14,7 @@ Updated: October 28, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- Audit proposals done: "largest gain in September" wording; $20.98M a month (Jan-Sep) on Service Is Sales 2.0; Flai dated Jul 26 - Oct 26 and all six 100% callback stores; "ahead on net"; headcount September to September; 7 stores show 20% or more (slide 143); Nissan tie named on Two Ways; What Changed opcode row = Mazda balance; speaker-note cleanup. Work mix re-pulled: data confirmed. Section dividers (Warranty, Close) in review: Section Dividers - Review.pptx.
 - Data audit (full list in docs/Data Audit - Oct 28.md): no wrong source data; CP group totals re-pulled live from Qlik and match. Fixed: slide 142 band (20 stores at or above 85% leave $818K a month); 0.1 hour per RO = $6.6M a year in gross everywhere; one rule for changes (shown end minus shown start, rounding everywhere, opcode rates truncated incl. Store Prescriptions). GMC Prescott body shop out of absorption: group 77.9% (was 78.1%), GMC Prescott 61.6%. Lexus tire balance stays red (not a mapping problem). Proposals pending: What Changed opcode row, share column on slide 143, Two Ways tie, section chips, callback count on 45, wording items.
 - Store Prescriptions: green / red mark after each store's absorption (above / below the group, now 77.9%), all 33 store slides.
 - Where the Money Is: 0.1 hours per RO "Be consistent: MPI and Road to the Sale on every car"; ten minutes a day "Streamline the process, remove inefficiencies: parts to the bay, tools and keys in place".
@@ -64,7 +65,8 @@ Updated: October 28, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Data audit proposals: What Changed opcode row, slide 143 share column, Two Ways tie, section chips, slide 45 callback count, wording items, speaker-note cleanup.
+- Section dividers (Warranty, Close chips and agenda wording): review file, approve to put in.
+- Work mix: Noah has extra data to check the opcode-description classification.
 - Most Improved: add one metric (opcode closing % recommended)?
 - Flai: confirm "pickup rate" means transfers picked up by a person (the 47.7% headline depends on it). For a "who's improving" slide, export standings for Sep 27 - Oct 26 and Aug 28 - Sep 26.
 - Tommy and Gary meeting transcript: not found; send it to add to Service Is Sales 2.0.

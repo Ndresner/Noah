@@ -5,7 +5,7 @@ Scope: the 194 meeting-flow slides of the 237-slide test deck (Open Decisions no
 Result: no wrong source data. The issues are display rounding, a few labels/periods, and stale notes.
 
 ## Fix (visible on a slide)
-Status Oct 28: 1-4 fixed (round 21). GMC Prescott body shop out of absorption and Lexus (not gray) done. 5-9 and the judgment calls below proposed to Noah.
+Status Oct 28: 1-4 fixed (round 21). GMC Prescott body shop out of absorption and Lexus (not gray) done. 5-9 and the judgment calls: done Oct 28 round 22 per Noah (143 keeps 20% and rewords; 158 tie named on the band); option 8 (section dividers) in review.
 
 | # | Slide(s) | Issue | Fix |
 |---|---|---|---|

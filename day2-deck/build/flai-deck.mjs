@@ -21,7 +21,7 @@ for (const k of ["calls", "bookable", "booked", "tr", "open"]) {
 const DAYS = 93;   // Jul 26 - Oct 26 inclusive
 const MIN = 300;   // rankings: locations with at least 300 calls, so a handful of calls can't top a list
 const fmt = v => Math.round(v).toLocaleString("en-US");
-const SEG = "Voice AI · Flai · Last 90 Days";   // says what and whose data (Noah, Oct 26)
+const SEG = "Voice AI · Flai · Jul 26 – Oct 26, 2026";   // Oct 28 audit: the export covers 93 days, so the dates, not "last 90 days"   // says what and whose data (Noah, Oct 26)
 const SRC = `Flai voice AI dashboard, Service view, standings export, Jul 26 - Oct 26, 2026 (${DAYS} days). Flai's location names (26 with calls). Pickup rate and resolution as Flai reports them. Flai's estimated savings, revenue and profit are not used.`;
 const notPicked = Math.round(G.tr * (1 - G.pick / 100));
 // value of the missed transfers (Noah, Oct 26): assume half wanted an appointment, each worth the group's average
@@ -43,7 +43,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
     { label: "Appointments booked", big: fmt(G.booked), sub: `${G.book}% of the ${fmt(G.bookable)} calls that could book an appointment.`, tone: "g" },
     { label: "Transfers picked up", big: `${G.pick}%`, sub: `About ${fmt(notPicked)} transfers missed. If half wanted an appointment, that is $${(missedVal / 1e6).toFixed(1)}M of gross profit.`, tone: "b" },
   ],
-  banner: `The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard. Source: Flai service calls, last 90 days.`,   // less is more (Noah, Oct 26)   // open-callback count off this slide (Noah, Oct 26)
+  banner: `The AI books and routes the call; the store still has to answer the transfer and close every callback in the Flai dashboard. Source: Flai service calls, Jul 26 – Oct 26, 2026.`,   // less is more (Noah, Oct 26)   // open-callback count off this slide (Noah, Oct 26)
   takeaway: `The AI finishes ${(100 - G.trr).toFixed(1)}% of calls on its own. The rest come back to the store, and fewer than half of those reach a person. Every unanswered transfer is a customer we already had.`,
   tone: "b", source: SRC + ` Handled by the AI alone = calls - transfers (the export has no separate column for it). Not picked up = transfers x (1 - pickup rate), from Flai's group figures. Value: half of the missed transfers x $${gpr.toFixed(2)} average gross per customer-pay or warranty RO (CP labor + parts gross $${((CP[3] + CP[5]) / 1e6).toFixed(1)}M, Qlik Closed ROs, plus warranty gross $${(WGR / 1e6).toFixed(1)}M, P&L, over ${fmt(CPW)} CP & W ROs, Jan-Sep 2026, same-store) = $${fmt(missedVal)}.` });
 
@@ -65,13 +65,14 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "Voice AI: Every Call Is a Custom
   const sortedOf = c => [...R2].sort((a, b) => b[c.key] - a[c.key] || a.open - b.open);
   // callback resolution: the five busiest of the stores at 100% (Noah, Oct 26: a top 5 like the others, the count of 100% stores in the sub line)
 const at100 = R2.filter(r => r.res === 100);
-  const topOf = c => c.key === "res" ? [...at100].sort((a, b) => b.calls - a.calls).slice(0, 5) : sortedOf(c).slice(0, 5);
+  // Oct 28 audit (Noah): every store at 100% is listed (was the busiest five of six), under an "AT 100%" head
+  const topOf = c => c.key === "res" ? [...at100].sort((a, b) => b.calls - a.calls) : sortedOf(c).slice(0, 5);
   const seen = {}; cols.forEach(c => topOf(c).forEach(r => { seen[r.n] = (seen[r.n] ?? 0) + 1; }));
   const multi = new Set(Object.keys(seen).filter(n => seen[n] > 1));
   // red bar: in more than one bottom 5 (Noah, Oct 26)
   const seenB = {}; cols.forEach(c => sortedOf(c).slice(-5).forEach(r => { seenB[r.n] = (seenB[r.n] ?? 0) + 1; }));
   const multiB = new Set(Object.keys(seenB).filter(n => seenB[n] > 1));
-  const maxTop = 5;   // the 100% list is drawn as a compact name grid, so every top list takes five rows (Noah, Oct 26)
+  const maxTop = Math.max(5, at100.length);   // the longest top list sets the rows, so BOTTOM 5 starts on the same line in all three columns
   cols.forEach((c, k) => {
     const x = 0.5 + k * (W + 0.12);
     H.panel(pptx, s, { x, y: top, w: W, h, label: null });
@@ -79,7 +80,7 @@ const at100 = R2.filter(r => r.res === 100);
     s.addText(`Group ${c.g}%` + (c.key === "res" ? ` · ${at100.length} stores at 100%` : ""),   // header says what it is; just the group (Noah, Oct 26)
       { x: x + 0.18, y: top + 0.4, w: W - 0.36, h: 0.26, fontFace: F, fontSize: sz(14, "col sub"), color: C.ink600, isTextBox: true, margin: 0 });
     const sorted = sortedOf(c), T = topOf(c);
-    const lists = [["TOP 5", T, C.goodInk, C.good, true], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad, false]];
+    const lists = [[c.key === "res" ? "AT 100%" : "TOP 5", T, C.goodInk, C.good, true], ["BOTTOM 5", sorted.slice(-5).reverse(), C.badInk, C.bad, false]];
     const rh = (h - 0.85 - 0.6) / (maxTop + 5);
     let y = top + 0.75;
     lists.forEach(([lab, L, ink, bar, isTop]) => {

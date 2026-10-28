@@ -48,7 +48,7 @@ H.splitRanker(pptx, pptx, {
 H.levelRanker(pptx, pptx, { ...base, takeaway: main,
   extra: [{ label: "ELR", w: 0.86, vals: vals(x => d2(x.elr), { GROUP: d2(ALL.elr) }) },
           { label: "DOOR", w: 0.86, vals: vals(x => d2(x.door), { GROUP: d2(ALL.door) }) }],
-  source: "OPTION A - ELR and door rate columns. " + SRC });
+  source: "ELR and door rate columns. " + SRC });
   // Option B: % + ELR + 70% target
 H.levelRanker(pptx, pptx, { ...base,
   takeaway: `Jul\u2013Sep: ${at} of 33 stores at or above 70% of door rate. ${low.n} runs ${d2(low.elr)} against a ${d2(low.door * 0.7)} target.`,

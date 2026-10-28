@@ -80,7 +80,7 @@ H.amountRanker(pptx, pptx, {
   rows: OS.map(o => [o.n, o.share]), fmt: v => (v * 100).toFixed(0) + "%", color: H.C.bad, ink: H.C.badInk, valLabel: "Share",
   extra: [{ label: "Missed", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(tot(o) / MO)])) },
           { label: "Gross", w: 0.95, vals: Object.fromEntries(OS.map(o => [o.n, K(o.rog / MO)])) }],
-  takeaway: `Group-wide the gap is ${(OG.share * 100).toFixed(1)}% of RO gross. ${big.length} stores are missing a fifth or more, led by ${sh[0].n} at ${(sh[0].share * 100).toFixed(0)}% (${K(tot(sh[0]) / MO)} of ${K(sh[0].rog / MO)} a month).`,
+  takeaway: `Group-wide the gap is ${(OG.share * 100).toFixed(1)}% of RO gross. ${OS.filter(o => Math.round(o.share * 100) >= 20).length} stores show 20% or more, led by ${sh[0].n} at ${(sh[0].share * 100).toFixed(0)}% (${K(tot(sh[0]) / MO)} of ${K(sh[0].rog / MO)} a month).`,
   tone: "b", source: OSRC + " Missed and Gross are per month. Share = missed labor + parts gross / labor + parts gross on the store's closed ROs, all pay types, same dates (includes work on shared tech codes). Not P&L gross: counter and wholesale parts are excluded because techs do not produce them.",
 });
 const under = OS.filter(o => o.prof < BEN), proven = under.filter(o => o.top >= BEN);

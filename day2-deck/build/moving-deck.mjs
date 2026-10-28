@@ -158,7 +158,13 @@ function twoViews() {
     });
   });
   const lead = rows => { const t = rows.filter(r => r[1].length === rows[0][1].length); return t.length === 1 ? `${t[0][0]} leads` : `${cap(NUMW[t.length])} stores tie`; };
-  H.takeaway(pptx, s, `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${onBoth.size === 0 ? "No store is on both lists." : onBoth.size === 1 ? "One store is on both lists (green bar)." : cap(NUMW[onBoth.size]) + " stores are on both lists (green bar)."}`, "g");
+  // Oct 28 (Noah): stores tied with the last row shown but cut by the six-row list go on the band (store names allowed here)
+  const tiedOut = (all, shown) => all.filter(e => !shown.some(x => x[0] === e[0]) && e[1].length === shown.at(-1)[1].length).map(e => H.storeName(e[0]));
+  const tl = tiedOut(tops("yoy", 5), A), tr = tiedOut(tops("mom", 5), B);
+  const tieNote = [tl.length ? `Also tied at ${A.at(-1)[1].length} last year: ${list(tl)}.` : "", tr.length ? `Also tied at ${B.at(-1)[1].length} moving now: ${list(tr)}.` : ""].filter(Boolean).join(" ");
+  const band = `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${onBoth.size === 0 ? "No store is on both lists." : onBoth.size === 1 ? "One store is on both lists (green bar)." : cap(NUMW[onBoth.size]) + " stores are on both lists (green bar)."}`;
+  if (tieNote) { if (H.namesStore(band)) s.addNotes(`Takeaway with the store call-outs (off the slide): ${band}`); H.takeaway(pptx, s, (H.stripStores(band) + " " + tieNote).trim(), "g", { keep: true }); }
+  else H.takeaway(pptx, s, band, "g");
   H.foot(pptx, s, BASIS + ` Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across ${NUMW[GRID.length]} measures (parts $ per RO dropped, Oct 23); top six stores shown in each view.`);
 }
 
@@ -175,7 +181,9 @@ function whatChanged() {
   const OPK = ["align", "bal", "bf", "fuel"], tally = {};
   OPK.forEach(k => { const n = MO[k].rows[0].n; tally[n] = (tally[n] ?? 0) + 1; });
   const opStore = Object.entries(tally).sort((a, b) => b[1] - a[1])[0][0];
-  const opBest = OPK.map(k => [k, MO[k].rows.find(r => r.n === opStore)]).sort((a, b) => b[1].chg - a[1].chg)[0];
+  // Oct 28 audit (Noah): the row keeps the slide's rule - an opcode the store is the top mover on (was its biggest move,
+  // alignment, where Audi Henderson is the top mover)
+  const opBest = OPK.filter(k => MO[k].rows[0].n === opStore).map(k => [k, MO[k].rows[0]]).sort((a, b) => b[1].chg - a[1].chg)[0];
   const opLabel = { align: "Alignment", bal: "Balance", bf: "Brake fluid", fuel: "Fuel service" }[opBest[0]];
   rows.push([opBest[0], { ...opBest[1], v0: opBest[1].v0, v1: opBest[1].v1 }, `Opcodes \u00b7 ${opLabel.toLowerCase()}`]);
   rows.forEach(([k, r, lab], j) => {
@@ -187,7 +195,7 @@ function whatChanged() {
   });
   const stores = [...new Set(rows.map(r => r[1].n))];
   H.takeaway(pptx, s, `${cap(NUMW[stores.length])} stores, one question each: what did you start doing that month? One sentence, before you leave.`, "n");
-  H.foot(pptx, s, SRC_M + ` Each row is the top Q1-to-Q3 mover on that measure. Opcode row: ${opStore} tops ${tally[opStore]} of the four opcode lists; its biggest move is shown. Opcode closing % = ROs with the service \u00f7 customer-pay ROs on the op-code report basis.`);
+  H.foot(pptx, s, SRC_M + ` Each row is the top Q1-to-Q3 mover on that measure. Opcode row: ${opStore} tops ${tally[opStore]} of the four opcode lists; the biggest of those moves is shown. Opcode closing % = ROs with the service \u00f7 customer-pay ROs on the op-code report basis.`);
   s.addNotes(`\n\n${opStore}'s August opcode increase was confirmed with the store as a real change (Noah, Oct 19 2026).`);
 }
 

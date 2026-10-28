@@ -70,7 +70,7 @@ const YSRC = SRC.replace(" A year = Jan-Sep x 12 / 9.", "").replace(" Stores at 
     extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(rows.map(([n, t]) => [n, sgnN(t.op)])),
               marks: (() => { const by = [...rows].sort((a, b) => b[1].op - a[1].op);
                 return Object.fromEntries([...by.slice(0, 3).map(([n]) => [n, "g"]), ...by.slice(-3).map(([n]) => [n, "r"])]); })() }],
-    takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} so far this year; ${above} of 33 stores are ahead of benchmark across the four services. ${all4} stores are under all four.`,
+    takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} so far this year; ${above} of 33 stores are ahead of benchmark on net across the four services. ${all4} stores are under all four.`,
     tone: "b", source: YSRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross Jan-Sep 2026 above (+) or below (-) the four benchmarks, at the store's own gross per service. Opcodes = the four services' opcodes above (+) or below (-) their benchmarks, added together; green / red bar = top / bottom three by opcodes. Below-benchmark services count against above-benchmark ones here.",
   });
   pptx._slides[pptx._slides.length - 1].addNotes(srt.map(([n, t]) => `${n}: ${sgnK(t.vs)}, ${sgnN(t.op)} opcodes Jan-Sep against the four benchmarks; under ${t.k} of 4`).join("\n"));

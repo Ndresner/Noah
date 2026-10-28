@@ -24,7 +24,7 @@ const base = { seg: SEG, src: SRC };
   H.groupYoy(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Warranty Gross",
     prior: [...m25, ...q4], current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line", majorUnit: 1,   // chart runs in $M
     chartLabel: "Warranty gross profit by month, 2025 against 2026 ($M)",
-    takeaway: `${kd(d)} (${pcA(d / v25)}) of warranty gross year to date; ${up} of nine months ahead of 2025, best ${FULL[bi]} at ${kd(dm[bi])}. This is money the manufacturer owes us: process keeps it.`,
+    takeaway: `${kd(d)} (${pcA(d / v25)}) of warranty gross year to date; ${up} of nine months ahead of 2025, largest gain in ${FULL[bi]}, ${kd(dm[bi])}. This is money the manufacturer owes us: process keeps it.`,
     source: `${WSRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December. Store rows reconcile to the group to the cent, both years.` });
   H.totalRanker(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Warranty Gross", rows: S.map(r => [r[0], r[2]]), expect: v26,
     groupLabel: "SEPTEMBER 2026 YTD",

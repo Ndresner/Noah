@@ -6,6 +6,8 @@ import * as H from "./house.mjs";
 const pptx = new PptxGenJS(); pptx.layout = "LAYOUT_WIDE"; pptx.theme = { headFontFace: "Inter", bodyFontFace: "Inter" };
 const SRC = "Definitions match the data slides: Qlik - Closed Repair Orders (all customer-pay ROs, by close month), Profit & Loss and Productivity apps, Jan-Sep 2026 vs 2025, same-store, 33 stores. Worked example: Service Manager Roundtable, Nov 15, 2024, slide 21.";
 const X = (o) => H.explainer(pptx, pptx, { source: SRC, ...o });
+// P&L explainers carry their own source (Oct 28 audit: the Closed RO / Roundtable line did not apply to them)
+const SRC_PL = "Definitions match the data slides: Qlik - Profit & Loss (GM and Detail statements), Jan-Sep 2026 vs 2025, same-store, 33 stores, GMC Prescott body shop out.";
 const RT = "Roundtable example";
 
 X({ eyebrow: "Customer Pay", title: "CP RO Count",
@@ -126,7 +128,7 @@ X({ eyebrow: "Customer Pay", title: "Parts Gross Profit %",
   ours: "Group: 40.7% CP parts gross profit, up 1.2 pts and ahead of 2025 in all nine months.",
   tone: "g", notes: "PLACE: CP Engine, in front of CP Parts Gross Profit %.\nWhy understand your parts pricing matrix (Noah, Oct 26): (1) Maximize gross profit: price parts to maximize profitability; find gross without more volume. (2) Consistent pricing: every customer charged the same for the same part; no incorrect prices from bad setups or manual overrides. (3) Stay competitive: avoid markups that make repairs too expensive; balance profit with price on higher-cost parts. (4) Check the matrix is applied: parts actually sell at matrix prices; find parts, labor types or transactions that bypass it. (5) Warranty reimbursement: customer-pay parts pricing drives the warranty parts reimbursement rate, so good pricing supports a higher rate and more warranty gross. (6) Control the strategy: know how your matrix is configured and review it against your gross profit goals. Takeaway: the matrix is one of the most effective tools for improving profit without more volume.\n5 reasons parts gross profit % matters (Noah, Oct 26): (1) Maximizes profitability: higher GP % earns more from the same volume; small improvements add up over a year. (2) Measures pricing effectiveness: are parts sold at the right prices; where to improve matrices, discounts and markups. (3) Controls discounts and cost increases: shows when discounting cuts profit, and when rising parts costs are not reflected in selling prices. (4) Supports dealership profit: parts gross covers department expenses, adds to net profit and helps fixed ops absorb store overhead. (5) Identifies opportunities: compare against targets, history and other stores; find weak categories (customer pay, wholesale, warranty, internal). Takeaway: parts GP % measures how well we turn parts sales into profit; raising it is one of the most direct ways to grow profit without more volume.\n37 cents (Oct 26): P&L Detail, Jan-Sep 2026 same-store, parts department profit $22.75M / parts gross $61.93M = 36.7% (2025 37.1%); service 21.8% (2025 18.9%); new and used lose money at the department level; parts beats service in 31 of 33 stores (not Honda Henderson, VW Henderson). F&I income less F&I commissions is higher (about 80%) but F&I is not a P&L department and its other costs sit in new and used, so say 'department'. Department view: about $87M of other income (doc fees, packs, factory money, holdback) is booked outside the departments." });
 
-X({ eyebrow: "Fixed Ops Profitability", title: "Absorption",
+X({ eyebrow: "Fixed Ops Profitability", title: "Absorption", source: SRC_PL,
   formula: ["Fixed ops absorption", "=", "fixed ops gross", "÷", "total store fixed expenses"],
   define: "How much of the whole store's fixed expenses, not just service and parts expenses, the service and parts gross pays for.",
   example: [["At 100%", "fixed ops covers every fixed expense"], ["Group today", "77.9%"]], exampleLabel: "READING IT",
@@ -140,7 +142,7 @@ X({ eyebrow: "Fixed Ops Profitability", title: "Absorption",
   ours: "Group: 77.9% absorption, up 2.1 pts. Fixed gross grew 4.1%; fixed expenses 1.4%.",   // GMC Prescott body shop out (Oct 28)
   tone: "g", notes: "PLACE: Profitability, in front of Fixed Ops Absorption %.\nP&L definition: line 254 Total Gross Profit - Fixed Ops / line 258 Fixed Expenses (the stored line 257 returns a dollar value, so the slide derives it). GMC Prescott body shop taken out (its gross and its body shop fixed expenses), as everywhere in the deck (Noah, Oct 28)." });
 
-X({ eyebrow: "Fixed Ops Profitability", title: "Net to Gross",
+X({ eyebrow: "Fixed Ops Profitability", title: "Net to Gross", source: SRC_PL,
   formula: ["Net to gross", "=", "department profit", "÷", "department gross"],
   define: "How much of each gross dollar the department keeps after its own expenses.",
   why: ["It is the true measure of how the department performs.",
@@ -208,7 +210,7 @@ X({ eyebrow: "Technician Proficiency", title: "How We Measured It",
   tone: "n", notes: "PLACE: right after 'Technician Proficiency' (explainer).\nPeriod: pay periods Dec 25, 2025 to Oct 9, 2026, matched by tech number, all pay types; labelled Jan-Sep 2026 YTD on the slide (Noah, Oct 26: closest the pay periods allow).\nRules as applied on the proficiency slides (Oct 16 2026). Express techs at stores that pool express hours are mostly excluded by the 10% rule." });
 
 // 13. Gross section (Noah, Oct 22): how service and parts gross are built, in front of Total Gross Profit - Fixed Ops
-X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross",
+X({ eyebrow: "Fixed Ops Gross", title: "Fixed Ops Gross", source: SRC_PL,
   formula: ["Fixed ops gross", "=", "service gross", "+", "parts gross"],
   define: "What each department keeps after the cost of what it sold: labor sale less technician cost, parts sale less parts cost.",
   example: [["Service", "$126.87M"], ["Parts", "$61.93M"], ["Fixed ops", "$188.80M"]], exampleLabel: "JAN–SEP 2026",

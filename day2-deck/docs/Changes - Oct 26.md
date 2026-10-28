@@ -254,3 +254,17 @@ Changed slides (67, in the flow) in `Changes - Oct 28 (round 21, audit fixes).pp
 5. GMC Prescott absorption excludes the body shop (Noah): its body shop gross ($868,202 / $868,925) and its body shop fixed expenses ($465,001 / $489,656) come out of the store and the group. GMC Prescott 75.6% -> 61.6% (2025 56.1%, +5.5 pts, rank 28). Group absorption 78.1% -> 77.9% (2025 76.0% -> 75.8%, still +2.1 pts); fixed expenses +1.4% (was 1.3%); 15 of 33 stores at or above the group, 23 raised. Total store fixed expenses $242,385,781. Data: pulls/gmc_body_abs.json (Qlik P&L, pulled Oct 28), abs.json and pulls/fixed_exp.json adjusted; absorption gross now equals the verified fixed gross both years.
 6. Lexus tire balance: not a mapping problem (Noah); it stays red and valued, no gray. The "CHECK OP-CODE MAPPING" note is gone.
 Open Decisions: the old Most Improved v1 / Who's Moving Now alternates still show endpoints that differ from the change by 0.1 (not presented).
+
+## Oct 28, round 22 (audit proposals, Noah: "go with your recommendations")
+Visible changes in `Changes - Oct 28 (round 22).pptx` (14 slides):
+- 5, 14, 18, 22, 151: "best September at +$X" now "largest gain in September, +$X" (July on 22).
+- 12 Service Is Sales 2.0: $20.98M fixed ops gross a month, January through September 2026 (was the trailing-twelve $20.59M).
+- 44-45 Flai: eyebrow and source read Jul 26 – Oct 26, 2026 (was "last 90 days"; the export covers 93). Callback column lists all six stores at 100% under "AT 100%" (Acura added).
+- 110: "ahead of benchmark on net across the four services".
+- 127, 129: headcount "September to September"; "5.1% fewer people on average"; slide 129 band says the card is the Jan–Sep average month-end.
+- 143: Share column keeps its rounded 20%s; band now "7 stores show 20% or more" (Noah).
+- 158 Two Ways: band adds "Also tied at 2 last year: Nissan." (store name allowed on this band, Noah).
+- 159 What Changed?: opcode row is Mazda on balance, 10.1% -> 19.3%, +9.2 pts (Mazda is the top mover on balance, brake fluid and fuel; alignment's top mover is Audi Henderson).
+Notes only (33 slides): slide 3 source says the 27-cent tile is same-store; 13, 32 (and the absorption explainer) carry a P&L source; 27 breakdown note; 43 Flai note; 69 "OPTION A" dropped; 92 photo weighting (28 stores, 109,881 ROs); 97-107 opcode QA lines gone; 147 "Warranty Rates Are Rising"; every movers slide's source explains the blue turnaround bar; "-0.0 pts" no longer printed.
+Slide 65 work mix: re-pulled from Qlik Oct 28; LR Reno and Hyundai Prescott genuinely share 56.8 / 23.9 / 19.3; every store matches; no change.
+Option 8 (section dividers): review file `Section Dividers - Review.pptx` (agenda, Warranty, Close); not in the deck until Noah approves.

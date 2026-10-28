@@ -60,7 +60,7 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
   const jump = rows.filter(r => r[2] < 0.005 && r[1] >= 0.02).map(r => r[0]);
   let dq = "";
   // Oct 28 (Noah): Lexus balance near zero is real, not a mapping problem - no CHECK line
-  if (jump.length) dq += ` Near zero in 2025, so year-over-year gain may be mapping: ${jump.join(", ")}.`;
+  // Oct 28 audit: near-zero-in-2025 QA line removed from the notes (Mazda's jump confirmed real, Oct 19)
 
   H.levelRanker(pptx, pptx, {
     eyebrow: SEG, title, metric,

@@ -50,7 +50,7 @@ H.explainer(pptx, pptx, { source: SRCA, eyebrow: "Fixed Ops Profitability", titl
   leverRows: [1, 1.2],
   // computed, not typed (Oct 28 audit: the body shop came out and fixed expenses moved to +1.4%)
   ours: `Group: ${(absG / absE * 100).toFixed(1)}% absorption, up ${(+(absG / absE * 100).toFixed(1) - +(absG25 / absE25 * 100).toFixed(1)).toFixed(1)} pts. Fixed gross grew ${((absG / absG25 - 1) * 100).toFixed(1)}%; fixed expenses ${((absE / absE25 - 1) * 100).toFixed(1)}%.`,
-  tone: "g", notes: `PLACE: Profitability, in front of Fixed Ops Absorption %; the next slide breaks down the fixed expenses. The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service and parts; the GMC Prescott body shop is taken out, as everywhere in the deck) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
+  tone: "g", notes: `PLACE: Profitability, in front of Fixed Ops Absorption % (the next slide, the trend). The breakdown of total store fixed expenses is on this slide. The denominator is the P&L's Fixed Expenses line on the GM statement: the whole store's expenses (new, used, service and parts; the GMC Prescott body shop is taken out, as everywhere in the deck) less the costs that move with each car sold: sales and F&I commissions, delivery, policy, floorplan interest, and new and used vehicle advertising. That matches the standard dealer definition: fixed ops gross divided by total store overhead, excluding the variable costs of selling cars. Jan-Sep 2026 same-store: ${usd(fxTot)} of fixed expenses out of ${usd(FX.total_expense_26)} total expense.` });
 
 H.statTiles(pptx, pptx, { eyebrow: "Fixed Ops Profitability", title: "Total Store Fixed Expenses", bigSize: 36, subSize: 14,
   tiles: CAT.map(x => ({ label: x.k, big: M1(x.v), sub: `${(x.v / fxTot * 100).toFixed(0)}% · ${x.ex}`, tone: "n" })),
@@ -94,7 +94,7 @@ const dm = m26.map((v, i) => v - m25[i]), up = dm.filter(x => x > 0).length, bi 
 H.groupYoy(pptx, pptx, { eyebrow: SEG, title: T, metric: MET, measure: "Fixed Ops Net Profit",
   prior: [...m25, ...q4], current: m26, priorName: "2025", currentName: "2026", expectPrior: v25, expectCurrent: v26, chart: "line",
   chartLabel: "Fixed ops net profit by month, 2025 against 2026 ($M)",
-  takeaway: `${kd(d)} (${pcA(d / v25)}) year to date; ${up} of nine months ahead of 2025, best ${FULL[bi]} at ${kd(dm[bi])}.`,
+  takeaway: `${kd(d)} (${pcA(d / v25)}) year to date; ${up} of nine months ahead of 2025, largest gain in ${FULL[bi]}, ${kd(dm[bi])}.`,
   source: `${SRC} Jan-Sep 2026 vs Jan-Sep 2025; 2025 shown January-December. Store rows reconcile to the group, both years.` });
 
 const loss = S.filter(r => r[2] < 0).length;

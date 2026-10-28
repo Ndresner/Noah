@@ -181,7 +181,7 @@ export function moversSlide(pptx, o) {
     ],
     takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
     tone: "n",
-    source: `${o.src} Moving now: Jul-Sep 2026 vs Jan-Mar 2026, each store against itself${o.perMonth ? " (monthly averages)" : ""}; the group moved ${o.nowGroup} on the same basis, so part of every store's change is seasonal. Green bar at the right of a row: the store is on both the top five vs last year and the top five moving now.`,
+    source: `${o.src} Moving now: Jul-Sep 2026 vs Jan-Mar 2026, each store against itself${o.perMonth ? " (monthly averages)" : ""}; the group moved ${String(o.nowGroup).replace(/^[\u2212-](0\.0+\D)/, "$1")} on the same basis, so part of every store's change is seasonal. Green bar at the right of a row: the store is on both the top five vs last year and the top five moving now. Blue bar: a turnaround, on the bottom five vs last year and the top five moving now.`,
     notes: notes + " Moving now: ask the top three what they started this year.",
   });
 }
