@@ -62,6 +62,9 @@ function grid(view, { title, sub, groupLabel, src }) {
     }
   });
   const notes = [];
+  // thin gray rule between measure columns, so each column reads on its own (Noah, Oct 28)
+  for (let i = 1; i < GRID.length; i++)
+    s.addShape(pptx.ShapeType.rect, { x: X0 + i * CW - 0.006, y: HY, w: 0.012, h: BOTS + rh * K - HY, fill: { color: C.rule } });
   GRID.forEach((k, i) => {
     const M = VIEW[view][k], x = X0 + i * CW;
     s.addShape(pptx.ShapeType.rect, { x: x + 0.06, y: HY, w: CW - 0.12, h: 0.05, fill: { color: C.good } });
@@ -129,6 +132,8 @@ function twoViews() {
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title: "Two Ways to Read Improvement" });
   const A = tops("yoy", 5).slice(0, 6), B = tops("mom", 5).slice(0, 6);
+  // green bar down the right edge of a store on both lists, as on the movers slides (Noah, Oct 28)
+  const onBoth = new Set(A.map(e => e[0]).filter(n => B.some(e => e[0] === n)));
   [[A, 0.5, "Better than last year", "Jan–Sep 2026 vs Jan–Sep 2025"], [B, 6.75, "Moving now", "Q3 vs Q1, this year"]].forEach(([rows, x, head, sub]) => {
     const w = 6.08;
     H.panel(pptx, s, { x, y: 1.32, w, h: 5.08, label: `${head} · ${sub}` });
@@ -141,11 +146,11 @@ function twoViews() {
       s.addText(ks.map(k => SHORT[k]).join(", "), { x: x + 0.3, y: y + 0.33, w: 3.85, h: 0.26, fontFace: F, fontSize: 13, color: C.ink600, isTextBox: true, margin: 0 });
       s.addShape(pptx.ShapeType.rect, { x: x + 4.25, y: y + rh * 0.3, w: ks.length / mx * 1.05, h: rh * 0.4, fill: { color: C.good } });
       s.addText(String(ks.length), { x: x + w - 0.75, y, w: 0.45, h: rh, fontFace: F, fontSize: 18, bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      if (onBoth.has(n)) s.addShape(pptx.ShapeType.rect, { x: x + w - 0.25, y: y + 0.04, w: 0.07, h: rh - 0.08, fill: { color: C.good } });
     });
   });
-  const inA = new Set(tops("yoy", 5).map(e => e[0])), both = tops("mom", 5).filter(e => inA.has(e[0])).map(e => e[0]);
   const lead = rows => { const t = rows.filter(r => r[1].length === rows[0][1].length); return t.length === 1 ? `${t[0][0]} leads` : `${cap(NUMW[t.length])} stores tie`; };
-  H.takeaway(pptx, s, `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${both.length === 0 ? "No store makes both views." : cap(NUMW[both.length]) + " stores make both views."}`, "g");
+  H.takeaway(pptx, s, `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${onBoth.size === 0 ? "No store is on both lists." : onBoth.size === 1 ? "One store is on both lists (green bar)." : cap(NUMW[onBoth.size]) + " stores are on both lists (green bar)."}`, "g");
   H.foot(pptx, s, BASIS + ` Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across ${NUMW[GRID.length]} measures (parts $ per RO dropped, Oct 23); top six stores shown in each view.`);
 }
 

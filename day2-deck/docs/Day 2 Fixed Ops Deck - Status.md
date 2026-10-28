@@ -2,7 +2,7 @@
 
 GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah Dresner. Reviewed with Tommy.
 
-Updated: October 27, 2026
+Updated: October 28, 2026
 
 ## Current test deck
 - 237 slides: 194 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
@@ -11,6 +11,9 @@ Updated: October 27, 2026
 
 ## Decided
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
+
+## Recent changes (Oct 28)
+- Column rules on Better Than Last Year and Who's Moving Now; green both-lists bar on Two Ways to Read Improvement; Warranty Rates Are Rising band adds "Protect it"; Where the Money Is band: "Other than one more RO a day, every number here comes from customers already coming in for service."
 
 ## Recent changes (Oct 27)
 - Where the Money Is: "Ten minutes a day saved for every tech" ($4.44M a year); WHO OWNS IT column removed (every lever is the GM's and the service manager's). Before You Leave moved to Open Decisions; Close now ends with Where the Money Is, then Store Prescriptions (slides 161-194).

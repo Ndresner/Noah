@@ -36,7 +36,8 @@ function tiles(s, items, { cols, top, bot, accent, headH = 0.4 }) {   // headH: 
   const ytd = (rows, n, d) => rows.reduce((t, r) => t + r[n], 0) / rows.reduce((t, r) => t + r[d], 0);
   const E = { p: [...Wd.m25, ...Wd.q4].map(elr), c: Wd.m26.map(elr), y25: ytd(Wd.m25, 1, 2), y26: ytd(Wd.m26, 1, 2) };
   const G = { p: P.m25.map(gp), c: P.m26.map(gp), y25: ytd(P.m25.slice(0, 9), 1, 0) * 100, y26: ytd(P.m26, 1, 0) * 100 };
-  const tk = `${usd(T.total)} in gross profit added by rate increases approved at ${W.rows.length} stores this year. Warranty ELR is up $${Math.round(E.y26 - E.y25)} and parts margin ${(G.y26 - G.y25).toFixed(1)} pts: higher rates draw more audits, so every claim has to hold up.`;
+  // Oct 28 (Noah): keep the title, add protecting the money, keep it simple; the ELR and parts margin moves stay on the charts
+  const tk = `${usd(T.total)} added by rate increases at ${W.rows.length} stores this year. Protect it: higher rates draw more audits, so document every claim to hold up.`;
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: SEG, title: "Warranty Rates Are Rising" });
   const top = H.BODY.top, h = H.bodyH(tk);

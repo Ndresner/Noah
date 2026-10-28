@@ -33,7 +33,7 @@ L.forEach((l, i) => {
   t(usd(l.v), { x: 5.2, y, w: 2.3, h: RH - 0.08, fontSize: sz(24, "lever $"), bold: true, color: C.goodInk, align: "right" });
   t(l.how, { x: 7.85, y, w: 4.8, h: RH - 0.08, fontSize: sz(16, "how"), color: C.ink600 });
 });
-H.takeaway(pptx, s, "Every number is gross on cars, bays and techs we already have, except one more RO a day. They overlap, so read each on its own.", "g");
+H.takeaway(pptx, s, "Other than one more RO a day, every number here comes from customers already coming in for service.", "g");
 H.foot(pptx, s, "Labor + parts gross a year, each from its own slide: Technician Proficiency (each tech under 85% raised to 85%, monthly x 12), Hours per RO (0.1 hr x CP ROs at each store's gross per hour), Op Codes (stores under each benchmark brought to it), One More CP RO a Day (307 open days), Tech Minute (ten minutes per tech per day). Jan-Sep 2026, same-store, 33 stores. The levers overlap - op code services are part of hours per RO, and selling more hours needs tech time - so they are not added together.");
 s.addNotes("Talk track: every line is the GM's and the service manager's together (Noah, Oct 27). Each line has its own slide earlier in the day.");
 await pptx.writeFile({ fileName: "Where the Money Is - Review.pptx" }); console.log("built", usd(prof));

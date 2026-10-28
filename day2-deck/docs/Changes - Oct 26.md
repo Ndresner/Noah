@@ -224,3 +224,10 @@ Slides in `Changes - Oct 27 (round 16).pptx` (Close: Most Improved four, Where t
 - Where the Money Is: last lever is "Ten minutes a day saved for every tech" ($4,443,804, the Tech Minute slide's 10-minute row; was one minute). WHO OWNS IT column removed: every lever is the GM's and the service manager's. HOW column widened.
 - Before You Leave: out of the flow, now in Open Decisions (OPEN DECISIONS · CLOSE · BEFORE YOU LEAVE). "and name who owns it" dropped from the daily-number bullet.
 - Close now ends Where the Money Is, then Store Prescriptions. Deck: 194 in the flow, 43 in Open Decisions (237 total).
+
+## Oct 28, round 17
+Slides in `Changes - Oct 28 (round 17).pptx` (148, 156, 157, 158, 160).
+- Better Than Last Year and Who's Moving Now (156-157): thin gray rule between the measure columns.
+- Two Ways to Read Improvement (158): green bar at the right of a store on both lists (Kia St George), as on the movers slides. Band now counts stores on both shown lists ("One store is on both lists (green bar)"); it used to say eight, counting any top-5 finish.
+- Warranty Rates Are Rising (148): title kept; band "$3,788,200 added by rate increases at 19 stores this year. Protect it: higher rates draw more audits, so document every claim to hold up." (ELR and parts margin moves left to the charts.)
+- Where the Money Is (160): band "Other than one more RO a day, every number here comes from customers already coming in for service." Overlap note dropped from the band (still in the source line).
