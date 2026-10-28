@@ -48,6 +48,11 @@ const total = res.reduce((t, s) => t + s.miss, 0);
   s.addNotes("Talk track: every one of these cars is already on a customer-pay RO in our drive. The inspection and the menu find the need; the advisor presents it.");
 }
 
+// gray = the manufacturer doesn't call for the service at that store
+// (Noah, Oct 26: Audi stores on tire balance; Oct 27: the four-store list belongs to fuel system service)
+const GRAY = { "Tire Balance": ["AUDI HENDERSON", "AUDI RENO"],
+               "Fuel System Service": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
+
 // total by store (ADDED 2026-10-19; Oct 24, Noah: every store, signed gross against all four benchmarks added together)
 // Oct 26 (Noah): the variance slides show Jan-Sep 2026 year to date, what was actually missed or gained so far
 // (Every Store at Benchmark above keeps its "a year" headline: it is the forward-looking total)
@@ -58,8 +63,10 @@ const sgnN = v => (Math.round(v) >= 0 ? "+" : "\u2212") + int(Math.abs(v));
 const YSRC = SRC.replace(" A year = Jan-Sep x 12 / 9.", "").replace(" Stores at or above the benchmark are not shown and do not offset anyone.", "");
 {
   const T = {};
-  res.forEach(r => r.all.forEach(x => { const t = (T[x.n] ??= { vs: 0, k: 0 }); t.vs += ytd(x.vs); t.op = (t.op ?? 0) + ytd(x.svc); if (x.rate < r.b) t.k += 1; }));
-  const rows = Object.entries(T), srt = [...rows].sort((a, b) => a[1].vs - b[1].vs), all4 = rows.filter(([, t]) => t.k === 4).length;
+  // Oct 28 (Noah): Missed = services under benchmark out of those the manufacturer calls for (gray services left out of both)
+  res.forEach(r => r.all.forEach(x => { const t = (T[x.n] ??= { vs: 0, k: 0, of: 0 }); t.vs += ytd(x.vs); t.op = (t.op ?? 0) + ytd(x.svc);
+    if (!(GRAY[r.name] ?? []).includes(x.n)) { t.of += 1; if (x.rate < r.b) t.k += 1; } }));
+  const rows = Object.entries(T), srt = [...rows].sort((a, b) => a[1].vs - b[1].vs), all4 = rows.filter(([, t]) => t.k === t.of).length, none = rows.filter(([, t]) => t.k === 0).length;
   const above = rows.filter(([, t]) => t.vs >= 0).length;
   H.amountRanker(pptx, pptx, {
     // period on the slide (Noah, Oct 26)
@@ -69,19 +76,18 @@ const YSRC = SRC.replace(" A year = Jan-Sep x 12 / 9.", "").replace(" Stores at 
     // Oct 27 (Noah): top / bottom three by opcodes marked, as on the service slides
     extra: [{ label: "Opcodes", w: 0.95, vals: Object.fromEntries(rows.map(([n, t]) => [n, sgnN(t.op)])),
               marks: (() => { const by = [...rows].sort((a, b) => b[1].op - a[1].op);
-                return Object.fromEntries([...by.slice(0, 3).map(([n]) => [n, "g"]), ...by.slice(-3).map(([n]) => [n, "r"])]); })() }],
-    takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} so far this year; ${above} of 33 stores are ahead of benchmark on net across the four services. ${all4} stores are under all four.`,
-    tone: "b", source: YSRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross Jan-Sep 2026 above (+) or below (-) the four benchmarks, at the store's own gross per service. Opcodes = the four services' opcodes above (+) or below (-) their benchmarks, added together; green / red bar = top / bottom three by opcodes. Below-benchmark services count against above-benchmark ones here.",
+                return Object.fromEntries([...by.slice(0, 3).map(([n]) => [n, "g"]), ...by.slice(-3).map(([n]) => [n, "r"])]); })() },
+            { label: "Missed", w: 0.85, vals: Object.fromEntries(rows.map(([n, t]) => [n, `${t.k} of ${t.of}`])) }],
+    takeaway: `${srt[0][0]} is furthest below at ${sgnK(srt[0][1].vs)} so far this year; ${above} of 33 stores are ahead of benchmark on net across the four services. ${all4} stores miss every benchmark that applies to them; ${none === 1 ? "1 store misses" : `${none} stores miss`} none.`,
+    tone: "b", source: YSRC + " Alignment, tire balance, brake fluid and fuel system service added together, every store: gross Jan-Sep 2026 above (+) or below (-) the four benchmarks, at the store's own gross per service. Opcodes = the four services' opcodes above (+) or below (-) their benchmarks, added together; green / red bar = top / bottom three by opcodes. Missed = services under benchmark out of those the manufacturer calls for at the store (tire balance at the Audi stores and fuel system service at Volvo, Audi Henderson, VW Henderson and Audi Reno are left out). Below-benchmark services count against above-benchmark ones here.",
   });
-  pptx._slides[pptx._slides.length - 1].addNotes(srt.map(([n, t]) => `${n}: ${sgnK(t.vs)}, ${sgnN(t.op)} opcodes Jan-Sep against the four benchmarks; under ${t.k} of 4`).join("\n"));
+  pptx._slides[pptx._slides.length - 1].addNotes(srt.map(([n, t]) => `${n}: ${sgnK(t.vs)}, ${sgnN(t.op)} opcodes Jan-Sep against the four benchmarks; under ${t.k} of ${t.of}`).join("\n"));
 }
 
 // one ranker per service (Oct 24, Noah: every store, signed gross against the benchmark)
 // Oct 27 (Noah): the opcodes version is in the deck: signed Opcodes column, Rate on the right, top / bottom three by rate marked
 // gray bar = the manufacturer doesn't call for the service at that store; red = the next three lowest after them
 // (Noah, Oct 26: Audi stores on tire balance; Oct 27: the four-store list belongs to fuel system service)
-const GRAY = { "Tire Balance": ["AUDI HENDERSON", "AUDI RENO"],
-               "Fuel System Service": ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
 const rateMarks = (rows, name) => {
   const gray = GRAY[name] ?? [], by = [...rows].sort((p, q) => q.rate - p.rate), rest = by.filter(x => !gray.includes(x.n));
   return Object.fromEntries([...rest.slice(0, 3).map(x => [x.n, "g"]), ...rest.slice(-3).map(x => [x.n, "r"]), ...gray.map(n => [n, "n"])]); };

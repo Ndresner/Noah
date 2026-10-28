@@ -18,6 +18,7 @@ Updated: October 28, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 28)
+- Round 28 (slide 110 in "Changes - Oct 28 (round 28).pptx"): Total Variance from Benchmark by Store has a "Missed" column again (e.g. 3 of 4), counting only services the manufacturer calls for at the store. 15 stores miss every benchmark that applies to them; Honda Henderson misses none.
 - Pay Yourself First: "Internal work is protected gross generated on our own vehicles." The clocked-hours exclusion line moved from the proficiency definitions slide to How We Measured It.
 - Biggest Movers This Year split into Customer Pay and Profit and Process; net profit moves in dollars on the four grids. Gray second line added on the CP RO count, gross (fixed ops, service, parts, warranty) and net profit movers.
 - Close: Biggest Movers vs Last Year on two slides (Customer Pay; Profit and Process = fixed ops net profit, absorption, CP parts GP %, opcodes combined), bottom 3 kept; Who's Moving Now renamed Biggest Movers This Year.

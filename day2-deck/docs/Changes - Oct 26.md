@@ -298,3 +298,7 @@ Slides in `Changes - Oct 28 (round 27).pptx` (113, 137, 138).
 - 113 Pay Yourself First: first bullet "Internal work is protected gross generated on our own vehicles" (was "isn't service making money off sales: it is gross the store earns on its own cars"); talk track in the notes reworded to match.
 - 137 Proficiency, Efficiency and Productivity: "Clocked hours exclude vacation, paid time off and holiday pay." moved off this slide (example box shortened).
 - 138 How We Measured It: the definition line now reads "...Clocked hours exclude vacation, paid time off and holiday pay..." (same sentence as on 137).
+
+## Oct 28, round 28
+Slide in `Changes - Oct 28 (round 28).pptx` (110).
+- 110 Total Variance from Benchmark by Store: "Missed" column back, e.g. "3 of 4" = services under benchmark out of those the manufacturer calls for at the store. Gray services are left out of the count and the total (Audi Henderson and Audi Reno: tire balance and fuel; Volvo and VW Henderson: fuel), so Audi Reno reads "2 of 2". Band: "15 stores miss every benchmark that applies to them; 1 store misses none." (Honda Henderson). Definition in the source line, per-store counts in the notes.
