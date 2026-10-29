@@ -343,3 +343,6 @@ Service Net Profit and Parts Net Profit explainers removed (Noah: the Fixed Ops 
 
 ## Oct 29, round 38
 Slide 13 Parts Net Profit chart band (`Changes - Oct 29 (round 38).pptx`): "Gross grew 1.9%, expenses 2.6%. People costs went down; outside services, IT and smaller advertising rebates pushed expenses up." Basics only (Noah); the dollars are in the notes. Source: P&A department expense lines, P&L Detail, `pulls/pa_expense_lines.json` (total ties to gross minus profit): personnel -$426K, outside services +$490K, IT services +$479K, advertising rebates $398K smaller, advertising itself -$83K.
+
+## Oct 29, round 39
+Slide 13 Parts Net Profit band with dollars, "personnel" (Noah): "Gross grew 1.9%, expenses 2.6%. Personnel down $426K; outside services up $490K, IT up $479K, advertising rebates down $398K."

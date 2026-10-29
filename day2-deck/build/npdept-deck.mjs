@@ -96,7 +96,8 @@ const pt = deptBlock({ D: J("./ntgp.json"), dept: "Parts", line: "P&A", sales: S
     if (Math.abs(L("TOTAL EXPENSES")[1] - x.ex26) > 1 || Math.abs(L("TOTAL EXPENSES")[0] - x.ex25) > 1) throw new Error("P&A expense lines do not tie");
     // Oct 29 (Noah): basics only, the dollar detail is in the notes
     if (!(ch("TOTAL PERSONNEL Expense") < 0 && ch("OUTSIDE SERVICES (OTHER)") > 0 && ch("INFO. TECHNOLOGY SERVICES") > 0 && ch("ADVERTISING REBATES") > 0)) throw new Error("parts expense band no longer matches the data");
-    return `Gross grew ${pcA(x.g26 / x.g25 - 1).replace("+", "")}, expenses ${pcA(x.ex26 / x.ex25 - 1).replace("+", "")}. People costs went down; outside services, IT and smaller advertising rebates pushed expenses up.`; },
+    // Oct 29 (Noah): a dollar total on each, "personnel" not "people"
+    return `Gross grew ${pcA(x.g26 / x.g25 - 1).replace("+", "")}, expenses ${pcA(x.ex26 / x.ex25 - 1).replace("+", "")}. Personnel down ${ka(ch("TOTAL PERSONNEL Expense"))}; outside services up ${ka(ch("OUTSIDE SERVICES (OTHER)"))}, IT up ${ka(ch("INFO. TECHNOLOGY SERVICES"))}, advertising rebates down ${ka(ch("ADVERTISING REBATES"))}.`; },
   bandNotes: (() => { const L = n => PA[n + " - P&A Dept"], f = n => `${n.toLowerCase()} ${usd(L(n)[0])} to ${usd(L(n)[1])}`;
     return `P&A department expenses Jan-Sep, 2025 to 2026 (P&L Detail): total ${f("TOTAL EXPENSES")}; personnel ${f("TOTAL PERSONNEL Expense")}; outside services ${f("OUTSIDE SERVICES (OTHER)")}; IT services ${f("INFO. TECHNOLOGY SERVICES")}; advertising ${f("ADVERTISING")}; advertising rebates (a credit) -${usd(L("ADVERTISING REBATES")[0])} to -${usd(L("ADVERTISING REBATES")[1])}; rent ${f("RENT")}.`; })() });
 // the two departments add up to the fixed ops net profit block
