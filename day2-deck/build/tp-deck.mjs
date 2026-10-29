@@ -12,11 +12,16 @@ const SRC = "Talking points: Service Manager Roundtable (Nov 15, 2024) and GM me
 const T = (o) => H.talkingPoints(pptx, pptx, { source: SRC, ...o, saidFrom: null });
 
 // Why We Are Here (Noah, Oct 24): what fixed ops is worth to the whole group, GM statement net profit, all stores.
-const D = JSON.parse(fs.readFileSync("./pulls/net_by_dept.json", "utf8")).all_stores;   // whole group, INEOS in (Noah, Oct 24)
-const fx = y => -(D[y].service + D[y].parts), net = y => -D[y].net_gm;
+// Oct 29 (Noah): same-store, to match the Fixed Ops Net Profit block (was all stores, INEOS in, Oct 24).
+// Fixed ops = the block's own source (ntgs + ntgp months), group net = GM statement Net Profit Or Loss, INEOS excluded.
+const D = JSON.parse(fs.readFileSync("./pulls/net_by_dept.json", "utf8"));
+const NS = JSON.parse(fs.readFileSync("./ntgs.json", "utf8")), NP = JSON.parse(fs.readFileSync("./ntgp.json", "utf8"));
+const FX = { y25: [...NS.m25, ...NP.m25].reduce((t, r) => t + r[0], 0), y26: [...NS.m26, ...NP.m26].reduce((t, r) => t + r[0], 0) };
+if (["y25", "y26"].some(y => Math.abs(FX[y] + D[y].service + D[y].parts) > 10)) throw new Error("Why We Are Here: fixed ops does not tie to the P&L department profit");
+const fx = y => FX[y], net = y => -D[y].net_gm;
 const M = v => "$" + (v / 1e6).toFixed(2) + "M", usd = v => "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 const share = y => fx(y) / net(y) * 100, dFx = fx("y26") - fx("y25"), dNet = net("y26") - net("y25");
-H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 2025, all stores (INEOS included, to match the group P&L), except the 27 cents vs 7 cents tile, which is same-store (INEOS excluded; 27 cents either way). Fixed ops = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses. Group net = Net Profit Or Loss on the GM statement.",
+H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 2025, same-store (INEOS excluded, opened 2026), as on the Fixed Ops Net Profit slides. Fixed ops = service (Mechanical) + parts (P&A) department profit: department gross less the department's own expenses. Group net = Net Profit Or Loss on the GM statement.",
   eyebrow: "Fixed Ops", title: "Why We Are Here", saidFrom: null,
   said: ["Foster collaboration, introduce ideas that drive operational excellence, and set a clear path to exceptional service performance",
          "Focus on profit-generating activities: the work that brings in incremental dollars, not just the work that fills the day",
@@ -25,7 +30,7 @@ H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 202
          "Customer first, company second, team third",
          "You get what you tolerate",
          "Leverage the power in this room: collaboration"],
-  now: [{ big: `${share("y26").toFixed(0)}%`, label: `of the group's net profit came from service and parts: ${M(fx("y26"))} of ${M(net("y26"))} (${share("y25").toFixed(0)}% in 2025).`, tone: "g" },
+  now: [{ big: `${share("y26").toFixed(1)}%`, label: `of the group's net profit came from service and parts: ${M(fx("y26"))} of ${M(net("y26"))} (${share("y25").toFixed(1)}% in 2025).`, tone: "g" },
         // Oct 26 (Noah): the $ tile is out; how much of each gross dollar each side keeps (Pay Yourself First data)
         (() => { const K = JSON.parse(fs.readFileSync("./pulls/dept_keep.json", "utf8")), f = K.fixed, v = K.sales;
           const fk = (f.profit_service + f.profit_parts) / (f.gross_service + f.gross_parts);
@@ -33,7 +38,7 @@ H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 202
           return { big: `${Math.round(fk * 100)}\u00a2 vs ${Math.round(vk * 100)}\u00a2`, label: "Of every gross dollar, what service and parts keep after their own expenses vs new, used and F&I.", tone: "g" }; })(),
         { big: "+" + usd(dFx), label: `More fixed ops profit than 2025, while group net profit ${dNet < 0 ? "fell" : "rose"} ${M(Math.abs(dNet))}.`, tone: "g" }],
   ask: "leave today with one or two things you will put in place before year end, and tell the room what they are.",
-  notes: `PLACE: right after the agenda, before the Gross section. In the deck Oct 24 (Noah): group net profit view replaces the gross / absorption / net-to-gross tiles. Group-level view of fixed ops' weight in the dealership's profit, Jan-Sep. Fixed ops department profit ${usd(fx("y26"))} (2025 ${usd(fx("y25"))}); group net profit ${usd(net("y26"))} (2025 ${usd(net("y25"))}). On the P&L, F&I income, other income and store-level costs are not split by department, so 'the rest of the store' is the group net less fixed ops department profit. Group net = Net Profit Or Loss on the GM statement (P&L summary), all stores; INEOS (opened 2026) is in both lines. Body shop (GMC Prescott) department profit is left out of fixed ops, as everywhere in the deck.` });
+  notes: `PLACE: right after the agenda, before the Gross section. In the deck Oct 24 (Noah): group net profit view replaces the gross / absorption / net-to-gross tiles. Group-level view of fixed ops' weight in the dealership's profit, Jan-Sep. Fixed ops department profit ${usd(fx("y26"))} (2025 ${usd(fx("y25"))}); group net profit ${usd(net("y26"))} (2025 ${usd(net("y25"))}). On the P&L, F&I income, other income and store-level costs are not split by department, so 'the rest of the store' is the group net less fixed ops department profit. Group net = Net Profit Or Loss on the GM statement (P&L summary), same-store: INEOS (opened 2026) is out of both lines, as on the Fixed Ops Net Profit slides (Noah, Oct 29; all stores in, it was $50.19M of $82.24M). Body shop (GMC Prescott) department profit is left out of fixed ops, as everywhere in the deck.` });
 
 T({ eyebrow: "Fixed Ops Gross", title: "Service Is Sales 2.0", saidFrom: BOTH,
   said: ["Sell hours, build value, sell peace of mind",

@@ -19,9 +19,11 @@ Updated: October 29, 2026
 - Oct 28: Flai pickup rate = transfers picked up (confirmed). Warranty audit slides approved as drafted.
 - Oct 28 (final): GMC Prescott body shop stays IN absorption, as on the P&L (group 78.1%, GMC Prescott 75.6%). ELR benchmark 70% of door. Store Prescriptions in the deck only, no date range on the vitals. Section dividers approved.
 - Oct 28: Lexus tire balance near 0% is real (not a mapping problem) and stays red.
-- Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
+- Oct 29: Why We Are Here switched to same-store to match the net profit slides ($50.45M of $82.74M, 61.0%).
+- Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere).
 
 ## Recent changes (Oct 29)
+- Round 47: Why We Are Here now same-store, matching the net profit slides: 61.0% of group net profit from service and parts ($50.45M of $82.74M; 47.4% in 2025), +$5,113,759 more fixed ops profit while group net profit fell $12.92M.
 - Round 46 (final check): Open Decisions split off into its own saved deck; meeting deck 205 slides, rebuilt from scratch and identical to the version sent. Bands fixed on slide 102 (1.3-1.4 pts) and slide 120 (50,443 services).
 - Round 45 (approved): Two Ways to Read Improvement counts eight measures (adds CP labor $ per RO, absorption, opcodes combined; net profit left out as size-biased). Lincoln and Subaru Prescott lead last year (6 of 8); Kia St George leads moving now (6) and is on both lists.
 - Round 43 (approved): records slides with net profit in the deck: A Record Year (net profit tile, gross profit named on the others), Records Set in 2026: Gross Profit, new Best January-September Ever slide.
