@@ -2,7 +2,7 @@
 
 GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah Dresner. Reviewed with Tommy.
 
-Updated: October 28, 2026
+Updated: October 29, 2026
 
 ## Current test deck
 - 239 slides: 196 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
@@ -16,6 +16,9 @@ Updated: October 28, 2026
 - Oct 28 (final): GMC Prescott body shop stays IN absorption, as on the P&L (group 78.1%, GMC Prescott 75.6%). ELR benchmark 70% of door. Store Prescriptions in the deck only, no date range on the vitals. Section dividers approved.
 - Oct 28: Lexus tire balance near 0% is real (not a mapping problem) and stays red.
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
+
+## Recent changes (Oct 29)
+- Round 31: Fuel Service % movers leave off the four stores whose manufacturer doesn't call for it (Volvo, Audi Henderson, VW Henderson, Audi Reno); next stores move up, ranks out of 29. Review file: moving-now lines now have a dashed line at each store's Jan-Mar average.
 
 ## Recent changes (Oct 28)
 - Round 30 (review, not in the deck): all 26 movers slides with a month-by-month line per store, caps names, timeframes at the top ("Movers Sparklines - All Slides - Review.pptx"). Store-by-month data re-pulled from Qlik and ADP; every input ties to the store's Jan-Sep total.

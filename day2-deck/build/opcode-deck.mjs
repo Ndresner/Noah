@@ -15,6 +15,8 @@ const A = JSON.parse(fs.readFileSync("./all.json", "utf8"));
 const MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP"];
 const SRC = "Qlik - Closed Repair Orders. Customer pay, Jan-Sep by close month. Same-store, INEOS excluded (opened 2026). GMC Prescott body shop labor excluded.";
 const SEG = "Opcode Benchmarks";
+// the manufacturer doesn't call for the service at these stores (Noah, Oct 26-27; gray on the variance slides)
+const NOCALL = { bal: ["AUDI HENDERSON", "AUDI RENO"], fuel: ["VOLVO", "AUDI HENDERSON", "VW HENDERSON", "AUDI RENO"] };
 const sum = a => a.reduce((t, x) => t + x, 0);
 const p1  = v => (v * 100).toFixed(1) + "%";
 const fmt = {
@@ -71,12 +73,15 @@ function pair(key, title, metric, measure, bench, noun, nouns) {
           + rows.sort((p, q) => q[1] - p[1]).map(r => `${r[0]}: ${pt(r[1])} (2025 ${pt(r[2])})`).join("\n"),   // notes match the slide (Oct 28 audit)
   });
   // top and bottom five by change in points (Noah, Oct 22)
+  // Oct 29 (Noah): stores whose manufacturer doesn't call for the service (gray on the variance slides) come off the movers
+  // lists, so the next stores move up; ranks count only the stores measured
+  const off = NOCALL[key] ?? [];
   moversSlide(pptx, { seg: SEG, title, metric, fmtD: fmt.d, spark: sparkFrom(M.sm, a => a[0] / a[1]),
-    rows: rows.map(r => ({ n: r[0], v0: pt(r[2]), v1: pt(r[1]), d: r[1] - r[2] })),
+    rows: rows.filter(r => !off.includes(r[0])).map(r => ({ n: r[0], v0: pt(r[2]), v1: pt(r[1]), d: r[1] - r[2] })),
     // moving now (Oct 23): Jul-Sep vs Jan-Mar 2026 closing %, from all.json mn = [store, num_q1, den_q1, num_q3, den_q3]
-    now: M.mn.map(([n, a, b, c, d]) => ({ n, v0: pt(a / b), v1: pt(c / d), d: c / d - a / b })),
+    now: M.mn.filter(r => !off.includes(r[0])).map(([n, a, b, c, d]) => ({ n, v0: pt(a / b), v1: pt(c / d), d: c / d - a / b })),
     nowGroup: fmt.d(M.mn.reduce((t, r) => t + r[3], 0) / M.mn.reduce((t, r) => t + r[4], 0) - M.mn.reduce((t, r) => t + r[1], 0) / M.mn.reduce((t, r) => t + r[2], 0)),
-    src: `${SRC} Top and bottom five stores by change in ${title}, Jan-Sep 2026 vs 2025, in points.` });
+    src: `${SRC} Top and bottom five stores by change in ${title}, Jan-Sep 2026 vs 2025, in points.${off.length ? ` Not ranked: ${off.map(H.storeName).join(", ")} (the manufacturer doesn't call for ${measure.toLowerCase().replace(" %", "")}); ranks out of ${33 - off.length}.` : ""}` });
 }
 
 pair("align", "Alignment %",     "alignment %",    "ALIGNMENT %",    0.15,  "alignment", "alignments");

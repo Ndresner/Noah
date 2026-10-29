@@ -163,7 +163,9 @@ export const SPARK = process.env.SPARK === "1";   // review build; flips to on o
 export const sparkFrom = (sm, f) => SPARK && sm ? ((key, ci) => {
   const s = sm[key]; if (!s) return null;
   const ln = yi => s[yi].map(a => { const v = f(a); return Number.isFinite(v) ? v : null; });
-  const r = ci === 2 ? { cur: ln(1) } : { prior: ln(0), cur: ln(1) };
+  // moving now: ref = the Jan-Mar 2026 average (inputs summed, a month's worth), the same figure the row's "from" value shows
+  const q1 = s[1].slice(0, 3).reduce((t, a) => t.map((x, i) => x + (a[i] ?? 0) / 3), s[1][0].map(() => 0));
+  const r = ci === 2 ? { cur: ln(1), ref: f(q1) } : { prior: ln(0), cur: ln(1) };
   return r.cur.some(v => v != null) ? r : null;   // no line where a block does not carry that input monthly
 }) : undefined;
 

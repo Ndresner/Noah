@@ -30,7 +30,7 @@ const spark = k => SP && ((n, ci) => { const pick = y => k === "fx" ? SP[y][n][0
   // otherwise one Jan-Sep 2026 line, Q1 gray, Q2 a faint connector, Q3 in colour
   // Noah picked (Oct 28): the plain Jan-Sep 2026 line in colour (SPARKNOW=split / overlay rebuild the other two options)
   if (ci === 2) return process.env.SPARKNOW === "overlay" ? { prior: pick(26).slice(0, 3), cur: pick(26).slice(6, 9) }
-    : process.env.SPARKNOW === "split" ? { cur: pick(26), split: true } : { cur: pick(26) };
+    : process.env.SPARKNOW === "split" ? { cur: pick(26), split: true } : { cur: pick(26), ref: pick(26).slice(0, 3).reduce((t, v) => t + v / 3, 0) };   // dashed Jan-Mar average (Oct 29)
   return { prior: pick(25), cur: pick(26) }; });
 const M = v => "$" + (v / 1e6).toFixed(2) + "M";
 const usd = v => (v >= 0 ? "+" : "\u2212") + "$" + Math.abs(Math.round(v)).toLocaleString("en-US");

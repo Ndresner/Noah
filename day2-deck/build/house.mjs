@@ -2388,8 +2388,15 @@ export function movers3(pptx, deck, o) {
                    { text: r.v0 + "  →  ", options: { color: C.ink600, fontSize: sz(12, "movers values") } },
                    { text: r.v1, options: { color: c, bold: true, fontSize: sz(12, "movers values") } }],
           { x: x0 + 0.48, y: y + rh * 0.05, w: W - 0.58, h: rh * 0.52, fontFace: F, valign: "middle", isTextBox: true, margin: 0, paraSpaceAfter: 2 });
-        const all = [...(sp.prior ?? []), ...sp.cur].filter(Number.isFinite), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.05 || 1;
+        const ref = Number.isFinite(sp.ref) ? sp.ref : null;
+        const all = [...(sp.prior ?? []), ...sp.cur, ...(ref != null ? [ref] : [])].filter(Number.isFinite), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.05 || 1;
         const lab = sp.cur.map((_, i) => String(i + 1)), SX = x0 + 0.48, SW = x0 + W - CW - 0.2 - SX;   // own row under the values
+        // sp.ref (Oct 29, Noah: moving now): a dashed gray line at the store's Jan-Mar average, the start the Q3 figure is
+        // measured from; its own chart (chart dash is per chart) on the same scale, drawn first so the line sits on top
+        if (ref != null) s.addChart(pptx.ChartType.line, [{ name: "q1avg", labels: lab, values: lab.map(() => ref) }], { x: SX, y: y + rh * 0.6, w: SW, h: rh * 0.34,
+          chartColors: ["8C8C8C"], lineSize: 1.25, lineDash: "dash", lineDataSymbol: "none",
+          showLegend: false, catAxisHidden: true, valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" },
+          valAxisMinVal: lo - pad, valAxisMaxVal: hi + pad, layout: { x: 0, y: 0, w: 1, h: 1 } });
         // sp.split: one line, Q1 gray, Q2 a faint connector, Q3 in colour (blanks are gaps)
         const seg = (a, b) => sp.cur.map((v, i) => i >= a && i <= b ? v : null);
         const ser = sp.split ? [{ name: "q1", labels: lab, values: seg(0, 2) }, { name: "q2", labels: lab, values: seg(2, 6) }, { name: "q3", labels: lab, values: seg(6, 8) }]
