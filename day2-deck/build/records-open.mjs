@@ -39,12 +39,18 @@ const topLine = (() => { const t = byCnt.slice(0, 5); return list(t.map(r => `${
 
 // 1. headline (Oct 26, Noah: store records only, so the group-month tile is out; the band names the leaders)
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
-  tiles: [
+  // NETREC (Oct 29, Noah): same tiles, plainer and shorter wording so nothing runs out of the boxes
+  tiles: NETREC ? [
+    { label: "Stores with a record month", big: String(rec.length), sub: `of 33 had their best month ever in 2026.`, tone: "g" },
+    { label: "Records set", big: String(total), sub: `service, parts and combined, counted separately.`, tone: "g" },
+    { label: "Best Jan–Sep gross profit ever", big: String(ytdRec.length), sub: `stores, service and parts combined.`, tone: "g" },
+    { label: "Records broken twice", big: String(again.length), sub: `stores set a record, then beat it again.`, tone: "g" },
+    { label: "Best Jan–Sep net profit ever", big: String(netRec.length), sub: `stores; ${netRec.filter(n => ytdRec.includes(n)).length} also set the gross profit record.`, tone: "g" },
+  ] : [
     { label: "Stores with all-time record months", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
     { label: "Store records set", big: String(total), sub: `all-time monthly records across those stores: service, parts and combined counted separately.`, tone: "g" },
     { label: "Best January–September ever", big: String(ytdRec.length), sub: `stores had their best January–September ever in combined fixed gross.`, tone: "g" },
     { label: "Stores who set a record and then reset it", big: String(again.length), sub: `stores set a record and then topped it again later in the year.`, tone: "g" },   // Noah, Oct 26
-    ...(NETREC ? [{ label: "Best January–September net profit ever", big: String(netRec.length), sub: `stores had their best January–September ever in fixed ops net profit; ${netRec.filter(n => ytdRec.includes(n)).length} also set the gross record.`, tone: "g" }] : []),
   ],
   banner: `Most records set this year: ${topLine}.`,
   takeaway: `${MON[busiest].replace(" 2026", "")} alone brought ${byMonth[busiest]} combined store records.`,   // "tell the room" line dropped (Noah, Oct 27)
@@ -54,7 +60,7 @@ H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
 const zero = n => ({ n, svc: [], pts: [], tot: [], E: { svc: [], pts: [], tot: [] } });
 const rowsR = byCnt;   // the ranker stays monthly records only; the Jan-Sep records get their own slide (NETREC)
 const best = n => [ytdRec.includes(n) && "Gross", netRec.includes(n) && "Net"].filter(Boolean).join(" + ") || "–";
-H.amountRanker(pptx, pptx, { eyebrow: SEG, title: "Records Set in 2026",
+H.amountRanker(pptx, pptx, { eyebrow: SEG, title: NETREC ? "Records Set in 2026: Gross Profit" : "Records Set in 2026",   // gross profit records only (Noah, Oct 29)
   rows: rowsR.map(r => [r.n, cnt(r)]), fmt: v => String(v), color: C.good, ink: C.goodInk, valLabel: "Total",   // shorter head, wider columns (Noah, Oct 26)
   extra: [{ label: "Svc", w: 0.72, vals: Object.fromEntries(rowsR.map(r => [r.n, String(r.svc.length || "–")])) },
           { label: "Parts", w: 0.78, vals: Object.fromEntries(rowsR.map(r => [r.n, String(r.pts.length || "–")])) },
@@ -68,8 +74,8 @@ H.amountRanker(pptx, pptx, { eyebrow: SEG, title: "Records Set in 2026",
 if (NETREC) {
   const s3 = pptx.addSlide(); H.page(pptx, s3, { eyebrow: SEG, title: "Best January–September Ever" });
   const both = ytdRec.filter(n => netRec.includes(n)).sort(), gOnly = ytdRec.filter(n => !netRec.includes(n)).sort(), nOnly = netRec.filter(n => !ytdRec.includes(n)).sort();
-  const take = `${ytdRec.length} stores set a January–September record in fixed gross and ${netRec.length} in fixed ops net profit; ${both.length} did both.`;
-  const cols = [["GROSS AND NET PROFIT", both, C.good, C.goodInk], ["GROSS ONLY", gOnly, C.blue, C.navy], ["NET PROFIT ONLY", nOnly, C.blue, C.navy]];
+  const take = `${ytdRec.length} stores set a January–September record in gross profit and ${netRec.length} in net profit; ${both.length} did both.`;
+  const cols = [["GROSS AND NET PROFIT", both, C.good, C.goodInk], ["GROSS PROFIT ONLY", gOnly, C.blue, C.navy], ["NET PROFIT ONLY", nOnly, C.blue, C.navy]];
   const gap = 0.22, TOP = H.BODY.top + 0.18, BOT = H.bodyBot(take) - 0.1;
   H.panel(pptx, s3, { x: 0.5, y: H.BODY.top, w: 12.33, h: H.bodyH(take) });
   // widths follow the lists: the long list gets two name columns, so twice the width
@@ -77,8 +83,11 @@ if (NETREC) {
   cols.forEach(([head, names, bar, ink], i) => {
     const W = unit * wt[i], x0 = 0.72 + wt.slice(0, i).reduce((t, v) => t + v * unit + gap, 0);
     s3.addShape(pptx.ShapeType.rect, { x: x0, y: TOP, w: W, h: 0.05, fill: { color: bar } });
-    s3.addText(head, { x: x0 + 0.1, y: TOP + 0.1, w: W - 1.1, h: 0.32, fontFace: F, fontSize: sz(15, "list head"), bold: true, color: ink, charSpacing: 1.0, valign: "middle", isTextBox: true, margin: 0 });
-    s3.addText(String(names.length), { x: x0 + W - 1.0, y: TOP + 0.04, w: 0.9, h: 0.44, fontFace: F, fontSize: sz(26, "list count"), bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+    // one line per head (Noah, Oct 29): count sits in a narrow box on the right, a little less letter spacing
+    s3.addText(head, { x: x0 + 0.1, y: TOP + 0.1, w: W - 0.75, h: 0.32, fontFace: F, fontSize: sz(15, "list head"), bold: true, color: ink, charSpacing: 0.4, valign: "middle", isTextBox: true, margin: 0, fit: "none", wrap: false });
+    // thin gray rule between the lists so they don't blend (Noah, Oct 29)
+    if (i > 0) s3.addShape(pptx.ShapeType.line, { x: x0 - gap / 2, y: TOP, w: 0, h: BOT - TOP, line: { color: "BFBFBF", width: 0.75 } });
+    s3.addText(String(names.length), { x: x0 + W - 0.62, y: TOP + 0.04, w: 0.55, h: 0.44, fontFace: F, fontSize: sz(26, "list count"), bold: true, color: ink, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     const n2 = names.length > 10 ? Math.ceil(names.length / 2) : names.length, cw = names.length > 10 ? (W - 0.2) / 2 : W - 0.2;
     [names.slice(0, n2), names.slice(n2)].forEach((part, k) => part.length && s3.addText(part.map(n => ({ text: n, options: { breakLine: true } })),
       { x: x0 + 0.1 + k * cw, y: TOP + 0.6, w: cw, h: BOT - TOP - 0.6, fontFace: F, fontSize: sz(14, "list store"), color: C.ink, valign: "top", isTextBox: true, margin: 0, paraSpaceAfter: 3 }));
