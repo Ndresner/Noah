@@ -346,3 +346,6 @@ Slide 13 Parts Net Profit chart band (`Changes - Oct 29 (round 38).pptx`): "Gros
 
 ## Oct 29, round 39
 Slide 13 Parts Net Profit band with dollars, "personnel" (Noah): "Gross grew 1.9%, expenses 2.6%. Personnel down $426K; outside services up $490K, IT up $479K, advertising rebates down $398K."
+
+## Oct 29, round 40 (review, not in the deck)
+`Store Records with Net - Review.pptx` (`NETREC=1 node records-open.mjs`): A Record Year gets a fifth tile, best January-September fixed ops net profit ever (21 stores; 18 also set the gross record); Records Set in 2026 unchanged; new slide Best January-September Ever lists gross and net (18), gross only (7: GMC Prescott, Honda Flagstaff, Hyundai Prescott, Hyundai St George, Kia St George, Mazda, Toyota Spokane), net only (3: Acura, CDJR Post Falls, Subaru LV). Net = Mechanical + P&A department profit, P&L Detail, Jan-Sep 2021-2026 (`records/net_ytd_raw.json`, `records/net_ytd.json`); 2025 and 2026 tie to the deck's net profit to the dollar; Detail gross 2021 ties to the TB records history ($111.43M). Honda Spokane and Nissan have data from 2024 only (same rule as gross). Close calls: Subaru LV +$5.6K, Honda Spokane +$3.2K over their best prior Jan-Sep. Year to date only, no monthly net records (monthly net carries accruals and true-ups).

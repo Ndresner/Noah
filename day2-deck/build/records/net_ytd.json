@@ -1,0 +1,266 @@
+{
+"ACURA": {
+"v": 476153.9299999998,
+"prev": 259245.2600000011,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": false
+},
+"AUDI HENDERSON": {
+"v": 4944898.57,
+"prev": 4106572.8100000005,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"AUDI RENO": {
+"v": 1815556.4800000004,
+"prev": 1993229.2399999998,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": false
+},
+"CADILLAC": {
+"v": 2598539.7100000004,
+"prev": 1832762.1799999988,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"CDJR POST FALLS": {
+"v": 800468.5299999999,
+"prev": 746671.9799999997,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": false
+},
+"CHEVY GMC BULLHEAD": {
+"v": 1120869.26,
+"prev": 783849.3000000002,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"CHEVY LV": {
+"v": 2266967.9600000046,
+"prev": 2910306.830000001,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": false
+},
+"GMC PRESCOTT": {
+"v": 19560.590000000142,
+"prev": 272423.27000000025,
+"prevYear": 2023,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"HONDA FLAGSTAFF": {
+"v": 79495.86999999986,
+"prev": 79783.61999999965,
+"prevYear": 2023,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"HONDA HENDERSON": {
+"v": 6078642.400000001,
+"prev": 5836453.850000003,
+"prevYear": 2024,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"HONDA NORTH": {
+"v": 3322063.6900000013,
+"prev": 3397981.160000001,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": false
+},
+"HONDA SPOKANE": {
+"v": 1319146.799999999,
+"prev": 1315929.1199999996,
+"prevYear": 2025,
+"record": true,
+"first": 2024,
+"gross_record": true
+},
+"HYUNDAI PRESCOTT": {
+"v": -136510.97999999995,
+"prev": -329.91,
+"prevYear": 2021,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"HYUNDAI ST GEORGE": {
+"v": 107886.3,
+"prev": 243836.47000000006,
+"prevYear": 2024,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"KIA LV": {
+"v": 1804692.7699999989,
+"prev": 1382546.5199999996,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"KIA ST GEORGE": {
+"v": 502109.39000000013,
+"prev": 648725.61,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"LEXUS": {
+"v": 1198578.4000000004,
+"prev": 992573.9500000012,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"LINCOLN": {
+"v": 94429.66999999934,
+"prev": -61365.96000000079,
+"prevYear": 2023,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"LR HENDERSON": {
+"v": 705120.6200000001,
+"prev": 607397.5000000005,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"LR LV": {
+"v": 2043314.7099999995,
+"prev": 1890979.4799999997,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"LR RENO": {
+"v": 427953.1400000006,
+"prev": 243872.9999999998,
+"prevYear": 2023,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"MAZDA": {
+"v": 985141.3499999993,
+"prev": 1071666.4999999995,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"NISSAN": {
+"v": 677268.6400000006,
+"prev": 542911.41,
+"prevYear": 2025,
+"record": true,
+"first": 2024,
+"gross_record": true
+},
+"SUBARU LV": {
+"v": 2940299.239999999,
+"prev": 2934675.98,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": false
+},
+"SUBARU PRESCOTT": {
+"v": 128541.13000000014,
+"prev": 110001.48999999999,
+"prevYear": 2023,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"SUBARU ST GEORGE": {
+"v": 1169019.5100000005,
+"prev": 1055758.4800000004,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"TOYOTA FLAGSTAFF": {
+"v": 901548.98,
+"prev": 771029.6499999986,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"TOYOTA HENDERSON": {
+"v": 7830267.7799999975,
+"prev": 6414428.920000001,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"TOYOTA PRESCOTT": {
+"v": 1166395.8300000003,
+"prev": 881385.4700000002,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"TOYOTA SPOKANE": {
+"v": 699325.260000003,
+"prev": 1448455.0600000005,
+"prevYear": 2022,
+"record": false,
+"first": 2021,
+"gross_record": true
+},
+"VOLVO": {
+"v": 1330291.1600000006,
+"prev": 1175201.3999999994,
+"prevYear": 2025,
+"record": true,
+"first": 2021,
+"gross_record": true
+},
+"VW HENDERSON": {
+"v": 1090501.0500000005,
+"prev": 1548000.1699999985,
+"prevYear": 2025,
+"record": false,
+"first": 2021,
+"gross_record": false
+},
+"VW ST GEORGE": {
+"v": -58643.5400000002,
+"prev": 288996.3800000003,
+"prevYear": 2023,
+"record": false,
+"first": 2021,
+"gross_record": false
+}
+}

@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 40 (review): net profit records. "Store Records with Net - Review.pptx": 21 stores had their best Jan-Sep fixed ops net profit ever, 18 of them also the gross record; new Best January-September Ever slide. Not in the deck yet.
 - Round 39: Parts Net Profit band with dollar totals: personnel down $426K; outside services up $490K, IT up $479K, advertising rebates down $398K.
 - Round 38: Parts Net Profit chart band explains the flat year: gross +1.9%, expenses +2.6%; people costs down, outside services, IT and smaller advertising rebates up.
 - Round 37: service and parts net profit explainers removed (fixed ops net profit explains them); four slides each.
@@ -90,6 +91,7 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
+- Net profit records (review file): put in the deck or not.
 - Open Decisions section: bring any slides into the flow, or present a clean copy without it.
 
 ## Still open
