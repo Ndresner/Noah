@@ -4,7 +4,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 
 Updated: October 29, 2026
 
-## Current test deck
+## Current meeting deck
 - Meeting deck: 205 slides. Open Decisions (43 slides) removed Oct 29 and saved as its own deck, `Fixed Ops - Day 2 Open Decisions (saved for later).pptx`.
 - Final check Oct 29: full rebuild matches the deck sent; key figures tie on every slide; wording scan and visual pass of all 205 slides clean. Two band fixes: slide 102 "All four rose 1.3-1.4 pts" (matches slide 96), slide 120 50,443 more services (sum of the four tiles).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
@@ -22,6 +22,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 46 (final check): Open Decisions split off into its own saved deck; meeting deck 205 slides, rebuilt from scratch and identical to the version sent. Bands fixed on slide 102 (1.3-1.4 pts) and slide 120 (50,443 services).
 - Round 45 (approved): Two Ways to Read Improvement counts eight measures (adds CP labor $ per RO, absorption, opcodes combined; net profit left out as size-biased). Lincoln and Subaru Prescott lead last year (6 of 8); Kia St George leads moving now (6) and is on both lists.
 - Round 43 (approved): records slides with net profit in the deck: A Record Year (net profit tile, gross profit named on the others), Records Set in 2026: Gross Profit, new Best January-September Ever slide.
 - Round 40 (review): net profit records. "Store Records with Net - Review.pptx": 21 stores had their best Jan-Sep fixed ops net profit ever, 18 of them also the gross record; new Best January-September Ever slide. Not in the deck yet.
@@ -94,10 +95,10 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Open Decisions: saved as a separate deck for later (Oct 29).
+- Nothing for the meeting. Open Decisions saved as a separate deck for later review.
 
 ## Still open
-- None beyond the item above.
+- Open Decisions deck (43 slides): review after the meeting.
 
 ## Where things live
 - Build source (scripts, data, history): GitHub ndresner/noah, branch claude/serene-mendel-6jr9ef, folder day2-deck.
