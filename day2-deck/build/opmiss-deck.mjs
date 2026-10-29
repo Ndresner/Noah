@@ -43,7 +43,7 @@ const total = res.reduce((t, s) => t + s.miss, 0);
     t(usd(r.miss), { x: x + 0.1, y: 4.72, w: W - 0.2, h: 0.6, fontSize: H.sz(26, "chip number"), bold: true, color: C.navy });
     t(`${int(r.short)} more services a year`, { x: x + 0.1, y: 5.35, w: W - 0.2, h: 0.4, fontSize: H.sz(14, "chip sub"), color: C.ink });
   });
-  H.takeaway(pptx, s, `${int(res.reduce((a, r) => a + r.short, 0))} more services a year on cars already in our drives. No new customers needed.`, "g");
+  H.takeaway(pptx, s, `${int(res.reduce((a, r) => a + Math.round(r.short), 0))} more services a year on cars already in our drives. No new customers needed.`, "g");
   H.foot(pptx, s, SRC);
   s.addNotes("Talk track: every one of these cars is already on a customer-pay RO in our drive. The inspection and the menu find the need; the advisor presents it.");
 }

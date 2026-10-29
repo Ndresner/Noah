@@ -169,7 +169,7 @@ X({ eyebrow: "Opcodes", title: "Tracked Opcode Closing %",   // was What Is an O
            ["Consistency", "Present it every visit, no exceptions. Say it once and skip it the next time, and we lose credibility"],
            ["Tracking", "Daily Viz Op Code report; feedback before the 15th"]],
   leverRows: [1, 1.35],
-  ours: "All four rose 1.2-1.4 pts and beat 2025 every month. Balance is furthest off, at 8.3%: 18,493 short of 15%.",
+  ours: "All four rose 1.3-1.4 pts and beat 2025 every month. Balance is furthest off, at 8.3%: 18,493 short of 15%.",
   notes: "PLACE: Opcodes, after the section break, in front of Alignment %.\nDenominator: CP ROs on the op code report basis (excluding ROs flagged out of the report)." });
 
 X({ eyebrow: "Technician Proficiency", title: "Technician Proficiency",

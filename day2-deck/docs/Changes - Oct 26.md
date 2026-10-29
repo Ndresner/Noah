@@ -364,3 +364,7 @@ Records with net profit in the deck (slides 17-19, `Changes - Oct 29 (round 43).
 
 ## Oct 29, round 45 (approved)
 Two Ways to Read Improvement (slide 169) now counts eight measures in the deck (`TWO8` on by default in `moving-deck.mjs`; `TWO8=0` = the five-measure version). `Changes - Oct 29 (round 45).pptx`.
+
+## Oct 29, round 46 (final check, Noah's request)
+Open Decisions out of the meeting deck: `merge_v2.py` now writes the meeting deck (205 slides, ends with the last Store Prescription) and `decks/Fixed Ops - Day 2 Open Decisions (saved for later).pptx` (43 slides: divider + every Open Decisions slide, unchanged). The divider's topic line now matches what is in it (door rate, productivity, proficiency, who's moving now, most improved, before you leave).
+Final sanity check: every deck rebuilt from scratch and compared slide by slide (text, chart values, notes) with the deck sent before: identical, nothing stale. Key figures consistent everywhere they appear (fixed gross $188.80M, net profit $50.45M = service $27.70M + parts $22.75M, absorption 78.1%, CP ELR $162.42, CP ROs 279,756, proficiency 94.7%, opcodes 13.2 / 8.3 / 9.2 / 5.8%); text scan clean (no blanks, NaN, doubled words, "rooftop", draft or review labels); all 205 slides rendered, nothing runs out of its box. Two fixes (`Changes - Oct 29 (round 46).pptx`): slide 102 band "All four rose 1.3-1.4 pts" (was 1.2-1.4; the shown changes are 1.3, 1.4, 1.3, 1.3, matching slide 96); slide 120 band 50,443 more services (was 50,442; now the sum of the four tiles).

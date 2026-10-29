@@ -169,6 +169,7 @@ order += X("RX", *R(2, len(srcp["RX"].slides)))
 # Open Decisions (was "Appendix"; Noah, Oct 21): every slide built but not placed in the deck - alternate versions of
 # slides already in it, and slides not yet in or out. Nothing here moves into the deck by default. Grouped in deck
 # order. Each eyebrow is rewritten to OPEN DECISIONS · <TOPIC> · <OPTION>; None keeps no option label.
+FLOW = len(order)   # Oct 29 (Noah): the meeting deck ends here; Open Decisions saves to its own deck
 order += O(11)
 L = lambda *a: list(a)
 OPEN = [
@@ -208,3 +209,20 @@ for el in want:
     sldIdLst.append(el)
 prs.save(OUT)
 print("saved", len(order))
+
+
+def keep(path, lo, hi):
+    """Save slides [lo, hi) of the assembled deck to path; dropped slides lose their relationship and are not written."""
+    p = Presentation(OUT)
+    lst = p.slides._sldIdLst
+    for i, el in enumerate(list(lst)):
+        if not lo <= i < hi:
+            p.part.drop_rel(el.rId)
+            lst.remove(el)
+    p.save(path)
+    print("saved", len(p.slides), os.path.basename(path))
+
+
+# Oct 29 (Noah): Open Decisions out of the meeting deck, saved as its own deck for later
+keep(D + "Fixed Ops - Day 2 Open Decisions (saved for later).pptx", FLOW, len(order))
+keep(OUT, 0, FLOW)

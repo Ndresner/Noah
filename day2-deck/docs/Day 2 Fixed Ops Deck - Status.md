@@ -5,7 +5,8 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 29, 2026
 
 ## Current test deck
-- 248 slides: 205 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
+- Meeting deck: 205 slides. Open Decisions (43 slides) removed Oct 29 and saved as its own deck, `Fixed Ops - Day 2 Open Decisions (saved for later).pptx`.
+- Final check Oct 29: full rebuild matches the deck sent; key figures tie on every slide; wording scan and visual pass of all 205 slides clean. Two band fixes: slide 102 "All four rose 1.3-1.4 pts" (matches slide 96), slide 120 50,443 more services (sum of the four tiles).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -93,7 +94,7 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Open Decisions section: bring any slides into the flow, or present a clean copy without it.
+- Open Decisions: saved as a separate deck for later (Oct 29).
 
 ## Still open
 - None beyond the item above.
