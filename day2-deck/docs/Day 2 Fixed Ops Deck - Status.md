@@ -18,6 +18,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 32 (approved): all 26 movers slides now carry the line style in the deck (caps names, Jan-Sep line per store, dashed Jan-Mar average on moving now, timeframes at the top).
 - Round 31: Fuel Service % movers leave off the four stores whose manufacturer doesn't call for it (Volvo, Audi Henderson, VW Henderson, Audi Reno); next stores move up, ranks out of 29. Review file: moving-now lines now have a dashed line at each store's Jan-Mar average.
 
 ## Recent changes (Oct 28)
@@ -80,7 +81,6 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Approve the line style on all 26 movers slides (review file) to put it in the deck.
 - What Is Productivity? explainer preview: on hold.
 - Optional: a "raise to 100%" column on Opportunity as a Share of Gross (needs the tech-level proficiency file re-uploaded).
 

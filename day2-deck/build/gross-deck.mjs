@@ -24,7 +24,7 @@ const sum = a => a.reduce((t, x) => t + x, 0);
 // reconciled to gross/monthly.json to the dollar) and 2026 (pulls/gross_m26_store.json)
 const SM = y => Object.fromEntries(JSON.parse(fs.readFileSync(`./pulls/gross_m${y}_store.json`, "utf8")).rows.filter(r => r[0] !== "INEOS")
   .map(r => [r[0], r.slice(1, 3).map(c => (Array.isArray(c) ? c : c.split("|")).map(v => -Number(v)))]));
-const SP = process.env.SPARK === "1" ? { 25: SM(25), 26: SM(26) } : null;   // review build; flips to on once Noah approves
+const SP = process.env.SPARK !== "0" ? { 25: SM(25), 26: SM(26) } : null;   // on: approved by Noah Oct 29
 const spark = k => SP && ((n, ci) => { const pick = y => k === "fx" ? SP[y][n][0].map((v, i) => v + SP[y][n][1][i]) : SP[y][n][k === "sv" ? 0 : 1];
   // moving now (Oct 28, Noah, two options): SPARKNOW=overlay -> Q1 2026 (gray) over Q3 2026 (colour), month 1-2-3 of each quarter;
   // otherwise one Jan-Sep 2026 line, Q1 gray, Q2 a faint connector, Q3 in colour

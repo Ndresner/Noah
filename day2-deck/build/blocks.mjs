@@ -159,7 +159,7 @@ export function block(pptx, X, M) {
 /* sparkFrom (Oct 28, Noah: every movers slide in the caps / line style): sm = { STORE: [2025 months, 2026 months] }, each month
    the block's inputs; the line is the metric month by month (gray last year, coloured this year; moving now = this year only).
    SPARK=0 builds the slides without the lines. */
-export const SPARK = process.env.SPARK === "1";   // review build; flips to on once Noah approves
+export const SPARK = process.env.SPARK !== "0";   // on: approved by Noah Oct 29 (SPARK=0 builds without the lines)
 export const sparkFrom = (sm, f) => SPARK && sm ? ((key, ci) => {
   const s = sm[key]; if (!s) return null;
   const ln = yi => s[yi].map(a => { const v = f(a); return Number.isFinite(v) ? v : null; });
