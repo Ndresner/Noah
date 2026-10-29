@@ -10,6 +10,7 @@ Updated: October 29, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 29: no "raise to 100%" column; Inter is installed on the presenting PC; no slides cut (196 in the flow).
 - Oct 29: People and Pay Plans stay; the What Is Productivity? explainer preview is closed (not used).
 - Oct 28: Tommy-Gary transcript dropped (not needed).
 - Oct 28: no percent change added on the points-change slides. Work mix rebuilt from Qlik per Noah's prompt: every store and group figure matches the slide; raw data saved.
@@ -82,11 +83,11 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Optional: a "raise to 100%" column on Opportunity as a Share of Gross (needs the tech-level proficiency file re-uploaded).
+- Open Decisions section: bring any slides into the flow, or present a clean copy without it.
+- Fuel Service bottom five: keep the two flat stores or show only the three that declined.
 
 ## Still open
-- Items in Open Decisions: bring back or drop.
-- Inter installed on the presenting PC.
+- None beyond the two items above.
 
 ## Where things live
 - Build source (scripts, data, history): GitHub ndresner/noah, branch claude/serene-mendel-6jr9ef, folder day2-deck.
