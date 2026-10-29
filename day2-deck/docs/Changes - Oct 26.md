@@ -374,3 +374,6 @@ Why We Are Here (slide 3) now same-store, matching the Fixed Ops Net Profit slid
 
 ## Oct 29, round 48 (Noah)
 Why We Are Here share back to whole percents: 61% (47% in 2025). Same-store figures from round 47 unchanged. `Changes - Oct 29 (round 48).pptx`.
+
+## Oct 29, round 49 (Noah)
+Biggest Movers This Year: Profit and Process (slide 168): a group change that shows as zero reads "Group 0.0 pts (flat)" (CP parts GP % 40.62% -> 40.62%; opcodes combined 36.04% -> 36.08%). Applies to any grid column where the group change shows 0.0; today only these two. `Changes - Oct 29 (round 49).pptx`.

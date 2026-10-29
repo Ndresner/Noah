@@ -111,7 +111,9 @@ function grid(view, { title, sub, groupLabel, src, keys = GRID }) {
     s.addShape(pptx.ShapeType.rect, { x: x + 0.06, y: HY, w: CW - 0.12, h: 0.05, fill: { color: C.good } });
     s.addText(M.label.replace(" per Month", "").toUpperCase(), { x: x + 0.08, y: HY + 0.09, w: CW - 0.16, h: 0.26, fontFace: F, fontSize: 13, bold: true,
       color: C.ink600, charSpacing: 0.3, isTextBox: true, margin: 0, fit: "shrink" });
-    s.addText(`${groupLabel} ${chg(k, M.group[2], M.group[0], M.group[1])}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
+    // Oct 29 (Noah): a group change that shows as zero carries "(flat)" so 0.0 doesn't read as missing
+    const gc = chg(k, M.group[2], M.group[0], M.group[1]);
+    s.addText(`${groupLabel} ${gc}${/^0\.0\b/.test(gc) ? " (flat)" : ""}`, { x: x + 0.08, y: HY + 0.33, w: CW - 0.16, h: 0.22, fontFace: F, fontSize: 13,
       color: C.ink600, isTextBox: true, margin: 0 });
     const cell = (r, y, top) => {
       // Title Case, not caps (Noah, Oct 22): PowerPoint does not shrink-to-fit until a box is edited, so caps names
