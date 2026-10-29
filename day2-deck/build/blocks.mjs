@@ -174,7 +174,9 @@ export const sparkFrom = (sm, f) => SPARK && sm ? ((key, ci) => {
    Jan-Mar 2026, each store against itself (same basis as Who's Moving Now). */
 export function moversSlide(pptx, o) {
   const list = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a.at(-1);
-  const dir = H.dirOf(o.metric), up = dir !== "down", K = 5;
+  // Oct 29 (Noah): three stores per column (was five); MOVERSK=5 rebuilds the five-store version
+  const dir = H.dirOf(o.metric), up = dir !== "down", K = Number(process.env.MOVERSK ?? 3), KW = NUM[K];
+  o = { ...o, src: String(o.src ?? "").replace(/Top and bottom five/g, `Top and bottom ${KW}`) };
   // Oct 28 audit: a points change is the shown end minus the shown start, and rows rank on what they show
   const fix = x => ({ ...x, d: H.shownDiff(x.v0, x.v1, o.fmtD, x.d) });
   const srt = rs => [...rs].map(fix).sort((a, b) => up ? b.d - a.d : a.d - b.d).map(x => ({ ...x, key: x.n, n: nm(x.n) }));
@@ -196,7 +198,7 @@ export function moversSlide(pptx, o) {
     ],
     takeaway: `Ask ${list(top)} what changed. Ask ${list(bot)} what got in the way. Ask ${list(nw.slice(0, 3).map(x => x.n))} what they started this year.`,
     tone: "n",
-    source: `${o.src} Moving now: Jul-Sep 2026 vs Jan-Mar 2026, each store against itself${o.perMonth ? " (monthly averages)" : ""}; the group moved ${String(o.nowGroup).replace(/^[\u2212-](0\.0+\D)/, "$1")} on the same basis, so part of every store's change is seasonal. Green bar at the right of a row: the store is on both the top five vs last year and the top five moving now. Blue bar: a turnaround, on the bottom five vs last year and the top five moving now.`,
+    source: `${o.src} Moving now: Jul-Sep 2026 vs Jan-Mar 2026, each store against itself${o.perMonth ? " (monthly averages)" : ""}; the group moved ${String(o.nowGroup).replace(/^[\u2212-](0\.0+\D)/, "$1")} on the same basis, so part of every store's change is seasonal. Green bar at the right of a row: the store is on both the top ${KW} vs last year and the top ${KW} moving now. Blue bar: a turnaround, on the bottom ${KW} vs last year and the top ${KW} moving now.`,
     notes: notes + " Moving now: ask the top three what they started this year.",
   });
 }

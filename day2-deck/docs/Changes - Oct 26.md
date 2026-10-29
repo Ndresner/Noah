@@ -380,3 +380,6 @@ Biggest Movers This Year: Profit and Process (slide 168): a group change that sh
 
 ## Oct 29, round 50 (Noah)
 Why We Are Here (slide 3) ask: "The ask: leave today with one or two actionable items you will put in place at your store before year end, and hold your team to them." (was "...one or two things you will put in place before year end, and tell the room what they are."). `Changes - Oct 29 (round 50).pptx`.
+
+## Oct 29, round 51 (Noah)
+Every movers slide (25) now shows three stores per column: top 3 vs last year, bottom 3 vs last year, top 3 moving now (was five). Rows are taller; the change keeps its five-store size so "+16.1 pts" and "+$4,936" stay on one line. Source lines say "top and bottom three"; green / blue bars now mean on both top-three lists / bottom three and top three moving now. `MOVERSK=5` rebuilds the five-store version. Nothing else changed. `Changes - Oct 29 (round 51).pptx`.

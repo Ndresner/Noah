@@ -23,6 +23,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere).
 
 ## Recent changes (Oct 29)
+- Round 51: all 25 movers slides now three stores per column (top 3 and bottom 3 vs last year, top 3 moving now), was five.
 - Round 50: slide 3 ask now "leave today with one or two actionable items you will put in place at your store before year end, and hold your team to them."
 - Round 49: slide 168 (Biggest Movers This Year: Profit and Process) reads "Group 0.0 pts (flat)" on CP parts GP % and opcodes combined; both really are flat Q1 to Q3.
 - Round 48: share back to whole percents (61%, 47% in 2025).

@@ -2428,7 +2428,8 @@ export function movers3(pptx, deck, o) {
         s.addText(o.fmtD(r.d), { x: x0 + W - CW - 0.1, y: y + rh * (o.spark ? 0.3 : 0.12), w: CW, h: rh * (o.spark ? 0.36 : 0.5), fontFace: F, fontSize: sz(16, "movers change"), bold: true, color: c, align: "right", valign: "bottom", isTextBox: true, margin: 0 });
         s.addText(r.d2, { x: x0 + W - CW - 0.1, y: y + rh * (o.spark ? 0.66 : 0.58), w: CW, h: rh * (o.spark ? 0.27 : 0.32), fontFace: F, fontSize: sz(13, "movers change sub"), color: C.ink600, align: "right", valign: "top", isTextBox: true, margin: 0 });
       } else
-      s.addText(o.fmtD(r.d), { x: x0 + W - (big ? 1.12 : 1.32), y, w: big ? 1.02 : 1.22, h: rh, fontFace: F, fontSize: sz(big ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
+      // Oct 29: with sparklines the change keeps the five-store size and width, so "+16.1 pts" / "+$4,936" stay on one line at three stores
+      s.addText(o.fmtD(r.d), { x: x0 + W - (big && !o.spark ? 1.12 : 1.32), y, w: big && !o.spark ? 1.02 : 1.22, h: rh, fontFace: F, fontSize: sz(big && !o.spark ? 18 : 16, "movers change"), bold: true, color: c, align: "right", valign: "middle", isTextBox: true, margin: 0 });
     });
   });
   takeaway(pptx, s, o.takeaway, o.tone ?? "n");
