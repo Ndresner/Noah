@@ -10,6 +10,7 @@ Updated: October 29, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 29: Fuel Service bottom five stays as is (two flat stores included).
 - Oct 29: no "raise to 100%" column; Inter is installed on the presenting PC; no slides cut (196 in the flow).
 - Oct 29: People and Pay Plans stay; the What Is Productivity? explainer preview is closed (not used).
 - Oct 28: Tommy-Gary transcript dropped (not needed).
@@ -84,10 +85,9 @@ Updated: October 29, 2026
 
 ## Awaiting Noah
 - Open Decisions section: bring any slides into the flow, or present a clean copy without it.
-- Fuel Service bottom five: keep the two flat stores or show only the three that declined.
 
 ## Still open
-- None beyond the two items above.
+- None beyond the item above.
 
 ## Where things live
 - Build source (scripts, data, history): GitHub ndresner/noah, branch claude/serene-mendel-6jr9ef, folder day2-deck.
