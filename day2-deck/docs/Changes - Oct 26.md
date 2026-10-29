@@ -328,3 +328,6 @@ All 26 movers slides in the deck in the new style (slides in `Changes - Oct 29 (
 
 ## Oct 29, round 33
 Slide 2 Agenda (`Changes - Oct 29 (round 33).pptx`): Profitability "What we keep, and how much of the store's expenses fixed ops covers." (was "...how much of the store we cover", "we" twice); Close "What changed, where the money is, and prescriptions." (was "each store's prescription").
+
+## Oct 29, round 34
+Slide 2 Agenda (`Changes - Oct 29 (round 34).pptx`): Profitability "What we keep, and how much of the store expenses we cover."; Warranty "Rates, margins, compliance, and protecting the money."
