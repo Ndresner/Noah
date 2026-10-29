@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 29, 2026
 
 ## Current test deck
-- 249 slides: 206 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
+- 247 slides: 204 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 37: service and parts net profit explainers removed (fixed ops net profit explains them); four slides each.
 - Round 36: Service Net Profit and Parts Net Profit added right after the Fixed Ops Net Profit block, five slides each, same as the other categories. Service $27.70M (+21.6%), parts $22.75M (+0.8%); they add to the $50.45M fixed ops total.
 - Round 34-35: agenda, Profitability "What we keep, and how much of the store's expenses we cover." and Warranty "Rates, margins, compliance, and protecting the money."
 - Round 33: agenda wording, Profitability ("we" no longer twice) and Close ("prescriptions").

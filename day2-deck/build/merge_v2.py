@@ -110,7 +110,7 @@ order += O(1, 2) + X("TP", 1)
 # Fixed Ops Net Profit block right after Why We Are Here: the high-level view before the sections (Noah, Oct 24)
 order += X("NP", 3, 4, 5, 6, 7)
 # Oct 29 (Noah): service and parts net profit broken out, same five slides each, right after the combined block
-order += X("NPD", *R(1, 10))
+order += X("NPD", 2, 3, 4, 5, 7, 8, 9, 10)   # Oct 29 (Noah): no explainers (1, 6); fixed ops net profit explains them
 # store records in the opening: A Record Year, Record Months in 2026 (Noah, Oct 25; the Open Decisions record slides retired)
 order += X("REC", 1, 2)
 # 01 Gross
