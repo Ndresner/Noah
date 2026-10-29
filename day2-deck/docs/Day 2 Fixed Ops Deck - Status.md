@@ -10,6 +10,7 @@ Updated: October 29, 2026
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
+- Oct 29: People and Pay Plans stay; the What Is Productivity? explainer preview is closed (not used).
 - Oct 28: Tommy-Gary transcript dropped (not needed).
 - Oct 28: no percent change added on the points-change slides. Work mix rebuilt from Qlik per Noah's prompt: every store and group figure matches the slide; raw data saved.
 - Oct 28: Flai pickup rate = transfers picked up (confirmed). Warranty audit slides approved as drafted.
@@ -81,7 +82,6 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- What Is Productivity? explainer preview: on hold.
 - Optional: a "raise to 100%" column on Opportunity as a Share of Gross (needs the tech-level proficiency file re-uploaded).
 
 ## Still open
