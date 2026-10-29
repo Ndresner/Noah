@@ -172,7 +172,7 @@ function moving(k) {
 // TWO8=1 (Oct 29 review, Noah): the three size-neutral measures from the Biggest Movers grids join the count (CP labor $
 // per RO %, absorption and the four opcodes combined in points); fixed ops net profit stays out (ranked in dollars, so
 // it favors big stores, and a percent off a small or negative base runs to the thousands)
-const TWO8 = process.env.TWO8 === "1";
+const TWO8 = process.env.TWO8 !== "0";   // in the deck Oct 29 (Noah approved); TWO8=0 = the five-measure version
 const TWOKEYS = TWO8 ? [...GRID, "lpr", "abs", "opc"] : GRID;
 Object.assign(SHORT, { lpr: "labor $/RO", abs: "absorption", opc: "opcodes" });
 // eight measures: shorter labels and a wider list so six measures stay on one line

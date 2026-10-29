@@ -361,3 +361,6 @@ Records with net profit in the deck (slides 17-19, `Changes - Oct 29 (round 43).
 
 ## Oct 29, round 44 (review)
 `Two Ways Eight Measures - Review.pptx` (`TWO8=1 node moving-deck.mjs`): Two Ways to Read Improvement counted across eight measures: the five it had plus CP labor $ per RO (percent), fixed absorption and the four opcodes combined (points). Fixed ops net profit left out (ranked in dollars, favors larger stores). Last year: Lincoln and Subaru Prescott tie at 6 of 8 (Subaru Prescott led alone at 4 of 5 before); moving now: Kia St George leads at 6 (three stores tied at 3 of 5 before). Kia St George stays on both lists. Shorter measure labels so six fit on a line. Normal build unchanged.
+
+## Oct 29, round 45 (approved)
+Two Ways to Read Improvement (slide 169) now counts eight measures in the deck (`TWO8` on by default in `moving-deck.mjs`; `TWO8=0` = the five-measure version). `Changes - Oct 29 (round 45).pptx`.

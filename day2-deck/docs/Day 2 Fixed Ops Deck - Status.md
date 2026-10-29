@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 45 (approved): Two Ways to Read Improvement counts eight measures (adds CP labor $ per RO, absorption, opcodes combined; net profit left out as size-biased). Lincoln and Subaru Prescott lead last year (6 of 8); Kia St George leads moving now (6) and is on both lists.
 - Round 43 (approved): records slides with net profit in the deck: A Record Year (net profit tile, gross profit named on the others), Records Set in 2026: Gross Profit, new Best January-September Ever slide.
 - Round 40 (review): net profit records. "Store Records with Net - Review.pptx": 21 stores had their best Jan-Sep fixed ops net profit ever, 18 of them also the gross record; new Best January-September Ever slide. Not in the deck yet.
 - Round 39: Parts Net Profit band with dollar totals: personnel down $426K; outside services up $490K, IT up $479K, advertising rebates down $398K.
