@@ -17,9 +17,10 @@ export const MEETING = {
 };
 
 // agenda details simplified to plain language (Noah, Oct 23, from the agenda preview)
+// Oct 29 (Noah): Profitability no longer says "we" twice; Close says "prescriptions"
 export const SECTIONS = [
   { short: "Gross",               detail: "Fixed ops, service and parts gross performance.", chips: ["Fixed ops", "Service", "Parts"] },
-  { short: "Profitability",       detail: "What we keep, and how much of the store we cover.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
+  { short: "Profitability",       detail: "What we keep, and how much of the store's expenses fixed ops covers.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "Customer Pay",        detail: "Car count, sales per visit, pricing and margin.",  chips: ["ROs", "Hours per RO", "Pricing & mix", "ELR", "$ per RO", "Margin"] },
   { short: "Opcodes",             detail: "Inspections and key services against benchmark.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
   { short: "Internal",            detail: "Internal labor rate and margins.", chips: ["Internal ELR", "Internal labor GP %", "Internal parts GP %"] },   // tracking moved to Opcodes (Oct 23)   // pay type and work type moved to Customer Pay (Oct 23)
@@ -33,7 +34,7 @@ export const SECTIONS = [
 if (process.env.CHIPS8 !== "0") {
   // Oct 28 (Noah): the old agenda line plus protecting the money; "Warranty audits" chip reworded
   Object.assign(SECTIONS[6], { detail: "Rates, margins and compliance: protecting the money.", chips: ["Rates rising", "Warranty gross profit", "Claim process: protect the money"] });
-  Object.assign(SECTIONS[7], { detail: "What changed, where the money is, and each store's prescription.", chips: ["Most improved", "Where the money is", "Store prescriptions"] });
+  Object.assign(SECTIONS[7], { detail: "What changed, where the money is, and prescriptions.", chips: ["Most improved", "Where the money is", "Store prescriptions"] });
 }
 const TRACKER = SECTIONS.map(s => s.short);
 

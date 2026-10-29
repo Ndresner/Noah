@@ -325,3 +325,6 @@ Review (`Movers Sparklines - All Slides - Review.pptx`, rebuilt): the moving-now
 
 ## Oct 29, round 32 (approved by Noah)
 All 26 movers slides in the deck in the new style (slides in `Changes - Oct 29 (round 32).pptx`): store names in caps, last year -> this year, a Jan-Sep line per store (gray 2025, coloured 2026), moving now = the 2026 line with a dashed gray line at the Jan-Mar average, timeframes on one line at the top right. `SPARK` is on by default in `blocks.mjs` and `gross-deck.mjs` (`SPARK=0` builds without the lines). Balance % bottom five now ranks out of 31 (the two Audi stores are not ranked).
+
+## Oct 29, round 33
+Slide 2 Agenda (`Changes - Oct 29 (round 33).pptx`): Profitability "What we keep, and how much of the store's expenses fixed ops covers." (was "...how much of the store we cover", "we" twice); Close "What changed, where the money is, and prescriptions." (was "each store's prescription").
