@@ -352,3 +352,6 @@ Slide 13 Parts Net Profit band with dollars, "personnel" (Noah): "Gross grew 1.9
 
 ## Oct 29, round 41 (review)
 `Store Records with Net - Review.pptx`: A Record Year in shorter words (nothing runs out of the tiles): Stores with a record month / Records set / Best Jan-Sep gross profit ever / Records broken twice / Best Jan-Sep net profit ever. Records Set in 2026 titled "Records Set in 2026: Gross Profit". Best January-September Ever: heads on one line (Gross and Net Profit, Gross Profit Only, Net Profit Only), thin gray rules between the lists, band "25 stores set a January-September record in gross profit and 21 in net profit; 18 did both." The deck's records slides are unchanged until approved.
+
+## Oct 29, round 42 (review)
+A Record Year tiles say gross profit where they mean it: "of 33 had their best gross profit month ever in 2026", "gross profit records in service, parts and combined", "stores set a gross profit record, then beat it again".

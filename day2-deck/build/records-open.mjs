@@ -41,10 +41,10 @@ const topLine = (() => { const t = byCnt.slice(0, 5); return list(t.map(r => `${
 H.statTiles(pptx, pptx, { eyebrow: SEG, title: "A Record Year", bigSize: 40,
   // NETREC (Oct 29, Noah): same tiles, plainer and shorter wording so nothing runs out of the boxes
   tiles: NETREC ? [
-    { label: "Stores with a record month", big: String(rec.length), sub: `of 33 had their best month ever in 2026.`, tone: "g" },
-    { label: "Records set", big: String(total), sub: `service, parts and combined, counted separately.`, tone: "g" },
+    { label: "Stores with a record month", big: String(rec.length), sub: `of 33 had their best gross profit month ever in 2026.`, tone: "g" },
+    { label: "Records set", big: String(total), sub: `gross profit records in service, parts and combined.`, tone: "g" },
     { label: "Best Jan–Sep gross profit ever", big: String(ytdRec.length), sub: `stores, service and parts combined.`, tone: "g" },
-    { label: "Records broken twice", big: String(again.length), sub: `stores set a record, then beat it again.`, tone: "g" },
+    { label: "Records broken twice", big: String(again.length), sub: `stores set a gross profit record, then beat it again.`, tone: "g" },
     { label: "Best Jan–Sep net profit ever", big: String(netRec.length), sub: `stores; ${netRec.filter(n => ytdRec.includes(n)).length} also set the gross profit record.`, tone: "g" },
   ] : [
     { label: "Stores with all-time record months", big: String(rec.length), sub: `of 33 set their best month ever in service, parts or combined during 2026.`, tone: "g" },
