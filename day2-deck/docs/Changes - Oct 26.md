@@ -334,3 +334,6 @@ Slide 2 Agenda (`Changes - Oct 29 (round 34).pptx`): Profitability "What we keep
 
 ## Oct 29, round 35
 Slide 2 Agenda: Profitability "What we keep, and how much of the store's expenses we cover."
+
+## Oct 29, round 36
+New, in the deck right after the Fixed Ops Net Profit block (slides 9-18, `Changes - Oct 29 (round 36).pptx`): Service Net Profit and Parts Net Profit, each with the same five slides as fixed ops net profit (explainer, group chart 2025 Jan-Dec vs 2026, store totals, change ranker with $ first / % alongside and zero-crossing rows shaded, top / bottom / moving now in the line style). `npdept-deck.mjs`, merge key NPD. Data = ntgs.json / ntgp.json department profit (P&L Detail, same-store); service $27,697,214 + parts $22,752,680 = fixed ops $50,449,894 (script stops if they don't tie). Service +21.6% (24 of 33 stores grew), parts +0.8% (17 of 33). Deck now 249 slides, 206 in the flow.

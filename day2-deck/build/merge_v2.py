@@ -17,6 +17,7 @@ layout = prs.slide_layouts[0]
 SRC = {
     "TP": "Talking Points - Day 2.pptx",
     "NP": "Fixed Absorption & Net Profit - House Style.pptx",   # np-deck.mjs (Oct 24)
+    "NPD": "Service and Parts Net Profit - House Style.pptx",   # npdept-deck.mjs (Oct 29)
     "REC": "Store Records - Opening.pptx",   # records-open.mjs (Oct 25)
     "PH": "Voice AI - Flai.pptx",   # flai-deck.mjs (Oct 26)
     "EX": "Metric Explainers - Review.pptx",
@@ -108,6 +109,8 @@ order = []
 order += O(1, 2) + X("TP", 1)
 # Fixed Ops Net Profit block right after Why We Are Here: the high-level view before the sections (Noah, Oct 24)
 order += X("NP", 3, 4, 5, 6, 7)
+# Oct 29 (Noah): service and parts net profit broken out, same five slides each, right after the combined block
+order += X("NPD", *R(1, 10))
 # store records in the opening: A Record Year, Record Months in 2026 (Noah, Oct 25; the Open Decisions record slides retired)
 order += X("REC", 1, 2)
 # 01 Gross

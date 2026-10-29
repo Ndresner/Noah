@@ -5,13 +5,13 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 29, 2026
 
 ## Current test deck
-- 239 slides: 196 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
+- 249 slides: 206 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
 ## Decided
 - Oct 29: Fuel Service bottom five stays as is (two flat stores included).
-- Oct 29: no "raise to 100%" column; Inter is installed on the presenting PC; no slides cut (196 in the flow).
+- Oct 29: no "raise to 100%" column; Inter is installed on the presenting PC; no slides cut.
 - Oct 29: People and Pay Plans stay; the What Is Productivity? explainer preview is closed (not used).
 - Oct 28: Tommy-Gary transcript dropped (not needed).
 - Oct 28: no percent change added on the points-change slides. Work mix rebuilt from Qlik per Noah's prompt: every store and group figure matches the slide; raw data saved.
@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 36: Service Net Profit and Parts Net Profit added right after the Fixed Ops Net Profit block, five slides each, same as the other categories. Service $27.70M (+21.6%), parts $22.75M (+0.8%); they add to the $50.45M fixed ops total.
 - Round 34-35: agenda, Profitability "What we keep, and how much of the store's expenses we cover." and Warranty "Rates, margins, compliance, and protecting the money."
 - Round 33: agenda wording, Profitability ("we" no longer twice) and Close ("prescriptions").
 - Round 32 (approved): all 26 movers slides now carry the line style in the deck (caps names, Jan-Sep line per store, dashed Jan-Mar average on moving now, timeframes at the top).
