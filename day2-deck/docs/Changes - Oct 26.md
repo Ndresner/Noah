@@ -331,3 +331,6 @@ Slide 2 Agenda (`Changes - Oct 29 (round 33).pptx`): Profitability "What we keep
 
 ## Oct 29, round 34
 Slide 2 Agenda (`Changes - Oct 29 (round 34).pptx`): Profitability "What we keep, and how much of the store expenses we cover."; Warranty "Rates, margins, compliance, and protecting the money."
+
+## Oct 29, round 35
+Slide 2 Agenda: Profitability "What we keep, and how much of the store's expenses we cover."

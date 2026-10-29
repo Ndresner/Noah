@@ -20,7 +20,7 @@ export const MEETING = {
 // Oct 29 (Noah): Profitability "...how much of the store expenses we cover"; Warranty "Rates, margins, compliance, and protecting the money."; Close says "prescriptions"
 export const SECTIONS = [
   { short: "Gross",               detail: "Fixed ops, service and parts gross performance.", chips: ["Fixed ops", "Service", "Parts"] },
-  { short: "Profitability",       detail: "What we keep, and how much of the store expenses we cover.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
+  { short: "Profitability",       detail: "What we keep, and how much of the store's expenses we cover.",                                chips: ["Absorption", "Service net to gross", "Parts net to gross"] },
   { short: "Customer Pay",        detail: "Car count, sales per visit, pricing and margin.",  chips: ["ROs", "Hours per RO", "Pricing & mix", "ELR", "$ per RO", "Margin"] },
   { short: "Opcodes",             detail: "Inspections and key services against benchmark.", chips: ["MPI 90%", "Alignment 15%", "Balance 15%", "Brake fluid 10%", "Fuel 7.5%"], name: "Opcode Benchmarks" },
   { short: "Internal",            detail: "Internal labor rate and margins.", chips: ["Internal ELR", "Internal labor GP %", "Internal parts GP %"] },   // tracking moved to Opcodes (Oct 23)   // pay type and work type moved to Customer Pay (Oct 23)
