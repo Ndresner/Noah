@@ -371,3 +371,6 @@ Final sanity check: every deck rebuilt from scratch and compared slide by slide 
 
 ## Oct 29, round 47 (Noah)
 Why We Are Here (slide 3) now same-store, matching the Fixed Ops Net Profit slides (INEOS out): 61.0% of the group's net profit came from service and parts, $50.45M of $82.74M (47.4% in 2025); +$5,113,759 more fixed ops profit than 2025 while group net profit fell $12.92M. Was all stores: 61%, $50.19M of $82.24M, +$4,858,815, fell $13.42M. Share shown to one decimal. Fixed ops comes from the net profit block's own source (ntgs + ntgp) and the build stops if it doesn't tie to the P&L department profit. `Changes - Oct 29 (round 47).pptx`.
+
+## Oct 29, round 48 (Noah)
+Why We Are Here share back to whole percents: 61% (47% in 2025). Same-store figures from round 47 unchanged. `Changes - Oct 29 (round 48).pptx`.

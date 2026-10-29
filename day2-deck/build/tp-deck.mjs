@@ -30,7 +30,7 @@ H.talkingPoints(pptx, pptx, { source: "Qlik - Profit & Loss, Jan-Sep 2026 vs 202
          "Customer first, company second, team third",
          "You get what you tolerate",
          "Leverage the power in this room: collaboration"],
-  now: [{ big: `${share("y26").toFixed(1)}%`, label: `of the group's net profit came from service and parts: ${M(fx("y26"))} of ${M(net("y26"))} (${share("y25").toFixed(1)}% in 2025).`, tone: "g" },
+  now: [{ big: `${share("y26").toFixed(0)}%`, label: `of the group's net profit came from service and parts: ${M(fx("y26"))} of ${M(net("y26"))} (${share("y25").toFixed(0)}% in 2025).`, tone: "g" },
         // Oct 26 (Noah): the $ tile is out; how much of each gross dollar each side keeps (Pay Yourself First data)
         (() => { const K = JSON.parse(fs.readFileSync("./pulls/dept_keep.json", "utf8")), f = K.fixed, v = K.sales;
           const fk = (f.profit_service + f.profit_parts) / (f.gross_service + f.gross_parts);
