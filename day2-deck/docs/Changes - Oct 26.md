@@ -358,3 +358,6 @@ A Record Year tiles say gross profit where they mean it: "of 33 had their best g
 
 ## Oct 29, round 43 (approved)
 Records with net profit in the deck (slides 17-19, `Changes - Oct 29 (round 43).pptx`): A Record Year (five tiles, gross profit named), Records Set in 2026: Gross Profit, Best January-September Ever (gross and net 18, gross profit only 7, net profit only 3). `records-open.mjs` builds them by default (`NETREC=0` = the old two slides); merge REC 1-3. Deck 248 slides, 205 in the flow.
+
+## Oct 29, round 44 (review)
+`Two Ways Eight Measures - Review.pptx` (`TWO8=1 node moving-deck.mjs`): Two Ways to Read Improvement counted across eight measures: the five it had plus CP labor $ per RO (percent), fixed absorption and the four opcodes combined (points). Fixed ops net profit left out (ranked in dollars, favors larger stores). Last year: Lincoln and Subaru Prescott tie at 6 of 8 (Subaru Prescott led alone at 4 of 5 before); moving now: Kia St George leads at 6 (three stores tied at 3 of 5 before). Kia St George stays on both lists. Shorter measure labels so six fit on a line. Normal build unchanged.

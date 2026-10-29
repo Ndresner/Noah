@@ -78,9 +78,9 @@ const opcN = AL.align.mn.map(r => { const n = r[0], rr = OPK4.map(k => AL[k].mn.
   return [n, rr.reduce((t, x) => t + x[1], 0) / r[2], rr.reduce((t, x) => t + x[3], 0) / r[4]]; });
 VIEW.mom.opc = mk("Opcodes, Four Combined", opcN, OPK4.reduce((t, k) => t + sumS(AL[k].mn, 1), 0) / sumS(AL.align.mn, 2), OPK4.reduce((t, k) => t + sumS(AL[k].mn, 3), 0) / sumS(AL.align.mn, 4), false);
 
-function tops(view, n = 3) {
+function tops(view, n = 3, keys = GRID) {
   const c = {};
-  GRID.forEach(k => VIEW[view][k].rows.slice(0, n).forEach(r => (c[r.n] ??= []).push(k)));
+  keys.forEach(k => VIEW[view][k].rows.slice(0, n).forEach(r => (c[r.n] ??= []).push(k)));
   return Object.entries(c).sort((a, b) => b[1].length - a[1].length);
 }
 
@@ -169,10 +169,19 @@ function moving(k) {
 }
 
 /* ---- two views side by side: who shows up most ---- */
+// TWO8=1 (Oct 29 review, Noah): the three size-neutral measures from the Biggest Movers grids join the count (CP labor $
+// per RO %, absorption and the four opcodes combined in points); fixed ops net profit stays out (ranked in dollars, so
+// it favors big stores, and a percent off a small or negative base runs to the thousands)
+const TWO8 = process.env.TWO8 === "1";
+const TWOKEYS = TWO8 ? [...GRID, "lpr", "abs", "opc"] : GRID;
+Object.assign(SHORT, { lpr: "labor $/RO", abs: "absorption", opc: "opcodes" });
+// eight measures: shorter labels and a wider list so six measures stay on one line
+const SHORT8 = { gross: "gross", ros: "ROs", hpro: "hrs/RO", elr: "ELR", pgp: "parts GP", lpr: "labor/RO", abs: "absorption", opc: "opcodes" };
 function twoViews() {
+  const GRID = TWOKEYS;
   const s = pptx.addSlide();
   H.page(pptx, s, { eyebrow: EB, title: "Two Ways to Read Improvement" });
-  const A = tops("yoy", 5).slice(0, 6), B = tops("mom", 5).slice(0, 6);
+  const A = tops("yoy", 5, GRID).slice(0, 6), B = tops("mom", 5, GRID).slice(0, 6);
   // green bar down the right edge of a store on both lists, as on the movers slides (Noah, Oct 28)
   const onBoth = new Set(A.map(e => e[0]).filter(n => B.some(e => e[0] === n)));
   [[A, 0.5, "Vs last year", "Jan–Sep 2026 vs Jan–Sep 2025"], [B, 6.75, "Moving now", "Q3 vs Q1, this year"]].forEach(([rows, x, head, sub]) => {
@@ -184,8 +193,8 @@ function twoViews() {
       const y = 2.38 + j * rh;
       if (j % 2 === 0) s.addShape(pptx.ShapeType.rect, { x: x + 0.18, y, w: w - 0.36, h: rh, fill: { color: C.zebra } });
       s.addText(n, { x: x + 0.3, y: y + 0.05, w: 2.6, h: 0.3, fontFace: F, fontSize: 14, bold: true, color: C.ink, isTextBox: true, margin: 0 });
-      s.addText(ks.map(k => SHORT[k]).join(", "), { x: x + 0.3, y: y + 0.33, w: 3.85, h: 0.26, fontFace: F, fontSize: 13, color: C.ink600, isTextBox: true, margin: 0 });
-      s.addShape(pptx.ShapeType.rect, { x: x + 4.25, y: y + rh * 0.3, w: ks.length / mx * 1.05, h: rh * 0.4, fill: { color: C.good } });
+      s.addText(ks.map(k => (TWO8 ? SHORT8 : SHORT)[k]).join(", "), { x: x + 0.3, y: y + 0.33, w: TWO8 ? 4.48 : 3.85, h: 0.26, fontFace: F, fontSize: 13, color: C.ink600, isTextBox: true, margin: 0 });
+      s.addShape(pptx.ShapeType.rect, { x: x + (TWO8 ? 4.85 : 4.25), y: y + rh * 0.3, w: ks.length / mx * (TWO8 ? 0.4 : 1.05), h: rh * 0.4, fill: { color: C.good } });
       s.addText(String(ks.length), { x: x + w - 0.75, y, w: 0.45, h: rh, fontFace: F, fontSize: 18, bold: true, color: C.goodInk, align: "right", valign: "middle", isTextBox: true, margin: 0 });
       if (onBoth.has(n)) s.addShape(pptx.ShapeType.rect, { x: x + w - 0.25, y: y + 0.04, w: 0.07, h: rh - 0.08, fill: { color: C.good } });
     });
@@ -193,12 +202,12 @@ function twoViews() {
   const lead = rows => { const t = rows.filter(r => r[1].length === rows[0][1].length); return t.length === 1 ? `${t[0][0]} leads` : `${cap(NUMW[t.length])} stores tie`; };
   // Oct 28 (Noah): stores tied with the last row shown but cut by the six-row list go on the band (store names allowed here)
   const tiedOut = (all, shown) => all.filter(e => !shown.some(x => x[0] === e[0]) && e[1].length === shown.at(-1)[1].length).map(e => H.storeName(e[0]));
-  const tl = tiedOut(tops("yoy", 5), A), tr = tiedOut(tops("mom", 5), B);
+  const tl = tiedOut(tops("yoy", 5, GRID), A), tr = tiedOut(tops("mom", 5, GRID), B);
   const tieNote = [tl.length ? `Also tied at ${A.at(-1)[1].length} last year: ${list(tl)}.` : "", tr.length ? `Also tied at ${B.at(-1)[1].length} moving now: ${list(tr)}.` : ""].filter(Boolean).join(" ");
   const band = `Last year: ${lead(A)}. Moving now: ${lead(B)}. ${onBoth.size === 0 ? "No store is on both lists." : onBoth.size === 1 ? "One store is on both lists (green bar)." : cap(NUMW[onBoth.size]) + " stores are on both lists (green bar)."}`;
   if (tieNote) { if (H.namesStore(band)) s.addNotes(`Takeaway with the store call-outs (off the slide): ${band}`); H.takeaway(pptx, s, (H.stripStores(band) + " " + tieNote).trim(), "g", { keep: true }); }
   else H.takeaway(pptx, s, band, "g");
-  H.foot(pptx, s, BASIS + ` Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across ${NUMW[GRID.length]} measures (parts $ per RO dropped, Oct 23); top six stores shown in each view.`);
+  H.foot(pptx, s, BASIS + ` Left: Jan-Sep 2026 vs Jan-Sep 2025. Right: Q3 2026 vs Q1 2026. Top-5 finishes counted across ${NUMW[GRID.length]} measures (parts $ per RO dropped, Oct 23)${TWO8 ? "; CP labor $ per RO (percent), fixed absorption and the four opcodes combined (points) added Oct 29; fixed ops net profit left out (ranked in dollars, it favors larger stores)" : ""}; top six stores shown in each view.`);
 }
 
 /* ---- the ask: one question for each measure's top mover ---- */
