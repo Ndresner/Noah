@@ -340,3 +340,6 @@ New, in the deck right after the Fixed Ops Net Profit block (slides 9-18, `Chang
 
 ## Oct 29, round 37
 Service Net Profit and Parts Net Profit explainers removed (Noah: the Fixed Ops Net Profit explainer covers them); each block is now four slides (chart, store totals, change ranker, movers), slides 9-16. Deck 247 slides, 204 in the flow. `npdept-deck.mjs` still builds the explainers; `merge_v2.py` leaves out NPD 1 and 6.
+
+## Oct 29, round 38
+Slide 13 Parts Net Profit chart band (`Changes - Oct 29 (round 38).pptx`): "Gross grew 1.9%, expenses 2.6%. People costs went down; outside services, IT and smaller advertising rebates pushed expenses up." Basics only (Noah); the dollars are in the notes. Source: P&A department expense lines, P&L Detail, `pulls/pa_expense_lines.json` (total ties to gross minus profit): personnel -$426K, outside services +$490K, IT services +$479K, advertising rebates $398K smaller, advertising itself -$83K.

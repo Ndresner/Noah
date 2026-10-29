@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 38: Parts Net Profit chart band explains the flat year: gross +1.9%, expenses +2.6%; people costs down, outside services, IT and smaller advertising rebates up.
 - Round 37: service and parts net profit explainers removed (fixed ops net profit explains them); four slides each.
 - Round 36: Service Net Profit and Parts Net Profit added right after the Fixed Ops Net Profit block, five slides each, same as the other categories. Service $27.70M (+21.6%), parts $22.75M (+0.8%); they add to the $50.45M fixed ops total.
 - Round 34-35: agenda, Profitability "What we keep, and how much of the store's expenses we cover." and Warranty "Rates, margins, compliance, and protecting the money."
