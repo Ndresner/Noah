@@ -355,3 +355,6 @@ Slide 13 Parts Net Profit band with dollars, "personnel" (Noah): "Gross grew 1.9
 
 ## Oct 29, round 42 (review)
 A Record Year tiles say gross profit where they mean it: "of 33 had their best gross profit month ever in 2026", "gross profit records in service, parts and combined", "stores set a gross profit record, then beat it again".
+
+## Oct 29, round 43 (approved)
+Records with net profit in the deck (slides 17-19, `Changes - Oct 29 (round 43).pptx`): A Record Year (five tiles, gross profit named), Records Set in 2026: Gross Profit, Best January-September Ever (gross and net 18, gross profit only 7, net profit only 3). `records-open.mjs` builds them by default (`NETREC=0` = the old two slides); merge REC 1-3. Deck 248 slides, 205 in the flow.

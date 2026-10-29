@@ -5,7 +5,7 @@ GM & Service Manager meeting, Day 2 (fixed ops), October 29, 2026. Owner: Noah D
 Updated: October 29, 2026
 
 ## Current test deck
-- 247 slides: 204 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
+- 248 slides: 205 in the meeting flow, 43 in Open Decisions (not presented; delete before the meeting).
 - Opening: Cover, Agenda, Why We Are Here, Fixed Ops Net Profit (5 slides), A Record Year, Records Set in 2026.
 - Agenda: 01 Gross, 02 Profitability, 03 Customer Pay, 04 Opcode Benchmarks, 05 Internal, 06 Productivity, 07 Warranty, 08 Close.
 
@@ -21,6 +21,7 @@ Updated: October 29, 2026
 - Oct 27: INEOS and the GMC Prescott body shop stay out of the group totals (same-store everywhere). Why We Are Here keeps the all-stores GM statement figures Noah asked for on Oct 24 ($82.24M group net, $50.19M fixed ops); the net profit block right after shows $50.45M same-store.
 
 ## Recent changes (Oct 29)
+- Round 43 (approved): records slides with net profit in the deck: A Record Year (net profit tile, gross profit named on the others), Records Set in 2026: Gross Profit, new Best January-September Ever slide.
 - Round 40 (review): net profit records. "Store Records with Net - Review.pptx": 21 stores had their best Jan-Sep fixed ops net profit ever, 18 of them also the gross record; new Best January-September Ever slide. Not in the deck yet.
 - Round 39: Parts Net Profit band with dollar totals: personnel down $426K; outside services up $490K, IT up $479K, advertising rebates down $398K.
 - Round 38: Parts Net Profit chart band explains the flat year: gross +1.9%, expenses +2.6%; people costs down, outside services, IT and smaller advertising rebates up.
@@ -91,7 +92,6 @@ Updated: October 29, 2026
 - Photo Completion % in the flow after Video Completion %.
 
 ## Awaiting Noah
-- Net profit records (review file): put in the deck or not.
 - Open Decisions section: bring any slides into the flow, or present a clean copy without it.
 
 ## Still open

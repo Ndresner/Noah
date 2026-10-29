@@ -202,9 +202,9 @@ Opcode closing % for 2026: alignment 13.2%, balance 8.3%, brake fluid 9.2%, fuel
 - **Talking-point slides:** what we said (prior meetings), then where we are now (numbers), then the ask.
 - Full rules: `docs/findlay-deck-style-guide.md`. It predates this engine; where they differ, `house.mjs` and this file are current.
 
-## Current test deck: v2, 247 slides (204 in the meeting flow + 43 in Open Decisions) (order in `merge_v2.py`)
+## Current test deck: v2, 248 slides (205 in the meeting flow + 43 in Open Decisions) (order in `merge_v2.py`)
 Rebuilt Oct 21 in the Day 1 style. Cover title "Fixed Operations", audience "General Managers & Service Managers". The v1 deck (159 slides) is in `decks/v1 - house style/`.
-1. Cover, Agenda, Why We Are Here, the Fixed Ops Net Profit block (5), Service Net Profit (4) and Parts Net Profit (4) (Oct 29, `npdept-deck.mjs`, merge key NPD, same slides as the combined block minus the explainer, which Noah dropped), A Record Year, Records Set in 2026.
+1. Cover, Agenda, Why We Are Here, the Fixed Ops Net Profit block (5), Service Net Profit (4) and Parts Net Profit (4) (Oct 29, `npdept-deck.mjs`, merge key NPD, same slides as the combined block minus the explainer, which Noah dropped), A Record Year, Records Set in 2026: Gross Profit, Best January–September Ever (Oct 29: net profit records added, `records-open.mjs` NETREC on by default; net = P&L Detail Mechanical + P&A department profit Jan-Sep 2021-2026, `records/net_ytd.json`; Honda Spokane and Nissan from 2024).
 2. **01 Gross**, with Service Is Sales 2.0.
 3. **02 Profitability**: What Is Fixed Absorption?, What Is in Total Store Fixed Expenses?, absorption block, Net to Gross explainer and blocks.
 4. **03 The CP Engine**: talking points, ROs (store total ranker added), hours sold (total ranker added), hours per RO, Pricing Strategy, ELR, door rate, $ per RO, Goldilocks Margin, GP%, Who's Moving Now after each measure.

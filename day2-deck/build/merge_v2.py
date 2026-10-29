@@ -112,7 +112,7 @@ order += X("NP", 3, 4, 5, 6, 7)
 # Oct 29 (Noah): service and parts net profit broken out, same five slides each, right after the combined block
 order += X("NPD", 2, 3, 4, 5, 7, 8, 9, 10)   # Oct 29 (Noah): no explainers (1, 6); fixed ops net profit explains them
 # store records in the opening: A Record Year, Record Months in 2026 (Noah, Oct 25; the Open Decisions record slides retired)
-order += X("REC", 1, 2)
+order += X("REC", 1, 2, 3)   # Oct 29 (Noah): third slide = Best January-September Ever, gross and net profit
 # 01 Gross
 order += O(3) + X("TP", 2) + X("EX", 13) + X("G", *R(2, 13))   # EX 13 = What Is Fixed Ops Gross? (Oct 22)
 # 02 Profitability

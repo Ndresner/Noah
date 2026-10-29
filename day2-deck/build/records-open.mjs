@@ -11,7 +11,7 @@ const R = JSON.parse(fs.readFileSync("./records/records.json", "utf8"));
 // NETREC=1 (Oct 29 review, Noah): net profit records next to the gross ones. Best January-September fixed ops net
 // profit ever (service + parts department profit, P&L Detail, 2021-2026; records/net_ytd.json from net_ytd_raw.json).
 // Year to date only: a single month's net carries accruals and true-ups, so monthly net records would read noise.
-const NETREC = process.env.NETREC === "1";
+const NETREC = process.env.NETREC !== "0";   // in the deck Oct 29 (Noah approved); NETREC=0 builds the old two slides
 const NR = NETREC ? JSON.parse(fs.readFileSync("./records/net_ytd.json", "utf8")) : null;
 const SEG = "Fixed Ops Records";
 const SRC = "Qlik - Fixed Ops Accounting TB, fixed gross (service and parts), monthly by store, January 2021 - September 2026. A record = the store's highest month on file; months before a store opened are ignored. GMC Prescott service on the TB includes body shop gross.";
@@ -97,4 +97,4 @@ if (NETREC) {
   s3.addNotes("Net profit, Jan-Sep 2026 vs the best prior Jan-Sep:\n" + netRec.map(n => `${nm(n)}: ${H.kusd(NR[n].v)} vs ${H.kusd(NR[n].prev)} (${NR[n].prevYear})`).join("\n"));
 }
 
-await pptx.writeFile({ fileName: NETREC ? "Store Records with Net - Review.pptx" : "Store Records - Opening.pptx" }); console.log("records opening built", rec.length, ytdRec.length, again.length);
+await pptx.writeFile({ fileName: "Store Records - Opening.pptx" }); console.log("records opening built", rec.length, ytdRec.length, again.length);
