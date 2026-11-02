@@ -139,3 +139,14 @@ gross and understating Tech Utilization, and prompting GMs to ask why their head
 high. It now counts named roster technicians only (all categories). Pooled codes' production
 stays in ELR, GP Retention % and Actual Period Labor Gross, because that work really was
 produced in the shop.
+
+## 12. Per-employee tech-number overrides
+
+The strip-3 parse (#1) is right for every store, but individual ADP Position IDs can still
+carry a different number than the one the store dispatches ROs to in the DMS (Honda Flagstaff
+`HHU001175` -> RO tech `175`, Oct 2026). The symptom: a full-time tech shows zero sold hours
+while an unmatched code at the same store carries a tech-sized workload in the EXCLUDED /
+POOLED CODES block. Fix it with an entry in `TECH_NO_OVERRIDES` in `build_data.py` (keyed by
+Position ID), only once the user confirms it -- not by changing the parse rule. Each period, after the
+build, compare every zero-sold named tech against the unmatched codes at that store (one-digit
+edit, transposition, dropped leading digit) and ask the user about any plausible pairs.

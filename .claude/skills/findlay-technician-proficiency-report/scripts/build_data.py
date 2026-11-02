@@ -75,9 +75,18 @@ CATEGORY_ORDER = ["Service Technician", "Express Technician", "Service Team Lead
                    "Body Shop Tech", "Body Shop Painter", "Body Shop Helper", "Detailer", "Tinter"]
 
 
+# Position IDs whose ADP tech number doesn't match the RO tech number used in the DMS.
+# Add an entry only after the user confirms the correct number (see lessons-learned #12).
+TECH_NO_OVERRIDES = {
+    "HHU001175": "175",  # Honda Flagstaff: ADP shows 1175, ROs are dispatched to 175 (confirmed 11/2026)
+}
+
+
 def tech_no_from_position_id(pid):
     # Position IDs are always 9 chars: a 3-char store/prefix code + a 6-digit tech number
     # (the digits may include leading zeros, which Qlik's techno field drops).
+    if pid in TECH_NO_OVERRIDES:
+        return TECH_NO_OVERRIDES[pid]
     suffix = pid[3:]
     if not suffix.isdigit():
         return None
