@@ -24,9 +24,12 @@ def _s(v):
     return '' if v is None else str(v).strip()
 
 
-def parse_matrix(path):
+def parse_matrix(path, price_field=None):
+    """Blocks are keyed by (source, price field): one source can carry a rule that sets LIST (how list is
+    derived) and a separate rule that sets the customer-pay price field (e.g. PRICE10). Only the chosen
+    price field is tested; default = the price field used by the most sources."""
     ws = openpyxl.load_workbook(path, data_only=True).active
-    sources, order, warnings = {}, [], []
+    blocks, order, warnings = {}, [], []
     cur = None
     for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
         src, pfield, bfield, rng, formula = (list(row) + [None] * 5)[:5]
@@ -36,36 +39,52 @@ def parse_matrix(path):
             continue
         if src:
             src = str(int(float(src))) if re.fullmatch(r'[\d.]+', src) else src
-            if src != cur:
-                if src in sources:
-                    warnings.append(f'row {i}: source {src} appears in two separate blocks; bands merged')
+            key = (src, pfield or (cur[1] if cur and cur[0] == src else ''))
+            if key != cur:
+                if key in blocks:
+                    if cur is None or cur[0] != src:
+                        warnings.append(f'row {i}: source {src} / {key[1]} appears in two separate blocks; bands merged')
                 else:
-                    sources[src] = {'price_field': pfield, 'break_field': bfield.upper(), 'bands': []}
-                    order.append(src)
-                cur = src
+                    blocks[key] = {'price_field': key[1], 'break_field': bfield.upper(), 'bands': []}
+                    order.append(key)
+                cur = key
         if cur is None or not rng:
             continue
         m = re.match(r'^\s*([\d.]+)\s*-\s*([\d.]+)\s*$', rng)
         if not m:
-            warnings.append(f'row {i}: source {cur}: cannot read range "{rng}"')
+            warnings.append(f'row {i}: source {cur[0]}: cannot read range "{rng}"')
             continue
         lo, hi = float(m.group(1)), float(m.group(2))
         f = FORMULA_RE.match(re.sub(r'\s+', ' ', formula.upper()))
         if not f:
-            warnings.append(f'row {i}: source {cur}: unsupported formula "{formula}" - source will be left untested')
-            sources[cur]['unsupported'] = True
+            warnings.append(f'row {i}: source {cur[0]}: unsupported formula "{formula}" - source will be left untested')
+            blocks[cur]['unsupported'] = True
             continue
         pct = float(f.group(3) or 0) * (-1 if f.group(2) == '-' else 1)
-        sources[cur]['bands'].append({'lo': lo, 'hi': hi, 'base': f.group(1), 'pct': pct, 'raw': formula})
-    for s in order:
-        sources[s]['bands'].sort(key=lambda b: (b['hi'], b['lo']))
-        if sources[s]['break_field'] not in ('COST', 'LIST'):
-            warnings.append(f'source {s}: unknown break field "{sources[s]["break_field"]}" - source left untested')
-            sources[s]['unsupported'] = True
-    pf = sorted({sources[s]['price_field'] for s in order})
-    if len(pf) > 1:
-        warnings.append(f'more than one Price Field in the export ({pf}); confirm which one is the customer-pay price')
-    return {'sources': {s: sources[s] for s in order}, 'price_fields': pf, 'warnings': warnings}
+        blocks[cur]['bands'].append({'lo': lo, 'hi': hi, 'base': f.group(1), 'pct': pct, 'raw': formula})
+    for k in order:
+        blocks[k]['bands'].sort(key=lambda b: (b['hi'], b['lo']))
+        if blocks[k]['break_field'] not in ('COST', 'LIST'):
+            warnings.append(f'source {k[0]}: unknown break field "{blocks[k]["break_field"]}" - left untested')
+            blocks[k]['unsupported'] = True
+    counts = {}
+    for _, pf in order:
+        counts[pf] = counts.get(pf, 0) + 1
+    chosen = price_field or max(counts, key=counts.get)
+    sources, other = {}, {}
+    for k in order:
+        if k[1] == chosen:
+            sources[k[0]] = blocks[k]
+        else:
+            other.setdefault(k[0], {})[k[1]] = blocks[k]
+    for s in other:
+        if s not in sources:
+            warnings.append(f'source {s} has no {chosen} rule (only {list(other[s])}) - left untested')
+    if len(counts) > 1:
+        warnings.append(f'price fields in export: {counts}; testing {chosen} (pass --price-field to change). '
+                        f'Other-field rules (e.g. how LIST is derived) are kept under other_price_fields.')
+    return {'sources': sources, 'price_field': chosen, 'price_fields': sorted(counts), 'other_price_fields': other,
+            'warnings': warnings}
 
 
 def parse_sources(path):
@@ -100,8 +119,9 @@ def main():
     ap.add_argument('--matrix', required=True)
     ap.add_argument('--sources')
     ap.add_argument('--out', required=True)
+    ap.add_argument('--price-field', help='customer-pay price field to test (default: most common)')
     a = ap.parse_args()
-    res = parse_matrix(a.matrix)
+    res = parse_matrix(a.matrix, a.price_field)
     res['source_info'] = parse_sources(a.sources) if a.sources else {}
     if a.sources:
         missing = [s for s in res['source_info'] if s not in res['sources']]

@@ -26,6 +26,7 @@ ROLE_TEXT = {
     'list': 'LIST / MSRP type - should sell at list',
     'reimbursed': 'NOT MATRIX - reimbursed / factory-paid rate',
     'package': 'NOT MATRIX - package pricing',
+    'discount': 'NOT MATRIX - discounted (fleet / employee / prepaid)',
     'unclear': 'UNCLEAR - confirm intended rule',
     'mixed': 'NOT TESTED - lines span several labor types',
 }
@@ -71,6 +72,7 @@ def split_key(k):
 
 
 def cause(e):
+    if e['qty'] < 0: return 'Core / return credit (negative qty) - not a pricing miss'
     if e['unit_sale'] < e['unit_cost'] - 0.01: return 'Sold below cost'
     if e['list'] == 0: return '$0 list in parts master - manual price'
     if e['var'] < 0 and abs(e['unit_sale'] - e['list']) <= max(0.02, e['list'] * 0.005): return 'Sold at list instead of matrix'
@@ -110,7 +112,8 @@ def auto_findings(res):
     ros = defaultdict(set)
     for d in ('under', 'over'):
         for e in ex.get(d, []):
-            ros[split_key(e['key'])[0]].add(d)
+            if e['qty'] > 0:   # core / return credits are not pricing decisions
+                ros[split_key(e['key'])[0]].add(d)
     both = [r for r, s in ros.items() if len(s) == 2]
     if both:
         out.append(f"RO(s) {', '.join(both)} show parts repriced both below and above matrix on the same RO - "
@@ -236,6 +239,28 @@ def build(res, matrix, out):
             ws.cell(rr, 14).fill = RED if f in ('Sold below cost', 'Priced far above list') else (YEL if f.startswith('$0') else GREY)
     for col, w in zip('ABCDEFGHIJKLMN', [10, 9, 8, 11, 18, 8, 6, 11, 11, 11, 12, 13, 12, 36]): ws.column_dimensions[col].width = w
     ws.freeze_panes = 'A5'
+
+    # ---------- Extra analysis sheets (optional) ----------
+    for xs in res.get('extra_sheets', []):
+        ws = wb.create_sheet(xs['name'][:31]); ws.sheet_properties.tabColor = 'C9A04B'
+        title(ws, xs['title'], xs.get('subtitle', ''))
+        r = 4
+        for tb in xs['tables']:
+            if tb.get('heading'):
+                ws.cell(r, 1, tb['heading']).font = BB; r += 1
+            header(ws, r, tb['columns']); r0 = r + 1
+            for row in tb['rows']:
+                r += 1
+                for j, v in enumerate(row, 1): ws.cell(r, j, v)
+            fm = {int(k): {'money': MONEY0, 'money2': MONEY, 'pct': PCT, 'int': INT, 'x': '0.00"x"'}.get(v, v)
+                  for k, v in tb.get('formats', {}).items()}
+            if r >= r0: body(ws, r0, r, len(tb['columns']), fm)
+            for hl in tb.get('highlight_rows', []):
+                for j in range(1, len(tb['columns']) + 1): ws.cell(r0 + hl, j).fill = YEL
+            if tb.get('note'):
+                r += 1; ws.cell(r, 1, tb['note']).font = Font(name=F, size=8, italic=True)
+            r += 2
+        for j, w in enumerate(xs.get('widths', []), 1): ws.column_dimensions[get_column_letter(j)].width = w
 
     # ---------- Matrix Reference ----------
     ws = wb.create_sheet('Matrix Reference'); ws.sheet_properties.tabColor = '808080'

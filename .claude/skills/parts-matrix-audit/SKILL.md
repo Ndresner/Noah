@@ -31,6 +31,9 @@ These rules are encoded in `parse_matrix.py`. Don't re-derive them.
 - The CDK print repeats the source number at page breaks. That is the same source, not a new one.
 - Sources with no matrix row get the system default price. They show as "No matrix" and are not tested.
 - Any formula the parser doesn't recognize is reported as a WARNING, and that source is left untested. If a new brand's export shows a new formula shape, extend `FORMULA_RE` rather than hand-pricing.
+- **Several price fields.** A source can carry a rule that sets the **LIST** field (how list is filled in, e.g. "$0 list → cost +67%") and a separate rule that sets the customer-pay field (e.g. `PRICE10`). This happens at Chevrolet LV.
+  - The parser keys blocks by source + price field and tests the price field that most sources use. Override it with `--price-field`.
+  - Other-field rules are kept under `other_price_fields`. They are not customer-pay pricing.
 
 The math was proven on Prescott, matching to the cent:
 - source 100, cost $648.89 → COST+170% = $1,752.00
@@ -69,6 +72,7 @@ Classify each C type into one role, then **confirm the classification with the u
 | `list` | Sells at list / MSRP | CTX, CTXX, CPTA |
 | `reimbursed` | Factory-paid or reimbursed rate | CPTC (ToyotaCare, ~20% margin) |
 | `package` | Package or menu pricing | CPTE (Green/Red service, cost +14%) |
+| `discount` | Fleet, employee or prepaid discount | Chevy LV CPF/CPF1 (fleet), CEMP (employee) |
 | `unclear` | Doesn't fit a role; ask the user | CTXO |
 | `mixed` | ROs with 2+ C types on part lines; not testable line by line | 444 ROs at Prescott |
 
@@ -148,6 +152,22 @@ Tabs:
 5. **Matrix Reference**
 6. **Methodology**
 
+### Optional: "when did the matrix change, and what did it do to gross?"
+
+This was done for Chevrolet LV, Nov 2026, where the change went live 2/2/2026. The method:
+
+1. **Find the date.** No RO list is needed. Score every RO part line (`invsaletype='RO'`, all pay types) against the **current** matrix:
+   - by month, with `Year`/`Month` as dimensions, then
+   - by source × month around the suspected window, then
+   - by `Parts_Detail.opendate` (the line's open date) across about 3 weeks.
+
+   A source whose bands changed goes from roughly 0% to most lines matching. Warranty and internal lines dilute the absolute rate, so look for the step change, not the level. Qlik history for this app starts about May 2025.
+2. **Realized gross trend.** Use the Closed RO app, `RO_Detail.labortype` = the matrix type, parts sale and cost by `Year`/`Month`. Compare the same months year over year, and the 3 months before vs. 3 months after the change. Split the result into a rate effect and a volume effect.
+3. **Before/after on the matrix sources.** Build a second CP-only RO list for the 3 months before the change and load it as state `cppre`. Then compare GP% **within unit-cost bands**, pre vs. post. Post gross at pre-change GP% gives the mix-adjusted dollar effect. Raw GP% swings are mostly mix, especially from parts over $1,000.
+4. **Old matrix.** Infer it as the most common sale/cost multiple per band on pre-change CP lines. Present it as an estimate and report how many pre-change lines it matches (only about 25% at Chevy LV).
+
+Put the timing, trend and before/after tables in `results.json` → `extra_sheets`. Each entry has `name`, `title`, `subtitle`, `widths` and `tables`; each table has `columns`, `rows`, and optional `formats`, `highlight_rows` and `note`. The builder adds one tab per entry.
+
 ## Step 6: Clean up and deliver
 
 - Clear the alternate state: `qlik_clear_selections` with stateName `cpt`.
@@ -164,3 +184,9 @@ Look for these at every store:
 - **$0 list price in the parts master** on sources whose matrix is LIST. The system prices them at $0, and the counter keys a price by hand. This is a setup fix.
 - **Prices shuffled within one RO**: some lines below cost, others many times list. This is a quote-to-total behavior, so name the RO.
 - Fractional-quantity fluids (oil and fluid sources) show tiny under-matrix amounts. That's rounding noise, so don't headline it.
+
+## Patterns seen at Chevrolet LV (Nov 2026)
+
+- **Maintenance sources sold at flat list.** Bulk oil, oil and air filters, chemicals and "no touch" sold at list on 90–99% of CP lines while the matrix says list +X%. That was −$88K per quarter vs. matrix. It's likely menu pricing, so ask before calling it a miss.
+- **Core and return credits** (negative quantity, credited at cost) show as large "over-matrix" lines on OEM sources. The builder labels them and leaves them out of the repricing finding.
+- **A "more aggressive" matrix can actually be lower.** Check direction by band against pre-change CP prices before assuming the change raised prices.
