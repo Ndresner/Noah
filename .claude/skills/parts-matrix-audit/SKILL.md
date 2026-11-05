@@ -97,6 +97,9 @@ python3 -I $S/qlik_expr.py --division "<DIV>" --year 2026 --months Aug,Sep,Oct -
    - A "conflict" warning with the full count selected is harmless.
 3. This is the expensive step. The RO list is copied out of one tool result into the next call. Prescott's 1,939 ROs are about 15K characters each way. For a store with more than ~4,000 matrix ROs, run 1–2 months instead of 3.
 4. If there's a big gap between the RO app's matrix parts sale and the parts app's `Actual`, stop and investigate before going on.
+5. **Alternate states can silently drop** when the Qlik engine session resets, which happened at Chevy LV. When that happens, every `state::field` restriction quietly means "all ROs", and totals balloon.
+   - Before each batch of queries, and after any long pause, check `Count({cp} distinct Parts_Detail.referno)`. It must equal `n`.
+   - If it doesn't, reload the list.
 
 ## Step 4: Matrix test (parts app)
 
@@ -151,6 +154,18 @@ Tabs:
    - manual override
 5. **Matrix Reference**
 6. **Methodology**
+
+### Recommended extras before sending (all done for Chevy LV)
+
+- **GP by pricing outcome.** Use sales lines only (`Parts_Detail.quantitysold={">0"}`). Split each source's lines into hit-matrix / sold-at-list / other, with sale, cost and GP% for each.
+  - For sources whose matrix *is* list, the at-list lines are matrix hits; don't double count them.
+  - This answers "what GP do parts priced per the matrix actually earn?"
+- **Sales lines only.** Core and return credits (negative quantity) distort over/under. Report compliance and under/over on sales lines.
+- **Traffic vs. price.** CP ROs with parts and parts sale/gross per RO, year over year (RO app). This keeps a car-count decline from being blamed on pricing.
+- **Menu check** for list-priced maintenance sources:
+  1. Build a second RO list of matrix-type ROs with **no** menu or maintenance op code on any part-bearing line. Use `P()` minus `RO_Detail.opcode={...menu codes...}`.
+  2. Compare the at-list share and dollars on menu ROs vs. repair-only ROs.
+  3. Only the repair-only part is a likely miss.
 
 ### Optional: "when did the matrix change, and what did it do to gross?"
 
