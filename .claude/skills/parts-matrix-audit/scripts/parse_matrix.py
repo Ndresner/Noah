@@ -57,7 +57,10 @@ def parse_matrix(path, price_field=None):
         lo, hi = float(m.group(1)), float(m.group(2))
         f = FORMULA_RE.match(re.sub(r'\s+', ' ', formula.upper()))
         if not f:
-            warnings.append(f'row {i}: source {cur[0]}: unsupported formula "{formula}" - source will be left untested')
+            if re.fullmatch(r'PRICE\d+', formula.upper().strip()):
+                warnings.append(f'row {i}: source {cur[0]}: price = another stored price field ({formula.strip()}), not available in Qlik - source left untested')
+            else:
+                warnings.append(f'row {i}: source {cur[0]}: unsupported formula "{formula}" - source will be left untested')
             blocks[cur]['unsupported'] = True
             continue
         pct = float(f.group(3) or 0) * (-1 if f.group(2) == '-' else 1)

@@ -39,6 +39,15 @@ The math was proven on Prescott, matching to the cent:
 - source 100, cost $648.89 → COST+170% = $1,752.00
 - source 100, cost $1,562.84 → List $2,049 +5% = $2,151.45
 
+## Step 0: Check the matrix library first
+
+Matrices on file live in `reference/parts_matrices/`; `manifest.json` lists each store's current file.
+- If the store is there, use its current parsed JSON and its noted CP price field, and skip asking for the export. Do confirm with the user that the file is still current.
+- When the user sends a new or updated export, add it to the library following that folder's README:
+  - dated file, never overwrite;
+  - parse it, diff it against the prior version, and update the manifest;
+  - commit it.
+
 ## Step 1: Parse the matrix
 
 ```bash

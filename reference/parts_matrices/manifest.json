@@ -1,0 +1,105 @@
+{
+ "description": "CDK \"Price Breaks by Source\" parts pricing matrix exports, one folder per store. Newest dated file is current; older files are kept as history.",
+ "stores": {
+  "toyota_prescott": {
+   "store": "Findlay Toyota Prescott",
+   "qlik_division": "TOYOTA PRESCOTT",
+   "current_matrix": "toyota_prescott/2026-11-04_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_prescott/2026-11-04_matrix.json",
+   "source_descriptions": "toyota_prescott/2026-11-04_source_descriptions.xlsx",
+   "received": "2026-11-04",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CPT"
+   ],
+   "notes": [
+    "Re-sent 2026-11-05; identical to the 2026-11-04 export.",
+    "Source description export also on file (optional input)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-04",
+     "file": "toyota_prescott/2026-11-04_price_breaks_by_source.xlsx"
+    }
+   ]
+  },
+  "toyota_flagstaff": {
+   "store": "Findlay Toyota Flagstaff",
+   "qlik_division": "TOYOTA FLAGSTAFF",
+   "current_matrix": "toyota_flagstaff/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_flagstaff/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": null,
+   "notes": [],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_flagstaff/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ]
+  },
+  "toyota_henderson": {
+   "store": "Findlay Toyota Henderson",
+   "qlik_division": "TOYOTA HENDERSON",
+   "current_matrix": "toyota_henderson/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_henderson/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE10",
+   "matrix_labor_types": null,
+   "notes": [
+    "Customer-pay price field is PRICE10 (other Toyota stores use PRICE6).",
+    "Source 200 has only a LIST-field rule (no PRICE10 rule) - untested."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_henderson/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ]
+  },
+  "toyota_spokane": {
+   "store": "Findlay Toyota Spokane",
+   "qlik_division": "TOYOTA SPOKANE",
+   "current_matrix": "toyota_spokane/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_spokane/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": null,
+   "notes": [
+    "Sources 140-145 set the price to another stored price field (PRICE7), which Qlik does not carry - untested."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_spokane/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ]
+  },
+  "chevrolet_las_vegas": {
+   "store": "Findlay Chevrolet Las Vegas",
+   "qlik_division": "CHEVY LV",
+   "current_matrix": "chevrolet_las_vegas/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "chevrolet_las_vegas/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE10",
+   "matrix_labor_types": [
+    "CP"
+   ],
+   "notes": [
+    "Also carries LIST-field rules (how list is filled, e.g. $0 list -> cost +67%); not customer-pay pricing.",
+    "Matrix change went live 2026-02-02 on GM parts sources 120/123/999 (found in the Nov 2026 audit)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "chevrolet_las_vegas/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ]
+  }
+ }
+}
