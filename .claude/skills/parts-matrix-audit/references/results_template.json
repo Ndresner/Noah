@@ -1,0 +1,83 @@
+{
+ "store": "Toyota Prescott",
+ "division": "TOYOTA PRESCOTT",
+ "period_label": "Aug-Oct 2026",
+ "period_detail": "ROs closed Aug 1 - Oct 31, 2026",
+ "months": 3,
+ "matrix_types": [
+  "CPT"
+ ],
+ "totals": {
+  "lines": 0,
+  "ros": 0,
+  "actual": 0,
+  "matrix": 0,
+  "list": 0,
+  "cost": 0,
+  "match_lines": 0
+ },
+ "by_source": [
+  {
+   "source": "100",
+   "description": "TO ACTIVE YRSL 0-6",
+   "lines": 0,
+   "ros": 0,
+   "actual": 0,
+   "matrix": 0,
+   "list": 0,
+   "cost": 0,
+   "match_lines": 0,
+   "under_lines": 0,
+   "under_amt": 0,
+   "under_at_list_lines": 0,
+   "over_lines": 0,
+   "over_amt": 0,
+   "below_cost_lines": 0,
+   "below_cost_amt": 0,
+   "zero_list_lines": 0
+  }
+ ],
+ "labor_types": [
+  {
+   "code": "CPT",
+   "description": "Customer pay - general",
+   "role": "matrix|list|reimbursed|package|unclear|mixed",
+   "ros": 0,
+   "parts_sale": 0,
+   "parts_cost": 0,
+   "note": "optional - shown in findings for non-matrix types"
+  }
+ ],
+ "mixed": {
+  "ros": 0,
+  "parts_sale": 0
+ },
+ "exceptions": {
+  "under": [
+   {
+    "key": "3PA62984/404712*10/2026-08-25",
+    "part": "48530-60260",
+    "source": "200",
+    "var": -1374.68,
+    "qty": 2,
+    "unit_cost": 638.48,
+    "list": 1036.56,
+    "unit_sale": 1036.56
+   }
+  ],
+  "over": []
+ },
+ "exceptions_complete": false,
+ "findings": [
+  "optional extra findings appended after the automatic ones"
+ ],
+ "questions": [
+  "optional points to confirm with the parts manager"
+ ],
+ "method_notes": [
+  [
+   "Item",
+   "Detail"
+  ]
+ ]
+}
