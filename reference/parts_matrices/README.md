@@ -1,12 +1,13 @@
 # Parts Pricing Matrices
 
-CDK **"Price Breaks by Source"** exports for each store. These are the inputs to the `parts-matrix-audit` skill (`.claude/skills/parts-matrix-audit/`).
+CDK **"Price Breaks by Source"** exports for each store. These are the inputs to the `parts-matrix-audit` skill (`.claude/skills/parts-matrix-audit/`) and the `parts-matrix-peer-comparison` skill (`.claude/skills/parts-matrix-peer-comparison/`).
 
 `manifest.json` lists, for each store:
 - the current file,
 - its Qlik `Division`,
 - the customer-pay price field,
 - confirmed matrix labor types,
+- the main repair source (`main_repair_source`: the source whose cost-based rule is the store's main OEM repair matrix; used by the peer comparison),
 - any notes, and
 - the version history.
 
@@ -25,10 +26,10 @@ reference/parts_matrices/
 
 | Store | Qlik Division | CP price field | Received | Notes |
 |---|---|---|---|---|
-| Toyota Prescott | TOYOTA PRESCOTT | PRICE6 | 2026-11-04 | Matrix labor type CPT |
-| Toyota Flagstaff | TOYOTA FLAGSTAFF | PRICE6 | 2026-11-05 | |
-| Toyota Henderson | TOYOTA HENDERSON | **PRICE10** | 2026-11-05 | Source 200 has a LIST rule only |
-| Toyota Spokane | TOYOTA SPOKANE | PRICE6 | 2026-11-05 | Sources 140–145 price off PRICE7 (not in Qlik), so they are untested |
+| Toyota Prescott | TOYOTA PRESCOTT | PRICE6 | 2026-11-04 | Matrix labor type CPT. Main repair source 100 |
+| Toyota Flagstaff | TOYOTA FLAGSTAFF | PRICE6 | 2026-11-05 | Matrix labor type CPT. Main repair source 101 |
+| Toyota Henderson | TOYOTA HENDERSON | **PRICE10** | 2026-11-05 | Matrix labor type CTC. Main repair source 100. Source 200 has a LIST rule only |
+| Toyota Spokane | TOYOTA SPOKANE | PRICE6 | 2026-11-05 | Matrix labor type CP. Main repair source 110. Sources 140–145 price off PRICE7 (not in Qlik), so they are untested |
 | Chevrolet Las Vegas | CHEVY LV | **PRICE10** | 2026-11-05 | Matrix labor type CP. Change went live 2026-02-02 |
 
 ## Adding a newer version

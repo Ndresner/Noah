@@ -21,7 +21,8 @@
      "received": "2026-11-04",
      "file": "toyota_prescott/2026-11-04_price_breaks_by_source.xlsx"
     }
-   ]
+   ],
+   "main_repair_source": "100"
   },
   "toyota_flagstaff": {
    "store": "Findlay Toyota Flagstaff",
@@ -31,14 +32,19 @@
    "source_descriptions": null,
    "received": "2026-11-05",
    "cp_price_field": "PRICE6",
-   "matrix_labor_types": null,
-   "notes": [],
+   "matrix_labor_types": [
+    "CPT"
+   ],
+   "notes": [
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
+   ],
    "history": [
     {
      "received": "2026-11-05",
      "file": "toyota_flagstaff/2026-11-05_price_breaks_by_source.xlsx"
     }
-   ]
+   ],
+   "main_repair_source": "101"
   },
   "toyota_henderson": {
    "store": "Findlay Toyota Henderson",
@@ -48,17 +54,21 @@
    "source_descriptions": null,
    "received": "2026-11-05",
    "cp_price_field": "PRICE10",
-   "matrix_labor_types": null,
+   "matrix_labor_types": [
+    "CTC"
+   ],
    "notes": [
     "Customer-pay price field is PRICE10 (other Toyota stores use PRICE6).",
-    "Source 200 has only a LIST-field rule (no PRICE10 rule) - untested."
+    "Source 200 has only a LIST-field rule (no PRICE10 rule) - untested.",
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
    ],
    "history": [
     {
      "received": "2026-11-05",
      "file": "toyota_henderson/2026-11-05_price_breaks_by_source.xlsx"
     }
-   ]
+   ],
+   "main_repair_source": "100"
   },
   "toyota_spokane": {
    "store": "Findlay Toyota Spokane",
@@ -68,16 +78,20 @@
    "source_descriptions": null,
    "received": "2026-11-05",
    "cp_price_field": "PRICE6",
-   "matrix_labor_types": null,
+   "matrix_labor_types": [
+    "CP"
+   ],
    "notes": [
-    "Sources 140-145 set the price to another stored price field (PRICE7), which Qlik does not carry - untested."
+    "Sources 140-145 set the price to another stored price field (PRICE7), which Qlik does not carry - untested.",
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
    ],
    "history": [
     {
      "received": "2026-11-05",
      "file": "toyota_spokane/2026-11-05_price_breaks_by_source.xlsx"
     }
-   ]
+   ],
+   "main_repair_source": "110"
   },
   "chevrolet_las_vegas": {
    "store": "Findlay Chevrolet Las Vegas",
@@ -99,7 +113,8 @@
      "received": "2026-11-05",
      "file": "chevrolet_las_vegas/2026-11-05_price_breaks_by_source.xlsx"
     }
-   ]
+   ],
+   "main_repair_source": null
   }
  }
 }

@@ -12,6 +12,8 @@ Reference run: Toyota Prescott, Aug–Oct 2026.
 - Actual $396,262.51 vs. matrix $411,345.16, a net of −$15,083.
 - Use these numbers to check that a re-run of Prescott reproduces them.
 
+> **Comparing against other stores?** If the user asks whether this store is more expensive than sister stores, or what lowering the matrix would cost, use `.claude/skills/parts-matrix-peer-comparison/` instead (or after this audit). It reuses this skill's scripts.
+
 ## Inputs
 
 1. **Parts pricing matrix export** (.xlsx, required). This is the CDK "Price Breaks by Source" report. Columns: Source | Price Field | Price Break Field | Price Break Range | Formula. The layout is the same for every brand.
