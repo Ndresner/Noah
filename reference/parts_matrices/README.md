@@ -30,6 +30,7 @@ reference/parts_matrices/
 | Toyota Flagstaff | TOYOTA FLAGSTAFF | PRICE6 | 2026-11-05 | Matrix labor type CPT. Main repair source 101 |
 | Toyota Henderson | TOYOTA HENDERSON | **PRICE10** | 2026-11-05 | Matrix labor type CTC. Main repair source 100. Source 200 has a LIST rule only |
 | Toyota Spokane | TOYOTA SPOKANE | PRICE6 | 2026-11-05 | Matrix labor type CP. Main repair source 110. Sources 140–145 price off PRICE7 (not in Qlik), so they are untested |
+| Hyundai Prescott | HYUNDAI PRESCOTT | PRICE6 | 2026-11-05 | Matrix labor type CPH. One cost rule on all priced sources; change live week of 2026-07-27 |
 | Chevrolet Las Vegas | CHEVY LV | **PRICE10** | 2026-11-05 | Matrix labor type CP. Change went live 2026-02-02 |
 
 ## Adding a newer version

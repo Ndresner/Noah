@@ -1,0 +1,1151 @@
+{
+ "sources": {
+  "100": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "101": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "102": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "103": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "104": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "106": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "145": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "995": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 3.0,
+     "base": "COST",
+     "pct": 475.0,
+     "raw": "COST + 475.00"
+    },
+    {
+     "lo": 3.01,
+     "hi": 5.0,
+     "base": "COST",
+     "pct": 375.0,
+     "raw": "COST + 375.00"
+    },
+    {
+     "lo": 5.01,
+     "hi": 7.0,
+     "base": "COST",
+     "pct": 300.0,
+     "raw": "COST + 300.00"
+    },
+    {
+     "lo": 7.01,
+     "hi": 10.0,
+     "base": "COST",
+     "pct": 250.0,
+     "raw": "COST + 250.00"
+    },
+    {
+     "lo": 10.01,
+     "hi": 15.0,
+     "base": "COST",
+     "pct": 230.0,
+     "raw": "COST + 230.00"
+    },
+    {
+     "lo": 15.01,
+     "hi": 25.0,
+     "base": "COST",
+     "pct": 210.0,
+     "raw": "COST + 210.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 35.0,
+     "base": "COST",
+     "pct": 200.0,
+     "raw": "COST + 200.00"
+    },
+    {
+     "lo": 35.01,
+     "hi": 50.0,
+     "base": "COST",
+     "pct": 185.0,
+     "raw": "COST + 185.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "COST",
+     "pct": 160.0,
+     "raw": "COST + 160.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 150.0,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 150.01,
+     "hi": 200.0,
+     "base": "COST",
+     "pct": 145.0,
+     "raw": "COST + 145.00"
+    },
+    {
+     "lo": 200.01,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 135.0,
+     "raw": "COST + 135.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 300.0,
+     "base": "COST",
+     "pct": 125.0,
+     "raw": "COST + 125.00"
+    },
+    {
+     "lo": 300.01,
+     "hi": 500.0,
+     "base": "COST",
+     "pct": 115.0,
+     "raw": "COST + 115.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 750.0,
+     "base": "COST",
+     "pct": 105.0,
+     "raw": "COST + 105.00"
+    },
+    {
+     "lo": 750.01,
+     "hi": 1000.0,
+     "base": "COST",
+     "pct": 95.0,
+     "raw": "COST + 95.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 5.0,
+     "raw": "LIST + 5.00"
+    }
+   ],
+   "summary": "cost 0.01-3: cost +475%; cost 3.01-5: cost +375%; cost 5.01-7: cost +300%; cost 7.01-10: cost +250%; cost 10.01-15: cost +230%; cost 15.01-25: cost +210%; cost 25.01-35: cost +200%; cost 35.01-50: cost +185%; cost 50.01-75: cost +175%; cost 75.01-100: cost +160%; cost 100.01-150: cost +150%; cost 150.01-200: cost +145%; cost 200.01-250: cost +135%; cost 250.01-300: cost +125%; cost 300.01-500: cost +115%; cost 500.01-750: cost +105%; cost 750.01-1000: cost +95%; cost 1000.01-99999: list +5%"
+  },
+  "996": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.0,
+     "hi": 99999.99,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0-100000: list"
+  },
+  "997": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.0,
+     "hi": 9999999.0,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0-1e+07: list"
+  },
+  "998": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.0,
+     "hi": 9999999.0,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0-1e+07: list"
+  },
+  "999": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.0,
+     "hi": 9999999.0,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0-1e+07: list"
+  }
+ },
+ "price_field": "PRICE6",
+ "price_fields": [
+  "LIST",
+  "PRICE6"
+ ],
+ "other_price_fields": {
+  "160": {
+   "LIST": {
+    "price_field": "LIST",
+    "break_field": "LIST",
+    "bands": [
+     {
+      "lo": 0.01,
+      "hi": 9999.99,
+      "base": "LIST",
+      "pct": 0.0,
+      "raw": "LIST"
+     }
+    ]
+   }
+  }
+ },
+ "warnings": [
+  "source 160 has no PRICE6 rule (only ['LIST']) - left untested",
+  "price fields in export: {'PRICE6': 12, 'LIST': 1}; testing PRICE6 (pass --price-field to change). Other-field rules (e.g. how LIST is derived) are kept under other_price_fields."
+ ],
+ "source_info": {}
+}

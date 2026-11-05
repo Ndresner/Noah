@@ -115,6 +115,31 @@
     }
    ],
    "main_repair_source": null
+  },
+  "hyundai_prescott": {
+   "store": "Findlay Hyundai Prescott",
+   "qlik_division": "HYUNDAI PRESCOTT",
+   "current_matrix": "hyundai_prescott/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "hyundai_prescott/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CPH"
+   ],
+   "notes": [
+    "One cost-based rule on every priced source (100-104, 106, 145, 995); 996-999 = list. Source 160 has a LIST-field rule only; source 200 has no rule.",
+    "Matrix change went live the week of 2026-07-27 (step change in current-matrix match rate).",
+    "CCCE = Hyundai Complimentary Care (factory-paid maintenance), not matrix-priced. CEX = extended warranty.",
+    "Brake pads sell at a flat $140.95 (not matrix) before and after the change."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "hyundai_prescott/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "101"
   }
  }
 }

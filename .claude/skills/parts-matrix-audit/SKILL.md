@@ -111,6 +111,8 @@ python3 -I $S/qlik_expr.py --division "<DIV>" --year 2026 --months Aug,Sep,Oct -
 5. **Alternate states can silently drop** when the Qlik engine session resets, which happened at Chevy LV. When that happens, every `state::field` restriction quietly means "all ROs", and totals balloon.
    - Before each batch of queries, and after any long pause, check `Count({cp} distinct Parts_Detail.referno)`. It must equal `n`.
    - If it doesn't, reload the list.
+6. **After a session reset the RO app can come back with default selections** (seen Nov 2026: `Year=2026`, `MonthName=Oct 2026`). Set analysis on `Year`/`Month` does **not** override a `MonthName` selection, so totals quietly shrink to one month.
+   - Run `qlik_clear_selections` on both apps whenever a state has dropped, and check that the result's `selections` list is empty.
 
 ## Step 4: Matrix test (parts app)
 
