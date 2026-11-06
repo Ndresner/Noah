@@ -12,6 +12,8 @@ Reference run: Toyota Prescott, Aug–Oct 2026.
 - Actual $396,262.51 vs. matrix $411,345.16, a net of −$15,083.
 - Use these numbers to check that a re-run of Prescott reproduces them.
 
+> **Store asking whether its maintenance parts (filters, pads, rotors) are priced too aggressively?** That's an optional one-off review, not part of the standard audit. Follow `references/maintenance_pricing_review.md` (reference run: Hyundai Prescott, Nov 2026).
+>
 > **Comparing against other stores?** If the user asks whether this store is more expensive than sister stores, or what lowering the matrix would cost, use `.claude/skills/parts-matrix-peer-comparison/` instead (or after this audit). It reuses this skill's scripts.
 
 ## Inputs
