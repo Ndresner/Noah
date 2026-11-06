@@ -88,6 +88,9 @@ Skill: `.claude/skills/parts-matrix-audit/` — always use it. Inputs: CDK "Pric
 **Parts Pricing Peer Comparison** (optional, same-brand stores)
 Skill: `.claude/skills/parts-matrix-peer-comparison/` — use only when asked to compare a store's parts pricing to sister stores ("are we too expensive?", "what would lowering the matrix cost?"). Single-store matrix checks stay in the audit skill. Prices the target's repair basket through each peer's main repair matrix, break-even scenarios (midpoint / match each peer, added ROs needed), repair penetration and job tickets by op-code category. Needs `matrix_labor_types` and `main_repair_source` per store in the matrix manifest (confirm with the user if missing). Reference: Toyota Prescott vs Flagstaff/Henderson/Spokane, Aug–Oct 2026. Never commit the workbook or results JSON.
 
+**One-Line Customer Pay RO Report** (any store)
+Skill: `.claude/skills/one-line-cp-ro-report/` — always use it. Share of CP visits with exactly one CP labor line, by advisor / technician / month, the single op code, maintenance attach on repair visits, CP sold on warranty / recall / factory-paid maintenance visits, and gross opportunity. Original + "C" split tickets are merged into one visit (essential — split tickets hold much of the CP work on warranty visits). Last 3 full closed months; tech names from the ADP tech export. Reference: Subaru St George Aug–Oct 2026 (GM Curtis Whitehead). Names advisors/techs — never commit the workbook or results JSON.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference

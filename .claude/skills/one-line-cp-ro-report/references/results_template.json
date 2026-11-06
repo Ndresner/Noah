@@ -1,0 +1,195 @@
+{
+ "_comment": "Schema for build_oneline_report.py. ALL NUMBERS ARE ILLUSTRATIVE. Real results.json names advisors/technicians - scratchpad only, never commit. Advisor names = ServiceAdvisor.Name as Qlik returns it or cleaned (must match across sections). Tech keys = RO_Detail.techno.",
+ "store": "Subaru St George",
+ "period": {
+  "label": "Aug 1 - Oct 31, 2026",
+  "start": "2026-08-01",
+  "end": "2026-10-31",
+  "month_keys": [
+   "2026-08",
+   "2026-09",
+   "2026-10"
+  ],
+  "month_labels": [
+   "Aug",
+   "Sep",
+   "Oct"
+  ]
+ },
+ "labels": {
+  "cp_types": "CS, CSQ, CSEMP, CSSC, CEXT, CPPM, CTPMS, CACC",
+  "oil_ops": "GREENS, GREEN, LOFS, LOF",
+  "repair_ops": "INFO, DIAG, CEL, LCA, AC, TRANS, BATC, BULB",
+  "maint_ops": "GREENS, ..., MB1",
+  "repair_desc": "customer concern, diagnosis, check-engine light, etc.",
+  "ws": "Warranty repair / recall",
+  "ws_types": "WS, WR",
+  "wsc": "Service contract",
+  "wsc_types": "WSC",
+  "wsm": "Factory-paid maintenance",
+  "wsm_types": "WSM"
+ },
+ "advisors": [
+  {
+   "_comment": "advisor bundle: one/multi = Visits by Type row; sale_* = CPSale; cp_lines = CPLines summed over both rows; oil_only = OilVisits on one-line row; oil_multi = OilVisits on multi row; month_* = month columns per row; one_60k = Visits60K one-line row; oil_only_30k = Oil30K one-line row",
+   "name": "Advisor A",
+   "one": 300,
+   "multi": 280,
+   "sale_one": 95000.0,
+   "sale_multi": 275000.0,
+   "cp_lines": 1100,
+   "oil_only": 150,
+   "oil_multi": 160,
+   "month_one": [
+    100,
+    100,
+    100
+   ],
+   "month_multi": [
+    95,
+    95,
+    90
+   ],
+   "one_60k": 130,
+   "oil_only_30k": 100
+  }
+ ],
+ "techs": {
+  "12345": {
+   "name": "Tech Name",
+   "group": "Line",
+   "one": 70,
+   "multi": 70,
+   "oil_only": 14,
+   "oil_multi": 22
+  }
+ },
+ "single_line_ops": [
+  {
+   "op": "GREENS",
+   "desc": "Oil change (standard menu)",
+   "ros": 550,
+   "cp_sale": 55000.0,
+   "avg_miles": 47000
+  }
+ ],
+ "repair_adv": [
+  {
+   "name": "Advisor A",
+   "visits": 200,
+   "with_maint": 100,
+   "one_line": 80,
+   "cp_sale": 220000.0,
+   "avg_miles": 100000
+  }
+ ],
+ "repair_tech": [
+  {
+   "tech": "12345",
+   "visits": 70,
+   "with_maint": 27,
+   "repair_only": 44
+  }
+ ],
+ "warranty_adv": [
+  {
+   "name": "Advisor A",
+   "ws": [
+    130,
+    45
+   ],
+   "wsc": [
+    40,
+    22
+   ],
+   "wsm": [
+    120,
+    14
+   ],
+   "visits": 265,
+   "with_cp": 78,
+   "cp_sale": 40000.0,
+   "cp_gross": 23000.0,
+   "recall": [
+    11,
+    4
+   ],
+   "avg_miles": 37000
+  }
+ ],
+ "warranty_tech": [
+  {
+   "tech": "12345",
+   "repair": [
+    63,
+    24
+   ],
+   "maint": [
+    5,
+    1
+   ]
+  }
+ ],
+ "oil_addon": {
+  "median_sale": 230.0,
+  "avg_sale": 475.0,
+  "gross_margin": 0.59
+ },
+ "warranty_addon_median": 190.0,
+ "thresholds": {
+  "one_line": [
+   0.55,
+   0.62
+  ],
+  "oil_only": [
+   0.5,
+   0.6
+  ],
+  "attach": [
+   0.5,
+   0.45
+  ]
+ },
+ "min_ros_for_rating": 10,
+ "split_rows": [
+  [
+   "290486",
+   "Advisor A",
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   "",
+   "",
+   "12345",
+   "2026-08-04"
+  ],
+  [
+   "290486C",
+   "Advisor A",
+   2,
+   0,
+   0,
+   2,
+   0,
+   0,
+   0,
+   0,
+   729.85,
+   466.32,
+   "12345",
+   "",
+   "",
+   "2026-08-04"
+  ]
+ ],
+ "_split_rows": "From split_pairs: [RO, advisor, CPn, Oil, Rep, Mnt, WS, WSC, WSM, Recall, CPSale, CPGross, CPTech, RepTech, WTech, Close YYYY-MM-DD]. Include every C ticket and its original. Empty list if the store has no C tickets.",
+ "extra_findings": [],
+ "definitions_extra": []
+}
