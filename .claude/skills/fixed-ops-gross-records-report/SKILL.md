@@ -76,7 +76,7 @@ Store names in the PDF tables are `store.title()` (e.g. "Lr Reno Lrr-31"), as in
 
 After the report, draft the group recognition email in the format of `references/email_format.md`. Use full brand/city names: Land Rover Reno, Kia Las Vegas, Kia St. George, Chevy Las Vegas, CDJR Post Falls. Rules:
 - The opening line states where the month landed in Findlay history. Be accurate: a #7 month is not "record-setting". Lead with the strongest true framing, such as best September ever or up X% on last year.
-- "Additional Service/Parts Record Setters" lists only stores **not** already in the combined list. Note stores that set records in all three categories inside the combined section.
+- Record sections are one bulleted list per department (Combined, Service, Parts), plus a Clean Sweep callout when a store set all three. A store is listed in every section it earned, so each department gets individual credit. Never summarize record-setters in a paragraph. The full rules are in `references/email_format.md`.
 - The outstanding-performances bullets cover every #2 and #3, matching the report's near-records notes.
 - Close with the next month's name.
 - Deliver it as ready-to-send text. Never send it.
