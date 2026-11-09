@@ -463,9 +463,10 @@ def write_pdf(path, res, group, order, year, month, pull, first_year, notes, xls
     if len(data) == 1:
         data.append(["—", f"No new all-time records in {mlabel}", "", "", ""])
     rt = Table(data, colWidths=[68, 170, 92, 92, 106], repeatRows=1)
+    pad = 6 if len(data) <= 11 else 3  # compact rows on big record months so page 1 holds the table
     ts = [("BACKGROUND", (0, 0), (-1, 0), NAVY), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
           ("FONT", (0, 1), (-1, -1), "Helvetica", 7.5), ("ALIGN", (2, 0), (-1, -1), "RIGHT"),
-          ("TOPPADDING", (0, 0), (-1, -1), 6), ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+          ("TOPPADDING", (0, 0), (-1, -1), pad), ("BOTTOMPADDING", (0, 0), (-1, -1), pad),
           ("LEFTPADDING", (0, 0), (-1, -1), 7), ("RIGHTPADDING", (0, 0), (-1, -1), 9),
           ("LINEBELOW", (0, -1), (-1, -1), 0.75, NAVY)]
     for i in range(1, len(data)):
