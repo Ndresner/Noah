@@ -82,6 +82,9 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 **Parts & Service Pay vs Gross Report** (Earnings - Parts and Service Employees - Gross Adjusted)
 Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script + Qlik pull spec). ADP pay vs group, plus Qlik gross/workload layer: pay % of dept gross, gross per employee, ROs or sold hrs per employee, Service Advisor gross per RO and ROs/day, ±20% outlier colors. Hire cutoff = last day worked in the pay period. Contains employee pay — never commit the workbook or Qlik JSON.
 
+**Net Profit Ranker — Net to Gross tab** (monthly; Fixed, Service, Parts files)
+Skill: `.claude/skills/net-profit-ranker-net-to-gross/` — always use it. The user supplies the three Net Profit Ranker workbooks; the skill pulls Service/Parts gross from the P&L app (`Dept` field, `Line Desc` = 'Total Departmental Gross Profit' / 'Net Profit Or Loss', sign flipped), reconciles net to the workbook, and adds a "Net to Gross" tab styled from the Total tab. "Fixed" = Service + Parts only (not whole store, no Body Shop). Includes the distribution email template. Never commit the workbooks or Qlik JSON.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
