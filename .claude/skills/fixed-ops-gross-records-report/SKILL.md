@@ -78,6 +78,7 @@ After the report, draft the group recognition email in the format of `references
 - The opening line states where the month landed in Findlay history. Be accurate: a #7 month is not "record-setting". Lead with the strongest true framing, such as best September ever or up X% on last year.
 - Record sections are one bulleted list per department (Combined, Service, Parts), plus a Clean Sweep callout when a store set all three. A store is listed in every section it earned, so each department gets individual credit. Never summarize record-setters in a paragraph. The full rules are in `references/email_format.md`.
 - The outstanding-performances bullets cover every #2 and #3, matching the report's near-records notes.
+- Don't call the prior month soft, down or weak. A month-over-month dip from a record-level month is not a soft month (Sep 2026 was the best September ever, yet $518K below August). Frame momentum by where this month ranks, not by knocking last month.
 - Close with the next month's name.
 - Deliver it as ready-to-send text. Never send it.
 
