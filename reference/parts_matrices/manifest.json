@@ -140,6 +140,33 @@
     }
    ],
    "main_repair_source": "101"
+  },
+  "subaru_st_george": {
+   "store": "Findlay Subaru St. George",
+   "qlik_division": "SUBARU ST GEORGE",
+   "current_matrix": "subaru_st_george/2026-11-09_price_breaks_by_source.xlsx",
+   "current_parsed": "subaru_st_george/2026-11-09_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-09",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CS",
+    "CSQ",
+    "CTPMS"
+   ],
+   "main_repair_source": "200",
+   "notes": [
+    "Matrix labor types confirmed 2026-11-09: CS, CSQ (quick lane), CTPMS. CSSC/CEXT reimbursed, CACC unclear, CSEMP employee, CPPM prepaid at cost.",
+    "Source 200 = Subaru dealer parts, LIST + 300% down to LIST + 20% by list band. 202/300/400 = list. 301 tires = cost + 32% (list up to $599.99). 999 windshields = cost + 450% (looks like a setup error).",
+    "Source 203 prices at its own stored PRICE6 (not in Qlik) - untestable. Source 201 has a LIST-field rule only.",
+    "Store splits visits onto 'C' suffix ROs (mostly the customer-pay work on a warranty visit)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-09",
+     "file": "subaru_st_george/2026-11-09_price_breaks_by_source.xlsx"
+    }
+   ]
   }
  }
 }

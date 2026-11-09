@@ -1,0 +1,243 @@
+{
+ "sources": {
+  "200": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 1.0,
+     "base": "LIST",
+     "pct": 300.0,
+     "raw": "LIST + 300.00"
+    },
+    {
+     "lo": 1.01,
+     "hi": 2.99,
+     "base": "LIST",
+     "pct": 200.0,
+     "raw": "LIST + 200.00"
+    },
+    {
+     "lo": 3.0,
+     "hi": 6.0,
+     "base": "LIST",
+     "pct": 100.0,
+     "raw": "LIST + 100.00"
+    },
+    {
+     "lo": 6.01,
+     "hi": 12.0,
+     "base": "LIST",
+     "pct": 90.0,
+     "raw": "LIST + 90.00"
+    },
+    {
+     "lo": 12.01,
+     "hi": 25.0,
+     "base": "LIST",
+     "pct": 80.0,
+     "raw": "LIST + 80.00"
+    },
+    {
+     "lo": 25.01,
+     "hi": 50.0,
+     "base": "LIST",
+     "pct": 70.0,
+     "raw": "LIST + 70.00"
+    },
+    {
+     "lo": 50.01,
+     "hi": 75.0,
+     "base": "LIST",
+     "pct": 55.0,
+     "raw": "LIST + 55.00"
+    },
+    {
+     "lo": 75.01,
+     "hi": 100.0,
+     "base": "LIST",
+     "pct": 50.0,
+     "raw": "LIST + 50.00"
+    },
+    {
+     "lo": 100.01,
+     "hi": 500.0,
+     "base": "LIST",
+     "pct": 40.0,
+     "raw": "LIST + 40.00"
+    },
+    {
+     "lo": 500.01,
+     "hi": 1000.0,
+     "base": "LIST",
+     "pct": 30.0,
+     "raw": "LIST + 30.00"
+    },
+    {
+     "lo": 1000.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 20.0,
+     "raw": "LIST + 20.00"
+    }
+   ],
+   "summary": "list 0.01-1: list +300%; list 1.01-2.99: list +200%; list 3-6: list +100%; list 6.01-12: list +90%; list 12.01-25: list +80%; list 25.01-50: list +70%; list 50.01-75: list +55%; list 75.01-100: list +50%; list 100.01-500: list +40%; list 500.01-1000: list +30%; list 1000.01-99999: list +20%"
+  },
+  "202": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0.01-99999: list"
+  },
+  "203": {
+   "price_field": "PRICE6",
+   "break_field": "PRICE6",
+   "bands": [],
+   "unsupported": true,
+   "summary": ""
+  },
+  "220": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 9.99,
+     "base": "COST",
+     "pct": 175.0,
+     "raw": "COST + 175.00"
+    },
+    {
+     "lo": 10.0,
+     "hi": 49.99,
+     "base": "COST",
+     "pct": 150.0,
+     "raw": "COST + 150.00"
+    },
+    {
+     "lo": 50.0,
+     "hi": 99.99,
+     "base": "COST",
+     "pct": 100.0,
+     "raw": "COST + 100.00"
+    },
+    {
+     "lo": 100.0,
+     "hi": 250.0,
+     "base": "COST",
+     "pct": 80.0,
+     "raw": "COST + 80.00"
+    },
+    {
+     "lo": 250.01,
+     "hi": 350.0,
+     "base": "COST",
+     "pct": 60.0,
+     "raw": "COST + 60.00"
+    },
+    {
+     "lo": 350.01,
+     "hi": 999999.9,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "cost 0.01-9.99: cost +175%; cost 10-49.99: cost +150%; cost 50-99.99: cost +100%; cost 100-250: cost +80%; cost 250.01-350: cost +60%; cost 350.01-1e+06: list"
+  },
+  "300": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 99999.0,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "list 0.01-99999: list"
+  },
+  "301": {
+   "price_field": "PRICE6",
+   "break_field": "LIST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 599.99,
+     "base": "COST",
+     "pct": 32.0,
+     "raw": "COST + 32.00"
+    }
+   ],
+   "summary": "list 0.01-599.99: cost +32%"
+  },
+  "400": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 99999.99,
+     "base": "LIST",
+     "pct": 0.0,
+     "raw": "LIST"
+    }
+   ],
+   "summary": "cost 0.01-100000: list"
+  },
+  "999": {
+   "price_field": "PRICE6",
+   "break_field": "COST",
+   "bands": [
+    {
+     "lo": 0.01,
+     "hi": 99999.99,
+     "base": "COST",
+     "pct": 450.0,
+     "raw": "COST + 450.00"
+    }
+   ],
+   "summary": "cost 0.01-100000: cost +450%"
+  }
+ },
+ "price_field": "PRICE6",
+ "price_fields": [
+  "LIST",
+  "PRICE6"
+ ],
+ "other_price_fields": {
+  "201": {
+   "LIST": {
+    "price_field": "LIST",
+    "break_field": "LIST",
+    "bands": [
+     {
+      "lo": 0.01,
+      "hi": 99999.0,
+      "base": "LIST",
+      "pct": 0.0,
+      "raw": "LIST"
+     }
+    ]
+   }
+  }
+ },
+ "warnings": [
+  "row 18: source 203: price = another stored price field (PRICE6), not available in Qlik - source left untested",
+  "source 203: unknown break field \"PRICE6\" - left untested",
+  "source 201 has no PRICE6 rule (only ['LIST']) - left untested",
+  "price fields in export: {'PRICE6': 8, 'LIST': 1}; testing PRICE6 (pass --price-field to change). Other-field rules (e.g. how LIST is derived) are kept under other_price_fields."
+ ],
+ "source_info": {}
+}
