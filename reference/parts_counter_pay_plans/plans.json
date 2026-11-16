@@ -1,0 +1,597 @@
+{
+ "description": "Findlay parts counter pay plans on file - plan terms only. Employee names, signatures and employee numbers intentionally removed; do not add them.",
+ "collected": "2026-11-16",
+ "requested_for": "Subaru Las Vegas fixed ops director (example pay plans)",
+ "selection": "One current parts counter plan from each of the top 10 stores by Jan-Oct 2026 parts gross (Qlik Productivity, PL_Line 'Total Gross Profit - Parts'), excluding Subaru LV. Chevrolet LV has two plans (A, B).",
+ "benchmark": {
+  "label": "Subaru Las Vegas",
+  "qlik_division": "SUBARU LV",
+  "avg_monthly_parts_gross_jan_oct_2026": 425984.72
+ },
+ "hours_per_month_for_hourly": 173.33,
+ "estimate_formulas": {
+  "std": "base + rate x gross",
+  "hourly": "hourly_rate x hours_per_month",
+  "draw": "max(draw, rate x gross)",
+  "lr": "max(draw, 1.6% x gross + tier% x gross; tiers 300K/330K/350K/375K = 0.10/0.20/0.30/0.40%)",
+  "nissan": "base + 2.0% x gross + tier% x gross; tiers 160K/180K/200K = 0.25/0.50/0.75%"
+ },
+ "proration_clause_text": "To ensure consistency and compliance, certain forms of compensation, including but not limited to salary, commissions, bonuses, Spiffs and/or car allowance, may be prorated based on the employees' actual days worked within a given month or pay period. Proration calculations will be based on company-defined workdays and applicable pay periods. This policy applies regardless of compensation type unless otherwise expressly stated in the employee's approved pay plan.",
+ "withholding_clause_text": "All payments will be subject to statutory payroll withholdings. Upon the cessation of employment with the Company for any reason, the employee will receive payment for any compensation earned prior to that date, less any permissible offsets or deductions.",
+ "pay_structures": [
+  {
+   "structure": "Salary + % of department gross",
+   "stores": "Toyota Henderson, Honda Henderson, Cadillac, Honda Centennial Hills, Toyota Spokane, Kia LV, Nissan Henderson",
+   "range": "Salary $1,000-$3,500/mo; commission 0.50%-2.0% of total parts gross",
+   "how_it_works": "Fixed monthly salary plus a percentage of the whole parts department's gross. Rate tends to drop as salary rises.",
+   "strengths": "Simple; rewards the whole team for department results; predictable floor.",
+   "watch_outs": "No link to the individual's own production; pay rises with volume whether or not the person drives it."
+  },
+  {
+   "structure": "Draw + % of department gross",
+   "stores": "Land Rover LV, Audi Henderson",
+   "range": "Draw $1,500-$2,500/mo; 1.0%-1.6% of total parts gross",
+   "how_it_works": "Recoverable draw paid month-end; commission less the draw paid the 15th of the following month.",
+   "strengths": "Fully commission-based; cost moves with gross.",
+   "watch_outs": "Shortfall months carry forward; less income stability for the employee."
+  },
+  {
+   "structure": "Department gross bonus tiers",
+   "stores": "Nissan Henderson, Land Rover LV",
+   "range": "Extra 0.10%-0.75% of total gross once monthly gross passes a threshold ($160K Nissan; $300K Land Rover)",
+   "how_it_works": "Non-cumulative tiers: the tier reached sets the extra % on the full gross.",
+   "strengths": "Pays for hitting stretch department goals.",
+   "watch_outs": "Thresholds must be sized to the store; a cliff at each tier."
+  },
+  {
+   "structure": "Individual production",
+   "stores": "Audi Henderson (5.3% of individual sales), Chevrolet LV Plan B (flat $500-$1,250 on individual gross)",
+   "range": "See plans",
+   "how_it_works": "Pays on what the person personally sells, from CDK RBE by Employee or vAuto.",
+   "strengths": "Directly rewards individual effort; separates top and low performers.",
+   "watch_outs": "Needs clean employee attribution in the DMS; can create competition for tickets."
+  },
+  {
+   "structure": "Hourly",
+   "stores": "Chevrolet LV Plans A and B (since 10/25/2026)",
+   "range": "$24-$26/hr",
+   "how_it_works": "Paid on ADP timecard hours; bonus layered on top (shop hours or individual gross).",
+   "strengths": "Clear hourly cost; overtime rules apply cleanly.",
+   "watch_outs": "Weaker tie to gross unless a bonus is attached."
+  },
+  {
+   "structure": "Add-ons",
+   "stores": "Various",
+   "range": "CSI $75-$200; shop hours $0.15-$0.17/hr; YoY growth $200-$250; car allowance $250-$300",
+   "how_it_works": "Small flat amounts tied to CSI, shop hours sold, year-over-year growth, or vehicle ownership.",
+   "strengths": "Ties parts staff to service volume and customer experience.",
+   "watch_outs": "Adds admin; amounts are small relative to commission."
+  }
+ ],
+ "retired_plans": [
+  {
+   "store": "Chevrolet Las Vegas",
+   "effective": "July 2023",
+   "summary": "Parts Consultant objective plan: $1,700 variable paid at % of monthly parts gross objective (total parts gross less GM FS p7 L54-55), $1,700 floor, $0.39/shop hour (total less detail), $2,000 draw.",
+   "status": "No longer used (confirmed 2026-11-16); excluded from examples."
+  }
+ ],
+ "plans": [
+  {
+   "comparison_label": "Toyota Henderson",
+   "plan_type": "Salary + % of dept gross",
+   "effective": "08/01/2026",
+   "base_type": "Salary",
+   "base_monthly": 3500,
+   "commission_pct_total_parts_gross": 0.005,
+   "commission_detail": "0.50% of total parts dept gross (Toyota FS p3 L2)",
+   "gross_bonus": "None",
+   "other_pay": "Spiffs (GM discretion)",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 696723.62,
+   "estimate_formula": "std",
+   "notes": "Highest base, lowest rate in the group.",
+   "qlik_division": "TOYOTA HENDERSON",
+   "document": {
+    "title": "Findlay Toyota (Henderson)",
+    "position": "Parts Counter",
+    "effective": "08/01/2026",
+    "classification": "Salaried/commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $3,500.00 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 0.50% of Total Parts Department Gross Profit as generated on the Toyota Financial Statement, Page 3, Line 2 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": true,
+    "payment_schedule": "Parts Counterman will be paid by Company check a Salary of $3,500.00 on the last business day of the month. Commission will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Chevrolet Las Vegas - Plan A",
+   "plan_type": "Hourly + shop-hour bonus",
+   "effective": "10/25/2026",
+   "base_type": "Hourly $26.00/hr",
+   "base_monthly": null,
+   "commission_pct_total_parts_gross": 0,
+   "commission_detail": "None",
+   "gross_bonus": "None",
+   "other_pay": "$0.17 per service shop hour sold (CDK RTH); spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 675045.76,
+   "estimate_formula": "hourly",
+   "notes": "Converted to hourly 10/25/2026. Shop-hour bonus not included in estimate.",
+   "hourly_rate": 26.0,
+   "qlik_division": "CHEVY LV",
+   "document": {
+    "title": "Findlay Chevrolet Las Vegas - Plan A",
+    "position": "Parts Counter",
+    "effective": "10/25/2026",
+    "classification": "Hourly",
+    "compensation_schedule": [
+     {
+      "text": "Hourly: $26.00 per hour as per ADP Payroll Electronic Timecard each pay period.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Shop Hour Bonus: $0.17 on Total Service Department Shop Hours sold as reported on the CDK \"RTH\" report each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": true,
+    "payment_schedule": "Hourly compensation will be paid on the 15th and last business day of the month. Bonus will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Chevrolet Las Vegas - Plan B",
+   "plan_type": "Hourly + individual gross bonus",
+   "effective": "10/25/2026 (hourly); 11/01/2026 (bonus)",
+   "base_type": "Hourly $24.00/hr",
+   "base_monthly": null,
+   "commission_pct_total_parts_gross": 0,
+   "commission_detail": "Flat bonus on individual parts gross (vAuto): $8K-12.99K=$500; $13K-14.99K=$850; $15K-16.99K=$950; $17K-18.99K=$1,050; $19K-20.99K=$1,150; $21K+=$1,250 (non-cumulative)",
+   "gross_bonus": "See commission",
+   "other_pay": "Spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 675045.76,
+   "estimate_formula": "hourly",
+   "notes": "Only plan paid purely on the individual's own gross. Individual bonus ($500-$1,250) not included in estimate.",
+   "hourly_rate": 24.0,
+   "qlik_division": "CHEVY LV",
+   "document": {
+    "title": "Findlay Chevrolet Las Vegas - Plan B",
+    "position": "Parts Counter",
+    "effective": "10/25/2026 for hourly; 11/01/2026 for commission",
+    "classification": "Hourly",
+    "compensation_schedule": [
+     {
+      "text": "Hourly: $24.00 per hour as per ADP Payroll Electronic Timecard each pay period.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: A flat amount paid on Total Individual Parts Gross Profit as reported on the vAuto Website report each month. Bonus Structure as follows:",
+      "tiers": [
+       "$8,000.00 - $12,999.99 = $500.00",
+       "$13,000.00 - $14,999.99 = $850.00",
+       "$15,000.00 - $16,999.99 = $950.00",
+       "$17,000.00 - $18,999.99 = $1,050.00",
+       "$19,000.00 - $20,999.99 = $1,150.00",
+       "$21,000.00 and above = $1,250.00"
+      ],
+      "footnote": "*Bonus is Non-Cumulative*"
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": true,
+    "payment_schedule": "Hourly compensation will be paid on the 15th and last business day of the month. Commission will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Honda Henderson",
+   "plan_type": "Salary + % of dept gross",
+   "effective": "07/01/2021",
+   "base_type": "Salary",
+   "base_monthly": 1000,
+   "commission_pct_total_parts_gross": 0.02,
+   "commission_detail": "2.0% of parts dept gross less inventory adjustment (Honda FS p4 L79 less L71)",
+   "gross_bonus": "None",
+   "other_pay": "None",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 433338.39,
+   "estimate_formula": "std",
+   "notes": "2021 template; no proration clause. Inventory adjustment not deducted in estimate.",
+   "qlik_division": "HONDA HENDERSON",
+   "document": {
+    "title": "Findlay Honda Henderson",
+    "position": "Parts Counter",
+    "effective": "07/01/2021",
+    "classification": "Commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $1,000.00 per month salary paid on the last day of each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 2.0% Commission of the total Parts Department Gross Profit less any plus inventory adjustment. Paid from the Honda Statement Page 4, Line 79 less Line 71.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": "Older (2021) plan format.",
+    "has_proration_clause": false,
+    "payment_schedule": "Commissioned Parts Sales Person will receive a $1,000.00 per month salary payable on the last day of the month. Earned commissions will be paid on a monthly basis fifteen (15) days after the end of the month in which the commission was earned."
+   }
+  },
+  {
+   "comparison_label": "Audi Henderson",
+   "plan_type": "Draw + % of dept gross + % of individual sales",
+   "effective": "06/01/2026",
+   "base_type": "Recoverable draw",
+   "base_monthly": 1500,
+   "commission_pct_total_parts_gross": 0.01,
+   "commission_detail": "1.0% of total parts dept gross (Audi FS p8 L83) PLUS 5.30% of individual parts gross sales (CDK RBE by Employee)",
+   "gross_bonus": "Year-over-year parts gross: +10-14.9% = $200; +15%+ = $250",
+   "other_pay": "CSI: $75 / $150 tiers; $0.15 per shop hour sold (CDK RTH); spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 398972.47,
+   "estimate_formula": "draw",
+   "notes": "Individual sales commission, CSI, YoY and shop-hour pay not included in estimate. CSI tier text is inconsistent (says 4.60+, first tier written 3.60-4.69).",
+   "qlik_division": "AUDI HENDERSON",
+   "document": {
+    "title": "Findlay Audi Henderson",
+    "position": "Parts Counter",
+    "effective": "06/01/2026",
+    "classification": "Commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Commission: 1.0% of Total Parts Department Gross Profit as generated on the Audi Financial Statement, Page 8, Line 83 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 5.30% of Total Individual Parts Gross Sales as reported on the CDK \"RBE by Employee\" Report each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "CSI Score Bonus: A flat amount paid when Service Department CSI is at or above 4.60 as reported on the Access Audi Website - Track Progress, Audi Insight, Service Section each month. Bonus Structure as follows:",
+      "tiers": [
+       "3.60 - 4.69 = $75.00",
+       "4.70 and above = $150.00"
+      ],
+      "footnote": "*Bonus is Cumulative*"
+     },
+     {
+      "text": "Year over Year Bonus: A flat amount paid on Total Parts and Accessories Gross Profit as reported on the CDK \"RBE by Employee\" Report when the Parts Department Gross Profit has an increase of 10% and above over the same month previous year. Bonus Structure as follows:",
+      "tiers": [
+       "10% - 14.9% = $200.00",
+       "15% and above = $250.00"
+      ],
+      "footnote": "*Bonus is Cumulative*"
+     },
+     {
+      "text": "Shop Hour Bonus: $0.15 on Total Shop Hours Sold as reported on the CDK \"RTH\" report each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": "Draw: A recoupable draw of $1,500.00 is paid on the last business day of the month; commission and bonus less the draw is paid on the 15th of the following month. (From the plan's Payment Schedule.)",
+    "reviewer_note": "As written on the original: CSI bonus says \"at or above 4.60\" but the first tier reads 3.60 - 4.69.",
+    "has_proration_clause": true,
+    "payment_schedule": "Parts Counter will be paid a recoupable draw of $1,500.00 on the last business day of the month. Commission and Bonus less recoupable draw will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Cadillac",
+   "plan_type": "Salary + % of dept gross",
+   "effective": "09/01/2025",
+   "base_type": "Salary",
+   "base_monthly": 2500,
+   "commission_pct_total_parts_gross": 0.0125,
+   "commission_detail": "1.25% of total parts dept gross (GM FS p6 L74)",
+   "gross_bonus": "None",
+   "other_pay": "$300/mo car allowance on new Cadillac purchase/lease (3 yrs); spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 346951.23,
+   "estimate_formula": "std",
+   "notes": "Car allowance not included in estimate.",
+   "qlik_division": "CADILLAC",
+   "document": {
+    "title": "Findlay Cadillac",
+    "position": "Parts Counter",
+    "effective": "09/01/2025",
+    "classification": "Salaried/commissioned",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $2,500.00 per month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 1.25% of Total Parts Department Gross Profit as generated on the GM Financial Statement, Page 6, Line 74 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Car Allowance: $300.00 per month when a New Cadillac is leased or purchased from Findlay Cadillac.",
+      "tiers": [],
+      "footnote": "*Employee must be employed by Findlay Cadillac*  *Car Allowance is effective for 3 years from date of purchase/lease*"
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": false,
+    "payment_schedule": "Parts Counter will be paid by company check a Salary of $2,500.00 on the last business day of the month. Commission and Car Allowance (if applicable) will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Honda Centennial Hills",
+   "plan_type": "Salary + % of dept gross",
+   "effective": "09/01/2026",
+   "base_type": "Salary",
+   "base_monthly": 1000,
+   "commission_pct_total_parts_gross": 0.012,
+   "commission_detail": "1.2% of total parts gross (Honda FS p3 L2)",
+   "gross_bonus": "None",
+   "other_pay": "Spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 302133.61,
+   "estimate_formula": "std",
+   "notes": "Salary shown as $1,000 in Section A but $1,250 in Payment Schedule; copy provided is unsigned.",
+   "qlik_division": "HONDA NORTH",
+   "document": {
+    "title": "Findlay Honda in Centennial Hills",
+    "position": "Parts Counter",
+    "effective": "09/01/2026",
+    "classification": "Salary/commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $1,000.00 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 1.2% of Total Parts Gross Profit as generated on the Honda Financial Statement, Page 3, Line 2 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": "As written on the original: salary is $1,000.00 in the Compensation Schedule, but the plan's Payment Schedule (not shown) says $1,250.00. Copy on file is unsigned.",
+    "has_proration_clause": true,
+    "payment_schedule": "Parts Counter will be paid a Salary of $1,250.00 on the last business day of the month. Commission will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Land Rover Las Vegas",
+   "plan_type": "Draw + % of dept gross + gross bonus",
+   "effective": "06/01/2026",
+   "base_type": "Recoverable draw",
+   "base_monthly": 2500,
+   "commission_pct_total_parts_gross": 0.016,
+   "commission_detail": "1.6% of total parts dept gross (Jaguar FS p5 L52)",
+   "gross_bonus": "Extra % of total gross: $300K-329.99K=0.10%; $330K-349.99K=0.20%; $350K-374.99K=0.30%; $375K+=0.40% (non-cumulative)",
+   "other_pay": "Spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 285975.28,
+   "estimate_formula": "lr",
+   "notes": "Bonus tiers start at $300K/month.",
+   "qlik_division": "LR LV",
+   "document": {
+    "title": "Findlay Land Rover / Jaguar Las Vegas",
+    "position": "Parts Counter",
+    "effective": "06/01/2026",
+    "classification": "Commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Commission: 1.6% of Total Parts Department Gross Profit as generated on the Jaguar Financial Statement, Page 5, Line 52 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Gross Profit Bonus: A flat percentage of Total Parts Department Gross Profit when Gross Profit is at or above $300,000.00 as generated on the Jaguar Financial Statement, Page 5, Line 52 each month. Bonus Structure as follows:",
+      "tiers": [
+       "$300,000.00 - $329,999.99 = 0.10%",
+       "$330,000.00 - $349,999.99 = 0.20%",
+       "$350,000.00 - $374,999.99 = 0.30%",
+       "$375,000.00 and above = 0.40%"
+      ],
+      "footnote": "*Bonus is Non-Cumulative*"
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": "Draw: A recoupable draw of $2,500.00 is paid on the last business day of the month; commission and bonus less the draw is paid on the 15th of the following month. (From the plan's Payment Schedule.)",
+    "reviewer_note": null,
+    "has_proration_clause": true,
+    "payment_schedule": "Parts Counter will be paid a recoupable draw of $2,500.00 on the last business day of the month. Commission and Bonus less recoupable draw will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Toyota Spokane",
+   "plan_type": "Salary + % of dept gross + CSI",
+   "effective": "09/01/2026",
+   "base_type": "Salary (plus $1,500 recoverable draw)",
+   "base_monthly": 2500,
+   "commission_pct_total_parts_gross": 0.02,
+   "commission_detail": "2.00% of parts dept gross (Toyota FS p3 L2)",
+   "gross_bonus": "None",
+   "other_pay": "$200/mo when service CSI 4.5+ (Medallia); spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 254920.52,
+   "estimate_formula": "std",
+   "notes": "Lists both a $2,500 salary and a $1,500 recoverable draw; CSI bonus not included in estimate.",
+   "qlik_division": "TOYOTA SPOKANE",
+   "document": {
+    "title": "Findlay Toyota Spokane",
+    "position": "Parts Counter",
+    "effective": "09/01/2026",
+    "classification": "Salaried/commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $2,500.00 per month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 2.00% of Parts Department Gross Profit as generated on the Toyota Financial Statement, Page 3, Line 2 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "CSI Bonus: $200.00 each month when Service Department CSI Score is at or above 4.5 as reported on the Medallia website each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": "Draw: A recoupable draw of $1,500.00 is paid on the last business day of the month; salary, commission and bonus less the draw is paid on the 15th of the following month. (From the plan's Payment Schedule.)",
+    "reviewer_note": "As written on the original: the plan lists both a $2,500.00 salary and a $1,500.00 recoupable draw (see Draw line below).",
+    "has_proration_clause": true,
+    "payment_schedule": "Parts Counterman will be paid a recoupable draw of $1,500.00 on the last business day of the month. Salary, Commission, and Bonus less recoupable draw will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Kia Las Vegas",
+   "plan_type": "Salary + % of dept gross",
+   "effective": "01/01/2026",
+   "base_type": "Salary",
+   "base_monthly": 2000,
+   "commission_pct_total_parts_gross": 0.014,
+   "commission_detail": "1.4% of total parts gross (Kia FS p5 L45)",
+   "gross_bonus": "None",
+   "other_pay": "Spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 238796.23,
+   "estimate_formula": "std",
+   "notes": "",
+   "qlik_division": "KIA LV",
+   "document": {
+    "title": "Findlay Kia Las Vegas",
+    "position": "Parts Counter",
+    "effective": "01/01/2026",
+    "classification": "Salary/commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $2,000.00 each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 1.4% of Total Parts Gross Profit as generated on the Kia Financial Statement, Page 5, Line 45, Current Month, each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined monthly at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": false,
+    "payment_schedule": "Parts Counter will be paid a Salary of $2,000.00 on the last business day of the month. Commission will be paid on the 15th of the following month in which it was earned."
+   }
+  },
+  {
+   "comparison_label": "Nissan Henderson",
+   "plan_type": "Salary + % of dept gross + gross bonus",
+   "effective": "03/01/2026",
+   "base_type": "Salary",
+   "base_monthly": 2000,
+   "commission_pct_total_parts_gross": 0.02,
+   "commission_detail": "2.0% of total parts gross (Nissan FS p3 L2)",
+   "gross_bonus": "Extra % of total gross: $160K-179.99K=0.25%; $180K-199.99K=0.50%; $200K+=0.75% (non-cumulative)",
+   "other_pay": "$250/mo car allowance on new/CPO Nissan $10K+; spiffs",
+   "store_avg_monthly_parts_gross_jan_oct_2026": 180079.14,
+   "estimate_formula": "nissan",
+   "notes": "Car allowance not included in estimate.",
+   "qlik_division": "NISSAN",
+   "document": {
+    "title": "Findlay Nissan Henderson",
+    "position": "Parts Counter",
+    "effective": "03/01/2026",
+    "classification": "Commissioned, exempt",
+    "compensation_schedule": [
+     {
+      "text": "Salary: $2,000.00 per month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Commission: 2.0% of the Total Parts Gross Profit as generated on the Nissan Financial Statement, Page 3, Line 2, Current Month each month.",
+      "tiers": [],
+      "footnote": null
+     },
+     {
+      "text": "Gross Profit Bonus: A flat percentage on Total Parts Gross Profit when Parts Gross Profit is at or above $160,000.00 as generated on the Nissan Financial Statement, Page 3, Line 2, Current Month each month. Bonus Structure as follows:",
+      "tiers": [
+       "$160,000.00 - $179,999.99 = 0.25%",
+       "$180,000.00 - $199,999.99 = 0.50%",
+       "$200,000.00 and above = 0.75%"
+      ],
+      "footnote": "*Bonus is Non-Cumulative*"
+     },
+     {
+      "text": "Car Allowance: $250.00 per month when any New or Certified Pre-Owned Nissan is leased or purchased from Findlay Nissan and valued at $10,000.00 and above.",
+      "tiers": [],
+      "footnote": "*Vehicle must be owned and operated by employee with the exception of a spouse that resides at the same home address.*"
+     },
+     {
+      "text": "Spiffs: Any spiffs will be determined periodically at the sole and exclusive discretion of the General Manager.",
+      "tiers": [],
+      "footnote": null
+     }
+    ],
+    "draw_note": null,
+    "reviewer_note": null,
+    "has_proration_clause": false,
+    "payment_schedule": "Parts Counter will be paid by company check a Salary of $2,000.00 on the last business day of the month. Commission, Bonus and Car Allowance (if applicable) will be paid on the 15th of the following month in which it was earned."
+   }
+  }
+ ]
+}

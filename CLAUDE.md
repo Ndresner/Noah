@@ -104,6 +104,9 @@ Skill: `.claude/skills/fixed-ops-71034-policy-audit/` — always use it (one-cal
 **Day 2 Fixed Ops Deck (Oct 29, 2026 GM & Service Manager meeting)**
 Project lives in `day2-deck/`. Read `day2-deck/CLAUDE.md` first: it holds the meeting context, basis rules, house style and open decisions. Review-round decks (`Changes - ... (round N).pptx`, `decks/v1 - house style/`) were left on branch `claude/serene-mendel-6jr9ef` as an archive.
 
+**Parts Counter Pay Plan Examples** (reference, ad hoc)
+Terms of 11 signed parts counter pay plans (top 10 parts-gross stores; Chevrolet LV has two), no names: `reference/parts_counter_pay_plans/plans.json` (read its README). Use when someone asks how parts counter / parts staff are paid across the group or wants example pay plans. Rebuild the 3-tab workbook (Plan Comparison with estimates at a benchmark store's volume, Pay Structures, Plan Documents) with `tools/pay_plans/build_parts_counter_pay_plans.py`, then recalc. Confirm plans are still current before reusing; never add employee names; never commit the workbook.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
