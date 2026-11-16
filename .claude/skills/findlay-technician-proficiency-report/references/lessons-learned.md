@@ -150,3 +150,10 @@ POOLED CODES block. Fix it with an entry in `TECH_NO_OVERRIDES` in `build_data.p
 Position ID), only once the user confirms it -- not by changing the parse rule. Each period, after the
 build, compare every zero-sold named tech against the unmatched codes at that store (one-digit
 edit, transposition, dropped leading digit) and ask the user about any plausible pairs.
+
+### Pending tech-number checks (clear once confirmed fixed)
+- **Nov 9-23, 2026 run:** GMC Prescott Position ID for Christopher Callahan parses to 1806, but
+  Oct 25-Nov 8 ROs were dispatched to 1808 (114 sold hrs). The store is correcting it in the DMS during
+  the Nov 9-23 pay period, so that period may still be split between 1806 and 1808. Check both codes;
+  do NOT add a permanent override (the fix is on the store side). Remove this note once 1808 stops
+  carrying hours.
