@@ -157,3 +157,17 @@ edit, transposition, dropped leading digit) and ask the user about any plausible
   the Nov 9-23 pay period, so that period may still be split between 1806 and 1808. Check both codes;
   do NOT add a permanent override (the fix is on the store side). Remove this note once 1808 stops
   carrying hours.
+
+
+## 13. Capacity is technicians only (Nov 2026)
+
+GMC Prescott showed 92% Stall Utilization on 15 stalls because its body shop (3 techs, 2
+painters, 4 helpers, ~38% of store labor gross) was counted in actual gross, Tech Count and
+the blended ELR/GP%, while Total Stalls is service bays only (true for every store, per the
+user). Detailers and Tinters were also counted as 10-flag-hr/day techs at every store, inflating
+tech capacity. The user approved restricting Capacity to Service Technician, Express Technician,
+Service Team Leader and Shop Foreman (PROF_CATEGORIES) for Tech Count, ELR, GP% and Actual
+Period Labor Gross alike, plus pooled codes' production (not headcount). Column P links to the
+technician GROUP SUBTOTAL rows + pooled block instead of the TOTAL row, so it no longer ties to
+the store TOTAL row or the full Qlik labor gross -- reconcile it to Qlik minus Body Shop /
+Detailer / Tinter gross instead. Store sheets, Proficiency and Tech Ranker are unchanged.

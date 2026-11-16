@@ -75,9 +75,14 @@ Capacity measures the **pay period only**, not a month (see `references/lessons-
 - B3:C3 = pay period start/end, taken from `qlik_date_start` / `qlik_date_end` in config.json.
 - Days Open/Period (F) = `NETWORKDAYS.INTL($B$3,$C$3,11)` (Mon-Sat); Days Worked/ Period
   (M) = `NETWORKDAYS.INTL($B$3,$C$3,1)` (Mon-Fri).
-- Actual Period Labor Gross (P) = a live link to the store sheet: TOTAL/AVERAGE row
-  Labor Gross (K) + SUM of the EXCLUDED / POOLED CODES Labor Gross (E). Across all 34
-  stores this must reconcile exactly to the Qlik Labor Gross total in `tech_data.json`.
+- Capacity is **technicians only** (lessons-learned #13): Service Tech, Express Tech, Service
+  Team Leader, Shop Foreman -- no Body Shop, Detailer or Tinter -- for Tech Count, ELR, GP% and
+  actual gross. Pooled codes' production is included (not their headcount).
+- Actual Period Labor Gross (P) = a live link to the store sheet: the technician categories'
+  GROUP SUBTOTAL Labor Gross (K) + SUM of the EXCLUDED / POOLED CODES Labor Gross (E). Across
+  all 34 stores this must reconcile exactly to the Qlik Labor Gross total in `tech_data.json`
+  minus the Body Shop / Detailer / Tinter rows' labor gross.
+- Total Stalls = service bays only, every store.
 - **Total Stalls** (B) is the only value carried forward from the prior workbook's
   Capacity sheet (matched by store name; Hours Open/Day and Desired Flag Hrs/Day also
   carry if present). Tell the user it was carried forward and should be refreshed if any
@@ -104,7 +109,9 @@ suppressing the error.
   **Proficiency % (Sold Hours ÷ Actual Hours) descending, not Sold Hours** -- this was a
   real bug once; see `references/lessons-learned.md`.
 - Confirm the sum of Capacity column P equals the Qlik Labor Gross total in
-  `tech_data.json` (to the dollar).
+  `tech_data.json` minus Body Shop / Detailer / Tinter labor gross (to the dollar).
+- Check `references/lessons-learned.md` "Pending tech-number checks" and run the #12
+  zero-sold-tech vs unmatched-code comparison; ask the user about plausible pairs.
 - Spot-check that Tech No parsing didn't silently misclassify real employees as
   "unmapped/pooled" -- see the parsing rule in `references/lessons-learned.md` before
   trusting the unmapped counts.

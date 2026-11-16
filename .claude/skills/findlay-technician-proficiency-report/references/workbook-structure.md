@@ -132,7 +132,8 @@ Per-row formulas (row `r`):
 ```
 F{r}  =NETWORKDAYS.INTL($B$3,$C$3,11)        Mon-Sat days in period
 M{r}  =NETWORKDAYS.INTL($B$3,$C$3,1)         Mon-Fri days in period
-P{r}  ='Store'!K{total_row}+SUM('Store'!E{pool_start}:E{pool_end})   (no SUM part if no pooled codes)
+P{r}  ='Store'!K{subtotal_row}+... (one term per Service Tech / Express Tech / STL / Shop Foreman
+      GROUP SUBTOTAL row present) +SUM('Store'!E{pool_start}:E{pool_end})   (no SUM part if no pooled codes)
 E=B*C*D  G=E*F  I=G*H  L=J*K*D  N=L*M  O=N*H
 Q=IFERROR(P/I,0)  S=IFERROR(P/O,0)
 ```
@@ -140,7 +141,10 @@ Only Total Stalls (plus Hours Open/Day and Desired Flag Hrs/Day) carries forward
 prior workbook; ELR, GP Retention %, Tech Count and everything derived is recomputed.
 Capacity Ranker columns I-K are headed Actual Period Labor Gross / Tech-Based Potential
 Gross/Period / Stall-Based Potential Gross/Period, ranked by Tech Capacity Utilization %.
-Tech Count = named technicians on the store sheet, every category (broader than Tech
-Ranker's population). Unmapped/pooled codes (MULT, 999, ...) are NOT counted -- they aren't
-people -- but their sold hours, sale and gross still feed ELR, GP Retention % and Actual
-Period Labor Gross (lessons-learned #11).
+Population is technicians only (lessons-learned #13): Tech Count = named Service Technician,
+Express Technician, Service Team Leader and Shop Foreman rows (no outlier exclusion). Body
+Shop, Detailer and Tinter are excluded from Tech Count, ELR, GP Retention % and Actual Period
+Labor Gross. Unmapped/pooled codes (MULT, 999, ...) are NOT counted as technicians, but their
+sold hours, sale and gross still feed ELR, GP Retention % and Actual Period Labor Gross.
+Total Stalls = service bays only. Sum of column P therefore ties to Qlik labor gross minus
+Body Shop/Detailer/Tinter labor gross, not to the full Qlik total.
