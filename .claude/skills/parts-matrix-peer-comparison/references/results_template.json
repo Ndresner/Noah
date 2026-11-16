@@ -1,0 +1,178 @@
+{
+ "_comment": "Schema for build_peer_workbook.py. ALL NUMBERS BELOW ARE ILLUSTRATIVE - real results.json holds store cost data and stays in the scratchpad, never committed. Store keys are manifest keys; Division values are Qlik Division names.",
+ "target": "toyota_prescott",
+ "peers": [
+  "toyota_flagstaff",
+  "toyota_henderson",
+  "toyota_spokane"
+ ],
+ "period": "Aug-Oct 2026",
+ "months_in_period": 3,
+ "findings": [
+  "Lead finding in plain language (shown numbered on the Summary tab).",
+  "..."
+ ],
+ "labor_gross_per_ro": null,
+ "_labor_gross_per_ro": "Optional. Omit/null to use the target's diagnostic/general-repair labor gross per RO from jobs.",
+ "basket": {
+  "_comment": "From the basket bundle. rows = [band, Lines, ROs, Actual, Cost, List, target matrix, peer1 matrix, peer2 ...] in --stores order. lines_below/above_own from the scenarios bundle.",
+  "repair_sources": [
+   "100",
+   "101",
+   "110"
+  ],
+  "lines_below_own": 100,
+  "lines_above_own": 10,
+  "rows": [
+   [
+    "1 cost <=$10",
+    150,
+    100,
+    5000.0,
+    1200.0,
+    2500.0,
+    6000.0,
+    4300.0,
+    3500.0,
+    4200.0
+   ],
+   [
+    "7 >$500",
+    10,
+    9,
+    15000.0,
+    9000.0,
+    14000.0,
+    19000.0,
+    15000.0,
+    15000.0,
+    16000.0
+   ]
+  ]
+ },
+ "scenarios": {
+  "_comment": "From the scenarios bundle: ROs, Mid_<peer>, Cap_<peer> per peer.",
+  "ros": 200,
+  "midpoint": {
+   "peer": "toyota_flagstaff",
+   "sale": 18500.0
+  },
+  "cap": {
+   "toyota_flagstaff": 17000.0,
+   "toyota_henderson": 16500.0,
+   "toyota_spokane": 16000.0
+  }
+ },
+ "jobs": {
+  "_comment": "rows straight from the jobs bundle: [Division, Job, Lines, ROs, PartsSale, PartsCost, LaborSale, LaborCost]. cp_ros from the cpros bundle (current period).",
+  "rows": [
+   [
+    "TOYOTA PRESCOTT",
+    "02 Front brakes",
+    80,
+    80,
+    8000.0,
+    4500.0,
+    25000.0,
+    5000.0
+   ],
+   [
+    "TOYOTA PRESCOTT",
+    "11 Diag/general repair",
+    2000,
+    1200,
+    250000.0,
+    130000.0,
+    270000.0,
+    55000.0
+   ]
+  ],
+  "cp_ros": {
+   "TOYOTA PRESCOTT": 5000,
+   "TOYOTA FLAGSTAFF": 5000,
+   "TOYOTA SPOKANE": 5000,
+   "TOYOTA HENDERSON": 5000
+  }
+ },
+ "broad": {
+  "_comment": "Optional. Per Division [CP ROs (cpros), ROs50, PartsSale, PartsCost (broad)] for prior and current year.",
+  "prior_label": "Aug-Oct 2025",
+  "current_label": "Aug-Oct 2026",
+  "prior": {
+   "TOYOTA PRESCOTT": [
+    4400,
+    680,
+    330000.0,
+    195000.0
+   ]
+  },
+  "current": {
+   "TOYOTA PRESCOTT": [
+    4800,
+    760,
+    370000.0,
+    210000.0
+   ]
+  }
+ },
+ "pricepos": {
+  "_comment": "Optional. From the pricepos bundle: bucket -> store key -> [sale, list, cost].",
+  "period": "Oct 2026",
+  "rows": {
+   "2 At list (+/-0.5%)": {
+    "toyota_prescott": [
+     70000.0,
+     70000.0,
+     42000.0
+    ]
+   }
+  }
+ },
+ "same_part": {
+  "_comment": "Optional. index rows = [peer key, index, matched parts, target $ covered]. Table rows = [part, description, target, peer1, ..., list] (null = not sold).",
+  "subtitle": "October 2026",
+  "index": [
+   [
+    "toyota_flagstaff",
+    0.9,
+    75,
+    50000
+   ]
+  ],
+  "tables": [
+   {
+    "heading": "Maintenance / high-volume items",
+    "rows": [
+     [
+      "00000-00000",
+      "Example part",
+      10.0,
+      11.0,
+      12.0,
+      13.0,
+      null
+     ]
+    ]
+   }
+  ]
+ },
+ "traffic": {
+  "_comment": "Optional. Per Division [prior CP ROs, current CP ROs, prior CP parts $, current CP parts $] from cpros run for each year.",
+  "prior_label": "Jan-Oct 2025",
+  "current_label": "Jan-Oct 2026",
+  "rows": {
+   "TOYOTA PRESCOTT": [
+    15000,
+    15100,
+    2100000.0,
+    2300000.0
+   ]
+  }
+ },
+ "methodology_extra": [
+  [
+   "Label",
+   "Any extra methodology note for this run."
+  ]
+ ]
+}

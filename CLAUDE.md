@@ -82,6 +82,15 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 **Parts & Service Pay vs Gross Report** (Earnings - Parts and Service Employees - Gross Adjusted)
 Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script + Qlik pull spec). ADP pay vs group, plus Qlik gross/workload layer: pay % of dept gross, gross per employee, ROs or sold hrs per employee, Service Advisor gross per RO and ROs/day, ±20% outlier colors. Hire cutoff = last day worked in the pay period. Contains employee pay — never commit the workbook or Qlik JSON.
 
+**Parts Pricing vs. Matrix Audit** (any store / brand)
+Skill: `.claude/skills/parts-matrix-audit/` — always use it. Inputs: CDK "Price Breaks by Source" matrix export (source names optional; Qlik `Source.description` has them). Tests customer-pay part lines (Closed Parts Tickets) against the matrix, only on ROs whose part-bearing lines are all matrix labor types (labor type comes from Closed ROs — part lines carry none). Confirm labor-type roles (matrix / list / reimbursed / package) with the user before testing. Matrix exports on file: `reference/parts_matrices/` (see `manifest.json`; Toyota Prescott/Flagstaff/Henderson/Spokane, Chevrolet LV, Hyundai Prescott, Subaru St George) — add new versions dated, never overwrite. Contains store cost/pricing — never commit the workbook or results JSON.
+
+**Parts Pricing Peer Comparison** (optional, same-brand stores)
+Skill: `.claude/skills/parts-matrix-peer-comparison/` — use only when asked to compare a store's parts pricing to sister stores ("are we too expensive?", "what would lowering the matrix cost?"). Single-store matrix checks stay in the audit skill. Prices the target's repair basket through each peer's main repair matrix, break-even scenarios (midpoint / match each peer, added ROs needed), repair penetration and job tickets by op-code category. Needs `matrix_labor_types` and `main_repair_source` per store in the matrix manifest (confirm with the user if missing). Reference: Toyota Prescott vs Flagstaff/Henderson/Spokane, Aug–Oct 2026. Never commit the workbook or results JSON.
+
+**One-Line Customer Pay RO Report** (any store)
+Skill: `.claude/skills/one-line-cp-ro-report/` — always use it. Share of CP visits with exactly one CP labor line, by advisor / technician / month, the single op code, maintenance attach on repair visits, CP sold on warranty / recall / factory-paid maintenance visits, and gross opportunity. Original + "C" split tickets are merged into one visit (essential — split tickets hold much of the CP work on warranty visits). Last 3 full closed months; tech names from the ADP tech export. Reference: Subaru St George Aug–Oct 2026 (GM Curtis Whitehead). Names advisors/techs — never commit the workbook or results JSON.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference

@@ -1,0 +1,172 @@
+{
+ "description": "CDK \"Price Breaks by Source\" parts pricing matrix exports, one folder per store. Newest dated file is current; older files are kept as history.",
+ "stores": {
+  "toyota_prescott": {
+   "store": "Findlay Toyota Prescott",
+   "qlik_division": "TOYOTA PRESCOTT",
+   "current_matrix": "toyota_prescott/2026-11-04_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_prescott/2026-11-04_matrix.json",
+   "source_descriptions": "toyota_prescott/2026-11-04_source_descriptions.xlsx",
+   "received": "2026-11-04",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CPT"
+   ],
+   "notes": [
+    "Re-sent 2026-11-05; identical to the 2026-11-04 export.",
+    "Source description export also on file (optional input)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-04",
+     "file": "toyota_prescott/2026-11-04_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "100"
+  },
+  "toyota_flagstaff": {
+   "store": "Findlay Toyota Flagstaff",
+   "qlik_division": "TOYOTA FLAGSTAFF",
+   "current_matrix": "toyota_flagstaff/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_flagstaff/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CPT"
+   ],
+   "notes": [
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_flagstaff/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "101"
+  },
+  "toyota_henderson": {
+   "store": "Findlay Toyota Henderson",
+   "qlik_division": "TOYOTA HENDERSON",
+   "current_matrix": "toyota_henderson/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_henderson/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE10",
+   "matrix_labor_types": [
+    "CTC"
+   ],
+   "notes": [
+    "Customer-pay price field is PRICE10 (other Toyota stores use PRICE6).",
+    "Source 200 has only a LIST-field rule (no PRICE10 rule) - untested.",
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_henderson/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "100"
+  },
+  "toyota_spokane": {
+   "store": "Findlay Toyota Spokane",
+   "qlik_division": "TOYOTA SPOKANE",
+   "current_matrix": "toyota_spokane/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "toyota_spokane/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CP"
+   ],
+   "notes": [
+    "Sources 140-145 set the price to another stored price field (PRICE7), which Qlik does not carry - untested.",
+    "Matrix labor type confirmed 2026-11-05 (Prescott peer comparison, Aug-Oct 2026 labor-type profile)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "toyota_spokane/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "110"
+  },
+  "chevrolet_las_vegas": {
+   "store": "Findlay Chevrolet Las Vegas",
+   "qlik_division": "CHEVY LV",
+   "current_matrix": "chevrolet_las_vegas/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "chevrolet_las_vegas/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE10",
+   "matrix_labor_types": [
+    "CP"
+   ],
+   "notes": [
+    "Also carries LIST-field rules (how list is filled, e.g. $0 list -> cost +67%); not customer-pay pricing.",
+    "Matrix change went live 2026-02-02 on GM parts sources 120/123/999 (found in the Nov 2026 audit)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "chevrolet_las_vegas/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": null
+  },
+  "hyundai_prescott": {
+   "store": "Findlay Hyundai Prescott",
+   "qlik_division": "HYUNDAI PRESCOTT",
+   "current_matrix": "hyundai_prescott/2026-11-05_price_breaks_by_source.xlsx",
+   "current_parsed": "hyundai_prescott/2026-11-05_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-05",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CPH"
+   ],
+   "notes": [
+    "One cost-based rule on every priced source (100-104, 106, 145, 995); 996-999 = list. Source 160 has a LIST-field rule only; source 200 has no rule.",
+    "Matrix change went live the week of 2026-07-27 (step change in current-matrix match rate).",
+    "CCCE = Hyundai Complimentary Care (factory-paid maintenance), not matrix-priced. CEX = extended warranty.",
+    "Brake pads sell at a flat $140.95 (not matrix) before and after the change."
+   ],
+   "history": [
+    {
+     "received": "2026-11-05",
+     "file": "hyundai_prescott/2026-11-05_price_breaks_by_source.xlsx"
+    }
+   ],
+   "main_repair_source": "101"
+  },
+  "subaru_st_george": {
+   "store": "Findlay Subaru St. George",
+   "qlik_division": "SUBARU ST GEORGE",
+   "current_matrix": "subaru_st_george/2026-11-09_price_breaks_by_source.xlsx",
+   "current_parsed": "subaru_st_george/2026-11-09_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-09",
+   "cp_price_field": "PRICE6",
+   "matrix_labor_types": [
+    "CS",
+    "CSQ",
+    "CTPMS"
+   ],
+   "main_repair_source": "200",
+   "notes": [
+    "Matrix labor types confirmed 2026-11-09: CS, CSQ (quick lane), CTPMS. CSSC/CEXT reimbursed, CACC unclear, CSEMP employee, CPPM prepaid at cost.",
+    "Source 200 = Subaru dealer parts, LIST + 300% down to LIST + 20% by list band. 202/300/400 = list. 301 tires = cost + 32% (list up to $599.99). 999 windshields = cost + 450% (looks like a setup error).",
+    "Source 203 prices at its own stored PRICE6 (not in Qlik) - untestable. Source 201 has a LIST-field rule only.",
+    "Store splits visits onto 'C' suffix ROs (mostly the customer-pay work on a warranty visit)."
+   ],
+   "history": [
+    {
+     "received": "2026-11-09",
+     "file": "subaru_st_george/2026-11-09_price_breaks_by_source.xlsx"
+    }
+   ]
+  }
+ }
+}
