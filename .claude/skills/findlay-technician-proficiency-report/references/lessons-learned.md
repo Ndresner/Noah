@@ -171,3 +171,24 @@ Period Labor Gross alike, plus pooled codes' production (not headcount). Column 
 technician GROUP SUBTOTAL rows + pooled block instead of the TOTAL row, so it no longer ties to
 the store TOTAL row or the full Qlik labor gross -- reconcile it to Qlik minus Body Shop /
 Detailer / Tinter gross instead. Store sheets, Proficiency and Tech Ranker are unchanged.
+
+
+## 14. Open items from the Sep 10-24, 2026 review (not yet in the scripts)
+
+Carried over from a September session's notes. Check each one at the start of every rebuild
+and raise it with the user until it is resolved.
+
+- **ELR includes pooled codes (decision needed).** Capacity "ELR (Blended)" (col D) includes
+  labor sale from the pooled codes (MULT, 99, 1000, etc.), which carry dollars but ~0 sold
+  hours, so ELR is inflated. Sep 10-24, 2026: Audi Reno $231.70 blended vs $215.18 named techs
+  only, ~8% overstated Stall/Tech-Based potential gross. Ask whether ELR should use named techs
+  only before building. Section 13 keeps pooled codes' production in Capacity, so this still
+  applies.
+- **Per-tech What-If floor.** Additional Sold Hours should be floored at 0 per tech
+  (`MAX(0,G*P-D)`). `store_sheet_builder.py` still writes `G*P-D`, so techs above target show
+  negative hours that reduce the total. These were fixed by hand in the Sep 10-24 workbook.
+- **Store-wide What-If population.** The STORE-WIDE WHAT-IF block's additional hours and gross
+  $/hr should use the same population as Current Store Proficiency % (section 7: Service /
+  Express / STL / Shop Foreman, outliers excluded), not the TOTAL row. The script still
+  references the TOTAL row (`G{tot_r}`, `D{tot_r}`).
+- Capacity Tech Count = named technicians only: done (sections 11 and 13).
