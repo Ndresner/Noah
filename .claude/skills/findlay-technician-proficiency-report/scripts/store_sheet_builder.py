@@ -187,7 +187,9 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
 
     # EXCLUDED / POOLED CODES block
     unmapped = store_data["unmapped"]
+    non_tech = NON_TECH_POOLED_CODES.get(sheet_name, {})
     pooled_range = None
+    non_tech_pool_rows = []
     if unmapped:
         set_cell(ws, r, COL["A"], "EXCLUDED / POOLED CODES (not individually named technicians)", font=f(bold=True))
         r += 1
@@ -200,6 +202,10 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
             set_cell(ws, r, COL["C"], row["ro_count"], font=f())
             set_cell(ws, r, COL["D"], round(row["labor_sale"], 2), number_format="\\$#,##0", font=f())
             set_cell(ws, r, COL["E"], round(row["labor_gross"], 2), number_format="\\$#,##0", font=f())
+            if row["tech_no"] in non_tech:
+                set_cell(ws, r, COL["F"], f"{non_tech[row['tech_no']]} -- not in Capacity",
+                         font=f(size=9, italic=True, color="555555"))
+                non_tech_pool_rows.append(r)
             r += 1
         pooled_range = (r - len(unmapped), r - 1)
 
@@ -222,7 +228,7 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
     # Pooled codes are not counted as technicians (lessons-learned #11).
     cap_named = [row for cat, cat_rows in store_data["named"].items() if cat in PROF_CATEGORIES
                  for row in cat_rows]
-    cap_rows = cap_named + unmapped
+    cap_rows = cap_named + [x for x in unmapped if x["tech_no"] not in non_tech]
     store_wide = {
         "tech_count": len(cap_named),
         "sold_hours": sum(x["sold_hours"] for x in cap_rows),
@@ -238,4 +244,5 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
         "store_wide": store_wide,
         "pooled_range": pooled_range,
         "cap_subtotal_rows": cap_subtotal_rows,
+        "non_tech_pool_rows": non_tech_pool_rows,
     }

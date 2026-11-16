@@ -109,7 +109,8 @@ suppressing the error.
   **Proficiency % (Sold Hours ÷ Actual Hours) descending, not Sold Hours** -- this was a
   real bug once; see `references/lessons-learned.md`.
 - Confirm the sum of Capacity column P equals the Qlik Labor Gross total in
-  `tech_data.json` minus Body Shop / Detailer / Tinter labor gross (to the dollar).
+  `tech_data.json` minus Body Shop / Detailer / Tinter labor gross and minus any
+  `NON_TECH_POOLED_CODES` rows (to the dollar).
 - Check `references/lessons-learned.md` "Pending tech-number checks" and run the #12
   zero-sold-tech vs unmatched-code comparison; ask the user about plausible pairs.
 - Spot-check that Tech No parsing didn't silently misclassify real employees as

@@ -190,3 +190,15 @@ That exposed three openpyxl defaults that LibreOffice had been papering over:
 - Capacity B3:C3 dates use `m/d/yyyy`.
 To check a build against a prior workbook, compare store sheets by row type (tech row, GROUP
 SUBTOTAL, band, TOTAL, What-If, pooled block), not by row number -- tech counts shift rows.
+
+## 15. Non-technician pooled codes (Nov 2026)
+
+Pooled codes' production counts toward Capacity (#13), but some pools aren't technician work.
+Honda North code 3000 is the detailer pool (~250-300 sold hrs, ~$25K gross per period) and was
+inflating its Tech Utilization (86.1% -> 77.3% once excluded, Oct 25-Nov 8). Confirmed non-tech
+pools live in `NON_TECH_POOLED_CODES` in `style_helpers.py` (store sheet name -> {code: label}).
+They stay in the store sheet's EXCLUDED / POOLED CODES block, labeled "<label> -- not in
+Capacity" in column F, are dropped from Capacity's ELR / GP% / gross, and Capacity column P
+subtracts their row (`...+SUM(E{pool})-E{row}`). Add a code only after the store confirms it.
+Reconcile column P to: Qlik labor gross - Body Shop/Detailer/Tinter gross - non-tech pooled codes.
+Unconfirmed lookalikes as of Nov 2026: Honda Henderson 3000, Honda Flagstaff 3001.

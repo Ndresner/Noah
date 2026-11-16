@@ -223,7 +223,8 @@ def main():
              "technicians are each treated as one combined pool per store. Capacity is technicians only: Tech Count "
              "(column J), ELR, GP Retention % and Actual Period Labor Gross all cover named Service Technicians, "
              "Express Technicians, Service Team Leaders and Shop Foremen, plus pooled RO codes (MULT, 999, etc.), "
-             "whose labor gross is included but which are not counted as technicians. Body Shop, Detailer and "
+             "whose labor gross is included but which are not counted as technicians (pooled codes confirmed as "
+             "non-technician work, such as a detailer pool, are excluded). Body Shop, Detailer and "
              "Tinter are excluded, so Actual Period Labor Gross will not tie to the store sheet TOTAL row. "
              "Total Stalls = service bays only. Assumptions "
              "used for all stores: 12 hrs/day open and a combined 10 flag hrs/day/tech goal. Capacity covers the "
@@ -277,6 +278,8 @@ def main():
         if pool:
             terms.append(f"SUM({q}!E{pool[0]}:E{pool[1]})")
         gross_f = "=" + ("+".join(terms) if terms else "0")
+        # non-technician pooled codes (e.g. a detailer pool) are excluded (lessons-learned #15)
+        gross_f += "".join(f"-{q}!E{xr}" for xr in store_meta[sheet_name].get("non_tech_pool_rows", []))
         elr = (sw["labor_sale"] / sw["sold_hours"]) if sw["sold_hours"] else 0.0
         gp_pct = (sw["labor_gross"] / sw["labor_sale"]) if sw["labor_sale"] else 0.0
         set_cell(ws, r, 1, f'=HYPERLINK("#\'{sheet_name}\'!A1","{sheet_name}")', font=f(color="0563C1", underline="single"))
