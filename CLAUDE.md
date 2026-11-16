@@ -91,6 +91,9 @@ Skill: `.claude/skills/parts-matrix-peer-comparison/` — use only when asked to
 **One-Line Customer Pay RO Report** (any store)
 Skill: `.claude/skills/one-line-cp-ro-report/` — always use it. Share of CP visits with exactly one CP labor line, by advisor / technician / month, the single op code, maintenance attach on repair visits, CP sold on warranty / recall / factory-paid maintenance visits, and gross opportunity. Original + "C" split tickets are merged into one visit (essential — split tickets hold much of the CP work on warranty visits). Last 3 full closed months; tech names from the ADP tech export. Reference: Subaru St George Aug–Oct 2026 (GM Curtis Whitehead). Names advisors/techs — never commit the workbook or results JSON.
 
+**Fixed Ops Gross Profit Records** (monthly xlsx + 3-page PDF + recognition email)
+Skill: `.claude/skills/fixed-ops-gross-records-report/` — always use it. Each store's month of Service / Parts / Combined gross ranked against its all-time monthly history (Jan 2021+) from Accting TB, dimension `Store`. Needs last month's workbook (its Data tab is the history). Re-pull current-year months and apply post-close restatements. Never commit outputs.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
