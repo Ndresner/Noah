@@ -62,7 +62,7 @@ def main():
 
     # ---------------- Proficiency sheet ----------------
     ws = wb["Proficiency"]
-    ws.sheet_properties.tabColor = GOLD
+    ws.sheet_properties.tabColor = argb(GOLD)
     set_cell(ws, 1, 1, f"Findlay Automotive Group -- Technician Proficiency -- {NEW_PERIOD_LABEL}",
              font=f(size=14, bold=True, color=NAVY))
     set_cell(ws, 2, 1,
@@ -78,6 +78,7 @@ def main():
                "Total Labor Sale", "Total Labor Gross", "Avg Labor GP%"]
     for i, h in enumerate(headers, start=1):
         set_cell(ws, 4, i, h, font=f(bold=True, color=WHITE), fill_color=NAVY, align=wrap_center())
+    ws.row_dimensions[4].height = 27  # wrapped headers: Excel won't auto-fit (lessons-learned #14)
     r = 5
     prof_start = r
     for sheet_name in sorted(prof_subset.keys()):
@@ -113,6 +114,7 @@ def main():
              "to its sheet.", font=f(size=10, italic=True, color="555555"))
     for i, h in enumerate(headers, start=1):
         set_cell(ws, 4, i, h, font=f(bold=True, color=WHITE), fill_color=NAVY, align=wrap_center())
+    ws.row_dimensions[4].height = 27  # wrapped headers: Excel won't auto-fit (lessons-learned #14)
     r = 5
     rank_start = r
     ranked = sorted(prof_subset.items(), key=lambda kv: -kv[1]["avg_prof"])
@@ -149,6 +151,7 @@ def main():
                   "Actual Hours (Reg+OT)", "Proficiency %", "Status", "Labor Sale", "Labor Gross", "GP%", "ELR"]
     for i, h in enumerate(tr_headers, start=1):
         set_cell(ws, 4, i, h, font=f(bold=True, color=WHITE), fill_color=NAVY, align=wrap_center())
+    ws.row_dimensions[4].height = 27  # wrapped headers: Excel won't auto-fit (lessons-learned #14)
 
     ranker_entries = []
     for sheet_name in sheet_order:
@@ -211,7 +214,7 @@ def main():
             }
 
     ws = wb["Capacity"]
-    ws.sheet_properties.tabColor = GOLD
+    ws.sheet_properties.tabColor = argb(GOLD)
     set_cell(ws, 1, 1, f"Findlay Automotive Group -- Capacity -- {NEW_PERIOD_LABEL}", font=f(size=14, bold=True, color=NAVY))
     ws.merge_cells("A1:T1")
     set_cell(ws, 2, 1,
@@ -236,8 +239,8 @@ def main():
     _ps = _dt.datetime.strptime(_cfg["qlik_date_start"], "%m/%d/%Y")
     _pe = _dt.datetime.strptime(_cfg["qlik_date_end"], "%m/%d/%Y")
     set_cell(ws, 3, 1, "Pay Period Start / End", font=f(bold=True))
-    set_cell(ws, 3, 2, _ps, number_format="mm-dd-yy", font=f(bold=True))
-    set_cell(ws, 3, 3, _pe, number_format="mm-dd-yy", font=f(bold=True))
+    set_cell(ws, 3, 2, _ps, number_format="m/d/yyyy", font=f(bold=True))
+    set_cell(ws, 3, 3, _pe, number_format="m/d/yyyy", font=f(bold=True))
     _days = [_ps + _dt.timedelta(d) for d in range((_pe - _ps).days + 1)]
     DAYS_OPEN = sum(1 for d in _days if d.weekday() < 6)
     DAYS_WORKED = sum(1 for d in _days if d.weekday() < 5)
@@ -257,6 +260,7 @@ def main():
         if i == 1:
             continue  # "Store" already placed at A4, merged into A5
         set_cell(ws, 5, i, h, font=f(bold=True, color=WHITE), fill_color=NAVY, align=wrap_center())
+    ws.row_dimensions[5].height = 40  # wrapped headers: Excel won't auto-fit (lessons-learned #14)
 
     r = 6
     cap_start = r
@@ -304,16 +308,16 @@ def main():
             ws.cell(row=rr, column=cc).border = thin
 
     rng = f"Q{cap_start}:Q{cap_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f"Q{cap_start}<0.75"], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f"Q{cap_start}>=0.75"], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f"Q{cap_start}<0.75"], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f"Q{cap_start}>=0.75"], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     rng = f"R{cap_start}:R{cap_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'R{cap_start}="Below Target"'], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'R{cap_start}="At/Above Target"'], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'R{cap_start}="Below Target"'], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'R{cap_start}="At/Above Target"'], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     add_status_cf(ws, "S", cap_start, cap_end, kind="pct")
     rng = f"T{cap_start}:T{cap_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="Below Target"'], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="In Target"'], font=Font(color=YELLOW_FONT), fill=fill(YELLOW_FILL_CF)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="Above Target"'], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="Below Target"'], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="In Target"'], font=Font(color=argb(YELLOW_FONT)), fill=cf_fill(YELLOW_FILL_CF)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=[f'T{cap_start}="Above Target"'], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
 
     cap_widths = {"A": 21, "B": 12, "C": 13, "D": 14, "E": 14, "F": 13, "G": 16, "H": 13, "I": 18,
                   "J": 10, "K": 14, "L": 13, "M": 13, "N": 15, "O": 18, "P": 15, "Q": 13, "R": 15, "S": 13, "T": 15}
@@ -332,6 +336,7 @@ def main():
                   "Tech-Based Potential Gross/Period", "Stall-Based Potential Gross/Period"]
     for i, h in enumerate(cr_headers, start=1):
         set_cell(ws, 4, i, h, font=f(bold=True, color=WHITE), fill_color=NAVY, align=wrap_center())
+    ws.row_dimensions[4].height = 40  # wrapped headers: Excel won't auto-fit (lessons-learned #14)
 
     cap_rows_by_store = {}
     rr = cap_start
@@ -372,15 +377,15 @@ def main():
     crk_end = r - 1
     add_status_cf(ws, "E", 5, crk_end, kind="pct")
     rng = f"F5:F{crk_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="Below Target"'], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="In Target"'], font=Font(color=YELLOW_FONT), fill=fill(YELLOW_FILL_CF)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="Above Target"'], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="Below Target"'], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="In Target"'], font=Font(color=argb(YELLOW_FONT)), fill=cf_fill(YELLOW_FILL_CF)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=['F5="Above Target"'], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     rng = f"G5:G{crk_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=["G5<0.75"], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=["G5>=0.75"], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=["G5<0.75"], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=["G5>=0.75"], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     rng = f"H5:H{crk_end}"
-    ws.conditional_formatting.add(rng, FormulaRule(formula=['H5="Below Target"'], font=Font(color=RED_FONT), fill=fill(RED_FILL)))
-    ws.conditional_formatting.add(rng, FormulaRule(formula=['H5="At/Above Target"'], font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=['H5="Below Target"'], font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
+    ws.conditional_formatting.add(rng, FormulaRule(formula=['H5="At/Above Target"'], font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     cr_widths = {"A": 8, "B": 21, "C": 12, "D": 12, "E": 15, "F": 15, "G": 15.5, "H": 15.5, "I": 15.5, "J": 18, "K": 18}
     for col, w in cr_widths.items():
         ws.column_dimensions[col].width = w

@@ -16,7 +16,7 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
     if sheet_name in wb.sheetnames:
         del wb[sheet_name]
     ws = wb.create_sheet(sheet_name)
-    ws.sheet_properties.tabColor = tab_color
+    ws.sheet_properties.tabColor = argb(tab_color)
 
     # Row 1: title
     set_cell(ws, 1, 1, f"{sheet_name} -- Technician Proficiency -- {NEW_PERIOD_LABEL}",

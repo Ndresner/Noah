@@ -171,3 +171,22 @@ Period Labor Gross alike, plus pooled codes' production (not headcount). Column 
 technician GROUP SUBTOTAL rows + pooled block instead of the TOTAL row, so it no longer ties to
 the store TOTAL row or the full Qlik labor gross -- reconcile it to Qlik minus Body Shop /
 Detailer / Tinter gross instead. Store sheets, Proficiency and Tech Ranker are unchanged.
+
+## 14. Conditional-format fills, ARGB alpha and header heights (Nov 2026)
+
+`recalc.py` changed: it used to replace the workbook with LibreOffice's re-saved copy (which
+silently normalized styles); it now writes only recalculated values back into the openpyxl file.
+That exposed three openpyxl defaults that LibreOffice had been papering over:
+- **CF fills.** openpyxl's `PatternFill("solid", fgColor=X)` in a `FormulaRule` writes a dxf with
+  only `fgColor`. Excel paints a conditional-format background from `bgColor`, so the green /
+  yellow / red status fills disappeared (only the colored text showed). All CF rules now use
+  `cf_fill()` in `style_helpers.py`, which sets both `fgColor` and `bgColor`. Never pass `fill()`
+  to a `FormulaRule`.
+- **Alpha.** A 6-digit hex becomes `00RRGGBB` (alpha 0). Every color now goes through `argb()`
+  to write `FFRRGGBB` (fonts, fills, CF, borders, tab colors).
+- **Wrapped header rows** on the summary tabs had no explicit height; LibreOffice used to auto-fit
+  them, Excel won't. Set explicitly: row 4 = 27 on Proficiency / Proficiency Ranker / Tech Ranker,
+  40 on Capacity row 5 and Capacity Ranker row 4 (store sheets already set row 4 = 40).
+- Capacity B3:C3 dates use `m/d/yyyy`.
+To check a build against a prior workbook, compare store sheets by row type (tech row, GROUP
+SUBTOTAL, band, TOTAL, What-If, pooled block), not by row number -- tech counts shift rows.

@@ -66,21 +66,35 @@ def qualifies_for_prof_subset(row, category):
     else:
         return prof > 0.02
 
+def argb(color):
+    """Opaque ARGB. openpyxl turns a 6-digit hex into alpha 00 ("00C6EFCE"); write FF explicitly
+    so Excel never reads a color as transparent (lessons-learned #14)."""
+    return color if len(color) == 8 else "FF" + color
+
+
 def f(name=ARIAL, size=11, bold=False, color=None, underline=None, italic=False):
     kwargs = dict(name=name, size=size, bold=bold, italic=italic)
     if color:
-        kwargs["color"] = color
+        kwargs["color"] = argb(color)
     if underline:
         kwargs["underline"] = underline
     return Font(**kwargs)
 
 
 def fill(color):
-    return PatternFill("solid", fgColor=color)
+    return PatternFill("solid", fgColor=argb(color))
+
+
+def cf_fill(color):
+    """Fill for a conditional-format rule (dxf). Excel paints a CF fill from bgColor, not
+    fgColor -- a solid fill with only fgColor shows no background in Excel (lessons-learned #14).
+    Set both, opaque, so Excel and LibreOffice agree."""
+    c = argb(color)
+    return PatternFill(fill_type="solid", fgColor=c, bgColor=c)
 
 
 def thin_border():
-    side = Side(style="thin", color="CCCCCC")
+    side = Side(style="thin", color=argb("CCCCCC"))
     return Border(top=side, bottom=side, left=side, right=side)
 
 
@@ -119,45 +133,45 @@ def add_status_cf(ws, col_letter, row_start, row_end, kind="pct"):
     if kind == "status_text":
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'${col_letter}{row_start}="Under Target"'],
-                              font=Font(color=RED_FONT), fill=fill(RED_FILL)))
+                              font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'${col_letter}{row_start}="On Target"'],
-                              font=Font(color=YELLOW_FONT), fill=fill(YELLOW_FILL_CF)))
+                              font=Font(color=argb(YELLOW_FONT)), fill=cf_fill(YELLOW_FILL_CF)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'${col_letter}{row_start}="Above Target"'],
-                              font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+                              font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
     elif kind == "gp":
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'{col_letter}{row_start}>=0.8'],
-                              font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+                              font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'AND({col_letter}{row_start}>=0.75,{col_letter}{row_start}<0.8)'],
-                              font=Font(color=YELLOW_FONT), fill=fill(YELLOW_FILL_CF)))
+                              font=Font(color=argb(YELLOW_FONT)), fill=cf_fill(YELLOW_FILL_CF)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'{col_letter}{row_start}<0.75'],
-                              font=Font(color=RED_FONT), fill=fill(RED_FILL)))
+                              font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
     elif kind == "pct":
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'${col_letter}{row_start}>=1'],
-                              font=Font(color=GREEN_FONT), fill=fill(GREEN_FILL)))
+                              font=Font(color=argb(GREEN_FONT)), fill=cf_fill(GREEN_FILL)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'AND(${col_letter}{row_start}>=0.85,${col_letter}{row_start}<1)'],
-                              font=Font(color=YELLOW_FONT), fill=fill(YELLOW_FILL_CF)))
+                              font=Font(color=argb(YELLOW_FONT)), fill=cf_fill(YELLOW_FILL_CF)))
         ws.conditional_formatting.add(
             rng, FormulaRule(formula=[f'${col_letter}{row_start}<0.85'],
-                              font=Font(color=RED_FONT), fill=fill(RED_FILL)))
+                              font=Font(color=argb(RED_FONT)), fill=cf_fill(RED_FILL)))
 
 
 def add_posneg_cf(ws, col_letter, row_start, row_end, black_font=False):
     rng = f"{col_letter}{row_start}:{col_letter}{row_end}"
-    pos_font = Font(color=BLACK, bold=True) if black_font else Font(color=GREEN_FONT)
-    neg_font = Font(color=BLACK, bold=True) if black_font else Font(color=RED_FONT)
+    pos_font = Font(color=argb(BLACK), bold=True) if black_font else Font(color=argb(GREEN_FONT))
+    neg_font = Font(color=argb(BLACK), bold=True) if black_font else Font(color=argb(RED_FONT))
     ws.conditional_formatting.add(
         rng, FormulaRule(formula=[f'AND(ISNUMBER(${col_letter}{row_start}),${col_letter}{row_start}>0)'],
-                          font=pos_font, fill=fill(GREEN_FILL)))
+                          font=pos_font, fill=cf_fill(GREEN_FILL)))
     ws.conditional_formatting.add(
         rng, FormulaRule(formula=[f'AND(ISNUMBER(${col_letter}{row_start}),${col_letter}{row_start}<0)'],
-                          font=neg_font, fill=fill(RED_FILL)))
+                          font=neg_font, fill=cf_fill(RED_FILL)))
 
 
 def add_whatif_flag_cf(ws, row_start, row_end):
@@ -165,7 +179,7 @@ def add_whatif_flag_cf(ws, row_start, row_end):
     # technician being targeted is obvious (Excel can't react to a click without VBA).
     rng = f"A{row_start}:B{row_end}"
     ws.conditional_formatting.add(
-        rng, FormulaRule(formula=[f'$P{row_start}<>""'], fill=fill(YELLOW_FILL), font=Font(bold=True)))
+        rng, FormulaRule(formula=[f'$P{row_start}<>""'], fill=cf_fill(YELLOW_FILL), font=Font(bold=True)))
 
 
 def add_category_block_cf(ws, row_start, row_end):
