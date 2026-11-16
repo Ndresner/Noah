@@ -217,16 +217,18 @@ def main():
     set_cell(ws, 2, 1,
              "Rebuilt using the Findlay Capacity Calculator methodology (STALL Capacity Calculator + Forecasting "
              "Tool - TECH Count + Dashboard). No Main/Express split applied per user direction -- stalls and "
-             "technicians are each treated as one combined pool per store. Tech Count (column J) counts every named "
-             "technician on the store sheet, all categories (not just those ranked in Tech Ranker); pooled RO codes "
-             "(MULT, 999, etc.) are not counted as technicians, but their labor gross is included in Actual Period "
-             "Labor Gross. Assumptions "
+             "technicians are each treated as one combined pool per store. Capacity is technicians only: Tech Count "
+             "(column J), ELR, GP Retention % and Actual Period Labor Gross all cover named Service Technicians, "
+             "Express Technicians, Service Team Leaders and Shop Foremen, plus pooled RO codes (MULT, 999, etc.), "
+             "whose labor gross is included but which are not counted as technicians. Body Shop, Detailer and "
+             "Tinter are excluded, so Actual Period Labor Gross will not tie to the store sheet TOTAL row. "
+             "Total Stalls = service bays only. Assumptions "
              "used for all stores: 12 hrs/day open and a combined 10 flag hrs/day/tech goal. Capacity covers the "
              "pay period only (B3:C3): Days Open = Mon-Sat days in the period (stall calc), Days Worked = Mon-Fri "
              "days in the period (tech calc). ELR and GP Retention % are each store's own blended actuals for the "
-             "period, recomputed from this period's closed-RO data. Actual Period Labor Gross is the store-wide "
-             "labor gross for the same dates and population (named techs + pooled codes), linked to each store "
-             "sheet. Total Stalls is carried forward unchanged from the prior period; refresh it from its source "
+             "period (same population), recomputed from this period's closed-RO data. Actual Period Labor Gross "
+             "is linked to each store sheet's technician GROUP SUBTOTAL rows plus the pooled-codes block. "
+             "Total Stalls is carried forward unchanged from the prior period; refresh it from its source "
              "when available. Goals: Stall Capacity Utilization = 75%+, Tech Capacity Utilization = 85-95%.",
              font=f(size=9, italic=True, color="555555"))
     ws.merge_cells("A2:T2")
@@ -265,9 +267,12 @@ def main():
         hours_open = prior.get("hours_open", 12)
         desired_flag = prior.get("desired_flag_hrs", 10)
         q = f"'{sheet_name}'" if " " in sheet_name else sheet_name
-        tot_r = store_meta[sheet_name]["total_row"]
         pool = store_meta[sheet_name].get("pooled_range")
-        gross_f = f"={q}!K{tot_r}" + (f"+SUM({q}!E{pool[0]}:E{pool[1]})" if pool else "")
+        # technician categories' GROUP SUBTOTAL Labor Gross + pooled codes (lessons-learned #13)
+        terms = [f"{q}!K{sr}" for sr in store_meta[sheet_name]["cap_subtotal_rows"]]
+        if pool:
+            terms.append(f"SUM({q}!E{pool[0]}:E{pool[1]})")
+        gross_f = "=" + ("+".join(terms) if terms else "0")
         elr = (sw["labor_sale"] / sw["sold_hours"]) if sw["sold_hours"] else 0.0
         gp_pct = (sw["labor_gross"] / sw["labor_sale"]) if sw["labor_sale"] else 0.0
         set_cell(ws, r, 1, f'=HYPERLINK("#\'{sheet_name}\'!A1","{sheet_name}")', font=f(color="0563C1", underline="single"))

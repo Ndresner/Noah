@@ -1,0 +1,22 @@
+{
+  "_comment": "Shape only, the numbers are made up. One entry per Qlik Division (all 34). gross_months has one value per month on the workbook (Jan..last closed month). All values are sign-flipped (gross positive, a loss is negative). Never commit a filled-in copy.",
+  "period": {"year": 2026, "month": 10},
+  "stores": {
+    "EXAMPLE STORE": {
+      "service": {
+        "gross_months": [100.0, 110.0, 120.0, 130.0, 140.0, 150.0, 160.0, 170.0, 180.0, 190.0],
+        "gross_ytd": 1450.0,
+        "gross_py": 1600.0,
+        "net_ytd": 300.0,
+        "net_py": 280.0
+      },
+      "parts": {
+        "gross_months": [50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0],
+        "gross_ytd": 500.0,
+        "gross_py": 600.0,
+        "net_ytd": 200.0,
+        "net_py": 210.0
+      }
+    }
+  }
+}

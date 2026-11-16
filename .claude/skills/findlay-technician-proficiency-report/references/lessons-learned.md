@@ -139,3 +139,56 @@ gross and understating Tech Utilization, and prompting GMs to ask why their head
 high. It now counts named roster technicians only (all categories). Pooled codes' production
 stays in ELR, GP Retention % and Actual Period Labor Gross, because that work really was
 produced in the shop.
+
+## 12. Per-employee tech-number overrides
+
+The strip-3 parse (#1) is right for every store, but individual ADP Position IDs can still
+carry a different number than the one the store dispatches ROs to in the DMS (Honda Flagstaff
+`HHU001175` -> RO tech `175`, Oct 2026). The symptom: a full-time tech shows zero sold hours
+while an unmatched code at the same store carries a tech-sized workload in the EXCLUDED /
+POOLED CODES block. Fix it with an entry in `TECH_NO_OVERRIDES` in `build_data.py` (keyed by
+Position ID), only once the user confirms it -- not by changing the parse rule. Each period, after the
+build, compare every zero-sold named tech against the unmatched codes at that store (one-digit
+edit, transposition, dropped leading digit) and ask the user about any plausible pairs.
+
+### Pending tech-number checks (clear once confirmed fixed)
+- **Nov 9-23, 2026 run:** GMC Prescott Position ID for Christopher Callahan parses to 1806, but
+  Oct 25-Nov 8 ROs were dispatched to 1808 (114 sold hrs). The store is correcting it in the DMS during
+  the Nov 9-23 pay period, so that period may still be split between 1806 and 1808. Check both codes;
+  do NOT add a permanent override (the fix is on the store side). Remove this note once 1808 stops
+  carrying hours.
+
+
+## 13. Capacity is technicians only (Nov 2026)
+
+GMC Prescott showed 92% Stall Utilization on 15 stalls because its body shop (3 techs, 2
+painters, 4 helpers, ~38% of store labor gross) was counted in actual gross, Tech Count and
+the blended ELR/GP%, while Total Stalls is service bays only (true for every store, per the
+user). Detailers and Tinters were also counted as 10-flag-hr/day techs at every store, inflating
+tech capacity. The user approved restricting Capacity to Service Technician, Express Technician,
+Service Team Leader and Shop Foreman (PROF_CATEGORIES) for Tech Count, ELR, GP% and Actual
+Period Labor Gross alike, plus pooled codes' production (not headcount). Column P links to the
+technician GROUP SUBTOTAL rows + pooled block instead of the TOTAL row, so it no longer ties to
+the store TOTAL row or the full Qlik labor gross -- reconcile it to Qlik minus Body Shop /
+Detailer / Tinter gross instead. Store sheets, Proficiency and Tech Ranker are unchanged.
+
+
+## 14. Open items from the Sep 10-24, 2026 review (not yet in the scripts)
+
+Carried over from a September session's notes. Check each one at the start of every rebuild
+and raise it with the user until it is resolved.
+
+- **ELR includes pooled codes (decision needed).** Capacity "ELR (Blended)" (col D) includes
+  labor sale from the pooled codes (MULT, 99, 1000, etc.), which carry dollars but ~0 sold
+  hours, so ELR is inflated. Sep 10-24, 2026: Audi Reno $231.70 blended vs $215.18 named techs
+  only, ~8% overstated Stall/Tech-Based potential gross. Ask whether ELR should use named techs
+  only before building. Section 13 keeps pooled codes' production in Capacity, so this still
+  applies.
+- **Per-tech What-If floor.** Additional Sold Hours should be floored at 0 per tech
+  (`MAX(0,G*P-D)`). `store_sheet_builder.py` still writes `G*P-D`, so techs above target show
+  negative hours that reduce the total. These were fixed by hand in the Sep 10-24 workbook.
+- **Store-wide What-If population.** The STORE-WIDE WHAT-IF block's additional hours and gross
+  $/hr should use the same population as Current Store Proficiency % (section 7: Service /
+  Express / STL / Shop Foreman, outliers excluded), not the TOTAL row. The script still
+  references the TOTAL row (`G{tot_r}`, `D{tot_r}`).
+- Capacity Tech Count = named technicians only: done (sections 11 and 13).

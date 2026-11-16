@@ -1,0 +1,19 @@
+# Employee-level data (names, per-tech hours/gross, ADP detail). Never commit.
+# Re-upload these at the start of a session that rebuilds Proficiency or Productivity.
+build/prof/roster.xlsx
+build/prof/role_adj.json
+build/prof/tech_data.json
+build/prof/tech_gross.json
+build/prof/sold.json
+build/prof/sold_raw.json
+build/prof/bad.json
+build/hc/diff.json
+inputs/Employee_Count_by_Position_*.xlsx
+inputs/qlik/prod_headcount_names_*.json
+decks/Headcount - In ADP but not Qlik*.csv
+
+# Build outputs and dependencies
+node_modules/
+package-lock.json
+build/*.pptx
+*.pdf

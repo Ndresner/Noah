@@ -92,7 +92,7 @@ Keys are ADP company codes. Values are period totals, not monthly amounts; the s
 S=.claude/skills/fixed-ops-pay-vs-gross-report/scripts
 # 3a. base workbook from the raw ADP export (period end = last day worked)
 python3 $S/build_base.py --adp "<ADP export>.xlsx" --out <scratchpad>/base.xlsx --period-end 2026-08-09 --qlik <scratchpad>/qlik.json
-#     stops with an error if any ADP company code isn't in the store map; add the code to CODE_MAP (or Sheet1) and rerun
+#     stops with an error if any ADP company code isn't in the store map; add the store to reference/stores.json (adp_payroll_name) or Sheet1 and rerun
 # 3b. gross & workload layer
 python3 $S/add_gross_workload.py \
   --base <scratchpad>/base.xlsx --qlik <scratchpad>/qlik.json \
@@ -214,6 +214,42 @@ Send the file with SendUserFile. It contains employee names and pay, so **never 
 - **Jan–Jul 2026 result**:
   - 14 ADP Service Advisors suggested Internal ($10.7M internal gross); 9 pending review.
   - 23 internal writers are managers, directors, porters and similar, so they don't affect advisor averages. For example, Honda Henderson's Acoba ($3.7M internal gross) is titled SERVICE MANAGER.
+
+**Service Mgmt Comparison tab** (after Advisor Classification). The management layer is Service Director + Service Manager + Service Drive Manager, by the user's choice; BDC, rental and express managers and shop foremen are excluded.
+- **Layout**: one row per store with ADP pay for those titles (Findlay Customs excluded). Row 3 holds the band and the size line (INTERCEPT/SLOPE of mgmt pay vs service gross across the listed stores). Row 4 is GROUP AVERAGE.
+- **Columns**:
+  - Mgmt headcount and structure label
+  - Total mgmt pay per month
+  - Service gross per month; pay % of gross
+  - **Service Net Before Mgmt Pay** = (P&L service gross − service expense) per month + mgmt pay; pay % of net
+  - **Service Staff**: Productivity app average headcount; staff per manager; pay per staff member
+  - CP+W ROs per month; pay per 1,000 ROs
+  - Expected pay from three views: Size = MAX(0, intercept + slope × gross); Profit = MAX(0, net) × group pay % of net; Staff = staff × group pay per staff member
+  - Expected = average of the three views; Pay vs Expected; Annual Excess; Grade (same cut-offs as advisors); Flags
+- **vs Group colors**: higher is red on all four ratios.
+- **Flags** (they don't affect the grade): manager writes internal ROs (≥ $50K internal gross, from the Advisor Classification pull); individual pay over 2× or under 0.5× the group average for the title; hired or rehired this year; service department unprofitable before mgmt pay.
+- **Sorting**: initial sort by Annual Excess, computed in Python to match the formulas. Annual Excess doesn't net to $0 here, because expected pay blends three views.
+- **Data**:
+  - Qlik JSON per store: `service_expense` (no sign flip; expenses are positive) = `Sum({<Year={'2026'},Dept={'Service'},StdAccountType={'E'}>} Jul_YTD_Amt)`.
+  - `service_staff` = Productivity app `948ab4f4-bf9d-47d5-b5ba-6565499db705`: `Sum({<Year={'2026'},Month={'Jan',…,'Jul'},JobGroup={'Fixed Employee'},JobTitle={<service roles>}>} Headcount)/7`. Use `JobGroup={'Fixed Employee'}` because manager titles are mapped to two job groups and would double count. Service roles: SERVICE ADVISOR, SERVICE TECHNICIAN, EXPRESS TECHNICIAN, SHOP FOREMAN, SERVICE TEAM LEADER, SERVICE DISPATCH, SERVICE PORTER, LEAD SERVICE PORTER, SHUTTLE DRIVER, SERVICE BDC, SERVICE BDC MANAGER, SERVICE WARRANTY CLERK, CASHIER, RENTAL CAR MANGER, RENTAL CAR REPRESENTATIVE, EXPRESS SERVICE MANAGER, DETAILER, TINTER.
+  - Qlik Store Data columns Z–AB hold these.
+- **Jan–Jul 2026 reference values**:
+  - Group: 65 managers; $1.15M/month mgmt pay; 8.2% of gross; 25.6% of net before mgmt pay; 18 staff per manager; $968 per staff member.
+  - Grades: 14 F, 4 D, 7 C, 3 B, 6 A.
+  - Top of the ranking: Subaru Prescott, +$233K a year.
+  - Confirm before using: Toyota Henderson Director at $74K/month; Mazda Henderson Director at $2.5K/month.
+
+**Service Mgr Detail tab** (after Service Mgmt Comparison): one row per Director, Service Manager and Drive Manager.
+- **Layout**: gold GROUP AVG rows per title at the top, followed by the header and the people, initially sorted by individual Annual Excess.
+- **Columns**:
+  - Store, name, title, hire/rehire date
+  - Avg monthly pay (`'Raw Data'!J`) vs the title's group average
+  - Pay % of store service gross, pay per store staff member, pay per 1,000 ROs; each vs the **same-title** group ratio (sum of pay ÷ sum of the store metric across that title's people)
+  - Share of Store Expected = the title's group average pay ÷ the sum of the title averages for that store's managers
+  - Expected Pay = the store's expected pay (Service Mgmt Comparison column U) × share. The shares add back exactly to the store's expected pay.
+  - Pay vs Expected, Annual Excess, Grade, Store (layer) Grade, Flags
+- **Confirmed pay records**: listed in the Qlik JSON as `"pay_confirmed": ["<ADP code>|<Payroll Name>"]`. Their flags read "(pay confirmed)" instead of "confirm". **Carry this forward each period.** As of Oct 2026: Z6C|Short, Brian ($74K/month Service Director pay, confirmed correct by the user).
+- **Reference values (Jan–Jul 2026)**: title averages are Director $24,567, Manager $16,221, Drive Manager $12,717. Top of the list is Toyota Henderson's Short (+$318K; pay confirmed correct). The bottom is Audi Henderson's McNeely (−$547K).
 
 **Group Position Summary**, columns E–J:
 - E Gross Basis

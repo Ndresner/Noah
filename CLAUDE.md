@@ -14,6 +14,7 @@ Noah, Fixed Operations analytics/reporting at Findlay Automotive Group (34-store
   - Profit & Loss — `bc30d66f-4564-4df0-89a7-368f2c9a931e`
   - Fixed Ops Accounting TB — `e077f027`
   - Productivity — `948ab4f4`
+- Store crosswalk: `reference/stores.json` — one row per ADP company code with Qlik logon, display name, state, Qlik CompanyName, ADP location and ADP payroll name. Shared by all skills; update it (only there) when a store opens, closes or changes code. `adp_payroll_name` values are verbatim from ADP, typos included ("Hyundal Prescott", "Hyundai Sg. George", "Lincoln " with trailing space) — intentional, pay-vs-gross tab names depend on them; don't "fix" them.
 - Some reports use non-Qlik sources: ADP exports, RO Detail exports, Tech Pay Master file, vendor pricing spreadsheets.
 - ADP: pull with the CLI `tools/adp/adp_cli.py` (skill `.claude/skills/adp-pull/`) — same layout as the manual exports. Credentials are env secrets only; outputs contain pay/PII, scratchpad only, never commit.
 
@@ -81,6 +82,27 @@ Shop supplies credit-only account; flags incorrect debit postings. Store Summary
 
 **Parts & Service Pay vs Gross Report** (Earnings - Parts and Service Employees - Gross Adjusted)
 Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script + Qlik pull spec). ADP pay vs group, plus Qlik gross/workload layer: pay % of dept gross, gross per employee, ROs or sold hrs per employee, Service Advisor gross per RO and ROs/day, ±20% outlier colors. Hire cutoff = last day worked in the pay period. Contains employee pay — never commit the workbook or Qlik JSON.
+
+**Parts Pricing vs. Matrix Audit** (any store / brand)
+Skill: `.claude/skills/parts-matrix-audit/` — always use it. Inputs: CDK "Price Breaks by Source" matrix export (source names optional; Qlik `Source.description` has them). Tests customer-pay part lines (Closed Parts Tickets) against the matrix, only on ROs whose part-bearing lines are all matrix labor types (labor type comes from Closed ROs — part lines carry none). Confirm labor-type roles (matrix / list / reimbursed / package) with the user before testing. Matrix exports on file: `reference/parts_matrices/` (see `manifest.json`; Toyota Prescott/Flagstaff/Henderson/Spokane, Chevrolet LV, Hyundai Prescott, Subaru St George) — add new versions dated, never overwrite. Contains store cost/pricing — never commit the workbook or results JSON.
+
+**Parts Pricing Peer Comparison** (optional, same-brand stores)
+Skill: `.claude/skills/parts-matrix-peer-comparison/` — use only when asked to compare a store's parts pricing to sister stores ("are we too expensive?", "what would lowering the matrix cost?"). Single-store matrix checks stay in the audit skill. Prices the target's repair basket through each peer's main repair matrix, break-even scenarios (midpoint / match each peer, added ROs needed), repair penetration and job tickets by op-code category. Needs `matrix_labor_types` and `main_repair_source` per store in the matrix manifest (confirm with the user if missing). Reference: Toyota Prescott vs Flagstaff/Henderson/Spokane, Aug–Oct 2026. Never commit the workbook or results JSON.
+
+**One-Line Customer Pay RO Report** (any store)
+Skill: `.claude/skills/one-line-cp-ro-report/` — always use it. Share of CP visits with exactly one CP labor line, by advisor / technician / month, the single op code, maintenance attach on repair visits, CP sold on warranty / recall / factory-paid maintenance visits, and gross opportunity. Original + "C" split tickets are merged into one visit (essential — split tickets hold much of the CP work on warranty visits). Last 3 full closed months; tech names from the ADP tech export. Reference: Subaru St George Aug–Oct 2026 (GM Curtis Whitehead). Names advisors/techs — never commit the workbook or results JSON.
+
+**Fixed Ops Gross Profit Records** (monthly xlsx + 3-page PDF + recognition email)
+Skill: `.claude/skills/fixed-ops-gross-records-report/` — always use it. Each store's month of Service / Parts / Combined gross ranked against its all-time monthly history (Jan 2021+) from Accting TB, dimension `Store`. Needs last month's workbook (its Data tab is the history). Re-pull current-year months and apply post-close restatements. Never commit outputs.
+
+**Net Profit Ranker — Net to Gross tab** (monthly; Fixed, Service, Parts files)
+Skill: `.claude/skills/net-profit-ranker-net-to-gross/` — always use it. The user supplies the three Net Profit Ranker workbooks; the skill pulls Service/Parts gross from the P&L app (`Dept` field, `Line Desc` = 'Total Departmental Gross Profit' / 'Net Profit Or Loss', sign flipped), reconciles net to the workbook, and adds a "Net to Gross" tab styled from the Total tab. "Fixed" = Service + Parts only (not whole store, no Body Shop). Includes the distribution email template. Never commit the workbooks or Qlik JSON.
+
+**Service Policy (71034) Employee & Advisor RO Audit** (monthly)
+Skill: `.claude/skills/fixed-ops-71034-policy-audit/` — always use it (one-call Qlik Concat pull + build script). Closed ROs on each store's 71034 policy labor type (config/policy_labor_types.json) matched to the ADP Active/Leave list: advisor = customer, cust # = same-store CDK employee ID, employee-name matches (Confirmed/Likely/Review/Low), plus the credit reclass pattern (policy parts charged, policy labor credited; net-$0 ROs called out) and cross-type offsets (credit on a different labor type, 2nd Qlik call). 6 tabs: Summary, Flagged ROs, Policy Offsets, Cross-Type Offsets, Not in 71034 Scope, Method & Limits. Contains employee names/IDs — never commit the workbook, Qlik file or QA JSON.
+
+**Day 2 Fixed Ops Deck (Oct 29, 2026 GM & Service Manager meeting)**
+Project lives in `day2-deck/`. Read `day2-deck/CLAUDE.md` first: it holds the meeting context, basis rules, house style and open decisions. Review-round decks (`Changes - ... (round N).pptx`, `decks/v1 - house style/`) were left on branch `claude/serene-mendel-6jr9ef` as an archive.
 
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
