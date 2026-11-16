@@ -213,17 +213,23 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
     # Target cell (column P) when scrolling right -- see lessons-learned #10.
     ws.freeze_panes = "C5"
 
-    # store-wide totals for the Capacity tab: production (sold hours, sale, gross) covers ALL
-    # techs (named + unmapped/pooled codes); tech_count is named technicians only, since pooled
-    # codes like MULT/999 aren't people (lessons-learned #11)
-    named_rows = [row for cat_rows in store_data["named"].values() for row in cat_rows]
-    all_rows = named_rows + unmapped
+    # Totals for the Capacity tab: technicians only (lessons-learned #13). Tech Count, ELR, GP%
+    # and Actual Period Labor Gross all use the same population: named Service Technician,
+    # Express Technician, Service Team Leader and Shop Foreman rows (PROF_CATEGORIES, no outlier
+    # exclusion -- a zero-sold tech still occupies capacity), plus unmapped/pooled codes, whose
+    # work is service-lane production. Body Shop, Detailer and Tinter are excluded: stall counts
+    # are service bays only, and those roles don't flag 10 hrs/day at the service labor rate.
+    # Pooled codes are not counted as technicians (lessons-learned #11).
+    cap_named = [row for cat, cat_rows in store_data["named"].items() if cat in PROF_CATEGORIES
+                 for row in cat_rows]
+    cap_rows = cap_named + unmapped
     store_wide = {
-        "tech_count": len(named_rows),
-        "sold_hours": sum(x["sold_hours"] for x in all_rows),
-        "labor_sale": sum(x["labor_sale"] for x in all_rows),
-        "labor_gross": sum(x["labor_gross"] for x in all_rows),
+        "tech_count": len(cap_named),
+        "sold_hours": sum(x["sold_hours"] for x in cap_rows),
+        "labor_sale": sum(x["labor_sale"] for x in cap_rows),
+        "labor_gross": sum(x["labor_gross"] for x in cap_rows),
     }
+    cap_subtotal_rows = [sub_r for cat, cs, ce, sub_r in category_ranges if cat in PROF_CATEGORIES]
 
     return {
         "total_row": tot_r,
@@ -231,4 +237,5 @@ def build_store_sheet(wb, sheet_name, store_data, tab_color=NAVY):
         "all_named_rows": all_named_rows,
         "store_wide": store_wide,
         "pooled_range": pooled_range,
+        "cap_subtotal_rows": cap_subtotal_rows,
     }
