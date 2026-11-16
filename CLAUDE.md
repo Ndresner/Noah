@@ -87,3 +87,17 @@ Skill: `.claude/skills/fixed-ops-pay-vs-gross-report/` — always use it (script
 ## Full narrative reference
 
 See `Findlay_FixedOps_Reports_Reference.md` in this repo for complete methodology notes, caveats, and historical detail on every report above — this file is the condensed/instruction version for quick session loading.
+
+## Email drafting format — always follow
+
+When drafting emails for Noah, use a clean, easy-to-scan layout:
+
+- Keep the subject line separate from the body when providing one.
+- Greeting on its own line, followed by a blank line.
+- Short paragraphs with a blank line between them.
+- Bullets for multiple items, questions, or action points — concise, one per line.
+- Numbered list when items have a clear order or need to be answered individually.
+- Don't turn a simple message into a list; use paragraphs when they read more naturally.
+- Blank line before and after any list.
+- End with a brief closing ("Thanks," or "Best,") on its own line. No name, title, or signature — Noah adds the signature.
+- Professional, natural, conversational tone. Return in plain text with spacing that pastes cleanly into an email.
