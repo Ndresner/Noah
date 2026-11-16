@@ -94,6 +94,9 @@ Skill: `.claude/skills/one-line-cp-ro-report/` — always use it. Share of CP vi
 **Fixed Ops Gross Profit Records** (monthly xlsx + 3-page PDF + recognition email)
 Skill: `.claude/skills/fixed-ops-gross-records-report/` — always use it. Each store's month of Service / Parts / Combined gross ranked against its all-time monthly history (Jan 2021+) from Accting TB, dimension `Store`. Needs last month's workbook (its Data tab is the history). Re-pull current-year months and apply post-close restatements. Never commit outputs.
 
+**Net Profit Ranker — Net to Gross tab** (monthly; Fixed, Service, Parts files)
+Skill: `.claude/skills/net-profit-ranker-net-to-gross/` — always use it. The user supplies the three Net Profit Ranker workbooks; the skill pulls Service/Parts gross from the P&L app (`Dept` field, `Line Desc` = 'Total Departmental Gross Profit' / 'Net Profit Or Loss', sign flipped), reconciles net to the workbook, and adds a "Net to Gross" tab styled from the Total tab. "Fixed" = Service + Parts only (not whole store, no Body Shop). Includes the distribution email template. Never commit the workbooks or Qlik JSON.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
