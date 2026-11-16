@@ -101,6 +101,9 @@ Skill: `.claude/skills/net-profit-ranker-net-to-gross/` — always use it. The u
 **Service Policy (71034) Employee & Advisor RO Audit** (monthly)
 Skill: `.claude/skills/fixed-ops-71034-policy-audit/` — always use it (one-call Qlik Concat pull + build script). Closed ROs on each store's 71034 policy labor type (config/policy_labor_types.json) matched to the ADP Active/Leave list: advisor = customer, cust # = same-store CDK employee ID, employee-name matches (Confirmed/Likely/Review/Low), plus the credit reclass pattern (policy parts charged, policy labor credited; net-$0 ROs called out) and cross-type offsets (credit on a different labor type, 2nd Qlik call). 6 tabs: Summary, Flagged ROs, Policy Offsets, Cross-Type Offsets, Not in 71034 Scope, Method & Limits. Contains employee names/IDs — never commit the workbook, Qlik file or QA JSON.
 
+**Day 2 Fixed Ops Deck (Oct 29, 2026 GM & Service Manager meeting)**
+Project lives in `day2-deck/`. Read `day2-deck/CLAUDE.md` first: it holds the meeting context, basis rules, house style and open decisions. Review-round decks (`Changes - ... (round N).pptx`, `decks/v1 - house style/`) were left on branch `claude/serene-mendel-6jr9ef` as an archive.
+
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
 ## Full narrative reference
