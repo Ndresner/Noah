@@ -1,0 +1,14 @@
+{
+  "_note": "Which RO labor types post to GL 71034 (Service Policy), by Qlik logon. Source: 71034_Policy_Labor_Type_Mapping_Aug2026.xlsx (Store Mapping col K; Labor Type Index for the unconfirmed secondaries). 'primary' = proven by GL tie or RO coverage. 'secondary' = seen on 71034 ROs but not confirmed; included by default (as in the Aug-2026 audit), drop with --no-secondary. Stores not listed had no 71034 activity that month; their ISP-family hits go to the 'Not in 71034 Scope' tab.",
+  "as_of": "Aug 2026",
+  "primary": {
+    "1": ["ISP"], "4": ["IP"], "5": ["IPOL"], "8": ["ISP"], "9": ["ISPG"], "10": ["ISPT"],
+    "12": ["ISP"], "15": ["IOA"], "16": ["ISP"], "17": ["ISP"], "18": ["ISPA", "ISPL"],
+    "19": ["IPS"], "21": ["ISP"], "22": ["IHPS"], "23": ["IPS"], "25": ["IPS"], "26": ["ISP"],
+    "28": ["ISPA"], "31": ["ISP", "ISPJ"], "32": ["ISP"], "34": ["ISP"], "35": ["IPS", "IMPI"],
+    "36": ["ISP"], "37": ["ISPH"], "38": ["IPLMK"], "39": ["ISPS"], "41": ["ISP"], "43": ["IMGT"],
+    "44": ["IMGT"], "45": ["ISP"], "46": ["ISP"], "47": ["ISP"]
+  },
+  "secondary": {"12": ["IXP"], "34": ["ISPB"], "46": ["IMGT"]},
+  "out_of_scope_types": ["ISP", "ISPJ"]
+}

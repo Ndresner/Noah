@@ -1,0 +1,174 @@
+---
+name: fixed-ops-71034-policy-audit
+description: Build or refresh Findlay's monthly Service Policy (GL 71034) Employee & Advisor-Owned RO audit workbook — closed ROs on each store's policy labor type matched against the ADP Active/Leave employee list to find advisors writing policy ROs to themselves, ROs on employee customer numbers, and employee-name matches (Confirmed / Likely / Review / Low). Use whenever the user asks to run, update, refresh or rebuild the 71034 audit, the service policy audit, the employee/advisor policy RO audit, or "advisor = customer" checks — even if they only attach a new ADP Employee List export. Do not hand-build it; run the bundled scripts.
+---
+
+# Service Policy (71034) Employee & Advisor RO Audit
+
+Answers one question: **which policy (GL 71034) ROs this month went to our own employees, and did any advisor write one to themselves?** It also lists the **credit reclass pattern**: parts charged to policy with a policy labor credit offsetting it. A separate tab screens **cross-type offsets**: policy parts charged with a credit on a different labor type. Output is a 6-tab workbook: Summary, Flagged ROs, Policy Offsets, Cross-Type Offsets, Not in 71034 Scope, Method & Limits.
+
+Two scripts:
+1. `scripts/qlik_pull_expr.py` prints the arguments for the one Qlik call that pulls the whole month.
+2. `scripts/build_audit.py` takes the Qlik result file plus the ADP export and writes the workbook and a QA JSON.
+
+The store crosswalk (Qlik logon ↔ ADP Store ID ↔ display name) is the shared repo file `reference/stores.json`.
+
+Config lives in `config/`. It contains no employee or financial data.
+- `policy_labor_types.json`: which labor types post to 71034 at each store, from the Aug-2026 71034 Labor Type Mapping.
+- `common_surnames.txt`: about 200 frequent US surnames. It decides Low vs. Review on other-store name matches.
+
+## Inputs to collect
+
+1. **ADP "Employee List – Active/Leave" export (.xlsx)**, pulled as close to month-end as possible. It needs these columns: Location Description, Store ID, CDK Employee ID #, Legal Last Name, Legal First Name, Position Status.
+2. **The audit month** (e.g. `2026-09`).
+3. **Whether the labor type mapping changed.** The default is the Aug-2026 mapping. If the user has a newer `71034_Policy_Labor_Type_Mapping_*.xlsx`, update `policy_labor_types.json` from its Store Mapping column K and its Labor Type Index "(unconfirmed)" rows before running. Stores missing from `primary` are treated as having no 71034 activity that month.
+
+## Step 0: Environment
+
+`recalc.py` needs LibreOffice Calc. If recalc times out, install it:
+`apt-get update && apt-get install -y --no-install-recommends libreoffice-calc`
+Run `apt-get update` first; the stale package index returns 404s.
+
+## Step 1: Qlik pull (one call)
+
+Run `qlik_clear_selections` on Closed ROs `c3efc739-b063-47dd-a4d3-d1c4cac07ad0` first. Then generate the call:
+
+```bash
+S=.claude/skills/fixed-ops-71034-policy-audit/scripts
+python3 $S/qlik_pull_expr.py --month 2026-09        # prints appId / dimensions / measures JSON
+```
+
+Pass the printed JSON to `qlik_create_data_object` exactly as printed.
+- The result comes back as 34 rows, one per store: `logon`, `n`, and `rows`, where `rows` holds all RO × labor-type lines joined with `~`, with fields separated by `|`.
+- The result is about 400K characters. The client saves it to a `tool-results/…txt` file instead of showing it inline. Copy that file into the scratchpad and **don't read it into context**.
+- Why this shape: page-based pulls cap at 100 rows per call (about 48 calls a month). The Concat shape gets everything in one call and nothing has to be retyped.
+- If the result does come back inline (a very small month), split the call into two by `%Logon` and have a subagent save each JSON verbatim, or write it as CSV (see the `build_audit.py` docstring for the columns).
+- Auth failures on the first attempt are normal. Retry once.
+
+**Second call (cross-type offsets):** run `qlik_clear_selections` again, then:
+`python3 $S/qlik_pull_expr.py --month 2026-09 --other-lines`
+- Pass the result to `qlik_create_data_object` the same way.
+- It returns every labor line (any pay type) on ROs that carry a policy labor type, using a `%RO=P(...)` set. Fields: `ro|labortype|paytype|laborsale|laborcost|partssale|partscost`.
+- It's about 320K characters, so it's also saved to a file. Copy it to the scratchpad as `qlik_<mon>_other.json`.
+- If you skip this call, the Cross-Type Offsets tab says "Not run".
+
+The labor type filter covers every mapped type in every store. `build_audit.py` then decides scope for each store. The `n` measure is a row-count check: the script stops if any store's Concat came back truncated.
+
+## Step 2: Build, then recalc (mandatory)
+
+```bash
+python3 $S/build_audit.py --qlik <scratchpad>/qlik_<mon>.json --qlik-other <scratchpad>/qlik_<mon>_other.json \
+  --adp "<ADP Employee List>.xlsx" --month 2026-09 \
+  --out "<scratchpad>/71034_Employee_Advisor_Policy_Audit_Sep2026.xlsx"   # [--no-secondary]
+python3 <xlsx-skill>/scripts/recalc.py "<out>.xlsx" 240   # must report success, 0 errors
+```
+
+Never re-save with openpyxl after recalc; it strips cached values. The script prints the population, a count per flag, and any warnings. The QA JSON sits next to the output file.
+
+## Step 3: Verify before delivering
+
+- recalc shows `total_errors: 0`. Summary rows C13, D13 and E13 are all 0 (counts, sale and cost tie to Flagged ROs).
+- Check the QA JSON:
+  - `adp_unmapped_locations` should hold only `J01 CUSTOMS`. Any other code means `reference/stores.json` needs a new store.
+  - `mapped_stores_without_rows` should be empty. A mapped store with no policy ROs usually means the labor type changed.
+  - `unmapped_policy_types` lists labor types in the pull that aren't mapped at that store, e.g. `15:ISP` (Lincoln posts IOA). Tell the user if a new one shows up.
+  - `id_hits_name_mismatch` lists customer # = employee ID hits whose names disagree. They are dropped, not flagged. List them for the user if there are any.
+- **Reference run (Aug 2026):**
+  - Population 4,595 ROs across 32 stores, ADP 2,813 rows and 35 locations, 30 employee-ID hits.
+  - 61 flagged: 6 / 2 / 20 / 15 / 2 / 6 / 10 by flag. Policy sale $4,572.18, policy cost $5,157.84.
+  - 4 ROs on the out-of-scope tab (stores 3 and 42).
+  - Policy Offsets: 30 ROs, 11 of them net $0. Parts $5,976.99, labor credit −$11,690.81. Toyota Henderson's credit (−$1,651.55) ties to the mapping's ISPT negative labor. 1 is also on Flagged ROs (Chevrolet Las Vegas RO 1096121).
+  - Sep 2026: 24 offset ROs (7 net $0), parts $8,836.59, credit −$11,210.09, none on Flagged ROs.
+  - Cross-Type Offsets: Aug 22 ROs (credit −$3,232.78); Sep 47 ROs (credit −$10,829.14). Neither month has any net $0. Each month has 1 that's also on Flagged ROs.
+  - Sep 2026: 17 Honda Henderson ROs (RO 1130841–1130867 batch) each carry $22.56 policy parts plus a ~$99 internal "I" labor credit.
+  - This rebuild matched the original hand-built Aug workbook row for row. The one extra row (VW Henderson RO 482937, "RANDS JR,RICHARD") is caught because suffixes are now stripped. It carries a "Suffix differs" note.
+
+## Step 4: Deliver
+
+Send the workbook. Lead with:
+- Confirmed and Likely ROs, with policy cost.
+- Policy offsets: count, net-$0 count, parts vs. credit, the stores involved, and any that are also employee or advisor ROs.
+- Cross-type offsets: stores with repeat patterns (the same credit labor type across many ROs, batches, similar amounts), split by credit pay type.
+- Advisors who wrote policy ROs to themselves (red rows).
+- The stores with the most flags.
+- Any new QA warnings.
+
+**Never commit the workbook, the Qlik file or the QA JSON.** They hold employee names and IDs. Only this skill's scripts and config belong in the repo.
+
+## How the tests work (build_audit.py)
+
+**Scope**
+- An RO counts only on the policy labor type(s) mapped for its store. Secondaries are included unless `--no-secondary` is passed.
+- Stores not in the mapping are checked only on `out_of_scope_types` (ISP and ISPJ). Their Confirmed and Likely hits go to "Not in 71034 Scope".
+
+**One row per RO.** The highest-priority hit wins, in the `Sort` order:
+
+| Sort | Flag | Confidence | Rule |
+|---|---|---|---|
+| 1 | Advisor = Customer (number) | Confirmed | cust # = numeric part of `%serviceadvisor` (4th `\|` field) |
+| 2 | Advisor = Customer (name; RO on regular cust #) | Confirmed | cust name key = advisor name key |
+| 3 | Employee # = Customer # | Confirmed | cust # = CDK ID of a **same-store** employee (IDs repeat across stores) AND last names agree |
+| 4 | Employee name, same store (regular cust #) | Likely | cust name key = a same-store employee |
+| 5 | Same last name as advisor | Review | possible relative |
+| 6 | Employee name, other store (distinctive name) | Review | name key matches an employee at another store |
+| 7 | Employee name, other store (common name) | Low | same as 6, but the surname is in `common_surnames.txt` |
+
+**Name matching**
+- The name key is (LAST, first given name). Apostrophes and periods are dropped, hyphens become spaces, and JR/SR/II/III/IV are ignored.
+- Names are compared as whole words. That rules out prefix false positives like DANIELLE vs. DANIEL.
+- Business names (no comma) never match.
+- ADP legal names are "First Middle" / "Last Jr". The key uses the first token of the first name.
+
+**Notes column**
+- Filled automatically for: possible relatives; an advisor number that equals the advisor's CDK ID; multiple other-store ADP matches; suffix mismatches.
+- Add store feedback by hand after delivery if the user asks.
+
+**Credit reclass pattern (Policy Offsets)**
+- Applies to in-scope ROs where policy parts sale > $0 and policy labor sale < $0 on the store's policy labor type(s).
+- Pattern labels:
+  - "Net $0 — labor credit offsets parts": labor + parts within $1.00.
+  - "Labor credit exceeds parts": the RO nets negative.
+  - "Partial offset": some parts are left charged.
+- **Policy Offsets tab:**
+  - A store summary at the top (ROs, net-$0 ROs, parts, labor credit, net, cost, employee-flagged ROs).
+  - Then the RO detail, sorted by store, then pattern, then credit (largest first).
+  - Detail columns O–P show the Flagged ROs flag and confidence when the RO is also an employee or advisor RO.
+- **On Flagged ROs:** column U shows the pattern and V shows the labor credit, both in amber. Policy Cost stays the real labor + parts cost; only the sale columns net to $0.
+- **Summary:** a 3-line pointer block below the store table.
+- **Limits:** it only sees policy labor-type lines. Offsets posted on other labor types or on MLS (the Chevrolet Las Vegas MLS pattern) aren't caught. It shows the pattern, not intent.
+
+**Cross-type offsets (Cross-Type Offsets tab)**
+- Applies to in-scope ROs with policy parts sale > $0 where a labor type that is **not** the store's policy type, on the same RO, has a net labor sale < $0. Any pay type counts: Internal, Warranty or Customer.
+- Net After Credit = policy total sale + the other-type credit. Pattern labels: "Net $0 — other-type credit offsets policy" (within $1), "Other-type credit exceeds policy charge", or "Partial offset".
+- **Tab layout:**
+  - A store summary at the top. Its last column counts credit labor types per store, e.g. "I (Internal) ×17"; that's where patterns show.
+  - Then the RO detail. It lists the credit labor type(s) with amounts and the credit pay type (filterable), and whether the RO also has a same-type offset. It shows the employee flag and confidence when the RO is on Flagged ROs.
+- **On Flagged ROs:** column W shows the pattern with the credit types and X shows the credit, both in amber.
+- **Weaker evidence than same-type offsets.** Comebacks, goodwill and warranty corrections also post credits. Treat it as a screen. MLS lines are still not covered.
+
+**Dollars.** Policy Sale = labor + parts sale on the policy lines. Policy Cost = labor + parts cost on the same lines. MLS and tax are excluded because they carry no labor type.
+
+## Layout (matches the original Aug-2026 build)
+
+- **Fonts and colors:** Arial 10. Headers are navy `1A2744` with white bold text. Total rows are gold `C9A04B`. Advisor-self rows (Sort 1–2) get red fill `F8CBAD`. Hardcoded Qlik/ADP values are blue `0000FF`. Formulas are black. Thin `BFBFBF` borders.
+- **Summary:**
+  - Flag table (rows 4–13) with COUNTIFS/SUMIFS against Flagged ROs, plus tie-out checks.
+  - Store table from row 15. It lists only stores with flags, in logon order, with Confirmed + Likely ROs, sale and cost, and All Flagged.
+  - The workbook opens on Summary.
+- **Flagged ROs:**
+  - Columns A–V, sorted by Sort, then logon, close date, RO. U = Credit Reclass Pattern, V = Labor Credit Offset, W = Other-Type Credit Pattern, X = Other-Type Labor Credit (amber `FFEB9C/9C6500`).
+  - O = `=M+N`. Gold TOTAL row with COUNTA/SUM.
+  - Freeze at G2 and autofilter.
+- **Widths:**
+  - Summary: A46 B12 C8 D13 E13 F70.
+  - Flagged ROs: A6 B34 C11 D8 E20 F10 G11 H13 I30 J10 K24 L10 M12 N13 O13 P11 Q24 R26 S12 T30 U34 V13 W44 X13.
+  - Method: A24 B110.
+
+## Known limitations (tell the user when relevant)
+
+- ADP holds current employees only. Anyone who termed between the 1st and the export date is missed.
+- Name matching misses nicknames, maiden names and typos.
+- "Same last name" rows are possible relatives, not proven.
+- Qlik RO amounts haven't been tied to the GL for these specific ROs.
+- The labor type mapping comes from a separate GL tie-out (the 71034 Labor Type Mapping workbook). It isn't rebuilt monthly. Re-confirm it when `unmapped_policy_types` or `mapped_stores_without_rows` changes, or at least quarterly.
+- IXP (store 12), ISPB (34) and IMGT (46) are still unconfirmed secondaries. They are included by default, as in August.

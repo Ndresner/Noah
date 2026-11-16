@@ -14,6 +14,7 @@ Noah, Fixed Operations analytics/reporting at Findlay Automotive Group (34-store
   - Profit & Loss — `bc30d66f-4564-4df0-89a7-368f2c9a931e`
   - Fixed Ops Accounting TB — `e077f027`
   - Productivity — `948ab4f4`
+- Store crosswalk: `reference/stores.json` — one row per ADP company code with Qlik logon, display name, state, Qlik CompanyName, ADP location and ADP payroll name. Shared by all skills; update it (only there) when a store opens, closes or changes code. `adp_payroll_name` values are verbatim from ADP, typos included ("Hyundal Prescott", "Hyundai Sg. George", "Lincoln " with trailing space) — intentional, pay-vs-gross tab names depend on them; don't "fix" them.
 - Some reports use non-Qlik sources: ADP exports, RO Detail exports, Tech Pay Master file, vendor pricing spreadsheets.
 - ADP: pull with the CLI `tools/adp/adp_cli.py` (skill `.claude/skills/adp-pull/`) — same layout as the manual exports. Credentials are env secrets only; outputs contain pay/PII, scratchpad only, never commit.
 
@@ -96,6 +97,9 @@ Skill: `.claude/skills/fixed-ops-gross-records-report/` — always use it. Each 
 
 **Net Profit Ranker — Net to Gross tab** (monthly; Fixed, Service, Parts files)
 Skill: `.claude/skills/net-profit-ranker-net-to-gross/` — always use it. The user supplies the three Net Profit Ranker workbooks; the skill pulls Service/Parts gross from the P&L app (`Dept` field, `Line Desc` = 'Total Departmental Gross Profit' / 'Net Profit Or Loss', sign flipped), reconciles net to the workbook, and adds a "Net to Gross" tab styled from the Total tab. "Fixed" = Service + Parts only (not whole store, no Body Shop). Includes the distribution email template. Never commit the workbooks or Qlik JSON.
+
+**Service Policy (71034) Employee & Advisor RO Audit** (monthly)
+Skill: `.claude/skills/fixed-ops-71034-policy-audit/` — always use it (one-call Qlik Concat pull + build script). Closed ROs on each store's 71034 policy labor type (config/policy_labor_types.json) matched to the ADP Active/Leave list: advisor = customer, cust # = same-store CDK employee ID, employee-name matches (Confirmed/Likely/Review/Low), plus the credit reclass pattern (policy parts charged, policy labor credited; net-$0 ROs called out) and cross-type offsets (credit on a different labor type, 2nd Qlik call). 6 tabs: Summary, Flagged ROs, Policy Offsets, Cross-Type Offsets, Not in 71034 Scope, Method & Limits. Contains employee names/IDs — never commit the workbook, Qlik file or QA JSON.
 
 **Other builds on file:** SWE (Service Website Effectiveness) Analysis, Used Tire Disposal Cost Analysis, Used Oil Reimbursement Comparison, Voice AI Deployment Tracker, Opcode Legend Reformatter, Pay Plan Calculator, Work Type Mix Report, Honda Henderson/Honda North Productivity Reports, BOB Stats Summary formatting.
 
