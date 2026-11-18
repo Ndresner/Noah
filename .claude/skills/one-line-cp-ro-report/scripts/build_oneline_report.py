@@ -198,10 +198,11 @@ def build(res, out):
     grp_rates = collections.defaultdict(list)
     for t, r in tr.items():
         grp_rates[TECH[t][1]].append(r)
-    rep = {r[0]: r[2] / r[1] for r in REP_ADV if r[1]}
+    rep = {r[0]: r[2] / r[1] for r in REP_ADV if r[1] >= MIN_N} or {r[0]: r[2] / r[1] for r in REP_ADV if r[1]}
     rept = {t: m / v for t, v, m, o in REP_TECH if v >= 20}
     low_rept = sorted(rept, key=rept.get)[:2]
-    wsr = {w[0]: w[1][1] / w[1][0] for w in W_ADV if w[1][0]}; wsm = {w[0]: w[3][1] / w[3][0] for w in W_ADV if w[3][0]}
+    wsr = {w[0]: w[1][1] / w[1][0] for w in W_ADV if w[1][0] >= MIN_N} or {w[0]: w[1][1] / w[1][0] for w in W_ADV if w[1][0]}
+    wsm = {w[0]: w[3][1] / w[3][0] for w in W_ADV if w[3][0] >= MIN_N} or {w[0]: w[3][1] / w[3][0] for w in W_ADV if w[3][0]}
     BEST_WS, BEST_WSM = max(wsr, key=wsr.get), (max(wsm, key=wsm.get) if wsm else None)
     wtot, wcp = sum(w[4] for w in W_ADV), sum(w[5] for w in W_ADV)
     wst, wsc = sum(w[1][0] for w in W_ADV), sum(w[1][1] for w in W_ADV)
