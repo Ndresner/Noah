@@ -122,5 +122,6 @@ When drafting emails for Noah, use a clean, easy-to-scan layout:
 - Numbered list when items have a clear order or need to be answered individually.
 - Don't turn a simple message into a list; use paragraphs when they read more naturally.
 - Blank line before and after any list.
-- End with a brief closing ("Thanks," or "Best,") on its own line. No name, title, or signature — Noah adds the signature.
+- End with a brief closing ("Thanks," or "Best,") on its own line.
+- Signature: emails returned as text in chat get no name or signature (Outlook adds it when Noah pastes into a new message). Drafts created in Outlook through the Microsoft 365 connector do NOT get his Outlook signature, so append `reference/email_signature.html` verbatim after the closing on every new Outlook draft (body as HTML). Replies/forwards: skip it unless Noah asks. Update that file if his title or numbers change (copied from his sent mail, Nov 19, 2026).
 - Professional, natural, conversational tone. Return in plain text with spacing that pastes cleanly into an email.
