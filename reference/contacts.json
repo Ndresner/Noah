@@ -1,5 +1,5 @@
 {
- "_about": "Store leadership contacts (GM, Service, Parts, Business Manager, Controller). One row per store, keyed by ADP company code (same as reference/stores.json). Use this for names/emails when drafting store emails - never guess an address format. Source: \"GMs, BMs, Controllers, Fixed Ops\" workbook from Noah. as_of = date of the source sheet; GM/BM/Controller sheet is dated 2025-10-01, Service/Parts 2026-03-30 - check for turnover when it matters. Emails lower-cased. Workbook state column had Hyundai St George/INEOS swapped; state here comes from stores.json. Update this file (only here) when someone changes roles.",
+ "_about": "Store leadership contacts (GM, Service, Parts, Business Manager, Controller). One row per store, keyed by ADP company code (same as reference/stores.json). Use this for names/emails when drafting store emails - never guess an address format. Source: \"GMs, BMs, Controllers, Fixed Ops\" workbook from Noah. as_of = date printed on the source sheet tab (GM/BM/Controller 2025-10-01, Service/Parts 2026-03-30); Noah confirmed on 2026-11-19 that the content is current despite those dates. Emails lower-cased. Workbook state column had Hyundai St George/INEOS swapped; state here comes from stores.json. Update this file (only here) when someone changes roles.",
  "updated": "2026-11-19",
  "stores": [
   {
@@ -285,7 +285,7 @@
      "email": "barreola@findlayauto.com",
      "phone": "702-430-4305",
      "as_of": "2026-03-30",
-     "note": "Email (barreola@) does not match the name - confirm before sending"
+     "note": "Email format differs from the name - confirmed correct by Noah 2026-11-19"
     },
     {
      "role": "Parts Manager",
@@ -507,7 +507,7 @@
      "email": "gabrahams@findlayauto.com",
      "phone": null,
      "as_of": null,
-     "note": "Email (gabrahams@) does not match the first name - confirm before sending"
+     "note": "Email format differs from the name - confirmed correct by Noah 2026-11-19"
     }
    ]
   },
@@ -1686,5 +1686,6 @@
     }
    ]
   }
- ]
+ ],
+ "confirmed_current": "2026-11-19"
 }
