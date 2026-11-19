@@ -1,6 +1,6 @@
 {
- "_about": "Store leadership contacts (GM, Service, Parts, Business Manager, Controller). One row per store, keyed by ADP company code (same as reference/stores.json). Use this for names/emails when drafting store emails - never guess an address format. Source: \"GMs, BMs, Controllers, Fixed Ops\" workbook from Noah. as_of = date printed on the source sheet tab (GM/BM/Controller 2025-10-01, Service/Parts 2026-03-30); Noah confirmed on 2026-11-19 that the content is current despite those dates. Emails lower-cased. Workbook state column had Hyundai St George/INEOS swapped; state here comes from stores.json. Update this file (only here) when someone changes roles.",
- "updated": "2026-11-19",
+ "_about": "Store leadership contacts (GM, Service, Parts, Business Manager, Controller). One row per store, keyed by ADP company code (same as reference/stores.json). Use this for names/emails when drafting store emails - never guess an address format. Source: \"GMs, BMs, Controllers, Fixed Ops\" workbook from Noah. as_of = date in the source tab name, labels only; confirmed_current = date Noah confirmed the list is up to date. Emails lower-cased; state comes from stores.json. Rebuild with tools/contacts/build_contacts.py when Noah sends an updated workbook; do not hand-edit.",
+ "confirmed_current": "2026-11-19",
  "stores": [
   {
    "adp_code": "H4V",
@@ -101,7 +101,7 @@
      "as_of": "2026-03-30"
     }
    ],
-   "parts_ext_note": "Fixed Ops sheet said 9602 (same as LR Reno); Parts EXT sheet says 5644 - using 5644"
+   "parts_ext_note": "Fixed Ops tab said 9602; Parts EXT tab says 5644 - using the Parts EXT tab"
   },
   {
    "adp_code": "YD9",
@@ -345,7 +345,7 @@
      "role": "Service Manager",
      "name": "Brian Short",
      "email": "bshort@findlayauto.com",
-     "phone": "702-556-2550",
+     "phone": "702-566-2550",
      "as_of": "2026-03-30"
     },
     {
@@ -930,8 +930,7 @@
      "name": "Colton Gaffney",
      "email": "cgaffney@findlayauto.com",
      "phone": "775-335-1454",
-     "as_of": "2026-03-30",
-     "note": "Phone in source was 775-33-51454; likely 775-335-1454 - confirm"
+     "as_of": "2026-03-30"
     },
     {
      "role": "Parts Manager",
@@ -1686,6 +1685,5 @@
     }
    ]
   }
- ],
- "confirmed_current": "2026-11-19"
+ ]
 }
