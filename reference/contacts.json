@@ -1,0 +1,1689 @@
+{
+ "_about": "Store leadership contacts (GM, Service, Parts, Business Manager, Controller). One row per store, keyed by ADP company code (same as reference/stores.json). Use this for names/emails when drafting store emails - never guess an address format. Source: \"GMs, BMs, Controllers, Fixed Ops\" workbook from Noah. as_of = date in the source tab name, labels only; confirmed_current = date Noah confirmed the list is up to date. Emails lower-cased; state comes from stores.json. Rebuild with tools/contacts/build_contacts.py when Noah sends an updated workbook; do not hand-edit.",
+ "confirmed_current": "2026-11-19",
+ "stores": [
+  {
+   "adp_code": "H4V",
+   "store": "Honda Henderson",
+   "state": "NV",
+   "workbook_label": "Honda Henderson",
+   "address": "933 Auto Show Drive, Henderson, NV 89014",
+   "parts_ext": 9246,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Douglas Delacuesta",
+     "email": "dougd@findlayauto.com",
+     "phone": "702-568-3501",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Angela Crockett",
+     "email": "angelac@findlayauto.com",
+     "phone": "702-568-3507",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rouella Salviejo",
+     "email": "rsalviejo@findlayauto.com",
+     "phone": "702-955-5689",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Coty Dehnert",
+     "email": "cdehnert@findlayauto.com",
+     "phone": "702-568-3540",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Raymond Carlisle",
+     "email": "rcarlisle@findlayauto.com",
+     "phone": "702-568-3530",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Kacey Trujillo",
+     "email": "ktrujillo@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "ZC7",
+   "store": "Land Rover Las Vegas",
+   "state": "NV",
+   "workbook_label": "JLR LV",
+   "address": "5255 West Sahara Ave, Las Vegas, NV 89146",
+   "parts_ext": 5644,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Brennan Wedewer",
+     "email": "bwedewer@findlayauto.com",
+     "phone": "702-955-5633",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Heather Saladino",
+     "email": "hsaladino@findlayauto.com",
+     "phone": "702-824-4486",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rouella Salviejo",
+     "email": "rsalviejo@findlayauto.com",
+     "phone": "702-955-5689",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Matthew Stanley",
+     "email": "mstanley@findlayauto.com",
+     "phone": "702-955-5621",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Jonathan Hewitt",
+     "email": "jhewitt@findlayauto.com",
+     "phone": "702-955-5644",
+     "as_of": "2026-03-30"
+    }
+   ],
+   "parts_ext_note": "Fixed Ops tab said 9602; Parts EXT tab says 5644 - using the Parts EXT tab"
+  },
+  {
+   "adp_code": "YD9",
+   "store": "Honda North",
+   "state": "NV",
+   "workbook_label": "Honda North",
+   "address": "7949 Azure Drive, Las Vegas, NV 89130",
+   "parts_ext": 4260,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Allen Montalvo",
+     "email": "amontalvo@findlayauto.com",
+     "phone": "702-982-4201",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Aubrey Calabrese",
+     "email": "acalabrese@findlayauto.com",
+     "phone": "702-982-4235",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jonathan Quinones",
+     "email": "jquinones@findlayauto.com",
+     "phone": "702-568-3568",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Fernando Sanchez",
+     "email": "fsanchez@findlayauto.com",
+     "phone": "702-982-4261",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Jeremiah Deocampo",
+     "email": "jdeocampo@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "H4X",
+   "store": "Acura",
+   "state": "NV",
+   "workbook_label": "Acura",
+   "address": "315 Auto Mall Drive, Henderson, NV 89014",
+   "parts_ext": 9216,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jamison Brooks",
+     "email": "jamisonb@findlayauto.com",
+     "phone": "702-982-4101",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Stacey Cordova",
+     "email": "scordova@findlayauto.com",
+     "phone": "702-982-4144",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Gus Leon-Mata",
+     "email": "gleonmata@findlayauto.com",
+     "phone": "702-982-4134",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Oscar Deleon",
+     "email": "odeleon@findlayauto.com",
+     "phone": "702-982-4134",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "Z7Q",
+   "store": "Chevy GMC (Motor Co)",
+   "state": "AZ",
+   "workbook_label": "Motor Co",
+   "address": "2565 Laughlin View Dr., Bullhead City, AZ 86429",
+   "parts_ext": 9284,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Chris Bancroft",
+     "email": "cbancroft@findlayauto.com",
+     "phone": "928-404-1018",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Susan Vancamp",
+     "email": "svancamp@findlayauto.com",
+     "phone": "928-404-1016",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jim Williams",
+     "email": "jameswilliams@findlayauto.com",
+     "phone": "928-404-1027",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "William Bruton",
+     "email": "wbruton@findlayauto.com",
+     "phone": "928-404-1010",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "YD6",
+   "store": "Cadillac",
+   "state": "NV",
+   "workbook_label": "Cadillac",
+   "address": "993 Auto Show Drive, Henderson, NV 89014",
+   "parts_ext": 4396,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Eman Epino",
+     "email": "eepino@findlayauto.com",
+     "phone": "702-430-4301",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Cortney Alvord",
+     "email": "calvord@findlayauto.com",
+     "phone": "702-430-4323",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Debra Hayden",
+     "email": "dhayden@findlayauto.com",
+     "phone": "702-558-8823",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Bryan Austin",
+     "email": "barreola@findlayauto.com",
+     "phone": "702-430-4305",
+     "as_of": "2026-03-30",
+     "note": "Email format differs from the name - confirmed correct by Noah 2026-11-19"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Juan Vazquez-Choto",
+     "email": "jvazquezchoto@findlayauto.com",
+     "phone": "702-430-4344",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Jose D. Vazquez",
+     "email": "jvazquez@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "Z6C",
+   "store": "Toyota Henderson",
+   "state": "NV",
+   "workbook_label": "Toyota Henderson",
+   "address": "7733 Eastgate Rd., Henderson, Nevada 89011",
+   "parts_ext": 9225,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "John Barr",
+     "email": "jbarr@findlayauto.com",
+     "phone": "702-566-2501",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "General Manager",
+     "name": "JC Price",
+     "email": "jcprice@findlayauto.com",
+     "phone": "702-566-2501",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Debra Hayden",
+     "email": "dhayden@findlayauto.com",
+     "phone": "702-566-2575",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Debra Hayden",
+     "email": "dhayden@findlayauto.com",
+     "phone": "702-558-8823",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Brian Short",
+     "email": "bshort@findlayauto.com",
+     "phone": "702-566-2550",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Freddy Reyes",
+     "email": "freyes@findlayauto.com",
+     "phone": "702-566-2563",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Ryan Seabolt",
+     "email": "rseabolt@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "HR7",
+   "store": "VW Henderson",
+   "state": "NV",
+   "workbook_label": "VW Henderson",
+   "address": "983 Auto Show, Henderson, NV 89014",
+   "parts_ext": 6699,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Melisa Eichbauer",
+     "email": "meichbauer@findlayauto.com",
+     "phone": "702-558-6601",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Dorthy Mott",
+     "email": "dmott@findlayauto.com",
+     "phone": "702-558-6610",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "John Robinson",
+     "email": "jrobinson@findlayauto.com",
+     "phone": "702-558-6630",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Lamberto Salas-Ojeda",
+     "email": "lsalas@findlayauto.com",
+     "phone": "702-558-6640",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "YH4",
+   "store": "Lincoln",
+   "state": "NV",
+   "workbook_label": "Lincoln",
+   "address": "310 N. Gibson Rd., Henderson, NV 89014",
+   "parts_ext": 9207,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Cliff Smith",
+     "email": "cliffs@findlayauto.com",
+     "phone": "702-982-4701",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Debbie Garcia",
+     "email": "debbiegarcia@findlayauto.com",
+     "phone": "702-982-4770",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jon Chiles",
+     "email": "jchiles@findlayauto.com",
+     "phone": "702-982-4752",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Thomas Almassy",
+     "email": "talmassy@findlayauto.com",
+     "phone": "702-982-4760",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "H8E",
+   "store": "Subaru Las Vegas",
+   "state": "NV",
+   "workbook_label": "Subaru LV",
+   "address": "5825 West Sahara Ave, Las Vegas, Nevada 89146",
+   "parts_ext": 2140,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Burton Hughes",
+     "email": "bhughes@findlayauto.com",
+     "phone": "702-495-2101",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Judy Mendez",
+     "email": "judym@findlayauto.com",
+     "phone": "702-495-2139",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Carmine Kopecky",
+     "email": "ckopecky@findlayauto.com",
+     "phone": "702-495-2107",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Victor Fuentes-Pacheco",
+     "email": "vfuentespacheco@findlayauto.com",
+     "phone": "702-495-2183",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Yasir Abrahams",
+     "email": "gabrahams@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "Email format differs from the name - confirmed correct by Noah 2026-11-19"
+    }
+   ]
+  },
+  {
+   "adp_code": "D7A",
+   "store": "Chevrolet Las Vegas",
+   "state": "NV",
+   "workbook_label": "Chevy",
+   "address": "6800 S. Torrey Pines, Las Vegas, NV 89031",
+   "parts_ext": 9227,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Doug Flemming",
+     "email": "dflemming@findlayauto.com",
+     "phone": "702-982-4003",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Kelli Montano",
+     "email": "kmontano@findlayauto.com",
+     "phone": "702-982-4020",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "John Gonzalez",
+     "email": "johng@findlayauto.com",
+     "phone": "702-982-4020",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Joseph Simon",
+     "email": "jsimon@findlayauto.com",
+     "phone": "702-982-4060",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Julius Riglioni",
+     "email": "jriglioni@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Terry Stump Jr",
+     "email": "tstumpjr@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "HUZ",
+   "store": "Audi Henderson",
+   "state": "NV",
+   "workbook_label": "Audi Henderson",
+   "address": "7740 Eastgate Rd., Henderson, NV 89011",
+   "parts_ext": 9202,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Petar Apostolov",
+     "email": "papostolov@findlayauto.com",
+     "phone": "702-982-4603",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jennifer Knight",
+     "email": "jknight@findlayauto.com",
+     "phone": "702-682-4688",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Brice McNeely",
+     "email": "bmcneely@findlayauto.com",
+     "phone": "702-982-4620",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Bradley Crews",
+     "email": "bcrews@findlayauto.com",
+     "phone": "702-982-4615",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "DAE",
+   "store": "Toyota Flagstaff",
+   "state": "AZ",
+   "workbook_label": "Toyota Flagstaff",
+   "address": "5030 E. Marketplace Dr., Flagstaff, AZ 86004",
+   "parts_ext": 7331,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Trey Hudson",
+     "email": "thudson@findlayauto.com",
+     "phone": "928-527-7346",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Denise Carr",
+     "email": "dcarr@findlayauto.com",
+     "phone": "928-527-7343",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Tyler Hughes",
+     "email": "thughes@findlayauto.com",
+     "phone": "928-527-7319",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Jeremy Griffis",
+     "email": "jgriffis@findlayauto.com",
+     "phone": "928-527-7334",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "ZFJ",
+   "store": "Kia Las Vegas",
+   "state": "NV",
+   "workbook_label": "Kia LV",
+   "address": "5325 West Sahara Ave, Las Vegas, NV 89146",
+   "parts_ext": 4598,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Tony Smith",
+     "email": "tsmith@findlayauto.com",
+     "phone": "702-982-4501",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jennifer Lopez",
+     "email": "jlopez@findlayauto.com",
+     "phone": "702-495-2121",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Donett Loubert",
+     "email": "dloubert@findlayauto.com",
+     "phone": "702-558-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Nichalaus Zielinski",
+     "email": "nzielinski@findlayauto.com",
+     "phone": "702-982-4508",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Jorge Caro",
+     "email": "jcaro@findlayauto.com",
+     "phone": "702-982-4566",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "L64",
+   "store": "Hyundai St George",
+   "state": "UT",
+   "workbook_label": "Hyundai St. George",
+   "address": "1405 Sunland Drive, St. George, UT 84790",
+   "parts_ext": 6131,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Tim Mills",
+     "email": "tmills@findlayauto.com",
+     "phone": "435-986-8830",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Cindy Cox",
+     "email": "ccox@findlayauto.com",
+     "phone": "435-986-8828",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Robert Rashid",
+     "email": "rrashid@findlayauto.com",
+     "phone": "435-986-8829",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Griffith Jensen",
+     "email": "gjensen@findlayauto.com",
+     "phone": "435-352-6094",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "Z06",
+   "store": "VW St George",
+   "state": "UT",
+   "workbook_label": "VW St George",
+   "address": "1333 Sunland Drive, St. George, UT 84790",
+   "parts_ext": 8903,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Mitchell McArthur",
+     "email": "mitchellm@findlayauto.com",
+     "phone": "435-986-8844",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Cindy Cox",
+     "email": "ccox@findlayauto.com",
+     "phone": "435-986-8828",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Leonard \"Junior\" Schwingdorf",
+     "email": "lschwingdorf@findlayauto.com",
+     "phone": "435-634-0900",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Evan Doyle",
+     "email": "edoyle@findlayauto.com",
+     "phone": "435-986-8850",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "KTJ",
+   "store": "Kia St George",
+   "state": "UT",
+   "workbook_label": "Kia St George",
+   "address": "1369 Sunland Drive, St. George, UT 84790",
+   "parts_ext": 4229,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Rhett Prows",
+     "email": "rprows@findlayauto.com",
+     "phone": "435-817-4238",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Cindy Cox",
+     "email": "ccox@findlayauto.com",
+     "phone": "435-986-8828",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jeff Hafen",
+     "email": "jhafen@findlayauto.com",
+     "phone": "435-817-4241",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Roderick Gourley",
+     "email": "rgourley@findlayauto.com",
+     "phone": "435-817-4245",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "HHU",
+   "store": "Honda Flagstaff",
+   "state": "AZ",
+   "workbook_label": "Honda Flagstaff",
+   "address": "5199 N. Test Dr., Flagstaff, AZ 86004",
+   "parts_ext": 9352,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Johnny Martinez",
+     "email": "johnnym@findlayauto.com",
+     "phone": "928-213-3746",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Alyshia Hassin",
+     "email": "ahassin@findlayauto.com",
+     "phone": "928-213-3742",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jonathan Begay",
+     "email": "jbegay@findlayauto.com",
+     "phone": "928-213-3754",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Martin Rodriguez",
+     "email": "martinrodriguez@findlayauto.com",
+     "phone": "928-213-3764",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "D4K",
+   "store": "Audi Reno",
+   "state": "NV",
+   "workbook_label": "Audi Reno",
+   "address": "9190 S. Virginia St., Reno, Nevada 89511",
+   "parts_ext": 9413,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Randee Anderson",
+     "email": "randee@findlayauto.com",
+     "phone": "775-335-1450",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Alysa Burke",
+     "email": "aburke@findlayauto.com",
+     "phone": "775-332-4023",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Colton Gaffney",
+     "email": "cgaffney@findlayauto.com",
+     "phone": "775-335-1454",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Gerad Smith",
+     "email": "gsmith@findlayauto.com",
+     "phone": "775-335-1438",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "HUH",
+   "store": "Land Rover Reno",
+   "state": "NV",
+   "workbook_label": "LR Reno",
+   "address": "2401 S, Virginia St., Reno, Nevada 89502",
+   "parts_ext": 9602,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Cory Hobson",
+     "email": "chobson@findlayauto.com",
+     "phone": "775-332-4001",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Alysa Burke",
+     "email": "aburke@findlayauto.com",
+     "phone": "775-332-4023",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Chris Awalt",
+     "email": "cawalt@findlayauto.com",
+     "phone": "775-332-4010",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Eddie Nelson",
+     "email": "enelson@findlayauto.com",
+     "phone": "775-332-4007",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "HLD",
+   "store": "CDJR Post Falls",
+   "state": "ID",
+   "workbook_label": "CJDR",
+   "address": "550 N. Alberta Ave, Post Falls, Idaho 83854",
+   "parts_ext": 4181,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Pete Mirante",
+     "email": "pmirante@findlayauto.com",
+     "phone": "208-738-5101",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jamie Dilley",
+     "email": "jdilley@findlayauto.com",
+     "phone": "208-262-4420",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Chris Riggs",
+     "email": "criggs@findlayauto.com",
+     "phone": "208-738-5110",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Mark Malakowsky",
+     "email": "markm@findlayauto.com",
+     "phone": "208-262-7440",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "GMW",
+   "store": "Buick GMC Prescott",
+   "state": "AZ",
+   "workbook_label": "Buick GMC Prescott",
+   "address": "1006 Commerce Dr., Prescott, AZ 86305",
+   "parts_ext": 4812,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Aaron Weinzetl",
+     "email": "aweinzetl@findlayauto.com",
+     "phone": "928-910-4550",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jennifer Edwards",
+     "email": "jedwards@findlayauto.com",
+     "phone": "928-361-9371",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Brian Roos",
+     "email": "broos@findlayauto.com",
+     "phone": "928-910-4545",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Vincent Gallegos",
+     "email": "vgallegos@findlayauto.com",
+     "phone": "928-910-4540",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "XL1",
+   "store": "Toyota Prescott",
+   "state": "AZ",
+   "workbook_label": "Toyota Prescott",
+   "address": "3200 Willow Creek Rd., Prescott, AZ 86301",
+   "parts_ext": 9274,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jim Diguilio",
+     "email": "jdiguilio@findlayauto.com",
+     "phone": "928-443-8301",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jennifer Edwards",
+     "email": "jedwards@findlayauto.com",
+     "phone": "928-361-9371",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Mike Hixon",
+     "email": "mhixon@findlayauto.com",
+     "phone": "928-443-8320",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Kendall Burden",
+     "email": "kburden@findlayauto.com",
+     "phone": "928-443-8318",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "XUW",
+   "store": "Subaru Prescott",
+   "state": "AZ",
+   "workbook_label": "Subaru Prescott",
+   "address": "3230 Willow Creek Rd., Prescott, AZ 86305",
+   "parts_ext": 9251,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jason Jenkins",
+     "email": "jjenkins@findlayauto.com",
+     "phone": "928-771-6901",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Kimberly Sanders",
+     "email": "ksanders@findlayauto.com",
+     "phone": "928-443-8347",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Lohnie Boggs",
+     "email": "lboggs@findlayauto.com",
+     "phone": "928-771-6979",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Ryan Rehbach",
+     "email": "rrehbach@findlayauto.com",
+     "phone": "928-771-6930",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "I78",
+   "store": "Hyundai Prescott",
+   "state": "AZ",
+   "workbook_label": "Hyundai Prescott",
+   "address": "3250 Willow Creek Rd, Prescott, AZ 86301",
+   "parts_ext": 8592,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Ben Hollibaugh",
+     "email": "bhollibaugh@findlayauto.com",
+     "phone": "928-813-8501",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Kimberly Sanders",
+     "email": "ksanders@findlayauto.com",
+     "phone": "928-443-8347",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Susan Artaz",
+     "email": "sartaz@findlayauto.com",
+     "phone": "928-443-8303",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Cori King",
+     "email": "cking@findlayauto.com",
+     "phone": "928-910-4552",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Sabin Venardos",
+     "email": "svenardos@findlayauto.com",
+     "phone": "928-813-8531",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "4MZ",
+   "store": "Volvo Las Vegas",
+   "state": "NV",
+   "workbook_label": "Volvo",
+   "address": "5385 W Sahara Ave, Las Vegas, NV 89146",
+   "parts_ext": 4933,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Mike Margas",
+     "email": "mmargas@findlayauto.com",
+     "phone": "702-982-4901",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Heather Saladino",
+     "email": "hsaladino@findlayauto.com",
+     "phone": "702-982-4486",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rouella Salviejo",
+     "email": "rsalviejo@findlayauto.com",
+     "phone": "702-955-5689",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Bailey Anderson",
+     "email": "banderson@findlayauto.com",
+     "phone": "702-982-4920",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Levi Barrett",
+     "email": "lbarrett@findlayauto.com",
+     "phone": "702-982-4930",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "HP3",
+   "store": "Subaru St George",
+   "state": "UT",
+   "workbook_label": "Subaru St. George",
+   "address": "1435 Sunland Drive, St. George, UT 84790",
+   "parts_ext": 7402,
+   "exec": "Tyler Corder",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Curtis Whitehead",
+     "email": "cwhitehead@findlayauto.com",
+     "phone": "435-705-7472",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Cindy Cox",
+     "email": "ccox@findlayauto.com",
+     "phone": "435-986-8828",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "William Russell III",
+     "email": "wrussell1@findlayauto.com",
+     "phone": "435-705-7480",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Casey Madrid",
+     "email": "cmadrid@findlayauto.com",
+     "phone": "435-705-7489",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "FVQ",
+   "store": "Mazda Henderson",
+   "state": "NV",
+   "workbook_label": "Mazda",
+   "address": "7760 Eastgate Rd., Henderson, NV 89011",
+   "parts_ext": 5571,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jared Plott",
+     "email": "jplott@findlayauto.com",
+     "phone": "702-955-5551",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Debbie Garcia",
+     "email": "debbiegarcia@findlayauto.com",
+     "phone": "702-982-4770",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Vinnie Simonetti",
+     "email": "vsimonetti@findlayauto.com",
+     "phone": "702-955-5594",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Jonathan Deleon",
+     "email": "jdeleon@findlayauto.com",
+     "phone": "702-955-5570",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "ZHI",
+   "store": "JLR Henderson",
+   "state": "NV",
+   "workbook_label": "LR Henderson",
+   "address": "360 N Gibson Road, Henderson, NV 89014",
+   "parts_ext": 5730,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jessie Sanchez",
+     "email": "jsanchez@findlayauto.com",
+     "phone": "702-955-5702",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Stacey Cordova",
+     "email": "scordova@findlayauto.com",
+     "phone": "702-982-4144",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rouella Salviejo",
+     "email": "rsalviejo@findlayauto.com",
+     "phone": "702-955-5689",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Zach Fitzwater",
+     "email": "zfitzwater@findlayauto.com",
+     "phone": "702-955-5725",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Trent Toltzman",
+     "email": "ttoltzman@findlayauto.com",
+     "phone": "702-955-5733",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "Q9I",
+   "store": "Toyota Spokane",
+   "state": "WA",
+   "workbook_label": "Toyota Spokane",
+   "address": "1128 W 3rd Ave, Spokane, WA 99201",
+   "parts_ext": 3270,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "David Short",
+     "email": "dshort@findlayauto.com",
+     "phone": "509-363-3236",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jolissa Clark",
+     "email": "jolissac@findlayauto.com",
+     "phone": "509-363-3219",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Ron Passmore",
+     "email": "rpassmore@findlayauto.com",
+     "phone": "509-363-3223",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Curtis Mcgeorge",
+     "email": "cmcgeorge@findlayauto.com",
+     "phone": "509-363-3226",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "IFA",
+   "store": "Lexus Spokane",
+   "state": "WA",
+   "workbook_label": "Lexus Spokane",
+   "address": "1030 W 3rd Ave, Spokane, WA 99201",
+   "parts_ext": 6760,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Riley Donaldson",
+     "email": "rdonaldson@findlayauto.com",
+     "phone": "509-363-6710",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Jolissa Clark",
+     "email": "jolissac@findlayauto.com",
+     "phone": "509-363-3219",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Noe Longoria",
+     "email": "nlongoria@findlayauto.com",
+     "phone": "509-363-6753",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Jeffrey Anderson",
+     "email": "jeffreya@findlayauto.com",
+     "phone": "509-363-6763",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "SYT",
+   "store": "Nissan Henderson",
+   "state": "NV",
+   "workbook_label": "Nissan",
+   "address": "7500 West Azure Drive, Las Vegas, Nevada 89130",
+   "parts_ext": 5974,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Garey Deocampo",
+     "email": "gdeocampo@findlayauto.com",
+     "phone": "702-558-5820",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Linda Ricciardi",
+     "email": "lricciardi@findlayauto.com",
+     "phone": "702-558-5890",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rouella Salviejo",
+     "email": "rsalviejo@findlayauto.com",
+     "phone": "702-955-5689",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Beau Hulse",
+     "email": "bhulse@findlayauto.com",
+     "phone": "702-558-5843",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Renato Deleon",
+     "email": "rdeleon@findlayauto.com",
+     "phone": "702-558-5980",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Service (FMGSVCMGR list)",
+     "name": "Kurt Milana",
+     "email": "kmilana@findlayauto.com",
+     "phone": null,
+     "as_of": null,
+     "note": "On the FMGSVCMGR service-manager email list; not the primary Service Manager on the Fixed Ops sheet"
+    }
+   ]
+  },
+  {
+   "adp_code": "A0E",
+   "store": "Honda Spokane",
+   "state": "WA",
+   "workbook_label": "Honda Spokane",
+   "address": "1208 W 3rd Ave, Spokane, WA 99201",
+   "parts_ext": 7260,
+   "exec": "Justin Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Reve Teupell",
+     "email": "rteupell@findlayauto.com",
+     "phone": "509-821-7216",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Amber Saint",
+     "email": "asaint@findlayauto.com",
+     "phone": "509-363-3211",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Gretchen Ruiz",
+     "email": "gruiz@findlayauto.com",
+     "phone": "509-363-3218",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Jordan Martinez",
+     "email": "jordanmartinez@findlayauto.com",
+     "phone": "509-353-4760",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Michael Benner",
+     "email": "mbenner@findlayauto.com",
+     "phone": "509-353-4770",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "M7T",
+   "store": "INEOS",
+   "state": "NV",
+   "workbook_label": "Ineos",
+   "address": "210 N Gibson Road, Henderson, NV 89014",
+   "parts_ext": 3031,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Jeff Eenhuis",
+     "email": "jeffe@findlayauto.com",
+     "phone": "702-568-3001",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Dorthy Mott",
+     "email": "dmott@findlayauto.com",
+     "phone": "702-558-6610",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Rick Glenn",
+     "email": "rickg@findlayauto.com",
+     "phone": "702-558-8879",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Barbara Stephens",
+     "email": "bstephens@findlayauto.com",
+     "phone": "702-568-3002",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Steven Cowan",
+     "email": "scowan@findlayauto.com",
+     "phone": "702-568-3031",
+     "as_of": "2026-03-30"
+    }
+   ]
+  },
+  {
+   "adp_code": "J01",
+   "store": "Findlay Customs",
+   "state": null,
+   "workbook_label": "Findlay Customs",
+   "address": "7725 Commercial Way #140, Henderson, NV 89011",
+   "parts_ext": 5412,
+   "exec": "Robby Findlay",
+   "contacts": [
+    {
+     "role": "General Manager",
+     "name": "Ryan Lewis",
+     "email": "rlewis@findlayauto.com",
+     "phone": "702-955-5411",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Business Manager",
+     "name": "Dawn Lee",
+     "email": "dlee@findlayauto.com",
+     "phone": "702-566-2579",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Controller",
+     "name": "Debra Hayden",
+     "email": "dhayden@findlayauto.com",
+     "phone": "702-558-8823",
+     "as_of": "2025-10-01"
+    },
+    {
+     "role": "Service Manager",
+     "name": "Ryan Lewis",
+     "email": "rlewis@findlayauto.com",
+     "phone": "702-955-5411",
+     "as_of": "2026-03-30"
+    },
+    {
+     "role": "Parts Manager",
+     "name": "Danielle Reeves",
+     "email": "dreeves@findlayauto.com",
+     "phone": "702-955-5412",
+     "as_of": "2026-03-30"
+    }
+   ]
+  }
+ ]
+}
