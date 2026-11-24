@@ -72,4 +72,4 @@ Labor ($/hr): DealerUplift vs. our best / median window
 | Chrysler Post Falls (12/25) | 183.36 | 184.61 | 178.24 |
 | Lexus Spokane (7/26) | 224.51 | 221.89 | 218.21 |
 
-Parts markup: our best window is at or above DealerUplift's in 10 of 11 cycles, within ~3 points at Kia St George, Subaru Prescott, Chrysler Post Falls and Lexus Spokane; far below at Subaru St George (77.6% vs 122.9%, Utah rules - needs review). Our parts windows swing widely (median well below best), so parts needs a tighter line definition before it is relied on.
+Parts markup: our best window is at or above DealerUplift's in 11 of 12 cycles, within ~3 points at Kia St George, Subaru Prescott, Chrysler Post Falls and Lexus Spokane; far below at Subaru St George (77.6% vs 122.9%, Utah rules - needs review). Our parts windows swing widely (median well below best), so parts needs a tighter line definition before it is relied on.
