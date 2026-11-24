@@ -1,0 +1,6 @@
+{
+  "_note": "Labor types per store for warranty-rate work. 'customer_pay' confirmed by Noah (Nov 2026); other groups inferred from Qlik descriptions - confirm before relying on them.",
+  "TOYOTA FLAGSTAFF": {"logon": 19, "state": "AZ", "customer_pay": ["CPT"], "employee": ["CPTE"], "third_party": ["CTEC"], "policy": ["IPS"], "not_customer_pay": ["CTX", "CPTC"], "warranty": ["WT"], "aftermarket_parts_source": ["200"]},
+  "HONDA HENDERSON": {"logon": 1, "state": "NV", "customer_pay": ["C", "CE"], "employee": ["CXC"], "third_party": ["CHC", "CHCC", "CXW"], "policy": ["ISP"], "warranty": ["W"], "aftermarket_parts_source": ["200"]},
+  "HONDA NORTH": {"logon": 4, "state": "NV", "customer_pay": ["C", "CE"], "employee": ["CEMP"], "third_party": ["CH", "CHC", "CGWW"], "policy": ["IP"], "warranty": ["W"], "aftermarket_parts_source": ["200"]}
+}
