@@ -1,0 +1,42 @@
+{
+ "stores": {
+  "HONDA HENDERSON": {"state":"NV","make":["HOND"],"cp":["C","CE"],"emp":["CXC"],"third":["CHC","CHCC","CXW"],"policy":["ISP"]},
+  "HONDA NORTH": {"state":"NV","make":["HOND"],"cp":["C","CE"],"emp":["CEMP"],"third":["CH","CHC","CGWW"],"policy":["IP"]},
+  "NISSAN": {"state":"NV","make":["NISS"],"cp":["C","CQL"],"emp":["CEMP"],"third":["CPEXT"],"policy":["ISP"]},
+  "LR HENDERSON": {"state":"NV","make":["LAND","LR","JAGU","JAG"],"cp":["CPL","CPLJ"],"emp":["CEMP"],"third":["CLE","CNTX"],"policy":["ISP","ISPJ"]},
+  "LR LV": {"state":"NV","make":["LAND","LR","JAGU","JAG"],"cp":["CPL","CPLJ"],"emp":["CEMP"],"third":["CE","CEJ","CJDED","CLDED"],"policy":["ISP","ISPJ"]},
+  "SUBARU ST GEORGE": {"state":"UT","make":["SUBA"],"cp":["CS","CSQ"],"emp":["CSEMP"],"third":["CEXT","CSSC"],"policy":["ISPS"]},
+  "KIA ST GEORGE": {"state":"UT","make":["KIA"],"cp":["CK","CKQ"],"emp":["CKEMP"],"third":["CKEXT"],"policy":["IPS"]},
+  "VW ST GEORGE": {"state":"UT","make":["VOLK","VW"],"cp":["C","CQ"],"emp":["CEMP"],"third":["CEXT"],"policy":["IPS"]},
+  "SUBARU PRESCOTT": {"state":"AZ","make":["SUBA"],"cp":["CP","CPEX"],"emp":[],"third":[],"policy":["ISP"]},
+  "HONDA FLAGSTAFF": {"state":"AZ","make":["HOND"],"cp":["CP","CES"],"emp":["CPE"],"third":["CEXT"],"policy":["ISP"]},
+  "GMC PRESCOTT": {"state":"AZ","make":["GMC","BUIC","CHEV","CADI"],"cp":["CPT","CPC","CPD"],"emp":["CEMP"],"third":["CEXT","CEXTD"],"policy":["ISP"]},
+  "CDJR POST FALLS": {"state":"ID","make":["CHRY","DODG","JEEP","RAM"],"cp":["C","CQS"],"emp":[],"third":["CEW"],"policy":["ISP"]},
+  "LEXUS": {"state":"WA","make":["LEXU"],"cp":["CP"],"emp":["CEMP"],"third":[],"policy":["IMGT"]}
+ },
+ "cycles": [
+  ["HONDA HENDERSON","Labor","2025-10-14",185.83,165.26,"approved"],
+  ["HONDA HENDERSON","Parts","2026-07-24",110.31,94.71,"approved"],
+  ["HONDA NORTH","Labor","2025-11-28",179.22,167.01,"approved"],
+  ["HONDA NORTH","Parts","2026-07-28",147.75,99.30,"approved"],
+  ["NISSAN","Labor","2026-05-27",216.39,182.74,"approved"],
+  ["NISSAN","Parts","2026-02-25",132.51,70.79,"approved"],
+  ["LR HENDERSON","Labor","2026-02-19",278.57,245.95,"approved","LAND"],
+  ["LR HENDERSON","Parts","2026-07-21",99.09,86.40,"approved","LAND"],
+  ["LR HENDERSON","Labor","2025-11-25",290.27,225.25,"approved","JAGU"],
+  ["LR LV","Labor","2026-08-27",308.58,280.98,"approved","LAND"],
+  ["LR LV","Labor","2025-11-19",274.61,228.47,"approved","JAGU"],
+  ["SUBARU ST GEORGE","Parts","2026-11-09",122.91,85.30,"pending"],
+  ["KIA ST GEORGE","Parts","2026-05-29",106.47,84.70,"approved 106.50"],
+  ["VW ST GEORGE","Parts","2026-08-31",96.48,77.81,"rebutted 82.13"],
+  ["SUBARU PRESCOTT","Labor","2026-08-24",164.82,157.96,"approved"],
+  ["SUBARU PRESCOTT","Parts","2026-02-26",84.10,70.40,"approved"],
+  ["HONDA FLAGSTAFF","Parts","2026-02-27",74.26,69.02,"approved"],
+  ["GMC PRESCOTT","Parts","2026-03-02",73.78,69.37,"approved"],
+  ["GMC PRESCOTT","Labor","2026-11-23",200.42,188.94,"pending"],
+  ["CDJR POST FALLS","Labor","2025-12-01",183.36,174.34,"approved"],
+  ["CDJR POST FALLS","Parts","2026-05-21",84.70,74.78,"approved"],
+  ["LEXUS","Labor","2026-07-17",224.51,193.61,"approved"],
+  ["LEXUS","Parts","2026-03-24",96.10,65.33,"approved"]
+ ]
+}

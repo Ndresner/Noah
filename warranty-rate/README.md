@@ -53,3 +53,23 @@ Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and
 | Aftermarket parts | – | – | excluded | – | – |
 | Manufacturer response | court action | rebut in 30 days → director/ALJ | object or request ±30-day ROs within 30 days | info request within 30 days; effective ≤90 days | refuse only if rate unreasonably exceeds all area dealers |
 | Frequency | – | 12 months | 12 months (each) | 12 months | once per calendar year |
+
+## Historical check vs. DealerUplift (Nov 24, 2026)
+23 DealerUplift cycles (11 labor, 12 parts; see `config/history_cycles.json`) rebuilt from Qlik with `scripts/history_vs_dealeruplift.py`: 180-day look-back ending at DealerUplift's results date, 100 sequential qualifying ROs (or 90 days), state rules per `statutes/`, description-based line classification. Workbook is scratchpad-only.
+
+Labor ($/hr): DealerUplift vs. our best / median window
+| Store | DU | Ours best | Ours median |
+|---|---|---|---|
+| Honda Henderson (10/25) | 185.83 | 193.11 | 175.86 |
+| Honda North (11/25) | 179.22 | 186.56 | 173.17 |
+| Nissan Henderson (5/26) | 216.39 | 236.83 | 210.80 |
+| Land Rover Henderson (2/26) | 278.57 (approved 270) | 273.67 | 269.33 |
+| Jaguar Henderson (11/25, 30 ROs) | 290.27 (approved 250) | 306.66 | 294.67 |
+| Land Rover Las Vegas (8/26) | 308.58 | 294.78 | 281.36 |
+| Jaguar Las Vegas (11/25) | 274.61 (approved 250) | 276.46 | 266.94 |
+| Subaru Prescott (8/26) | 164.82 | 180.40 | 172.96 |
+| BGMC Prescott (11/26) | 200.42 | 211.57 | 207.37 |
+| Chrysler Post Falls (12/25) | 183.36 | 184.61 | 178.24 |
+| Lexus Spokane (7/26) | 224.51 | 221.89 | 218.21 |
+
+Parts markup: our best window is at or above DealerUplift's in 10 of 11 cycles, within ~3 points at Kia St George, Subaru Prescott, Chrysler Post Falls and Lexus Spokane; far below at Subaru St George (77.6% vs 122.9%, Utah rules - needs review). Our parts windows swing widely (median well below best), so parts needs a tighter line definition before it is relied on.
