@@ -2,10 +2,12 @@
 
 Goal: find out whether Findlay can build its own warranty rate submissions (manufacturer procedure or state statute) instead of paying a vendor (DealerUplift, an Armatus company), and how close our numbers land to theirs.
 
-Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and Honda Henderson / Honda North (NV). Historical comparison against DealerUplift submissions is in progress. Utah, Idaho and Washington statutes not yet pulled (sites blocked by the cloud network policy until their domains are allowed).
+Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and Honda Henderson / Honda North (NV). All five state statutes stored. DealerUplift submission history inventoried (57 cycles, 30 stores); historical comparison waiting on labor-type confirmation per store (`config/labor_types_proposed.csv`).
 
 ## Folder
-- `statutes/` – state statute text (verbatim, with source URL and retrieval date) and notes. NV and AZ done; UT, ID, WA to add.
+- `statutes/` – state statute text (verbatim, with source URL and retrieval date) and notes: NV (NRS 482.36385), AZ (ARS 28-4451), UT (13-14-204), ID (49-1626), WA (RCW 46.96.105).
+- `history/` – DealerUplift/Armatus submission inventory from the mailbox (`dealeruplift_submissions.csv`, one row per store x labor/parts x cycle, Sep 2024 – Nov 2026) and its summary (outcomes, gaps, methodology statements).
+- `config/labor_types_proposed.csv` – proposed customer-pay / employee / third-party labor types for every store (from Qlik, May–Nov 2026), with open questions. Confirmed rows move into `store_labor_types.json`.
 - `oem_policies/` – summaries of manufacturer labor-rate procedures (Toyota 7.1–7.4, Honda SOM 6.15). Originals are dealer-confidential and are not stored here.
 - `scripts/` – Qlik pull expression generator, Concat parser, and the three builds:
   - `toyota_74_30day.py` – Toyota Policy 7.4 30-RO calculation (single window).
@@ -37,3 +39,17 @@ Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and
 - Honda 6.15 eligibility (iExam warranty mechanical labor GP% ≤ 80%).
 - Counsel: "warranty-like" scope (alignments only with a repair; brake pads/rotors as wear items); separate labor and parts windows under ARS 28-4451.
 - Whether Findlay policy on vendor use (Armatus/DealerUplift) also covers in-house statutory filings.
+
+## State statute comparison (quick reference)
+| | NV | AZ | UT | ID | WA |
+|---|---|---|---|---|---|
+| Standard | ≥ retail charged | fair & reasonable; dealer may declare | ≥ retail for like parts/service | ≥ retail (if not unreasonable vs. area) | ≥ retail; ≥ 2010 schedule |
+| Method in statute | none | 100 seq. or 90 days, ≤180 days | 100 seq. qualified or 90 days, ≤180 days | 100 seq. or 90 days, ≤180 days | parts: 100 seq. or 90 days; labor: retail rate |
+| "Warranty-like" | – | "warranty-like repairs" (undefined) | defined: would be warranty but for time/miles | – | – |
+| Alignments | – | not named | **excluded** | not named | not named |
+| Brake pads/rotors | – | not named | **excluded** | not named | not named |
+| Batteries / bulbs | – | not named | non-EV batteries, bulbs excluded | not named | **excluded** |
+| Menu pricing | – | – | – | **excluded** | – |
+| Aftermarket parts | – | – | excluded | – | – |
+| Manufacturer response | court action | rebut in 30 days → director/ALJ | object or request ±30-day ROs within 30 days | info request within 30 days; effective ≤90 days | refuse only if rate unreasonably exceeds all area dealers |
+| Frequency | – | 12 months | 12 months (each) | 12 months | once per calendar year |

@@ -1,0 +1,33 @@
+qlik_division,inventory_store,proposed_customer_pay,proposed_exclude_ro_employee,proposed_exclude_ro_third_party,needs_answer
+ACURA,Acura,C,CXC,CEXT;CH;CHC,What is CAS (348 ROs @ $182/hr) - customer pay?
+AUDI HENDERSON,Audi Henderson,CA;CAM;CAO,CAEMP,CAEXT,What are CAM / CAO / CL / CLM (CL 82 ROs @ $382/hr)?
+AUDI RENO,Audi Reno Tahoe,CA,CAEMP,CEXT;CEXT2;CEXT3,
+CADILLAC,Cadillac,CP,CEMP,CPEXT,
+CDJR POST FALLS,Chrysler Post Falls,C;CQS,,CEW?,What are CE / CES / CEW / CW? (CDT = detail; excluded)
+CHEVY LV,Chevrolet,CP,CEMP,CEXT,What are CPF / CPF1 / CPF1T (fleet?) / CFY / CQ / CVET / CDSL / CMPD? (CPPM / CPCM = prepaid maintenance; excluded)
+GMC PRESCOTT,BGMC Prescott,CPT;CPC;CPD,CEMP,CEXT;CEXTD,Is CQC quick-lane customer pay? (CPB / CPP = body & paint; excluded)
+HONDA FLAGSTAFF,Honda Flagstaff,CP;CES,CPE?,CEXT,Is CPE employee? What are CDCI / CDCIE / CPO?
+HONDA HENDERSON,Honda Henderson,C;CE,CXC,CHC;CHCC;CXW,confirmed
+HONDA NORTH,Honda North,C;CE,CEMP,CH;CHC;CGWW,confirmed
+HONDA SPOKANE,Honda Spokane,CPC;CPCE,,CLCA?,What are CLCA / CLCX (1116 ROs @ $93/hr)?
+HYUNDAI PRESCOTT,Hyundai Prescott,CPH,CEMP,CEX,Is CCCE (811 ROs @ $101/hr) customer pay or a care program?
+HYUNDAI ST GEORGE,Hyundai St George,CH,CHEMP,CHEXT;CHSC,CHPPM = prepaid maintenance (excluded)
+KIA LV,(not in inventory),CPC,,CEXT,What is CEC?
+KIA ST GEORGE,Kia St George,CK;CKQ,CKEMP,CKEXT,What are CKJMA / CKE / CKQE?
+LEXUS,Lexus Spokane,CP;CLECS?,CEMP,,What are CCL / CLEC / CLECS / CLCX?
+LINCOLN,Lincoln,CP;CPM?,CEMP,CEXT,Is CPF fleet? Is CPM customer-pay maintenance?
+LR HENDERSON,Land Rover / Jaguar Henderson,CPL;CPLJ,CEMP,CLE?;CNTX?,What are CLE / CLM / CNTX / CIDL / CACC / CTIRE?
+LR LV,Land Rover / Jaguar Las Vegas,CPL;CPLJ,CEMP,CE?;CEJ?,Are CE / CEJ extended warranty? (CJDED / CLDED = deductibles)
+LR RENO,Land Rover / Jaguar Reno,CPL;CJCP,,CE?;CJE?,What are CMOC / CPA / CPLE?
+MAZDA,Mazda,C,,CMEXT;CPEXT,What are CE / CFE / CFF / CPDIG / CPENT? (CMPP = prepaid maintenance)
+NISSAN,Nissan Henderson,C;CQL,,CPEXT,What is CE (85 ROs @ $72/hr)?
+SUBARU LV,Subaru Las Vegas,CP;CPEX,,CEX,Is CPEX express customer pay (not extended)?
+SUBARU PRESCOTT,Subaru Prescott,CP;CPEX,,,Is CPEX express customer pay (2914 ROs @ $120/hr)?
+SUBARU ST GEORGE,Subaru St George,CS;CSQ,CSEMP,CEXT;CSSC,CPPM prepaid (excluded); CTPMS?
+TOYOTA FLAGSTAFF,Toyota Flagstaff,CPT,CPTE,CTEC,confirmed
+TOYOTA HENDERSON,(not in inventory),CTC,CEMP,CESC?;CXC?,Toyota Henderson: which of CTC / CTCS / CTAC / CTSC / CNON are customer pay?
+TOYOTA PRESCOTT,(not in inventory),CPT,CPTE,CTXX?,
+TOYOTA SPOKANE,(not in inventory),CP,CEMP,CTE,
+VW HENDERSON,VW Henderson,CP;CXP?,,CEXT,Is CXP express customer pay? CFP?
+VW ST GEORGE,VW St George,C;CQ,CEMP,CEXT,
+VOLVO,(not in inventory),CV,,CVEXT,What are CVM / CVE?
