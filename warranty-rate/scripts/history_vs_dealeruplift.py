@@ -22,9 +22,10 @@ RX = [
  ("MAINT", r"OIL (AND|&) FILTER|OIL CHANGE|\bLOF\b|LUBE|SYNTHETIC|SYNPOWER|\b\d{1,3}K\b|\d{1,3},\d{3} MILE|MILE (SERVICE|MAINT)|INTERVAL|MAINTENANCE|SERVICE MENU|ANNUAL SERVICE|YEAR SERVICE|\bA\d+[- ]?B\d+|B1 SERVICE|MAJOR SERVICE|MINOR SERVICE|TUNE[- ]?UP|VALVE ADJUST|INSPECTION LINE|MULTI[- ]?POINT|\bMPI\b|FILTER|FLUID|FLUSH|EXCHANGE|DRAIN AND FILL|DIFFERENTIAL SERVICE|TRANSFER CASE SERVICE|TRANSMISSION SERVICE|CVT SERVICE|DSG SERVICE|4X4 SERVICE|AWD SERVICE|COOLANT|COOLING SYSTEM (SERVICE|FLUSH)|\bBG\b|INDUCTION|FUEL SYSTEM SERVICE|FUEL SERVICE|THROTTLE BODY (SERVICE|CLEAN)|INTAKE VALVE|EGR SERVICE|DECARB|REFRESH|SPARK PLUG|TIMING BELT|WIPER|BULB|BATTERY (TERMINAL|SERVICE)|SERVICE BATTERY|TERMINALS|BODY LUBE|GREEN SERVICE|BLUE SERVICE|RED SERVICE|EXPRESS|XPRESS|VALVOLINE"),
  ("BATTERY", r"BATTER"),
 ]
-def category(desc, hrs):
+def category(desc, hrs, labor=None):
     d = desc.upper()
     if hrs <= 0: return "NOHOURS"
+    if labor is not None and hrs >= 15 and labor / hrs < 30: return "BADHOURS"   # clerical hours errors (e.g. 150.0 for 1.5)
     for cat, pat in RX:
         if re.search(pat, d): return cat
     return "REPAIR"   # diagnosis, concerns, repairs, unmapped
@@ -53,7 +54,7 @@ def load(div):
     L = list(csv.DictReader(open(f"{H}/lines/{div}.csv")))
     for r in L:
         for k in ("hrs", "labor", "parts", "pcost"): r[k] = float(r[k])
-        r["cat"] = category(r["desc"], r["hrs"])
+        r["cat"] = category(r["desc"], r["hrs"], r["labor"])
     return L
 
 def build_cycle(div, L, typ, end, make_pref):
@@ -113,7 +114,7 @@ NAME = {("HONDA HENDERSON", None): "Findlay Honda Henderson", ("HONDA NORTH", No
         ("LR LV", "JAGU"): "Jaguar Las Vegas", ("SUBARU ST GEORGE", None): "Findlay Subaru St George", ("KIA ST GEORGE", None): "Findlay Kia St George",
         ("VW ST GEORGE", None): "Findlay Volkswagen St George", ("SUBARU PRESCOTT", None): "Findlay Subaru Prescott",
         ("HONDA FLAGSTAFF", None): "Findlay Honda Flagstaff", ("GMC PRESCOTT", None): "Findlay BGMC Prescott",
-        ("CDJR POST FALLS", None): "Findlay Chrysler Post Falls", ("LEXUS", None): "Findlay Lexus Spokane"}
+        ("CDJR POST FALLS", None): "Findlay Chrysler Post Falls", ("CHEVY LV", None): "Findlay Chevrolet", ("LEXUS", None): "Findlay Lexus Spokane"}
 
 cache = {}; res = []
 for c in CYCLES:
@@ -124,7 +125,7 @@ for c in CYCLES:
     if typ == "Labor": appr, appr_d = (a[3], a[4]) if a else (None, None)
     else: appr, appr_d = (a[7], a[8]) if a else (None, None)
     pct = typ == "Parts"
-    res.append({"store": nm, "state": STORES[div]["state"], "type": typ, "date": end, "du": du / 100 if pct else du,
+    res.append({"store": nm, "state": STORES[div]["state"], "type": typ, "date": end, "du": (du / 100 if pct else du) if du is not None else None,
                 "cur": cur / 100 if pct else cur, "outcome": outcome, "approved": appr, "approved_date": appr_d, "r": r})
 
 # ---------- workbook ----------
@@ -148,13 +149,13 @@ for j, x in enumerate(res):
     vals = [x["store"], x["state"], x["type"], x["date"], x["cur"], x["du"], x["approved"] if isinstance(x["approved"], (int, float)) else x["approved"],
             str(x["approved_date"])[:10] if x["approved_date"] else None, x["outcome"]]
     if r:
-        vals += [r["max"], r["med"], r["latest"], r["min"], f"=J{rr}-F{rr}", r["n_ro"], r["n_win"], f"{r['best']['first']}-{r['best']['last']}", f"{r['best']['d0']} to {r['best']['d1']}"]
+        vals += [r["max"], r["med"], r["latest"], r["min"], (f"=J{rr}-F{rr}" if x["du"] is not None else None), r["n_ro"], r["n_win"], f"{r['best']['first']}-{r['best']['last']}", f"{r['best']['d0']} to {r['best']['d1']}"]
     else:
         vals += ["insufficient data"] + [None] * 8
     for i, v in enumerate(vals, 1):
         c = ws.cell(row=rr, column=i, value=v); c.font = BF; c.border = BOX
         if i in (5, 6, 7, 10, 11, 12, 13, 14): c.number_format = f
-    if r:
+    if r and x["du"] is not None:
         gap = (r["max"] - x["du"]) / (x["du"] if not pct else 1)
         tol = 0.03 if not pct else 0.05
         fill = GREEN if abs(gap) <= tol else (YEL if abs(gap) <= 2 * tol else RED)
@@ -183,5 +184,5 @@ json.dump([{**{k: v for k, v in x.items() if k != "r"}, "r": ({k: v for k, v in 
 for x in res:
     r = x["r"]; p = x["type"] == "Parts"
     fmt = (lambda v: f"{v*100:6.1f}%") if p else (lambda v: f"${v:7.2f}")
-    print(f"{x['store'][:26]:26s} {x['state']} {x['type'][:1]} {x['date']} DU={fmt(x['du'])} appr={x['approved']} | "
+    print(f"{x['store'][:26]:26s} {x['state']} {x['type'][:1]} {x['date']} DU={fmt(x['du']) if x['du'] is not None else '  (none)'} appr={x['approved']} | "
           + (f"best={fmt(r['max'])} med={fmt(r['med'])} latest={fmt(r['latest'])} ros={r['n_ro']} wins={r['n_win']}" if r else "NO DATA"))

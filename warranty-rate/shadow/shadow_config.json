@@ -1,0 +1,145 @@
+{
+ "stores": {
+  "CDJR POST FALLS": {
+   "state": "ID",
+   "make": [
+    "CHRY",
+    "DODG",
+    "JEEP",
+    "RAM"
+   ],
+   "cp": [
+    "C",
+    "CQS"
+   ],
+   "emp": [],
+   "third": [
+    "CEW"
+   ],
+   "policy": [
+    "ISP"
+   ]
+  },
+  "HONDA FLAGSTAFF": {
+   "state": "AZ",
+   "make": [
+    "HOND"
+   ],
+   "cp": [
+    "CP",
+    "CES"
+   ],
+   "emp": [
+    "CPE"
+   ],
+   "third": [
+    "CEXT"
+   ],
+   "policy": [
+    "ISP"
+   ]
+  },
+  "HONDA HENDERSON": {
+   "state": "NV",
+   "make": [
+    "HOND"
+   ],
+   "cp": [
+    "C",
+    "CE"
+   ],
+   "emp": [
+    "CXC"
+   ],
+   "third": [
+    "CHC",
+    "CHCC",
+    "CXW"
+   ],
+   "policy": [
+    "ISP"
+   ]
+  },
+  "HONDA NORTH": {
+   "state": "NV",
+   "make": [
+    "HOND"
+   ],
+   "cp": [
+    "C",
+    "CE"
+   ],
+   "emp": [
+    "CEMP"
+   ],
+   "third": [
+    "CH",
+    "CHC",
+    "CGWW"
+   ],
+   "policy": [
+    "IP"
+   ]
+  },
+  "CHEVY LV": {
+   "state": "NV",
+   "make": [
+    "CHEV"
+   ],
+   "cp": [
+    "CP"
+   ],
+   "emp": [
+    "CEMP"
+   ],
+   "third": [
+    "CEXT"
+   ],
+   "policy": [
+    "ISP"
+   ]
+  }
+ },
+ "cycles": [
+  [
+   "CHEVY LV",
+   "Labor",
+   "2026-11-16",
+   null,
+   201.19,
+   "shadow - awaiting prelim (R7 start 11/16)"
+  ],
+  [
+   "CDJR POST FALLS",
+   "Labor",
+   "2026-11-16",
+   null,
+   183.36,
+   "shadow - awaiting prelim (R7 start 11/16)"
+  ],
+  [
+   "HONDA FLAGSTAFF",
+   "Labor",
+   "2026-11-16",
+   null,
+   175.05,
+   "shadow - awaiting prelim (R5 start 11/16)"
+  ],
+  [
+   "HONDA HENDERSON",
+   "Labor",
+   "2026-11-16",
+   207.28,
+   185.83,
+   "prelim 11/20 - OK to finalize at >= $202"
+  ],
+  [
+   "HONDA NORTH",
+   "Labor",
+   "2026-11-16",
+   199.28,
+   179.22,
+   "prelim 11/20 - OK to finalize at >= $195"
+  ]
+ ]
+}
