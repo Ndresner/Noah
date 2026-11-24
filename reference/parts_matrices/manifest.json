@@ -167,6 +167,32 @@
      "file": "subaru_st_george/2026-11-09_price_breaks_by_source.xlsx"
     }
    ]
+  },
+  "lincoln": {
+   "store": "Findlay Lincoln",
+   "qlik_division": "LINCOLN",
+   "current_matrix": "lincoln/2026-11-24_price_breaks_by_source.xlsx",
+   "current_parsed": "lincoln/2026-11-24_matrix.json",
+   "source_descriptions": null,
+   "received": "2026-11-24",
+   "cp_price_field": "PRICE10",
+   "matrix_labor_types": [
+    "CP",
+    "CPM"
+   ],
+   "main_repair_source": "100",
+   "notes": [
+    "Matrix labor types confirmed 2026-11-24: CP, CPM. CEXT plan-paid, CPF fleet (~cost +20%), CEMP employee.",
+    "Sources 100-106, 200-205, 300-301 share one rule: cost +500/+405/+235/+160% by cost band, LIST +36% over $50 cost. 400/600/800 = list. 700 (Menu Items) = cost +300..+150%, LIST +15% over $50, but sells at list in practice. 900 PRICE10 = LIST, with the LIST field itself set to list +10%.",
+    "TRADE rules on 400/700/900 and the LIST rule on 900 are not customer pay.",
+    "Cost-plus bands under $20 put bulk fluids at 2-2.5x list; the store sells them near list."
+   ],
+   "history": [
+    {
+     "received": "2026-11-24",
+     "file": "lincoln/2026-11-24_price_breaks_by_source.xlsx"
+    }
+   ]
   }
  }
 }

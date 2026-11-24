@@ -33,6 +33,7 @@ reference/parts_matrices/
 | Hyundai Prescott | HYUNDAI PRESCOTT | PRICE6 | 2026-11-05 | Matrix labor type CPH. One cost rule on all priced sources; change live week of 2026-07-27 |
 | Subaru St. George | SUBARU ST GEORGE | PRICE6 | 2026-11-09 | Matrix labor types CS, CSQ, CTPMS. Source 200 = list + markup; 203 untestable (stored PRICE6) |
 | Chevrolet Las Vegas | CHEVY LV | **PRICE10** | 2026-11-05 | Matrix labor type CP. Change went live 2026-02-02 |
+| Lincoln | LINCOLN | **PRICE10** | 2026-11-24 | Matrix labor types CP, CPM. Main repair source 100. 700 menu source sells at list despite cost-plus rule |
 
 ## Adding a newer version
 
