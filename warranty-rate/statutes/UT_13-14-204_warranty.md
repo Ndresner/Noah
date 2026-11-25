@@ -129,3 +129,6 @@ Amended by Chapter 240 , 2023 General Session
  PDF 
  | RTF 
  | XML
+
+## Manufacturer reading on record
+- Volkswagen (Nov 25, 2026, Findlay VW St George parts markup): VW accepted that 13-14-204(3)(a)(ii)(A) excludes non-EV batteries as routine maintenance and removed battery and bulb repairs from the sample. VW used the 90-day limit (80 ROs) rather than 100 ROs.

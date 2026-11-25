@@ -79,6 +79,8 @@ Labor ($/hr): DealerUplift vs. our best / median window
 
 Parts markup: our best window is at or above DealerUplift's in 11 of 12 cycles, within ~3 points at Kia St George, Subaru Prescott, Chrysler Post Falls and Lexus Spokane; far below at Subaru St George (77.6% vs 122.9%, Utah rules - needs review). Our parts windows swing widely (median well below best), so parts needs a tighter line definition before it is relied on.
 
+First OEM-audited parts result (VW St George, Utah, Nov 25, 2026): DealerUplift asked 96.48%; VW's line-by-line review landed at **89.69%** (after agreeing batteries and bulbs are excluded under Utah law). Our rebuild for that cycle: median 96.3%, best 118.9% – i.e. our median matched DealerUplift's ask, and both were about 7 points above what VW accepted. Use 89.69% as the calibration target when tightening the parts line rules (details in `oem_policies/Volkswagen_Warranty_Policy_2026_summary.md`).
+
 ## Manufacturer procedures at a glance (from `oem_policies/`)
 | Brand | Own labor-rate route | Sample | Parts reimbursed | Own parts-markup route | Defers to state statute? |
 |---|---|---|---|---|---|

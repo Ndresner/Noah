@@ -38,3 +38,14 @@ Source: Volkswagen of America Warranty Policies and Procedures Manual, 2026 edit
 - 2.3.5 (p. 41): keep warranty and non-warranty documentation at least 2 years after payment, or longer if law requires.
 - 2.6 (p. 58): VW may audit all records; unsupported claims may be denied or charged back under the manual edition in effect at the time of repair. Written notice before audits. The manual states no look-back limit – state statutes govern.
 - General: VW "reserves the right to charge back or deny claims" not in compliance with the manual and other warranty publications (p. 33).
+
+## VW statutory parts markup review in practice (Findlay VW St George, Utah, Oct–Nov 2026)
+Source: VW Warranty Compliance emails and VW's final worksheet, Nov 11–25, 2026. Filed by DealerUplift under Utah 13-14-204.
+- Process: letter of intent received Oct 3, 2026; documents complete Oct 15; VW review and counter Nov 11; store rebuttal Nov 23; VW revised Nov 25. About 6 weeks from complete documents to first answer. Effective date offered: Nov 14, 2026 (not the filing date). Supplemental reimbursement shows on the Warranty Credit Note and Summary, not in SAGA; a lump-sum catch-up may be posted for the gap. Acceptance = reply-all to VW's email.
+- VW's math: markup over dealer cost = sum of retail / sum of cost - 1, per part line, with retail net of the RO discount allocated proportionally across parts (a "Discount $" column per line). Aggregate ratio, not an average of RO percentages.
+- Sample: VW counted until "either 90 days or 100 qualifying" ROs; the final sheet has 80 ROs, so the 90-day limit governed.
+- What VW added back (dealer exclusions VW rejected): bulbs (later conceded), a rear lift strut, a sunglass holder, the oil-sump/separator/pressure-sensor lines on an RO where only part of the job had been counted.
+- What VW removed: non-OEM parts (brake cleaner lines, the rest of those ROs kept); non-warranty-like repairs ("outside influence" – cracked headlight; "no defect" – sunshade).
+- Batteries: VW first re-included 25 battery ROs, then agreed (Nov 25) that Utah's routine-maintenance definition excludes non-EV batteries. A key-fob battery line stayed in.
+- Result: dealer (DealerUplift) asked 96.48%; VW counter 82.13%; store's rebuttal 89.47%; VW final 89.69% (slightly above the store's own figure). Current rate before the request: about 77.8%.
+- Lessons for in-house filings: (1) classify at the line level and drop only the offending line, not the RO; (2) document a reason for every excluded RO (VW tests each one); (3) cite the statute subsection for each exclusion category – the battery citation moved the rate 7.5 points; (4) don't over-exclude low-markup repairs – VW adds them back.
