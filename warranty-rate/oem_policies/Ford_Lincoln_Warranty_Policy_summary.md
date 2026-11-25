@@ -1,12 +1,12 @@
 # Ford / Lincoln – Warranty & Policy Information §5.1, 5.2, 7.3 + OWS User Guide (summary)
 
-Source: Ford Motor Company "Warranty & Policy Information" manual (Ford and Lincoln combined; published 10-Nov-2025, last updated 15-Nov-2026) and the ONE Warranty Solution (OWS) User Guide V10.18 (August 2026), received Nov 2026 for Findlay Lincoln (NV). Copyrighted dealer documents – summary and short quotes only; originals are not stored in the repo. Page numbers are PDF pages.
+Source: Ford Motor Company "Warranty & Policy Information" manual (Ford and Lincoln combined; published 10-Nov-2025, last updated 15-Nov-2026) and the ONE Warranty Solution (OWS) User Guide V10.18 (August 2026), received Nov 2026 for Findlay Lincoln (NV). Added 25-Nov-2026: Ford Warranty "Warranty Program Training Manual" for the Warranty Retail Reimbursement platform (FINAL 2.1.21, 2 pages, from Jon Chiles, Lincoln Fixed Ops Director). Copyrighted dealer documents – summary and short quotes only; originals are not stored in the repo. Page numbers are PDF pages.
 
 ## Key points
 - 5.1.01.06 (p.137): Ford's policy is to pay warranty labor at an hourly rate that is "fair, reasonable, and competitive," administered through one of two labor rate request options (5.1.01.07).
 - 5.1.01.08 (p.138): labor = Ford Service Labor Time Standards hours x the dealer's approved warranty labor rate "in effect on the date of repair." OWS extends the rate automatically (Hrs x Labor Rate, OWS p.34); the dealer does not key the rate on the claim.
 - 5.1.02.11 (p.142): parts = Dealer Price (or Exchange Price) in effect on the date of repair + parts allowance. "Unless otherwise specified by Ford in writing, the parts allowance on Ford-paid repairs is 40%." OWS applies it automatically at Pre-Validation (OWS p.33).
-- No parts markup increase procedure exists anywhere in the manual or OWS guide. The 40% is a flat default; any change would have to come through the state statute.
+- Correction (25-Nov-2026): Ford does have a parts markup increase route. The manual and OWS guide are silent, but since 1 Feb 2021 both labor rate and parts markup requests go through Ford's online Warranty Retail Reimbursement platform (FordWarrantyRetailReimbursement.com, linked from FMCDealer) – see "Retail Reimbursement Requests platform" below. The 40% stays the default "unless otherwise specified by Ford in writing" (5.1.02.11), which is what an approved markup request changes. The procedure's rules (sample, window, exclusions) are not in anything received yet.
 - State-law deferral is scattered and generic (see below); there is no "as an alternative to your state statute" statement like Honda 6.15.
 
 ## Labor rate options (5.1.01.07, p.137–138)
@@ -16,7 +16,7 @@ Source: Ford Motor Company "Warranty & Policy Information" manual (Ford and Linc
   - a consistent retail pricing practice with a retail labor rate at least equal to the requested warranty rate;
   - a consistent practice of listing actual or standard hours (to the tenth) per repair on the office copy of the RO (hours on the customer copy optional "unless required by state or local law or regulation").
 - Approved increases are "effective on a going-forward basis only." Requests go to the Parts & Service Zone Manager.
-- **Not in the manual:** RO sample size, look-back window, who picks the start RO, qualifying/excluded repairs, forms, competitive survey, verification steps, response time or frequency limit. Ford presumably handles these outside the manual (Zone / regional guidance) – ask the Zone Manager for the current Retail Rate Option worksheet before relying on any of it.
+- **Not in the manual:** RO sample size, look-back window, who picks the start RO, qualifying/excluded repairs, forms, competitive survey, verification steps, response time or frequency limit. The Feb 2021 training manual shows these live on the Retail Reimbursement platform ("Overview and Instructions" plus a downloadable template on the Apply for Labor Rate page), not with the Zone Manager – pull the current page and template before relying on any of it.
 - Secondary P&A code (5.1.01.06): LimoCare-certified dealers and dealers servicing 12+ motor homes a year can carry a separate rate; motor home rate starts at the standard warranty rate and can be raised through the Retail Rate Option.
 
 ## Parts reimbursement detail (5.1.02, p.138–143)
@@ -28,6 +28,18 @@ Source: Ford Motor Company "Warranty & Policy Information" manual (Ford and Linc
 - Sublet / outside labor: capped at the labor-op amount at the dealer's approved warranty rate "unless authorized by law" (5.1.01.13). Dealer-owned sublet facilities must claim labor ops at the warranty rate.
 - Shop supplies not reimbursable (3.5.02.70). Ford/Lincoln Loyalty Program repairs "must be at warranty rates" (5.2.03.04).
 - Dealer may submit a part at NET by entering the markup amount as dealer participation (OWS p.33).
+
+## Retail Reimbursement Requests platform (Training Manual, FINAL 2.1.21)
+Two-page Ford Warranty training deck announcing the "New Retail Reimbursement Requests Process for both Labor Rates and Parts Mark Up, effective February 1, 2021." It covers the submission route and screens only – not the qualifying rules.
+- **Route:** FordWarrantyRetailReimbursement.com, a "single point of reference" for both programs. Jon Chiles' cover note: Ford/Lincoln labor and parts rate increase requests "must be submitted through the link available in FMC" (FMCDealer).
+- **Mandatory online:** from 1 Feb 2021 it replaces mailing or emailing requests to Warranty Program Headquarters; manual submissions "will be rejected back to the dealer for an online submission when possible."
+- **Access:** log in with the dealer's STARS ID. Only Dealer Principal, General Manager, Service Manager and Parts Manager roles have access – a Findlay central office user would need one of those logins or the store to submit.
+- **Homepage:** shows IRO enrollment status and the current labor rate and parts markup on file. Actions: Enroll in IRO, Apply for Labor Rate, Apply for Parts Markup, Request Information from Ford Admin. (IRO appears to be the Index Rate Option enrollment – the manual (5.1.01.07) still says DPES; confirm which system is current.)
+- **Parts markup request steps:** Apply for Parts Markup → read the page's "Overview and Instructions" → fill in the web form or upload the approved template (under "Example/Template") → upload supporting repair orders → add comments → submit. Labor rate request is the same flow on the Apply for Labor Rate page.
+- **Tracking:** status in "View Previous Enrollments" plus email updates; questions through the platform's "Submit A Question" button, answered "within 24 business hours."
+- **Not in the deck:** RO sample size or look-back window, which repairs count or are excluded, how markup is calculated, approval criteria or turnaround, effective date of an approved increase, how often a dealer can apply, and any state-statute language. Those are presumably in the platform's on-page instructions and template – download them (as a GM/Service/Parts Manager) before building a Findlay submission.
+- **"Self-warranty":** nothing in the deck covers a self-warranty or self-approval program; the only self-approval item on file is the DDET late-claim code (5.2.03.08). Ask Jon what he meant if it matters (possibly the self-service platform itself).
+- **Statute angle (our inference, not in the deck):** because Ford routes markup through its own retail-proof process with no stated state-law alternative, a statutory filing (NV and the other states) should be sent in writing to Ford with a request that it be handled under the statute, and logged on the platform if Ford requires it – confirm with counsel.
 
 ## State-law language
 - 3.2.01 (p.51): states "have, or may enact, laws" affecting dealer business; manual doesn't list them; Ford recommends dealers consult legal counsel. No statement that the statute overrides the labor rate options.

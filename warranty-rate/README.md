@@ -86,7 +86,7 @@ Parts markup: our best window is at or above DealerUplift's in 11 of 12 cycles, 
 | Honda / Acura | 6.15 (iExam GP% ≤ 80%) | 20 consecutive qualifying CP ROs from 50+, dealer picks; parts required | dealer net + 40% | none | yes – 6.15 is "an alternative" to the statute |
 | Hyundai | 5.10, capped at 5% below sample rate | 25 most recent sequential CP ROs | dealer net + 40% | none | yes – statutory requests "governed by state law"; over-cap requests sent to the statute |
 | Volkswagen | Option 1 CPI (3-yr, CPI-U, cap 4%) or Option 2 retail rate | 30 sequential warranty-like CP ROs, ≤12 months, dealer picks | MSRP (MY2003+) | none (contact Warranty Labor Rate Specialist) | yes – "unless contradicted by relevant law"; statute-only retail-rate form |
-| Ford / Lincoln | Index Rate (3-yr, CPI + 0.5%) or Retail Rate option | not specified in manual (Zone Manager) | dealer price + 40% | none | generic only |
+| Ford / Lincoln | Index Rate (3-yr, CPI + 0.5%) or Retail Rate option, both via FordWarrantyRetailReimbursement.com | on the platform instructions/template (not yet obtained) | dealer price + 40% | yes – same online platform (since Feb 2021) | generic only |
 | INEOS | Labor Rate Review Form (not in manual), 12-month dealers only | in the form | per state law | none – "in accordance with applicable state law" | "to extent allowed by applicable law" |
 
 Check before any statutory filing: whether the store is enrolled in a CPI/index program (Toyota Option A, VW Option 1, Ford Index Rate) and its exit terms.
