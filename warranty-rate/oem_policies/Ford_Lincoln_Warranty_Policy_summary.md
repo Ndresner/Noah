@@ -33,7 +33,7 @@ Source: Ford Motor Company "Warranty & Policy Information" manual (Ford and Linc
 - 3.2.01 (p.51): states "have, or may enact, laws" affecting dealer business; manual doesn't list them; Ford recommends dealers consult legal counsel. No statement that the statute overrides the labor rate options.
 - Claim submission (5.2.03.07, p.146) and appeals (5.2.02.02, p.144): deadlines apply "unless local laws mandate a longer time-period." FSA claims (6.4.05): state-law period if longer.
 - Audits (7.3.02, p.166): no chargeback beyond one year from payment notification unless fraud/false findings "and state law allows going beyond one year."
-- Sublet labor cap "unless authorized by law" (5.1.01.13); repair-direction rules don't limit "compensation otherwise required by applicable law" (3.5.02, Smart Cost Cap); NPF diagnostic time paid per state statute where one governs diagnostic time (p.135).
+- Sublet labor cap "unless authorized by law" (5.1.01.13); repair-direction rules don't limit "compensation otherwise required by applicable law" (3.5.02.68, p.83); NPF diagnostic time paid per state statute where one governs diagnostic time (5.1.01.02, p.135).
 
 ## Deadlines, audits, chargebacks
 - Claims: 30 days from Repair Line Completion; 31–180 days with self-approval code DDET (still subject to review); beyond 180 days only via the Regional Field rep (5.2.03.07–.08; OWS p.64).

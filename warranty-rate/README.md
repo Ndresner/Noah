@@ -8,7 +8,7 @@ Status as of Nov 25, 2026: method built and tested for Toyota Flagstaff (AZ) and
 - `statutes/` – state statute text (verbatim, with source URL and retrieval date) and notes: NV (NRS 482.36385), AZ (ARS 28-4451), UT (13-14-204), ID (49-1626), WA (RCW 46.96.105).
 - `history/` – DealerUplift/Armatus submission inventory from the mailbox (`dealeruplift_submissions.csv`, one row per store x labor/parts x cycle, Sep 2024 – Nov 2026) and its summary (outcomes, gaps, methodology statements).
 - `config/labor_types_proposed.csv` – proposed customer-pay / employee / third-party labor types for every store (from Qlik, May–Nov 2026), with open questions. Confirmed rows move into `store_labor_types.json`.
-- `oem_policies/` – summaries of manufacturer labor-rate procedures (Toyota 7.1–7.4, Honda SOM 6.15). Originals are dealer-confidential and are not stored here.
+- `oem_policies/` – summaries of manufacturer warranty policies and labor-rate procedures: Toyota 7.1–7.4, Honda SOM 6.15, Acura, Hyundai, Volkswagen, Ford/Lincoln, INEOS. Originals are dealer-confidential and are not stored here. Still to come (requested from service managers Nov 2026): Lexus, Nissan, Kia, Subaru, Mazda, Audi/Lamborghini, GM, Stellantis, Jaguar Land Rover, Volvo.
 - `scripts/` – Qlik pull expression generator, Concat parser, and the three builds:
   - `toyota_74_30day.py` – Toyota Policy 7.4 30-RO calculation (single window).
   - `toyota_vs_az_statute.py` – Toyota 7.4 vs. Arizona ARS 28-4451, 180-day look-back.
@@ -78,3 +78,15 @@ Labor ($/hr): DealerUplift vs. our best / median window
 | Lexus Spokane (7/26) | 224.51 | 221.89 | 218.21 |
 
 Parts markup: our best window is at or above DealerUplift's in 11 of 12 cycles, within ~3 points at Kia St George, Subaru Prescott, Chrysler Post Falls and Lexus Spokane; far below at Subaru St George (77.6% vs 122.9%, Utah rules - needs review). Our parts windows swing widely (median well below best), so parts needs a tighter line definition before it is relied on.
+
+## Manufacturer procedures at a glance (from `oem_policies/`)
+| Brand | Own labor-rate route | Sample | Parts reimbursed | Own parts-markup route | Defers to state statute? |
+|---|---|---|---|---|---|
+| Toyota | Option A CPI or Option B ELR (Region sets start date) | first 30 qualified CP ROs, ≤120 days | (Toyota rate) | none | "unless prohibited by state law" on limits |
+| Honda / Acura | 6.15 (iExam GP% ≤ 80%) | 20 consecutive qualifying CP ROs from 50+, dealer picks; parts required | dealer net + 40% | none | yes – 6.15 is "an alternative" to the statute |
+| Hyundai | 5.10, capped at 5% below sample rate | 25 most recent sequential CP ROs | dealer net + 40% | none | yes – statutory requests "governed by state law"; over-cap requests sent to the statute |
+| Volkswagen | Option 1 CPI (3-yr, CPI-U, cap 4%) or Option 2 retail rate | 30 sequential warranty-like CP ROs, ≤12 months, dealer picks | MSRP (MY2003+) | none (contact Warranty Labor Rate Specialist) | yes – "unless contradicted by relevant law"; statute-only retail-rate form |
+| Ford / Lincoln | Index Rate (3-yr, CPI + 0.5%) or Retail Rate option | not specified in manual (Zone Manager) | dealer price + 40% | none | generic only |
+| INEOS | Labor Rate Review Form (not in manual), 12-month dealers only | in the form | per state law | none – "in accordance with applicable state law" | "to extent allowed by applicable law" |
+
+Check before any statutory filing: whether the store is enrolled in a CPI/index program (Toyota Option A, VW Option 1, Ford Index Rate) and its exit terms.
