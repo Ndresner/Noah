@@ -83,7 +83,7 @@ Parts markup: our best window is at or above DealerUplift's in 11 of 12 cycles, 
 | Brand | Own labor-rate route | Sample | Parts reimbursed | Own parts-markup route | Defers to state statute? |
 |---|---|---|---|---|---|
 | Toyota | Option A CPI or Option B ELR (Region sets start date) | first 30 qualified CP ROs, ≤120 days | (Toyota rate) | none | "unless prohibited by state law" on limits |
-| Lexus | Same as Toyota: Option A CPI or Option B ELR (Area Office sets start date); alignments and timing/serpentine belts excluded; survey = nearest 4 dealers incl. ≥1 domestic | first 30 qualified Lexus CP ROs, ≤120 days | MSRP (OTC cost + 30%) | none | "unless prohibited by state law" on limits only |
+| Lexus | Same as Toyota: Option A CPI or Option B ELR (Area Office sets start date); alignments and timing/serpentine belts excluded; survey = 3 imports + 1 domestic (ELR worksheet Rev. 10-26); increase ≥ $250; not on WAS Tier II/III | first 30 qualified Lexus CP ROs, ≤120 days | MSRP (OTC cost + 30%) | none | "unless prohibited by state law" on limits only |
 | Honda / Acura | 6.15 (iExam GP% ≤ 80%) | 20 consecutive qualifying CP ROs from 50+, dealer picks; parts required | dealer net + 40% | none | yes – 6.15 is "an alternative" to the statute |
 | Hyundai | 5.10, capped at 5% below sample rate | 25 most recent sequential CP ROs | dealer net + 40% | none | yes – statutory requests "governed by state law"; over-cap requests sent to the statute |
 | Volkswagen | Option 1 CPI (3-yr, CPI-U, cap 4%) or Option 2 retail rate | 30 sequential warranty-like CP ROs, ≤12 months, dealer picks | MSRP (MY2003+) | none (contact Warranty Labor Rate Specialist) | yes – "unless contradicted by relevant law"; statute-only retail-rate form |
