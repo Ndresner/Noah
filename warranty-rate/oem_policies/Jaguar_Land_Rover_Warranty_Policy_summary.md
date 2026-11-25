@@ -13,19 +13,34 @@ Source: JLR Global Warranty Compliance and Procedures Manual WM-59435, printed s
 | Z.1 | Appendix 1 – Summary of Worldwide Warranty Terms | 08-Jul-2026 |
 | Z.12 | Appendix 12 – JLR North America Warranties [NAS only] | 27-Feb-2025 |
 
-Copyrighted dealer document – summary and short quotes only; originals are not stored in the repo. This is a global manual written for National Sales Companies (NSCs) and markets; the US-specific rules sit in Appendix 12 and in a separate "local market bulletin" that has not been received.
+Copyrighted dealer document – summary and short quotes only; originals are not stored in the repo. This is a global manual written for National Sales Companies (NSCs) and markets; the US-specific rules sit in Appendix 12 and in the local market bulletin NAS23.06.003 (received Nov 25, 2026 – see "US procedure" below).
 
 Applies to: Land Rover Henderson, Land Rover Las Vegas, Land Rover Reno, and Jaguar service at Henderson / Las Vegas / Reno (all NV).
 
 ## Key points
-- No dealer-initiated labor rate request exists in the manual. M.1.2 describes an **annual, market-level** Warranty Labour Rate (WLR) review that the NSC/Regional Office (JLRNA for the US) runs and submits to JLR; the dealer does not file anything with JLR directly.
+- **US: the retailer does file its own request** – form W35 under bulletin NAS23.06.003 (see "US procedure" below). The global manual alone reads otherwise: M.1.2 describes an **annual, market-level** Warranty Labour Rate (WLR) review that the NSC/Regional Office (JLRNA for the US) runs and submits to JLR; the dealer does not file anything with JLR directly.
 - M.1.2 keeps each facility's WLR "within the policy banding of 75% to 90%, unless an agreed market specific policy deviation exists." The text does not say 75–90% **of what**; the listed inputs (retail rate, retail recovery rate) suggest a share of the retail rate, but that is an inference. For the US: "For the NAS market please refer to the local market bulletin for WLR review details and bandings" – not received.
 - State-law hook (M.1.2, last line): "If market legislation exists that means this policy cannot be adhered to evidence must be provided to Jaguar Land Rover." That is the only statutory language found. It acknowledges legislation can override the banding but is written to the market/NSC, not to the dealer, and gives no dealer procedure.
-- Practical read: for NV stores, a rate above the JLR banding has to come through NRS 482.36385, not the JLR review. Nothing in the sections received says the statute route is barred or must go through JLRNA first.
+- Practical read: for NV stores, the W35 route (25 non-maintenance ROs) is the manufacturer path; a rate above the JLR banding has to come through NRS 482.36385, not the JLR review. Nothing in the sections received says the statute route is barred or must go through JLRNA first.
 - Labor (G.2.1): SRO (Service Repair Operation) time x the WLR. SRO times "are reimbursed at a fixed rate as specified by Jaguar Land Rover and do not require adjustment for Technician efficiency" – flat, straight-time pay; no premium for overtime or efficiency.
 - Parts, US (Z.12, Parts Handling Allowance): JLR-sourced parts at net cost on the repair date **+ 40% handling**. Jaguar-only exceptions at 10%: audio head units, touchscreens (phone/NAV), engine assemblies, tires (due to a failed vehicle part). Vehicle starter batteries 10% (wording not limited to Jaguar). Non-JLR parts at facility cost, no markup, no shipping/handling.
 - Parts, global (M.2): Net Invoice Value on the "Date Repair Stopped," no handling stated. Appendix 12 is the US override.
-- No parts markup change route anywhere in the sections received. The 40% is fixed; an increase would be a state-statute filing only.
+- Parts markup: no route in the manual, but the US W35 workbook has Jaguar and Land Rover **Parts RO Summary** tabs (markup = (sale - discount) / cost - 1). The bulletin text only mentions labor, so whether JLRNA accepts a parts request on W35 needs confirming with WARLBJLR.
+
+## US procedure – bulletin NAS23.06.003 (June 9, 2023) and form W35 (June 2022)
+Received Nov 25, 2026 (bulletin, W35 PDF form, W35 Excel workbook).
+- **Frequency:** once a year, keyed to the last effective date (last increase June 1, 2022 -> next can be effective June 1, 2023 or later).
+- **Submit to:** WARLBJLR@jaguarlandrover.com, with a brief email/cover letter explaining why the rate needs to change. The PDF form says requests go to the Warranty Operations Manager; dual-brand retailers file Jaguar and Land Rover **at the same time**.
+- **Required documents:**
+  1. W35 workbook – the "W35 Request" tab (all fields mandatory, correct retailer code) plus the brand's Summary tab(s).
+  2. PDF of **consecutive** customer-pay RO accounting copies with at least **25 non-maintenance ROs per brand**, showing hours and labor charged to the customer **and the technician's elapsed time** (both sides, all attachments).
+  3. Excel export of every technician's Learner Journey – Competency Report from JLR Excellence (jlrexcellence.com: Reports > Learner Journey Report > Competency; Business Unit Type = Retailer; Job Role = Technician; export XLSX).
+- **Calculation (W35 workbook):** Labor RO Summary per brand – RO, labor hours, charge, discount; rate = (total charge - total discount) / total hours (aggregate, discount netted, room for 497 ROs). Parts RO Summary per brand – RO, cost, sale, discount; markup = (total sale - total discount) / total cost - 1.
+- **Market survey (W35 Request tab):** nearest **Audi, BMW, Infiniti, Lexus, Mercedes-Benz** dealer in the same Area of Responsibility – warranty and retail rates. If the retailer owns one of those franchises it must be included; brands not in the AOR are left blank. Our relevant overlap: Lexus Spokane is out of the NV AORs; check Audi Henderson / Audi Reno Tahoe – if they sit in a JLR store's AOR, their rates must be listed.
+- **Timing:** JLRNA reviews within **30 days**; approved changes take effect the **1st of the following month**.
+- **Certification on the form:** retailer complies with the JLR Global Warranty Manual North America version; if not, the rate **reverts** and labor overpayments since the increase are charged back.
+- Not stated: look-back window, what counts as "non-maintenance," how the 75–90% banding is applied to a W35 request, or statutory filings.
+- Fit with history: the DealerUplift JLR cycles (statutory, 100 ROs) landed at $250–270 approved vs. $274–291 submitted – consistent with JLRNA applying its banding to whatever is filed.
 
 ## M.1.2 annual WLR review (as written)
 - Purpose: set any new requested WLRs and keep every facility inside the 75–90% banding (or an agreed market deviation).
