@@ -2,7 +2,7 @@
 
 Goal: find out whether Findlay can build its own warranty rate submissions (manufacturer procedure or state statute) instead of paying a vendor (DealerUplift, an Armatus company), and how close our numbers land to theirs.
 
-Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and Honda Henderson / Honda North (NV). All five state statutes stored. DealerUplift submission history inventoried (57 cycles, 30 stores); historical comparison waiting on labor-type confirmation per store (`config/labor_types_proposed.csv`).
+Status as of Nov 25, 2026: method built and tested for Toyota Flagstaff (AZ) and Honda Henderson / Honda North (NV). All five state statutes stored. DealerUplift submission history inventoried (57 cycles, 30 stores) and 23 cycles rebuilt (see "Historical check" below). Shadow run of live DealerUplift cycles under way (`shadow/`), with a scheduled mailbox check for new results.
 
 ## Folder
 - `statutes/` – state statute text (verbatim, with source URL and retrieval date) and notes: NV (NRS 482.36385), AZ (ARS 28-4451), UT (13-14-204), ID (49-1626), WA (RCW 46.96.105).
@@ -20,17 +20,22 @@ Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and
 - Pull pattern: select `Division` + an `RO_Header.openeddate` match range (`>=M/D/YYYY<=M/D/YYYY`) with `qlik_select_values`, then one `qlik_create_data_object` with a `Concat(Aggr(...), %RO_Detail)` measure per pay type (see `scripts/qlik_line_pull_expr.py` for the row layout). 60-day chunks; results are saved to file by the MCP client – copy to the scratchpad and parse with `parse_qlik_concat.py`. Clear selections afterward.
 - Qlik sale amounts are already net of discounts (no separate discount lines). Advertised/manufacturer specials can't be identified until the CDK discount feed lands.
 - Hours = `RO_Detail.soldhours` (billed to customer).
+- On-brand vehicles only (`RO_Header.make` = the franchise make) – submissions count only the manufacturer's own line-make.
+- Lines with ≥15 sold hours at under $30/hr are dropped as clerical errors (e.g. Chrysler Post Falls RO 198882: alignment booked at 150.0 hours).
 - Outputs contain customer numbers and RO detail: **never commit the workbooks, CSVs or Qlik JSON**. Scratchpad only.
 
 ## Findings so far (estimates, not filings)
+All statutory figures count **on-brand vehicles only** (Toyota/Scion at Toyota Flagstaff, Honda at the Honda stores). Corrected Nov 25, 2026: the first versions of the Toyota-vs-AZ and Honda-vs-NV builds counted every make in the statutory method; the effect was small (see below).
+
 | Store | Current warranty labor (Qlik W lines) | Manufacturer method | Statute method (warranty-like) | DealerUplift prelim |
 |---|---|---|---|---|
-| Toyota Flagstaff (AZ) | $157.84 | Toyota 7.4 median $153.61 (best $172.99) | AZ median $169.89, best $187.35; parts markup median 77.8% | n/a (Toyota not with DealerUplift) |
-| Honda Henderson (NV) | $186.12 | Honda 6.15 median $196.60, best $231.18 | NV best window $208.10 | $207.28 (Nov 20, 2026) |
-| Honda North (NV) | $178.74 | Honda 6.15 median $186.58, best $225.01 | NV best window $198.74 | $199.28 (Nov 20, 2026) |
+| Toyota Flagstaff (AZ) | $157.84 | Toyota 7.4 median $153.61 (best $172.99) | AZ median $169.64, best $187.73; parts markup median 79.8% | n/a (Toyota not with DealerUplift) |
+| Honda Henderson (NV) | $186.12 | Honda 6.15 median $196.60, best $231.18 | NV median $193.96, best $207.21 (Honda op-code rules) / $204.82 (description rules, shadow run) | $207.28 (Nov 20, 2026) |
+| Honda North (NV) | $178.74 | Honda 6.15 median $186.58, best $225.01 | NV median $186.72, best $198.74 (Honda op-code rules) / $195.60 (description rules, shadow run) | $199.28 (Nov 20, 2026) |
 
-- Our implied current rates match DealerUplift's within $0.50; our best-window statute rates land within about $1 of their preliminary results at both Honda stores.
-- Toyota Flagstaff: Option B (manufacturer) at the median start date pays less than today; the AZ statutory route is worth ~$127K/yr at the median window (labor + parts). Alignments ($111/hr) are the biggest drag under Toyota's rules.
+- On-brand correction: Toyota Flagstaff AZ best +$0.38, median −$0.25 (was $187.35 / $169.89); Honda Henderson NV best −$0.89 (was $208.10); Honda North unchanged.
+- Our implied current rates match DealerUplift's within $0.50. At the Honda stores, the store-specific op-code rules land within about $0.50 of DealerUplift's prelims; the brand-agnostic description rules used for the shadow run land $2.46 (Henderson) and $3.68 (North) short. The RO detail requested from DealerUplift will show which line treatment matches theirs.
+- Toyota Flagstaff: Option B (manufacturer) at the median start date pays less than today; the AZ statutory route is worth ~$134K/yr at the median window (labor $43K + parts $91K). Alignments ($111/hr) are the biggest drag under Toyota's rules.
 - Nevada has no statutory method; the literal reading (all customer-pay work) is below current pay. The statute's value is leverage (NRS 482.36423 treble damages).
 
 ## Open questions
@@ -55,14 +60,14 @@ Status as of Nov 24, 2026: method built and tested for Toyota Flagstaff (AZ) and
 | Frequency | – | 12 months | 12 months (each) | 12 months | once per calendar year |
 
 ## Historical check vs. DealerUplift (Nov 24, 2026)
-23 DealerUplift cycles (11 labor, 12 parts; see `config/history_cycles.json`) rebuilt from Qlik with `scripts/history_vs_dealeruplift.py`: 180-day look-back ending at DealerUplift's results date, 100 sequential qualifying ROs (or 90 days), state rules per `statutes/`, description-based line classification. Workbook is scratchpad-only.
+23 DealerUplift cycles (11 labor, 12 parts; see `config/history_cycles.json`) rebuilt from Qlik with `scripts/history_vs_dealeruplift.py`: 180-day look-back ending at DealerUplift's results date, 100 sequential qualifying ROs (or 90 days), state rules per `statutes/`, description-based line classification, on-brand vehicles only, clerical-hours guard. Workbook is scratchpad-only.
 
 Labor ($/hr): DealerUplift vs. our best / median window
 | Store | DU | Ours best | Ours median |
 |---|---|---|---|
 | Honda Henderson (10/25) | 185.83 | 193.11 | 175.86 |
 | Honda North (11/25) | 179.22 | 186.56 | 173.17 |
-| Nissan Henderson (5/26) | 216.39 | 236.83 | 210.80 |
+| Nissan Henderson (5/26) | 216.39 | 236.83 | 213.17 |
 | Land Rover Henderson (2/26) | 278.57 (approved 270) | 273.67 | 269.33 |
 | Jaguar Henderson (11/25, 30 ROs) | 290.27 (approved 250) | 306.66 | 294.67 |
 | Land Rover Las Vegas (8/26) | 308.58 | 294.78 | 281.36 |

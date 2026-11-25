@@ -99,6 +99,7 @@ def toyota_ro(lines):
 
 def az_ro(lines, align_mode="with_repair", brakes=False, drop_disc=False):
     rsn = ro_common(lines)
+    if rsn is None and lines[0]["make"] not in ("TOYO", "SCIO"): rsn = f"Non-Toyota ({lines[0]['make']})"
     cp = [x for x in lines if x["lt"] == "CPT"]
     core = [x for x in cp if x["cls"] == Q and not ALIGN(x) and not BRAKE(x)] if rsn is None else []
     ql = list(core)
@@ -328,7 +329,7 @@ for i, (t, bold) in enumerate([
  ("Arizona method (ARS 28-4451 E-F)", True),
  ("Lesser of 100 sequential customer-paid ROs for warranty-like repairs or 90 consecutive days, within 180 days of submission; dealer chooses the window. Labor rate = labor sales / labor hours; parts markup = parts sales / parts cost - 1, both on the warranty-like repair lines of the submitted ROs.", False),
  ("Excluded per F: promotional/manufacturer specials, wholesale parts, routine maintenance (fluids, filters, belts not in the course of repairs), reconditioning. Tires, wipers, bulbs, inspections and fluid services treated as not warranty-like.", False),
- ("Base case interpretation: alignments only on ROs with another warranty-like repair; brake pads/rotors excluded as wear items. Same RO-level exclusions as Toyota for goodwill, extended warranty, employee and body-shop/dealer customers. All makes allowed (statute doesn't limit make).", False),
+ ("Base case interpretation: alignments only on ROs with another warranty-like repair; brake pads/rotors excluded as wear items. Same RO-level exclusions as Toyota for goodwill, extended warranty, employee and body-shop/dealer customers. Toyota/Scion vehicles only (on-brand, as submissions require).", False),
  ("Limits", True),
  ("Discounts are already netted in Qlik sale amounts; promo ROs can't be identified directly (sensitivity provided). The CDK discount feed would let us drop true promotional ROs.", False),
  ("Current warranty rates are proxies from WT lines (labor $ / sold hour, parts sale / cost). Toyota's approved rate letter should replace them.", False),

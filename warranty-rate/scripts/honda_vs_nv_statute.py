@@ -105,6 +105,7 @@ def run_store(st):
 
     def nv_ro(lines, align="with_repair", brakes=False, drop_disc=False):
         rsn = common(lines)
+        if rsn is None and lines[0]["make"] != "HOND": rsn = f"Non-Honda vehicle ({lines[0]['make']})"
         cp = [x for x in lines if x["lt"] in st["cp"]]
         core = [x for x in cp if x["cls"] == Q and not ALIGN(x) and not BRAKE(x)] if rsn is None else []
         ql = list(core)
@@ -146,7 +147,7 @@ def run_store(st):
     # literal statute: all customer-pay retail labor & parts (180 days, store-wide, excluding employee/policy/third-party ROs)
     lit = []
     for ro, lines in ROS.items():
-        if lines[0]["open"] < FROM or common(lines): continue
+        if lines[0]["open"] < FROM or common(lines) or lines[0]["make"] != "HOND": continue
         lit += [x for x in lines if x["lt"] in st["cp"] and x["hrs"] > 0]
     H, D, PS, PC = tot(lit); res["literal"] = {"elr": D / H, "mk": PS / PC - 1, "H": H}
     wt = [x for x in L if x["lt"] in st["warranty"]]
@@ -285,7 +286,7 @@ for i, (t, b) in enumerate([
  ("Honda 6.15 method", True),
  ("20 consecutive qualifying customer-pay ROs (dealer-chosen window from 50+ sequential ROs). Rate = labor $ / hours on qualifying lines. Qualifying line: customer-pay, repair with parts, Honda vehicle. Excluded: advertised specials, non-Honda parts, fluid flushes, fleet discounts, lines without parts, diagnosis only, tires, insurance, Owner's Manual / Maintenance Minder / dealer-recommended maintenance, extended service contracts. Brake pad/rotor replacement (with parts) is not excluded by 6.15 and is included.", False),
  ("Nevada method", True),
- ("Literal: all customer-pay retail labor and parts across 180 days (excluding employee, policy, third-party and dealer/body-shop ROs). Warranty-like: 100 sequential ROs within 90 days, Arizona-style exclusions; alignments only with another warranty-like repair; brake pads/rotors excluded as wear items; diagnosis included.", False),
+ ("Literal: all customer-pay retail labor and parts on Honda vehicles across 180 days (excluding employee, policy, third-party and dealer/body-shop ROs). Warranty-like: 100 sequential Honda-vehicle ROs within 90 days, Arizona-style exclusions; alignments only with another warranty-like repair; brake pads/rotors excluded as wear items; diagnosis included.", False),
  ("Limits", True),
  ("Current warranty rate and parts markup are what the DMS booked on W lines, not Honda's approval letter. SOM 6.2 states parts at dealer net + 40%; the DMS shows higher booked markups, so the parts gap may be larger than shown.", False),
  ("Discounts are netted in Qlik. Advertised specials, fleet discounts and insurance-paid repairs can't be identified directly. Aftermarket-part screening is at RO level. Unmapped Honda labor op codes are treated as repairs (listed on the Op Code Map tabs).", False),
