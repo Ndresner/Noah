@@ -45,9 +45,9 @@ Not excluded by name: alignments, brakes, batteries, bulbs.
 
 ## Fit with our history
 - DealerUplift's Chevrolet labor cycle (2025–26) was rebutted; GM's final was $201.19 after reconsideration (initial offer $197.74) – consistent with the Option A reasonableness/review process.
-- Before any filing at a GM store: confirm whether it is on **Option C**. A statutory or parts filing while on Option C forfeits every CPI increase since enrollment.
+- Option C check done: no Findlay GM store is enrolled (Nov 25, 2026), so the forfeiture rule does not apply.
 
 ## Open items
-- Each GM store's current option (A or C), Option C start date and enrolled rate.
+- Option: none of the Findlay GM stores is on Option C (Noah, Nov 25, 2026) – all on Option A, so a statutory or Option A filing carries no CPI forfeiture.
 - Job Card Verification Form / GM-approved spreadsheet (Regional Warranty Team).
 - GM standard parts handling allowance % and each store's approved %.
