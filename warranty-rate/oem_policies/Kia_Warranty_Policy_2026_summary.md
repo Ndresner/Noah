@@ -1,11 +1,11 @@
 # Kia – warranty labor rate (2026 forms) and Service Policies & Procedures Manual, Section 7
 
-Sources (received from the store Nov 25, 2026; originals are dealer-confidential and not stored here):
+Sources (Jeff Hafen, Kia St George, Nov 25, 2026; he notes Kia folded the warranty manual into the Service Policies & Procedures manual years ago and no Kia parts-markup form could be found; originals are dealer-confidential and not stored here):
 - 2026 Kia Warranty Labor Rate Market Analysis form (PDF, 1 page)
 - 2026 Kia Warranty Labor Rate RO Analysis Form WRTY101 (Excel)
 - 2026 Kia Service Policies & Procedures Manual – **Section 7 only** (Warranty Repair Policies and Procedures, 7.0–7.24, 96 pages)
 
-Findlay store: Findlay Kia (St George, UT). DealerUplift has filed for this store (labor and parts – see `history/`).
+Findlay stores: Kia St George (UT) and Kia Las Vegas (NV). DealerUplift has filed for Kia St George (labor and parts – see `history/`).
 
 ## Key points
 - **Section 7 has no labor rate or parts markup policy.** It covers claim rules (gray market, PWA, goodwill, trained-tech edits, batteries, maintenance). The labor rate procedure itself is not in what we received; it may sit in another section of the manual or a separate bulletin. Ask the store/DPSM where the written procedure is.
@@ -27,4 +27,5 @@ Findlay store: Findlay Kia (St George, UT). DealerUplift has filed for this stor
 ## Open items
 - Written Kia labor rate policy (section number / bulletin), including window, sequence and discount rules.
 - Kia parts markup procedure (if any) or whether Kia defers to Utah 13-14-204.
-- Current Kia St George warranty labor rate and parts handling/markup on file.
+- WCPM (Warranty Claims Processing Manual, referenced in 7.13) – may hold reimbursement detail.
+- Current Kia St George / Kia Las Vegas warranty labor rate and parts handling/markup on file.
